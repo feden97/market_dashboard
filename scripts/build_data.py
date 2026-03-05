@@ -9,6 +9,7 @@ import json
 import os
 import re
 import time
+import requests # <--- ¡ESTA ES LA LIBRERÍA NUEVA QUE AGREGAMOS!
 
 import yfinance as yf
 import pandas as pd
@@ -38,20 +39,13 @@ KEY_EVENTS = [
 ]
 
 STOCK_GROUPS = {
-    "Indices": ["QQQE", "MGK", "QQQ", "IBIT", "RSP", "MDY", "IWM", "TLT", "SPY", "ETHA", "DIA"],
-    "S&P Style ETFs": ["IJS", "IJR", "IJT", "IJJ", "IJH", "IJK", "IVE", "IVV", "IVW"],
-    "Sel Sectors": ["XLK", "XLI", "XLC", "XLF", "XLU", "XLY", "XLRE", "XLP", "XLB", "XLE", "XLV"],
-    "EW Sectors": ["RSPT", "RSPC", "RSPN", "RSPF", "RSP", "RSPD", "RSPU", "RSPR", "RSPH", "RSPM", "RSPS", "RSPG"],
-    "Industries": [
-        "TAN", "KCE", "IBUY", "QQQE", "JETS", "IBB", "SMH", "CIBR", "UTES", "ROBO", "IGV", "WCLD", "ITA", "PAVE", "BLOK", "AIQ", "IYZ", "PEJ", "FDN", "KBE",
-        "UNG", "BOAT", "KWEB", "KRE", "IBIT", "XRT", "IHI", "DRIV", "MSOS", "SOCL", "XLU", "ARKF", "SLX", "ARKK", "XTN", "XME", "KIE", "GLD", "GXC", "SCHH",
-        "GDX", "IPAY", "IWM", "XOP", "VNQ", "EATZ", "FXI", "DBA", "ICLN", "SILJ", "REZ", "LIT", "SLV", "XHB", "XHE", "PBJ", "USO", "DBC", "FCG", "XBI",
-        "ARKG", "CPER", "XES", "OIH", "PPH", "FNGS", "URA", "WGMI", "REMX"
-    ],
-    "Countries": [
-        "EZA", "ARGT", "EWA", "THD", "EIDO", "EWC", "GREK", "EWP", "EWG", "EWL", "EUFN", "EWY", "IEUR", "EFA", "ACWI",
-        "IEV", "EWQ", "EWI", "EWJ", "EWW", "ECH", "EWD", "ASHR", "EWS", "KSA", "INDA", "EEM", "EWZ", "TUR", "EWH", "EWT", "MCHI"
-    ]
+    "Índices y Cripto (USD)": ["SPY", "QQQ", "DIA", "IWM", "IBIT", "ETHA"],
+    "CEDEARs Índices (ARS)": ["SPY.BA", "QQQ.BA", "DIA.BA", "IWM.BA", "IBIT.BA", "ETHA.BA"],
+    "ADRs (USD)": ["BBAR", "BMA", "CEPU", "CRESY", "EDN", "GGAL", "IRS", "LOMA", "PAM", "SUPV", "TEO", "TGS", "YPF", "VIST", "GLOB"],
+    "Acciones Locales (ARS)": ["BBAR.BA", "BMA.BA", "CEPU.BA", "CRES.BA", "EDN.BA", "GGAL.BA", "IRSA.BA", "LOMA.BA", "PAMP.BA", "SUPV.BA", "TECO2.BA", "TGSU2.BA", "YPFD.BA", "VIST.BA"],
+    "Acciones USA (USD)": ["UNH", "GOOGL", "TGT", "WMT", "ARCO", "NU", "PEP", "V", "MA", "MSFT", "SBUX", "MELI", "BRK-B", "PFE", "MCD", "PG"],
+    "CEDEARs (ARS)": ["UNH.BA", "GOOGL.BA", "TGT.BA", "WMT.BA", "ARCO.BA", "NU.BA", "PEP.BA", "V.BA", "MA.BA", "MSFT.BA", "SBUX.BA", "MELI.BA", "BRKB.BA", "PFE.BA", "MCD.BA", "PG.BA"],
+    "Countries": ["EZA", "ARGT", "EWA", "THD", "EIDO", "EWC", "GREK", "EWP", "EWG", "EWL", "EUFN", "EWY", "IEUR", "EFA", "ACWI", "IEV", "EWQ", "EWI", "EWJ", "EWW", "ECH", "EWD", "ASHR", "EWS", "KSA", "INDA", "EEM", "EWZ", "TUR", "EWH", "EWT", "MCHI"]
 }
 
 LEVERAGED_ETFS = {
@@ -274,7 +268,112 @@ def create_rs_chart_png(rrs_data, ticker, charts_dir):
         print("Chart error", ticker, e)
         return None
 
+def get_argentina_macro_data():
+    macro = {"holiday": None, "inflation": None}
+    today_str = datetime.now().strftime("%Y-%m-%d")
 
+    # 1. Próximo Feriado
+    try:
+        # Según la documentación, sin especificar el año devuelve el actual
+        r_feriados = requests.get("https://api.argentinadatos.com/v1/feriados")
+        if r_feriados.status_code == 200:
+            feriados = r_feriados.json()
+            futuros = [f for f in feriados if f.get("fecha") >= today_str]
+            if futuros:
+                futuros.sort(key=lambda x: x["fecha"])
+                prox = futuros[0]
+                macro["holiday"] = f"{prox['fecha']} - {prox.get('nombre', '')}"
+    except Exception as e:
+        print("Error feriados:", e)
+
+    # 2. Última Inflación
+    try:
+        r_inf = requests.get("https://api.argentinadatos.com/v1/finanzas/indices/inflacion")
+        if r_inf.status_code == 200:
+            datos_inf = r_inf.json()
+            if datos_inf:
+                ultimo = datos_inf[-1]
+                val = ultimo.get("valor", 0)
+                # Aseguramos que se muestre como porcentaje
+                if val < 1: val *= 100 
+                macro["inflation"] = f"{val:.1f}% ({ultimo.get('fecha', '')[:7]})"
+    except Exception as e:
+        print("Error inflación:", e)
+
+    return macro
+
+def get_exchange_rates():
+    rates = {"dolares": {}, "cripto": {}}
+    
+    # DólarAPI (Oficial, Blue, MEP, CCL, etc.)
+    try:
+        r = requests.get("https://dolarapi.com/v1/dolares")
+        if r.status_code == 200:
+            for d in r.json():
+                rates["dolares"][d["casa"]] = d["venta"]
+    except: pass
+
+    # CriptoYa (USDT en Exchanges locales)
+    try:
+        r = requests.get("https://criptoya.com/api/usdt/ars/0.1")
+        if r.status_code == 200:
+            data = r.json()
+            for ex in ["fiwind", "lemoncash", "binancep2p"]:
+                if ex in data:
+                    rates["cripto"][ex] = data[ex].get("totalAsk", 0)
+    except: pass
+    
+    return rates
+
+def generate_spread_chart(charts_dir):
+    try:
+        # Traemos CCL y Cripto históricos
+        r_ccl = requests.get("https://api.argentinadatos.com/v1/cotizaciones/dolares/contadoconliqui")
+        r_cripto = requests.get("https://api.argentinadatos.com/v1/cotizaciones/dolares/cripto")
+
+        if r_ccl.status_code != 200 or r_cripto.status_code != 200:
+            return None
+
+        df_ccl = pd.DataFrame(r_ccl.json())
+        df_cripto = pd.DataFrame(r_cripto.json())
+
+        df_ccl['fecha'] = pd.to_datetime(df_ccl['fecha'])
+        df_cripto['fecha'] = pd.to_datetime(df_cripto['fecha'])
+
+        # Filtramos los últimos 60 días
+        cutoff = datetime.now() - timedelta(days=60)
+        df_ccl = df_ccl[df_ccl['fecha'] >= cutoff][['fecha', 'venta']].set_index('fecha')
+        df_cripto = df_cripto[df_cripto['fecha'] >= cutoff][['fecha', 'venta']].set_index('fecha')
+
+        # Cruzamos los datos y calculamos el spread en %
+        df = df_ccl.join(df_cripto, lsuffix='_ccl', rsuffix='_cripto').dropna()
+        df['spread'] = ((df['venta_cripto'] / df['venta_ccl']) - 1) * 100
+
+        # Dibujamos el gráfico
+        plt.style.use('dark_background')
+        fig, ax = plt.subplots(figsize=(8, 2))
+        fig.patch.set_facecolor('#1a1a1a')
+        ax.set_facecolor('#1a1a1a')
+
+        ax.plot(df.index, df['spread'], color='#4ade80', lw=2)
+        ax.axhline(y=0, color='#808080', linestyle='--', linewidth=1)
+        
+        # Eliminamos los bordes para que quede minimalista como los otros gráficos
+        for s in ax.spines.values():
+            s.set_visible(False)
+            
+        ax.set_xticks([])
+        fig.tight_layout(pad=0)
+
+        path = os.path.join(charts_dir, "spread_ccl_cripto.png")
+        fig.savefig(path, format='png', dpi=80, bbox_inches='tight', facecolor='#1a1a1a')
+        plt.close(fig)
+
+        return "data/charts/spread_ccl_cripto.png"
+    except Exception as e:
+        print("Error generando gráfico de spread:", e)
+        return None
+        
 def get_stock_data(ticker_symbol, charts_dir):
     try:
         stock = yf.Ticker(ticker_symbol)
@@ -372,10 +471,18 @@ def main():
             "20d": (min(twenty_v) if twenty_v else -30, max(twenty_v) if twenty_v else 30),
         }
 
+   print("Fetching Argentina macro, exchange rates and building spread chart...")
+    macro_data = get_argentina_macro_data()
+    exchange_rates = get_exchange_rates()
+    spread_chart_path = generate_spread_chart(charts_dir)
+
     snapshot = {
         "built_at": datetime.utcnow().isoformat() + "Z",
         "groups": groups_data,
         "column_ranges": column_ranges,
+        "argentina_macro": macro_data,
+        "exchange_rates": exchange_rates,
+        "spread_chart": spread_chart_path
     }
     meta = {
         "SECTOR_COLORS": SECTOR_COLORS,
