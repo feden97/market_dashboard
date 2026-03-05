@@ -471,7 +471,7 @@ def main():
             "20d": (min(twenty_v) if twenty_v else -30, max(twenty_v) if twenty_v else 30),
         }
 
-   print("Fetching Argentina macro, exchange rates and building spread chart...")
+    print("Fetching Argentina macro, exchange rates and building spread chart...")
     macro_data = get_argentina_macro_data()
     exchange_rates = get_exchange_rates()
     spread_chart_path = generate_spread_chart(charts_dir)
@@ -484,12 +484,13 @@ def main():
         "exchange_rates": exchange_rates,
         "spread_chart": spread_chart_path
     }
+    
     meta = {
         "SECTOR_COLORS": SECTOR_COLORS,
         "TICKER_TO_SECTOR": TICKER_TO_SECTOR,
         "Industries_COLORS": Industries_COLORS,
         "SECTOR_ORDER": list(SECTOR_COLORS.keys()),
-        "default_symbol": STOCK_GROUPS["Indices"][0] if STOCK_GROUPS["Indices"] else "SPY",
+        "default_symbol": STOCK_GROUPS.get("Índices y Cripto (USD)", ["SPY"])[0]
     }
 
     snapshot_path = os.path.join(out_dir, "snapshot.json")
@@ -504,7 +505,6 @@ def main():
         json.dump(meta, f, ensure_ascii=False, indent=2)
 
     print("Wrote", snapshot_path, events_path, meta_path, "and charts in", charts_dir)
-
 
 if __name__ == "__main__":
     main()
