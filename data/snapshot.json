@@ -1,15 +1,15 @@
 {
-  "built_at": "2026-03-06T20:46:25.560122Z",
+  "built_at": "2026-03-06T21:41:32.028875Z",
   "groups": {
     "Índices y Cripto (USD)": [
       {
         "ticker": "SPY",
-        "daily": -1.28,
-        "intra": -0.13,
-        "5d": -1.96,
-        "20d": -0.75,
+        "daily": -1.31,
+        "intra": -0.15,
+        "5d": -1.98,
+        "20d": -0.77,
         "atr_pct": 1.3,
-        "dist_sma50_atr": -1.7,
+        "dist_sma50_atr": -1.71,
         "rs": 62.0,
         "rs_chart": "data/charts/SPY.png",
         "long": [
@@ -24,12 +24,12 @@
       },
       {
         "ticker": "QQQ",
-        "daily": -1.43,
-        "intra": -0.03,
-        "5d": -1.17,
-        "20d": 0.53,
+        "daily": -1.5,
+        "intra": -0.09,
+        "5d": -1.24,
+        "20d": 0.46,
         "atr_pct": 1.7,
-        "dist_sma50_atr": -1.41,
+        "dist_sma50_atr": -1.44,
         "rs": 100.0,
         "rs_chart": "data/charts/QQQ.png",
         "long": [
@@ -42,12 +42,12 @@
       },
       {
         "ticker": "DIA",
-        "daily": -0.95,
-        "intra": 0.33,
-        "5d": -2.94,
-        "20d": -2.67,
+        "daily": -0.96,
+        "intra": 0.32,
+        "5d": -2.95,
+        "20d": -2.68,
         "atr_pct": 1.5,
-        "dist_sma50_atr": -2.12,
+        "dist_sma50_atr": -2.13,
         "rs": 25.0,
         "rs_chart": "data/charts/DIA.png",
         "long": [],
@@ -56,12 +56,12 @@
       },
       {
         "ticker": "IWM",
-        "daily": -1.91,
-        "intra": -0.86,
-        "5d": -3.47,
-        "20d": null,
-        "atr_pct": 2.2,
-        "dist_sma50_atr": -0.65,
+        "daily": -2.29,
+        "intra": -0.24,
+        "5d": -4.02,
+        "20d": -1.93,
+        "atr_pct": 2.3,
+        "dist_sma50_atr": -1.62,
         "rs": 5.0,
         "rs_chart": "data/charts/IWM.png",
         "long": [
@@ -74,12 +74,12 @@
       },
       {
         "ticker": "IBIT",
-        "daily": -4.57,
-        "intra": -1.46,
-        "5d": 3.64,
-        "20d": 6.77,
+        "daily": -4.43,
+        "intra": -1.32,
+        "5d": 3.79,
+        "20d": 6.93,
         "atr_pct": 5.2,
-        "dist_sma50_atr": -2.85,
+        "dist_sma50_atr": -2.83,
         "rs": 100.0,
         "rs_chart": "data/charts/IBIT.png",
         "long": [
@@ -94,10 +94,10 @@
       },
       {
         "ticker": "ETHA",
-        "daily": -5.47,
-        "intra": -1.58,
-        "5d": 2.86,
-        "20d": 6.22,
+        "daily": -5.51,
+        "intra": -1.61,
+        "5d": 2.82,
+        "20d": 6.19,
         "atr_pct": 7.2,
         "dist_sma50_atr": -3.14,
         "rs": 100.0,
@@ -198,13 +198,13 @@
     "ADRs (USD)": [
       {
         "ticker": "BBAR",
-        "daily": -3.22,
-        "intra": 0.8,
-        "5d": -7.87,
-        "20d": -19.39,
+        "daily": -2.8,
+        "intra": 1.24,
+        "5d": -7.47,
+        "20d": -19.04,
         "atr_pct": 7.7,
-        "dist_sma50_atr": -2.8,
-        "rs": 20.0,
+        "dist_sma50_atr": -2.77,
+        "rs": 25.0,
         "rs_chart": "data/charts/BBAR.png",
         "long": [],
         "short": [],
@@ -212,12 +212,12 @@
       },
       {
         "ticker": "BMA",
-        "daily": -5.11,
-        "intra": -1.67,
-        "5d": -8.99,
-        "20d": -20.34,
+        "daily": -4.89,
+        "intra": -1.44,
+        "5d": -8.78,
+        "20d": -20.16,
         "atr_pct": 7.2,
-        "dist_sma50_atr": -3.08,
+        "dist_sma50_atr": -3.07,
         "rs": 25.0,
         "rs_chart": "data/charts/BMA.png",
         "long": [],
@@ -226,12 +226,12 @@
       },
       {
         "ticker": "CEPU",
-        "daily": -2.58,
-        "intra": -0.35,
-        "5d": -8.6,
-        "20d": -6.34,
+        "daily": -2.38,
+        "intra": -0.14,
+        "5d": -8.41,
+        "20d": -6.14,
         "atr_pct": 5.3,
-        "dist_sma50_atr": -2.18,
+        "dist_sma50_atr": -2.15,
         "rs": 20.0,
         "rs_chart": "data/charts/CEPU.png",
         "long": [],
@@ -240,13 +240,13 @@
       },
       {
         "ticker": "CRESY",
-        "daily": -1.06,
-        "intra": 0.42,
-        "5d": -5.58,
-        "20d": -14.11,
+        "daily": -0.74,
+        "intra": 0.75,
+        "5d": -5.27,
+        "20d": -13.83,
         "atr_pct": 4.8,
-        "dist_sma50_atr": -2.56,
-        "rs": 45.0,
+        "dist_sma50_atr": -2.51,
+        "rs": 50.0,
         "rs_chart": "data/charts/CRESY.png",
         "long": [],
         "short": [],
@@ -254,12 +254,12 @@
       },
       {
         "ticker": "EDN",
-        "daily": -1.91,
-        "intra": 2.03,
-        "5d": -0.16,
-        "20d": -2.58,
+        "daily": -3.06,
+        "intra": 0.84,
+        "5d": -1.32,
+        "20d": -3.72,
         "atr_pct": 6.8,
-        "dist_sma50_atr": -1.59,
+        "dist_sma50_atr": -1.72,
         "rs": 100.0,
         "rs_chart": "data/charts/EDN.png",
         "long": [],
@@ -268,12 +268,12 @@
       },
       {
         "ticker": "GGAL",
-        "daily": -3.77,
-        "intra": 1.05,
-        "5d": -7.02,
-        "20d": -13.42,
+        "daily": -3.36,
+        "intra": 1.48,
+        "5d": -6.61,
+        "20d": -13.05,
         "atr_pct": 6.0,
-        "dist_sma50_atr": -3.05,
+        "dist_sma50_atr": -3.01,
         "rs": 20.0,
         "rs_chart": "data/charts/GGAL.png",
         "long": [],
@@ -282,12 +282,12 @@
       },
       {
         "ticker": "IRS",
-        "daily": -1.78,
-        "intra": 0.63,
-        "5d": -9.97,
-        "20d": -9.46,
+        "daily": -1.44,
+        "intra": 0.98,
+        "5d": -9.66,
+        "20d": -9.15,
         "atr_pct": 5.6,
-        "dist_sma50_atr": -2.05,
+        "dist_sma50_atr": -2.01,
         "rs": 75.0,
         "rs_chart": "data/charts/IRS.png",
         "long": [],
@@ -338,12 +338,12 @@
       },
       {
         "ticker": "TEO",
-        "daily": -1.44,
-        "intra": 2.34,
-        "5d": -6.34,
-        "20d": -4.7,
+        "daily": -0.99,
+        "intra": 2.81,
+        "5d": -5.91,
+        "20d": -4.27,
         "atr_pct": 5.7,
-        "dist_sma50_atr": -1.14,
+        "dist_sma50_atr": -1.07,
         "rs": 100.0,
         "rs_chart": "data/charts/TEO.png",
         "long": [],
@@ -352,12 +352,12 @@
       },
       {
         "ticker": "TGS",
-        "daily": 1.61,
-        "intra": 0.87,
-        "5d": -2.03,
-        "20d": -0.62,
+        "daily": 1.68,
+        "intra": 0.94,
+        "5d": -1.96,
+        "20d": -0.55,
         "atr_pct": 5.0,
-        "dist_sma50_atr": -0.78,
+        "dist_sma50_atr": -0.77,
         "rs": 100.0,
         "rs_chart": "data/charts/TGS.png",
         "long": [],
@@ -366,12 +366,12 @@
       },
       {
         "ticker": "YPF",
-        "daily": 2.08,
-        "intra": 1.89,
-        "5d": 3.79,
-        "20d": -2.05,
+        "daily": 2.53,
+        "intra": 2.33,
+        "5d": 4.24,
+        "20d": -1.63,
         "atr_pct": 4.1,
-        "dist_sma50_atr": 0.1,
+        "dist_sma50_atr": 0.2,
         "rs": 100.0,
         "rs_chart": "data/charts/YPF.png",
         "long": [],
@@ -380,12 +380,12 @@
       },
       {
         "ticker": "VIST",
-        "daily": 2.25,
-        "intra": 1.75,
-        "5d": 7.78,
-        "20d": 14.94,
+        "daily": 2.84,
+        "intra": 2.34,
+        "5d": 8.4,
+        "20d": 15.61,
         "atr_pct": 3.6,
-        "dist_sma50_atr": 4.42,
+        "dist_sma50_atr": 4.62,
         "rs": 100.0,
         "rs_chart": "data/charts/VIST.png",
         "long": [],
@@ -394,12 +394,12 @@
       },
       {
         "ticker": "GLOB",
-        "daily": -4.21,
-        "intra": -2.84,
-        "5d": 2.41,
-        "20d": -11.71,
+        "daily": -2.99,
+        "intra": -1.6,
+        "5d": 3.72,
+        "20d": -10.59,
         "atr_pct": 6.3,
-        "dist_sma50_atr": -2.38,
+        "dist_sma50_atr": -2.24,
         "rs": 80.0,
         "rs_chart": "data/charts/GLOB.png",
         "long": [],
@@ -594,12 +594,12 @@
     "Acciones USA (USD)": [
       {
         "ticker": "UNH",
-        "daily": -0.53,
-        "intra": -0.03,
-        "5d": -2.05,
-        "20d": 6.96,
+        "daily": -0.79,
+        "intra": -0.3,
+        "5d": -2.32,
+        "20d": 6.68,
         "atr_pct": 3.1,
-        "dist_sma50_atr": -2.25,
+        "dist_sma50_atr": -2.32,
         "rs": 100.0,
         "rs_chart": "data/charts/UNH.png",
         "long": [],
@@ -608,10 +608,10 @@
       },
       {
         "ticker": "GOOGL",
-        "daily": -0.77,
-        "intra": 0.82,
-        "5d": -4.24,
-        "20d": -9.87,
+        "daily": -0.78,
+        "intra": 0.81,
+        "5d": -4.25,
+        "20d": -9.88,
         "atr_pct": 2.8,
         "dist_sma50_atr": -2.38,
         "rs": 95.0,
@@ -622,12 +622,12 @@
       },
       {
         "ticker": "TGT",
-        "daily": -0.01,
-        "intra": 0.99,
-        "5d": 5.77,
-        "20d": 9.67,
+        "daily": 0.36,
+        "intra": 1.36,
+        "5d": 6.15,
+        "20d": 10.08,
         "atr_pct": 3.2,
-        "dist_sma50_atr": 3.4,
+        "dist_sma50_atr": 3.52,
         "rs": 100.0,
         "rs_chart": "data/charts/TGT.png",
         "long": [],
@@ -636,12 +636,12 @@
       },
       {
         "ticker": "WMT",
-        "daily": 0.24,
-        "intra": 0.91,
-        "5d": -3.4,
-        "20d": -2.63,
+        "daily": 0.4,
+        "intra": 1.07,
+        "5d": -3.24,
+        "20d": -2.47,
         "atr_pct": 2.7,
-        "dist_sma50_atr": 0.72,
+        "dist_sma50_atr": 0.78,
         "rs": 75.0,
         "rs_chart": "data/charts/WMT.png",
         "long": [],
@@ -664,13 +664,13 @@
       },
       {
         "ticker": "NU",
-        "daily": -2.02,
-        "intra": 0.1,
-        "5d": -3.07,
-        "20d": -13.62,
+        "daily": -1.62,
+        "intra": 0.52,
+        "5d": -2.67,
+        "20d": -13.27,
         "atr_pct": 4.9,
-        "dist_sma50_atr": -2.94,
-        "rs": 40.0,
+        "dist_sma50_atr": -2.88,
+        "rs": 45.0,
         "rs_chart": "data/charts/NU.png",
         "long": [],
         "short": [],
@@ -678,13 +678,13 @@
       },
       {
         "ticker": "PEP",
-        "daily": -1.22,
-        "intra": 0.31,
-        "5d": -6.48,
-        "20d": -5.25,
-        "atr_pct": 2.2,
-        "dist_sma50_atr": 1.26,
-        "rs": 50.0,
+        "daily": -0.79,
+        "intra": 0.75,
+        "5d": -6.07,
+        "20d": -4.83,
+        "atr_pct": 2.1,
+        "dist_sma50_atr": 1.47,
+        "rs": 70.0,
         "rs_chart": "data/charts/PEP.png",
         "long": [],
         "short": [],
@@ -692,13 +692,13 @@
       },
       {
         "ticker": "V",
-        "daily": -1.22,
-        "intra": -0.05,
-        "5d": -1.33,
-        "20d": -3.83,
-        "atr_pct": 2.4,
-        "dist_sma50_atr": -1.88,
-        "rs": 35.0,
+        "daily": -0.76,
+        "intra": 0.42,
+        "5d": -0.87,
+        "20d": -3.38,
+        "atr_pct": 2.3,
+        "dist_sma50_atr": -1.7,
+        "rs": 40.0,
         "rs_chart": "data/charts/V.png",
         "long": [],
         "short": [],
@@ -706,13 +706,13 @@
       },
       {
         "ticker": "MA",
-        "daily": -0.98,
-        "intra": -0.03,
-        "5d": 0.44,
-        "20d": -5.87,
+        "daily": -0.44,
+        "intra": 0.52,
+        "5d": 0.99,
+        "20d": -5.35,
         "atr_pct": 2.5,
-        "dist_sma50_atr": -1.63,
-        "rs": 35.0,
+        "dist_sma50_atr": -1.43,
+        "rs": 40.0,
         "rs_chart": "data/charts/MA.png",
         "long": [],
         "short": [],
@@ -720,12 +720,12 @@
       },
       {
         "ticker": "MSFT",
-        "daily": -0.32,
-        "intra": 0.02,
-        "5d": 4.24,
-        "20d": 4.23,
+        "daily": -0.42,
+        "intra": -0.08,
+        "5d": 4.13,
+        "20d": 4.12,
         "atr_pct": 2.5,
-        "dist_sma50_atr": -2.51,
+        "dist_sma50_atr": -2.54,
         "rs": 100.0,
         "rs_chart": "data/charts/MSFT.png",
         "long": [],
@@ -734,12 +734,12 @@
       },
       {
         "ticker": "SBUX",
-        "daily": 0.19,
-        "intra": 1.86,
-        "5d": 0.87,
-        "20d": 3.58,
+        "daily": 0.3,
+        "intra": 1.98,
+        "5d": 0.99,
+        "20d": 3.7,
         "atr_pct": 2.7,
-        "dist_sma50_atr": 2.38,
+        "dist_sma50_atr": 2.43,
         "rs": 100.0,
         "rs_chart": "data/charts/SBUX.png",
         "long": [],
@@ -748,12 +748,12 @@
       },
       {
         "ticker": "MELI",
-        "daily": 0.66,
-        "intra": 1.8,
-        "5d": 1.97,
-        "20d": -11.92,
-        "atr_pct": 4.7,
-        "dist_sma50_atr": -2.4,
+        "daily": 0.42,
+        "intra": 1.56,
+        "5d": 1.72,
+        "20d": -12.13,
+        "atr_pct": 4.8,
+        "dist_sma50_atr": -2.44,
         "rs": 90.0,
         "rs_chart": "data/charts/MELI.png",
         "long": [],
@@ -762,12 +762,12 @@
       },
       {
         "ticker": "BRK-B",
-        "daily": -0.35,
-        "intra": -0.12,
-        "5d": -1.24,
-        "20d": -1.04,
+        "daily": -0.28,
+        "intra": -0.05,
+        "5d": -1.18,
+        "20d": -0.97,
         "atr_pct": 1.9,
-        "dist_sma50_atr": 0.46,
+        "dist_sma50_atr": 0.5,
         "rs": 100.0,
         "rs_chart": "data/charts/BRK_B.png",
         "long": [],
@@ -776,12 +776,12 @@
       },
       {
         "ticker": "PFE",
-        "daily": 1.73,
-        "intra": 2.0,
-        "5d": -2.1,
-        "20d": 2.19,
+        "daily": 1.65,
+        "intra": 1.92,
+        "5d": -2.17,
+        "20d": 2.11,
         "atr_pct": 2.2,
-        "dist_sma50_atr": 1.74,
+        "dist_sma50_atr": 1.69,
         "rs": 100.0,
         "rs_chart": "data/charts/PFE.png",
         "long": [],
@@ -790,12 +790,12 @@
       },
       {
         "ticker": "MCD",
-        "daily": 0.14,
-        "intra": 0.5,
-        "5d": -3.32,
-        "20d": 1.94,
+        "daily": 0.19,
+        "intra": 0.54,
+        "5d": -3.27,
+        "20d": 1.98,
         "atr_pct": 1.7,
-        "dist_sma50_atr": 2.11,
+        "dist_sma50_atr": 2.12,
         "rs": 80.0,
         "rs_chart": "data/charts/MCD.png",
         "long": [],
@@ -804,12 +804,12 @@
       },
       {
         "ticker": "PG",
-        "daily": 0.09,
-        "intra": 0.3,
-        "5d": -7.82,
-        "20d": -2.83,
+        "daily": -0.23,
+        "intra": -0.02,
+        "5d": -8.12,
+        "20d": -3.14,
         "atr_pct": 2.1,
-        "dist_sma50_atr": 0.8,
+        "dist_sma50_atr": 0.64,
         "rs": 70.0,
         "rs_chart": "data/charts/PG.png",
         "long": [],
@@ -1018,12 +1018,12 @@
     "Countries": [
       {
         "ticker": "EZA",
-        "daily": -1.09,
-        "intra": 2.15,
-        "5d": -13.43,
-        "20d": -1.33,
+        "daily": -1.26,
+        "intra": 1.97,
+        "5d": -13.58,
+        "20d": -1.51,
         "atr_pct": 3.6,
-        "dist_sma50_atr": -1.35,
+        "dist_sma50_atr": -1.4,
         "rs": 10.0,
         "rs_chart": "data/charts/EZA.png",
         "long": [],
@@ -1032,12 +1032,12 @@
       },
       {
         "ticker": "ARGT",
-        "daily": -0.42,
-        "intra": 0.97,
-        "5d": -3.64,
-        "20d": -5.47,
+        "daily": -0.37,
+        "intra": 1.03,
+        "5d": -3.59,
+        "20d": -5.42,
         "atr_pct": 3.5,
-        "dist_sma50_atr": -2.12,
+        "dist_sma50_atr": -2.1,
         "rs": 50.0,
         "rs_chart": "data/charts/ARGT.png",
         "long": [],
@@ -1046,13 +1046,13 @@
       },
       {
         "ticker": "EWA",
-        "daily": -1.01,
-        "intra": 0.66,
-        "5d": -5.88,
-        "20d": 1.72,
+        "daily": -0.98,
+        "intra": 0.69,
+        "5d": -5.85,
+        "20d": 1.76,
         "atr_pct": 1.8,
-        "dist_sma50_atr": 0.79,
-        "rs": 15.0,
+        "dist_sma50_atr": 0.81,
+        "rs": 25.0,
         "rs_chart": "data/charts/EWA.png",
         "long": [],
         "short": [],
@@ -1060,12 +1060,12 @@
       },
       {
         "ticker": "THD",
-        "daily": -1.06,
-        "intra": 0.44,
-        "5d": -12.02,
-        "20d": 3.41,
+        "daily": -1.57,
+        "intra": -0.08,
+        "5d": -12.47,
+        "20d": 2.88,
         "atr_pct": 2.2,
-        "dist_sma50_atr": 0.53,
+        "dist_sma50_atr": 0.3,
         "rs": 10.0,
         "rs_chart": "data/charts/THD.png",
         "long": [],
@@ -1074,12 +1074,12 @@
       },
       {
         "ticker": "EIDO",
-        "daily": -2.52,
-        "intra": 0.19,
-        "5d": -8.87,
-        "20d": -7.25,
+        "daily": -2.7,
+        "intra": 0.0,
+        "5d": -9.03,
+        "20d": -7.42,
         "atr_pct": 2.2,
-        "dist_sma50_atr": -5.02,
+        "dist_sma50_atr": -5.09,
         "rs": 5.0,
         "rs_chart": "data/charts/EIDO.png",
         "long": [],
@@ -1088,13 +1088,13 @@
       },
       {
         "ticker": "EWC",
-        "daily": -1.08,
-        "intra": 0.12,
-        "5d": -2.91,
-        "20d": 3.98,
+        "daily": -0.98,
+        "intra": 0.21,
+        "5d": -2.81,
+        "20d": 4.08,
         "atr_pct": 1.7,
-        "dist_sma50_atr": 0.66,
-        "rs": 20.0,
+        "dist_sma50_atr": 0.72,
+        "rs": 30.0,
         "rs_chart": "data/charts/EWC.png",
         "long": [],
         "short": [],
@@ -1102,12 +1102,12 @@
       },
       {
         "ticker": "GREK",
-        "daily": -0.8,
-        "intra": 1.93,
-        "5d": -7.56,
-        "20d": -12.47,
-        "atr_pct": 2.8,
-        "dist_sma50_atr": -2.63,
+        "daily": -1.09,
+        "intra": 1.64,
+        "5d": -7.82,
+        "20d": -12.73,
+        "atr_pct": 2.9,
+        "dist_sma50_atr": -2.72,
         "rs": 10.0,
         "rs_chart": "data/charts/GREK.png",
         "long": [],
@@ -1116,12 +1116,12 @@
       },
       {
         "ticker": "EWP",
-        "daily": -0.62,
-        "intra": 1.51,
-        "5d": -7.02,
-        "20d": -3.6,
+        "daily": -0.65,
+        "intra": 1.47,
+        "5d": -7.06,
+        "20d": -3.64,
         "atr_pct": 2.2,
-        "dist_sma50_atr": -1.83,
+        "dist_sma50_atr": -1.85,
         "rs": 15.0,
         "rs_chart": "data/charts/EWP.png",
         "long": [],
@@ -1130,12 +1130,12 @@
       },
       {
         "ticker": "EWG",
-        "daily": -0.92,
-        "intra": 1.29,
-        "5d": -7.98,
-        "20d": -4.76,
+        "daily": -0.87,
+        "intra": 1.34,
+        "5d": -7.94,
+        "20d": -4.72,
         "atr_pct": 1.8,
-        "dist_sma50_atr": -3.26,
+        "dist_sma50_atr": -3.24,
         "rs": 15.0,
         "rs_chart": "data/charts/EWG.png",
         "long": [],
@@ -1144,12 +1144,12 @@
       },
       {
         "ticker": "EWL",
-        "daily": 0.11,
-        "intra": 1.87,
-        "5d": -6.08,
-        "20d": -1.8,
+        "daily": 0.15,
+        "intra": 1.9,
+        "5d": -6.05,
+        "20d": -1.77,
         "atr_pct": 1.5,
-        "dist_sma50_atr": -0.89,
+        "dist_sma50_atr": -0.87,
         "rs": 10.0,
         "rs_chart": "data/charts/EWL.png",
         "long": [],
@@ -1158,12 +1158,12 @@
       },
       {
         "ticker": "EUFN",
-        "daily": -0.78,
-        "intra": 1.71,
-        "5d": -7.57,
-        "20d": -6.83,
+        "daily": -0.71,
+        "intra": 1.78,
+        "5d": -7.5,
+        "20d": -6.76,
         "atr_pct": 2.4,
-        "dist_sma50_atr": -2.93,
+        "dist_sma50_atr": -2.9,
         "rs": 15.0,
         "rs_chart": "data/charts/EUFN.png",
         "long": [],
@@ -1172,12 +1172,12 @@
       },
       {
         "ticker": "EWY",
-        "daily": 0.03,
-        "intra": 2.41,
-        "5d": -16.91,
-        "20d": 4.63,
-        "atr_pct": 5.3,
-        "dist_sma50_atr": 0.8,
+        "daily": 0.79,
+        "intra": 3.18,
+        "5d": -16.28,
+        "20d": 5.42,
+        "atr_pct": 5.2,
+        "dist_sma50_atr": 0.96,
         "rs": 80.0,
         "rs_chart": "data/charts/EWY.png",
         "long": [
@@ -1202,13 +1202,13 @@
       },
       {
         "ticker": "EFA",
-        "daily": -0.88,
-        "intra": 1.05,
-        "5d": -6.73,
-        "20d": -2.03,
+        "daily": -0.89,
+        "intra": 1.04,
+        "5d": -6.74,
+        "20d": -2.04,
         "atr_pct": 1.6,
         "dist_sma50_atr": -1.51,
-        "rs": 5.0,
+        "rs": 10.0,
         "rs_chart": "data/charts/EFA.png",
         "long": [],
         "short": [],
@@ -1216,12 +1216,12 @@
       },
       {
         "ticker": "ACWI",
-        "daily": -1.12,
-        "intra": 0.33,
-        "5d": -3.85,
-        "20d": -1.05,
+        "daily": -1.14,
+        "intra": 0.31,
+        "5d": -3.87,
+        "20d": -1.07,
         "atr_pct": 1.4,
-        "dist_sma50_atr": -1.62,
+        "dist_sma50_atr": -1.64,
         "rs": 5.0,
         "rs_chart": "data/charts/ACWI.png",
         "long": [],
@@ -1230,12 +1230,12 @@
       },
       {
         "ticker": "IEV",
-        "daily": -0.7,
-        "intra": 1.48,
-        "5d": -6.59,
-        "20d": -2.93,
+        "daily": -0.76,
+        "intra": 1.43,
+        "5d": -6.64,
+        "20d": -2.98,
         "atr_pct": 1.8,
-        "dist_sma50_atr": -1.85,
+        "dist_sma50_atr": -1.88,
         "rs": 15.0,
         "rs_chart": "data/charts/IEV.png",
         "long": [
@@ -1260,12 +1260,12 @@
       },
       {
         "ticker": "EWI",
-        "daily": -0.92,
-        "intra": 1.44,
-        "5d": -7.66,
-        "20d": -4.96,
+        "daily": -0.88,
+        "intra": 1.48,
+        "5d": -7.62,
+        "20d": -4.92,
         "atr_pct": 2.0,
-        "dist_sma50_atr": -2.43,
+        "dist_sma50_atr": -2.41,
         "rs": 15.0,
         "rs_chart": "data/charts/EWI.png",
         "long": [],
@@ -1274,10 +1274,10 @@
       },
       {
         "ticker": "EWJ",
-        "daily": -1.31,
-        "intra": 0.46,
+        "daily": -1.3,
+        "intra": 0.47,
         "5d": -8.23,
-        "20d": -1.55,
+        "20d": -1.54,
         "atr_pct": 2.2,
         "dist_sma50_atr": -1.07,
         "rs": 25.0,
@@ -1290,12 +1290,12 @@
       },
       {
         "ticker": "EWW",
-        "daily": -2.02,
-        "intra": 0.03,
-        "5d": -8.91,
-        "20d": -4.03,
+        "daily": -2.03,
+        "intra": 0.01,
+        "5d": -8.92,
+        "20d": -4.05,
         "atr_pct": 2.8,
-        "dist_sma50_atr": -1.0,
+        "dist_sma50_atr": -1.01,
         "rs": 0.0,
         "rs_chart": "data/charts/EWW.png",
         "long": [
@@ -1306,12 +1306,12 @@
       },
       {
         "ticker": "ECH",
-        "daily": 0.17,
-        "intra": 2.59,
-        "5d": -10.26,
-        "20d": -13.62,
+        "daily": 0.05,
+        "intra": 2.47,
+        "5d": -10.37,
+        "20d": -13.72,
         "atr_pct": 3.5,
-        "dist_sma50_atr": -3.0,
+        "dist_sma50_atr": -3.02,
         "rs": 15.0,
         "rs_chart": "data/charts/ECH.png",
         "long": [],
@@ -1320,12 +1320,12 @@
       },
       {
         "ticker": "EWD",
-        "daily": -0.59,
-        "intra": 1.6,
-        "5d": -5.46,
-        "20d": -0.24,
+        "daily": -0.58,
+        "intra": 1.61,
+        "5d": -5.45,
+        "20d": -0.23,
         "atr_pct": 1.9,
-        "dist_sma50_atr": -0.34,
+        "dist_sma50_atr": -0.33,
         "rs": 20.0,
         "rs_chart": "data/charts/EWD.png",
         "long": [],
@@ -1334,12 +1334,12 @@
       },
       {
         "ticker": "ASHR",
-        "daily": -0.24,
-        "intra": 0.0,
-        "5d": -2.9,
-        "20d": -0.3,
+        "daily": -0.15,
+        "intra": 0.09,
+        "5d": -2.82,
+        "20d": -0.21,
         "atr_pct": 1.2,
-        "dist_sma50_atr": -1.31,
+        "dist_sma50_atr": -1.24,
         "rs": 15.0,
         "rs_chart": "data/charts/ASHR.png",
         "long": [
@@ -1350,12 +1350,12 @@
       },
       {
         "ticker": "EWS",
-        "daily": 0.09,
-        "intra": 0.42,
-        "5d": -5.16,
-        "20d": -2.93,
+        "daily": 0.0,
+        "intra": 0.33,
+        "5d": -5.25,
+        "20d": -3.02,
         "atr_pct": 1.6,
-        "dist_sma50_atr": -2.34,
+        "dist_sma50_atr": -2.39,
         "rs": 15.0,
         "rs_chart": "data/charts/EWS.png",
         "long": [],
@@ -1364,13 +1364,13 @@
       },
       {
         "ticker": "KSA",
-        "daily": -0.48,
-        "intra": -0.16,
-        "5d": -0.27,
-        "20d": -5.48,
+        "daily": -0.43,
+        "intra": -0.11,
+        "5d": -0.22,
+        "20d": -5.43,
         "atr_pct": 1.6,
-        "dist_sma50_atr": -1.66,
-        "rs": 60.0,
+        "dist_sma50_atr": -1.63,
+        "rs": 65.0,
         "rs_chart": "data/charts/KSA.png",
         "long": [],
         "short": [],
@@ -1378,12 +1378,12 @@
       },
       {
         "ticker": "INDA",
-        "daily": -0.72,
-        "intra": 0.07,
-        "5d": -4.33,
-        "20d": -5.56,
+        "daily": -0.75,
+        "intra": 0.04,
+        "5d": -4.36,
+        "20d": -5.59,
         "atr_pct": 1.4,
-        "dist_sma50_atr": -3.81,
+        "dist_sma50_atr": -3.82,
         "rs": 10.0,
         "rs_chart": "data/charts/INDA.png",
         "long": [
@@ -1394,12 +1394,12 @@
       },
       {
         "ticker": "EEM",
-        "daily": -0.71,
-        "intra": 0.7,
-        "5d": -8.57,
-        "20d": -2.24,
+        "daily": -0.54,
+        "intra": 0.87,
+        "5d": -8.41,
+        "20d": -2.07,
         "atr_pct": 2.5,
-        "dist_sma50_atr": -1.11,
+        "dist_sma50_atr": -1.05,
         "rs": 30.0,
         "rs_chart": "data/charts/EEM.png",
         "long": [
@@ -1412,13 +1412,13 @@
       },
       {
         "ticker": "EWZ",
-        "daily": -0.56,
-        "intra": 0.86,
-        "5d": -6.65,
-        "20d": -2.05,
+        "daily": -0.22,
+        "intra": 1.21,
+        "5d": -6.33,
+        "20d": -1.71,
         "atr_pct": 2.8,
-        "dist_sma50_atr": 0.25,
-        "rs": 85.0,
+        "dist_sma50_atr": 0.38,
+        "rs": 90.0,
         "rs_chart": "data/charts/EWZ.png",
         "long": [
           "BRZU"
@@ -1428,12 +1428,12 @@
       },
       {
         "ticker": "TUR",
-        "daily": -3.69,
-        "intra": -2.0,
-        "5d": -8.2,
-        "20d": -8.26,
+        "daily": -3.9,
+        "intra": -2.21,
+        "5d": -8.39,
+        "20d": -8.46,
         "atr_pct": 2.0,
-        "dist_sma50_atr": -2.34,
+        "dist_sma50_atr": -2.42,
         "rs": 15.0,
         "rs_chart": "data/charts/TUR.png",
         "long": [],
@@ -1442,12 +1442,12 @@
       },
       {
         "ticker": "EWH",
-        "daily": -0.02,
-        "intra": 0.24,
-        "5d": -4.4,
-        "20d": -0.79,
+        "daily": 0.09,
+        "intra": 0.35,
+        "5d": -4.3,
+        "20d": -0.69,
         "atr_pct": 1.7,
-        "dist_sma50_atr": 0.5,
+        "dist_sma50_atr": 0.56,
         "rs": 55.0,
         "rs_chart": "data/charts/EWH.png",
         "long": [],
@@ -1456,12 +1456,12 @@
       },
       {
         "ticker": "EWT",
-        "daily": -1.14,
-        "intra": -0.43,
-        "5d": -8.02,
-        "20d": 2.56,
+        "daily": -1.25,
+        "intra": -0.54,
+        "5d": -8.13,
+        "20d": 2.45,
         "atr_pct": 2.5,
-        "dist_sma50_atr": 0.22,
+        "dist_sma50_atr": 0.17,
         "rs": 55.0,
         "rs_chart": "data/charts/EWT.png",
         "long": [],
@@ -1470,13 +1470,13 @@
       },
       {
         "ticker": "MCHI",
-        "daily": 0.8,
-        "intra": 0.39,
-        "5d": -4.11,
-        "20d": -5.77,
+        "daily": 0.96,
+        "intra": 0.57,
+        "5d": -3.96,
+        "20d": -5.62,
         "atr_pct": 1.8,
-        "dist_sma50_atr": -4.17,
-        "rs": 15.0,
+        "dist_sma50_atr": -4.1,
+        "rs": 20.0,
         "rs_chart": "data/charts/MCHI.png",
         "long": [],
         "short": [],
@@ -1487,20 +1487,20 @@
   "column_ranges": {
     "Índices y Cripto (USD)": {
       "daily": [
-        -5.47,
-        -0.95
+        -5.51,
+        -0.96
       ],
       "intra": [
-        -1.58,
-        0.33
+        -1.61,
+        0.32
       ],
       "5d": [
-        -3.47,
-        3.64
+        -4.02,
+        3.79
       ],
       "20d": [
-        -2.67,
-        6.77
+        -2.68,
+        6.93
       ]
     },
     "CEDEARs Índices (ARS)": {
@@ -1523,20 +1523,20 @@
     },
     "ADRs (USD)": {
       "daily": [
-        -5.11,
-        2.25
+        -4.89,
+        2.84
       ],
       "intra": [
-        -2.84,
-        2.34
+        -1.6,
+        2.81
       ],
       "5d": [
         -11.43,
-        7.78
+        8.4
       ],
       "20d": [
-        -20.34,
-        14.94
+        -20.16,
+        15.61
       ]
     },
     "Acciones Locales (ARS)": {
@@ -1559,20 +1559,20 @@
     },
     "Acciones USA (USD)": {
       "daily": [
-        -2.02,
-        1.73
+        -1.62,
+        1.65
       ],
       "intra": [
-        -0.12,
-        2.0
+        -0.3,
+        1.98
       ],
       "5d": [
         -9.77,
-        5.77
+        6.15
       ],
       "20d": [
-        -13.62,
-        9.67
+        -13.27,
+        10.08
       ]
     },
     "CEDEARs (ARS)": {
@@ -1595,20 +1595,20 @@
     },
     "Countries": {
       "daily": [
-        -3.69,
-        0.8
+        -3.9,
+        0.96
       ],
       "intra": [
-        -2.0,
-        2.59
+        -2.21,
+        3.18
       ],
       "5d": [
-        -16.91,
-        -0.27
+        -16.28,
+        -0.22
       ],
       "20d": [
-        -13.62,
-        4.63
+        -13.72,
+        5.42
       ]
     }
   },
@@ -2610,7 +2610,11 @@
       "2025-12": 0.027999999999999997,
       "2026-01": 0.028999999999999998
     },
-    "riesgo_pais": "534 pts (04-03-2026)",
+    "riesgo_pais": {
+      "valor": 534,
+      "fecha": "04-03-2026",
+      "variacion": -6.81
+    },
     "holidays": [
       "23-03-2026 - Puente turístico no laborable",
       "24-03-2026 - Día Nacional de la Memoria por la Verdad y la Justicia"
@@ -2623,7 +2627,8 @@
       "mep": 1485.9,
       "blue": 1530.0,
       "oficial": 1480.0,
-      "usdt": 1540.64
+      "usdt": 1540.64,
+      "mayorista": 1455.0
     },
     {
       "date": "02-01-2026",
@@ -2631,7 +2636,8 @@
       "mep": 1507.8,
       "blue": 1530.0,
       "oficial": 1495.0,
-      "usdt": 1543.62
+      "usdt": 1543.62,
+      "mayorista": 1475.0
     },
     {
       "date": "03-01-2026",
@@ -2639,7 +2645,8 @@
       "mep": 1507.8,
       "blue": 1530.0,
       "oficial": 1495.0,
-      "usdt": 1545.51
+      "usdt": 1545.51,
+      "mayorista": 1475.0
     },
     {
       "date": "04-01-2026",
@@ -2647,7 +2654,8 @@
       "mep": 1507.8,
       "blue": 1530.0,
       "oficial": 1495.0,
-      "usdt": 1543.0
+      "usdt": 1543.0,
+      "mayorista": 1475.0
     },
     {
       "date": "05-01-2026",
@@ -2655,7 +2663,8 @@
       "mep": 1501.8,
       "blue": 1515.0,
       "oficial": 1495.0,
-      "usdt": 1534.4
+      "usdt": 1534.4,
+      "mayorista": 1470.0
     },
     {
       "date": "06-01-2026",
@@ -2663,7 +2672,8 @@
       "mep": 1500.1,
       "blue": 1520.0,
       "oficial": 1490.0,
-      "usdt": 1531.02
+      "usdt": 1531.02,
+      "mayorista": 1467.5
     },
     {
       "date": "07-01-2026",
@@ -2671,7 +2681,8 @@
       "mep": 1498.7,
       "blue": 1515.0,
       "oficial": 1485.0,
-      "usdt": 1532.04
+      "usdt": 1532.04,
+      "mayorista": 1460.0
     },
     {
       "date": "08-01-2026",
@@ -2679,7 +2690,8 @@
       "mep": 1496.6,
       "blue": 1510.0,
       "oficial": 1485.0,
-      "usdt": 1530.2
+      "usdt": 1530.2,
+      "mayorista": 1464.0
     },
     {
       "date": "09-01-2026",
@@ -2687,7 +2699,8 @@
       "mep": 1493.5,
       "blue": 1505.0,
       "oficial": 1490.0,
-      "usdt": 1523.0
+      "usdt": 1523.0,
+      "mayorista": 1465.0
     },
     {
       "date": "10-01-2026",
@@ -2695,7 +2708,8 @@
       "mep": 1493.5,
       "blue": 1505.0,
       "oficial": 1490.0,
-      "usdt": 1528.7
+      "usdt": 1528.7,
+      "mayorista": 1465.0
     },
     {
       "date": "11-01-2026",
@@ -2703,7 +2717,8 @@
       "mep": 1493.5,
       "blue": 1505.0,
       "oficial": 1490.0,
-      "usdt": 1530.7
+      "usdt": 1530.7,
+      "mayorista": 1465.0
     },
     {
       "date": "12-01-2026",
@@ -2711,7 +2726,8 @@
       "mep": 1491.0,
       "blue": 1505.0,
       "oficial": 1490.0,
-      "usdt": 1530.01
+      "usdt": 1530.01,
+      "mayorista": 1467.5
     },
     {
       "date": "13-01-2026",
@@ -2719,7 +2735,8 @@
       "mep": 1490.6,
       "blue": 1505.0,
       "oficial": 1485.0,
-      "usdt": 1531.5
+      "usdt": 1531.5,
+      "mayorista": 1457.0
     },
     {
       "date": "14-01-2026",
@@ -2727,7 +2744,8 @@
       "mep": 1482.7,
       "blue": 1515.0,
       "oficial": 1480.0,
-      "usdt": 1529.87
+      "usdt": 1529.87,
+      "mayorista": 1453.0
     },
     {
       "date": "15-01-2026",
@@ -2735,7 +2753,8 @@
       "mep": 1474.7,
       "blue": 1510.0,
       "oficial": 1470.0,
-      "usdt": 1520.6
+      "usdt": 1520.6,
+      "mayorista": 1441.0
     },
     {
       "date": "16-01-2026",
@@ -2743,7 +2762,8 @@
       "mep": 1476.1,
       "blue": 1500.0,
       "oficial": 1455.0,
-      "usdt": 1516.5
+      "usdt": 1516.5,
+      "mayorista": 1430.0
     },
     {
       "date": "17-01-2026",
@@ -2751,7 +2771,8 @@
       "mep": 1476.1,
       "blue": 1500.0,
       "oficial": 1455.0,
-      "usdt": 1520.2
+      "usdt": 1520.2,
+      "mayorista": 1430.0
     },
     {
       "date": "18-01-2026",
@@ -2759,7 +2780,8 @@
       "mep": 1476.1,
       "blue": 1500.0,
       "oficial": 1455.0,
-      "usdt": 1535.0
+      "usdt": 1535.0,
+      "mayorista": 1430.0
     },
     {
       "date": "19-01-2026",
@@ -2767,7 +2789,8 @@
       "mep": 1471.3,
       "blue": 1505.0,
       "oficial": 1460.0,
-      "usdt": 1535.0
+      "usdt": 1535.0,
+      "mayorista": 1434.5
     },
     {
       "date": "20-01-2026",
@@ -2775,7 +2798,8 @@
       "mep": 1472.9,
       "blue": 1505.0,
       "oficial": 1460.0,
-      "usdt": 1520.0
+      "usdt": 1520.0,
+      "mayorista": 1434.5
     },
     {
       "date": "21-01-2026",
@@ -2783,7 +2807,8 @@
       "mep": 1466.9,
       "blue": 1500.0,
       "oficial": 1455.0,
-      "usdt": 1518.2
+      "usdt": 1518.2,
+      "mayorista": 1430.5
     },
     {
       "date": "22-01-2026",
@@ -2791,7 +2816,8 @@
       "mep": 1460.7,
       "blue": 1495.0,
       "oficial": 1450.0,
-      "usdt": 1513.0
+      "usdt": 1513.0,
+      "mayorista": 1429.5
     },
     {
       "date": "23-01-2026",
@@ -2799,7 +2825,8 @@
       "mep": 1471.9,
       "blue": 1485.0,
       "oficial": 1455.0,
-      "usdt": 1511.0
+      "usdt": 1511.0,
+      "mayorista": 1433.0
     },
     {
       "date": "24-01-2026",
@@ -2807,7 +2834,8 @@
       "mep": 1471.9,
       "blue": 1485.0,
       "oficial": 1455.0,
-      "usdt": 1515.0
+      "usdt": 1515.0,
+      "mayorista": 1433.0
     },
     {
       "date": "25-01-2026",
@@ -2815,7 +2843,8 @@
       "mep": 1471.9,
       "blue": 1485.0,
       "oficial": 1455.0,
-      "usdt": 1516.5
+      "usdt": 1516.5,
+      "mayorista": 1433.0
     },
     {
       "date": "26-01-2026",
@@ -2823,7 +2852,8 @@
       "mep": 1470.9,
       "blue": 1490.0,
       "oficial": 1460.0,
-      "usdt": 1514.99
+      "usdt": 1514.99,
+      "mayorista": 1437.5
     },
     {
       "date": "27-01-2026",
@@ -2831,7 +2861,8 @@
       "mep": 1465.8,
       "blue": 1490.0,
       "oficial": 1465.0,
-      "usdt": 1515.0
+      "usdt": 1515.0,
+      "mayorista": 1442.5
     },
     {
       "date": "28-01-2026",
@@ -2839,7 +2870,8 @@
       "mep": 1465.7,
       "blue": 1485.0,
       "oficial": 1465.0,
-      "usdt": 1510.05
+      "usdt": 1510.05,
+      "mayorista": 1444.5
     },
     {
       "date": "29-01-2026",
@@ -2847,7 +2879,8 @@
       "mep": 1460.9,
       "blue": 1475.0,
       "oficial": 1465.0,
-      "usdt": 1507.41
+      "usdt": 1507.41,
+      "mayorista": 1444.5
     },
     {
       "date": "30-01-2026",
@@ -2855,7 +2888,8 @@
       "mep": 1464.6,
       "blue": 1470.0,
       "oficial": 1465.0,
-      "usdt": 1503.0
+      "usdt": 1503.0,
+      "mayorista": 1447.0
     },
     {
       "date": "31-01-2026",
@@ -2863,7 +2897,8 @@
       "mep": 1464.6,
       "blue": 1470.0,
       "oficial": 1465.0,
-      "usdt": 1514.2
+      "usdt": 1514.2,
+      "mayorista": 1447.0
     },
     {
       "date": "01-02-2026",
@@ -2871,7 +2906,8 @@
       "mep": 1464.6,
       "blue": 1470.0,
       "oficial": 1465.0,
-      "usdt": 1509.5
+      "usdt": 1509.5,
+      "mayorista": 1447.0
     },
     {
       "date": "02-02-2026",
@@ -2879,7 +2915,8 @@
       "mep": 1464.6,
       "blue": 1470.0,
       "oficial": 1465.0,
-      "usdt": 1489.0
+      "usdt": 1489.0,
+      "mayorista": 1447.0
     },
     {
       "date": "03-02-2026",
@@ -2887,7 +2924,8 @@
       "mep": 1464.9,
       "blue": 1450.0,
       "oficial": 1465.0,
-      "usdt": 1487.0
+      "usdt": 1487.0,
+      "mayorista": 1446.0
     },
     {
       "date": "04-02-2026",
@@ -2895,7 +2933,8 @@
       "mep": 1459.7,
       "blue": 1455.0,
       "oficial": 1465.0,
-      "usdt": 1489.0
+      "usdt": 1489.0,
+      "mayorista": 1446.0
     },
     {
       "date": "05-02-2026",
@@ -2903,7 +2942,8 @@
       "mep": 1466.1,
       "blue": 1440.0,
       "oficial": 1460.0,
-      "usdt": 1500.5
+      "usdt": 1500.5,
+      "mayorista": 1442.0
     },
     {
       "date": "06-02-2026",
@@ -2911,7 +2951,8 @@
       "mep": 1448.7,
       "blue": 1435.0,
       "oficial": 1450.0,
-      "usdt": 1486.8
+      "usdt": 1486.8,
+      "mayorista": 1432.0
     },
     {
       "date": "07-02-2026",
@@ -2919,7 +2960,8 @@
       "mep": 1448.7,
       "blue": 1435.0,
       "oficial": 1450.0,
-      "usdt": 1494.52
+      "usdt": 1494.52,
+      "mayorista": 1432.0
     },
     {
       "date": "08-02-2026",
@@ -2927,7 +2969,8 @@
       "mep": 1448.7,
       "blue": 1435.0,
       "oficial": 1450.0,
-      "usdt": 1487.0
+      "usdt": 1487.0,
+      "mayorista": 1432.0
     },
     {
       "date": "09-02-2026",
@@ -2935,7 +2978,8 @@
       "mep": 1440.6,
       "blue": 1430.0,
       "oficial": 1440.0,
-      "usdt": 1477.0
+      "usdt": 1477.0,
+      "mayorista": 1416.0
     },
     {
       "date": "10-02-2026",
@@ -2943,7 +2987,8 @@
       "mep": 1439.1,
       "blue": 1425.0,
       "oficial": 1425.0,
-      "usdt": 1462.95
+      "usdt": 1462.95,
+      "mayorista": 1406.0
     },
     {
       "date": "11-02-2026",
@@ -2951,7 +2996,8 @@
       "mep": 1433.3,
       "blue": 1435.0,
       "oficial": 1420.0,
-      "usdt": 1471.0
+      "usdt": 1471.0,
+      "mayorista": 1400.0
     },
     {
       "date": "12-02-2026",
@@ -2959,7 +3005,8 @@
       "mep": 1421.3,
       "blue": 1440.0,
       "oficial": 1415.0,
-      "usdt": 1469.0
+      "usdt": 1469.0,
+      "mayorista": 1395.0
     },
     {
       "date": "13-02-2026",
@@ -2967,7 +3014,8 @@
       "mep": 1426.0,
       "blue": 1440.0,
       "oficial": 1420.0,
-      "usdt": 1464.25
+      "usdt": 1464.25,
+      "mayorista": 1399.5
     },
     {
       "date": "14-02-2026",
@@ -2975,7 +3023,8 @@
       "mep": 1426.0,
       "blue": 1440.0,
       "oficial": 1420.0,
-      "usdt": 1471.0
+      "usdt": 1471.0,
+      "mayorista": 1399.5
     },
     {
       "date": "15-02-2026",
@@ -2983,7 +3032,8 @@
       "mep": 1426.0,
       "blue": 1440.0,
       "oficial": 1420.0,
-      "usdt": 1472.63
+      "usdt": 1472.63,
+      "mayorista": 1399.5
     },
     {
       "date": "16-02-2026",
@@ -2991,7 +3041,8 @@
       "mep": 1426.0,
       "blue": 1440.0,
       "oficial": 1420.0,
-      "usdt": 1476.07
+      "usdt": 1476.07,
+      "mayorista": 1399.5
     },
     {
       "date": "17-02-2026",
@@ -2999,7 +3050,8 @@
       "mep": 1426.0,
       "blue": 1440.0,
       "oficial": 1420.0,
-      "usdt": 1479.01
+      "usdt": 1479.01,
+      "mayorista": 1399.5
     },
     {
       "date": "18-02-2026",
@@ -3007,7 +3059,8 @@
       "mep": 1414.0,
       "blue": 1435.0,
       "oficial": 1420.0,
-      "usdt": 1466.01
+      "usdt": 1466.01,
+      "mayorista": 1396.0
     },
     {
       "date": "19-02-2026",
@@ -3015,7 +3068,8 @@
       "mep": 1410.8,
       "blue": 1440.0,
       "oficial": 1410.0,
-      "usdt": 1457.0
+      "usdt": 1457.0,
+      "mayorista": 1389.0
     },
     {
       "date": "20-02-2026",
@@ -3023,7 +3077,8 @@
       "mep": 1404.3,
       "blue": 1430.0,
       "oficial": 1395.0,
-      "usdt": 1455.02
+      "usdt": 1455.02,
+      "mayorista": 1376.0
     },
     {
       "date": "21-02-2026",
@@ -3031,7 +3086,8 @@
       "mep": 1404.3,
       "blue": 1430.0,
       "oficial": 1395.0,
-      "usdt": 1458.0
+      "usdt": 1458.0,
+      "mayorista": 1376.0
     },
     {
       "date": "22-02-2026",
@@ -3039,7 +3095,8 @@
       "mep": 1404.3,
       "blue": 1430.0,
       "oficial": 1395.0,
-      "usdt": 1460.0
+      "usdt": 1460.0,
+      "mayorista": 1376.0
     },
     {
       "date": "23-02-2026",
@@ -3047,7 +3104,8 @@
       "mep": 1396.5,
       "blue": 1425.0,
       "oficial": 1390.0,
-      "usdt": 1445.0
+      "usdt": 1445.0,
+      "mayorista": 1370.5
     },
     {
       "date": "24-02-2026",
@@ -3055,7 +3113,8 @@
       "mep": 1406.6,
       "blue": 1430.0,
       "oficial": 1400.0,
-      "usdt": 1448.2
+      "usdt": 1448.2,
+      "mayorista": 1380.5
     },
     {
       "date": "25-02-2026",
@@ -3063,7 +3122,8 @@
       "mep": 1428.7,
       "blue": 1445.0,
       "oficial": 1415.0,
-      "usdt": 1462.0
+      "usdt": 1462.0,
+      "mayorista": 1392.0
     },
     {
       "date": "26-02-2026",
@@ -3071,7 +3131,8 @@
       "mep": 1437.3,
       "blue": 1425.0,
       "oficial": 1425.0,
-      "usdt": 1467.0
+      "usdt": 1467.0,
+      "mayorista": 1408.0
     },
     {
       "date": "27-02-2026",
@@ -3079,7 +3140,8 @@
       "mep": 1427.4,
       "blue": 1425.0,
       "oficial": 1420.0,
-      "usdt": 1462.99
+      "usdt": 1462.99,
+      "mayorista": 1397.0
     },
     {
       "date": "28-02-2026",
@@ -3087,7 +3149,8 @@
       "mep": 1427.4,
       "blue": 1425.0,
       "oficial": 1420.0,
-      "usdt": 1469.5
+      "usdt": 1469.5,
+      "mayorista": 1397.0
     },
     {
       "date": "01-03-2026",
@@ -3095,7 +3158,8 @@
       "mep": 1427.4,
       "blue": 1425.0,
       "oficial": 1420.0,
-      "usdt": 1467.0
+      "usdt": 1467.0,
+      "mayorista": 1397.0
     },
     {
       "date": "02-03-2026",
@@ -3103,7 +3167,8 @@
       "mep": 1420.6,
       "blue": 1420.0,
       "oficial": 1415.0,
-      "usdt": 1452.2
+      "usdt": 1452.2,
+      "mayorista": 1395.0
     },
     {
       "date": "03-03-2026",
@@ -3111,7 +3176,8 @@
       "mep": 1439.9,
       "blue": 1425.0,
       "oficial": 1435.0,
-      "usdt": 1465.0
+      "usdt": 1465.0,
+      "mayorista": 1415.0
     },
     {
       "date": "04-03-2026",
@@ -3119,7 +3185,8 @@
       "mep": 1429.9,
       "blue": 1415.0,
       "oficial": 1420.0,
-      "usdt": 1457.0
+      "usdt": 1457.0,
+      "mayorista": 1400.5
     },
     {
       "date": "05-03-2026",
@@ -3127,7 +3194,8 @@
       "mep": 1437.1,
       "blue": 1400.0,
       "oficial": 1425.0,
-      "usdt": 1462.0
+      "usdt": 1462.0,
+      "mayorista": 1407.0
     },
     {
       "date": "06-03-2026",
@@ -3135,7 +3203,8 @@
       "mep": 1437.1,
       "blue": 1400.0,
       "oficial": 1425.0,
-      "usdt": 1495.79
+      "usdt": 1493.88,
+      "mayorista": 1407.0
     }
   ]
 }
