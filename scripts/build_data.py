@@ -274,7 +274,6 @@ def get_argentina_macro_data():
 
     # 1. Próximo Feriado
     try:
-        # Según la documentación, sin especificar el año devuelve el actual
         r_feriados = requests.get("https://api.argentinadatos.com/v1/feriados")
         if r_feriados.status_code == 200:
             feriados = r_feriados.json()
@@ -282,7 +281,9 @@ def get_argentina_macro_data():
             if futuros:
                 futuros.sort(key=lambda x: x["fecha"])
                 prox = futuros[0]
-                macro["holiday"] = f"{prox['fecha']} - {prox.get('nombre', '')}"
+                # Convertimos fecha a Día-Mes-Año
+                fecha_obj = datetime.strptime(prox['fecha'], "%Y-%m-%d")
+                macro["holiday"] = f"{fecha_obj.strftime('%d-%m-%Y')} - {prox.get('nombre', '')}"
     except Exception as e:
         print("Error feriados:", e)
 
@@ -294,84 +295,77 @@ def get_argentina_macro_data():
             if datos_inf:
                 ultimo = datos_inf[-1]
                 val = ultimo.get("valor", 0)
-                # Aseguramos que se muestre como porcentaje
                 if val < 1: val *= 100 
+                # Fecha mes a Día-Mes-Año
                 macro["inflation"] = f"{val:.1f}% ({ultimo.get('fecha', '')[:7]})"
     except Exception as e:
         print("Error inflación:", e)
 
     return macro
 
-def get_exchange_rates():
-    rates = {"dolares": {}, "cripto": {}}
-    
-    # DólarAPI (Oficial, Blue, MEP, CCL, etc.)
-    try:
-        r = requests.get("https://dolarapi.com/v1/dolares")
-        if r.status_code == 200:
-            for d in r.json():
-                rates["dolares"][d["casa"]] = d["venta"]
-    except: pass
 
-    # CriptoYa (USDT en Exchanges locales)
+def get_historical_spread_data():
     try:
-        r = requests.get("https://criptoya.com/api/usdt/ars/0.1")
-        if r.status_code == 200:
-            data = r.json()
-            for ex in ["fiwind", "lemoncash", "binancep2p"]:
-                if ex in data:
-                    rates["cripto"][ex] = data[ex].get("totalAsk", 0)
-    except: pass
-    
-    return rates
-
-def generate_spread_chart(charts_dir):
-    try:
-        # Traemos CCL y Cripto históricos
+        # 1. Traer historial del CCL de ArgentinaDatos
         r_ccl = requests.get("https://api.argentinadatos.com/v1/cotizaciones/dolares/contadoconliqui")
-        r_cripto = requests.get("https://api.argentinadatos.com/v1/cotizaciones/dolares/cripto")
-
-        if r_ccl.status_code != 200 or r_cripto.status_code != 200:
+        if r_ccl.status_code != 200:
             return None
-
+        
         df_ccl = pd.DataFrame(r_ccl.json())
-        df_cripto = pd.DataFrame(r_cripto.json())
-
         df_ccl['fecha'] = pd.to_datetime(df_ccl['fecha'])
-        df_cripto['fecha'] = pd.to_datetime(df_cripto['fecha'])
-
-        # Filtramos los últimos 60 días
         cutoff = datetime(datetime.now().year, 1, 1)
         df_ccl = df_ccl[df_ccl['fecha'] >= cutoff][['fecha', 'venta']].set_index('fecha')
-        df_cripto = df_cripto[df_cripto['fecha'] >= cutoff][['fecha', 'venta']].set_index('fecha')
 
-        # Cruzamos los datos y calculamos el spread en %
-        df = df_ccl.join(df_cripto, lsuffix='_ccl', rsuffix='_cripto').dropna()
-        df['spread'] = ((df['venta_cripto'] / df['venta_ccl']) - 1) * 100
-
-        # Dibujamos el gráfico
-        plt.style.use('dark_background')
-        fig, ax = plt.subplots(figsize=(8, 2))
-        fig.patch.set_facecolor('#1a1a1a')
-        ax.set_facecolor('#1a1a1a')
-
-        ax.plot(df.index, df['spread'], color='#4ade80', lw=2)
-        ax.axhline(y=0, color='#808080', linestyle='--', linewidth=1)
+        # 2. Leer nuestra base de datos de USDT
+        history_file = "data/usdt_history.json"
+        usdt_history = {}
+        if os.path.exists(history_file):
+            with open(history_file, "r") as f:
+                usdt_history = json.load(f)
         
-        # Eliminamos los bordes para que quede minimalista como los otros gráficos
-        for s in ax.spines.values():
-            s.set_visible(False)
+        # 3. Buscar el USDT de HOY (El Ask más alto) y guardarlo en la base
+        today_str = datetime.now().strftime("%Y-%m-%d")
+        try:
+            r_crypto = requests.get("https://criptoya.com/api/usdt/ars/0.1")
+            r_p2p = requests.get("https://criptoya.com/api/binancep2p/usdt/ars/0.1")
+            max_ask = 0
             
-        ax.set_xticks([])
-        fig.tight_layout(pad=0)
+            if r_crypto.status_code == 200:
+                data_c = r_crypto.json()
+                for ex in ['buenbit', 'fiwind', 'lemoncash', 'tiendacrypto']:
+                    if ex in data_c and data_c[ex].get('totalAsk', 0) > max_ask:
+                        max_ask = data_c[ex]['totalAsk']
+            if r_p2p.status_code == 200:
+                data_p2p = r_p2p.json()
+                if data_p2p.get('totalAsk', 0) > max_ask:
+                    max_ask = data_p2p['totalAsk']
+            
+            if max_ask > 0:
+                usdt_history[today_str] = max_ask
+                # Guardar la base actualizada en el archivo
+                with open(history_file, "w") as f:
+                    json.dump(usdt_history, f, indent=2)
+        except Exception as e:
+            print("Error actualizando USDT history:", e)
 
-        path = os.path.join(charts_dir, "spread_ccl_cripto.png")
-        fig.savefig(path, format='png', dpi=80, bbox_inches='tight', facecolor='#1a1a1a')
-        plt.close(fig)
+        # 4. Cruzar el CCL con nuestro historial de USDT para graficar
+        df_cripto = pd.DataFrame(list(usdt_history.items()), columns=['fecha', 'venta'])
+        df_cripto['fecha'] = pd.to_datetime(df_cripto['fecha'])
+        df_cripto = df_cripto[df_cripto['fecha'] >= cutoff].set_index('fecha')
 
-        return "data/charts/spread_ccl_cripto.png"
+        df = df_ccl.join(df_cripto, lsuffix='_ccl', rsuffix='_cripto').dropna()
+        # Fórmula: (CCL / Cripto - 1) * 100
+        df['spread'] = ((df['venta_ccl'] / df['venta_cripto']) - 1) * 100
+
+        result = []
+        for date, row in df.iterrows():
+            result.append({
+                "date": date.strftime("%d-%m-%Y"), # Formato Día-Mes-Año
+                "spread": round(row['spread'], 2)
+            })
+        return result
     except Exception as e:
-        print("Error generando gráfico de spread:", e)
+        print("Error generando datos de spread:", e)
         return None
         
 def get_stock_data(ticker_symbol, charts_dir):
@@ -471,18 +465,16 @@ def main():
             "20d": (min(twenty_v) if twenty_v else -30, max(twenty_v) if twenty_v else 30),
         }
 
-    print("Fetching Argentina macro, exchange rates and building spread chart...")
+    print("Fetching Argentina macro and building spread historical data...")
     macro_data = get_argentina_macro_data()
-    exchange_rates = get_exchange_rates()
-    spread_chart_path = generate_spread_chart(charts_dir)
+    spread_data = get_historical_spread_data()
 
     snapshot = {
         "built_at": datetime.utcnow().isoformat() + "Z",
         "groups": groups_data,
         "column_ranges": column_ranges,
         "argentina_macro": macro_data,
-        "exchange_rates": exchange_rates,
-        "spread_chart": spread_chart_path
+        "spread_data": spread_data
     }
     
     meta = {
