@@ -315,7 +315,7 @@ def get_argentina_macro_data():
 
 def get_historical_fiat_data():
     try:
-        endpoints = {"ccl": "contadoconliqui", "mep": "bolsa", "blue": "blue", "oficial": "oficial"}
+        endpoints = {"ccl": "contadoconliqui", "mep": "bolsa", "blue": "blue", "oficial": "oficial", "mayorista": "mayorista"}
         dfs = []
         cutoff = datetime(datetime.now().year, 1, 1)
 
