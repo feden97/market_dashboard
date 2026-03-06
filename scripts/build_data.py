@@ -287,7 +287,7 @@ def get_argentina_macro_data():
     except Exception as e:
         print("Error feriados:", e)
 
-    # 2. Última Inflación
+    # 2. Última Inflación y Todo el Historial (Para Bandas Cambiarias)
     try:
         r_inf = requests.get("https://api.argentinadatos.com/v1/finanzas/indices/inflacion")
         if r_inf.status_code == 200:
@@ -295,9 +295,18 @@ def get_argentina_macro_data():
             if datos_inf:
                 ultimo = datos_inf[-1]
                 val = ultimo.get("valor", 0)
-                if val < 1: val *= 100 
-                # Fecha mes a Día-Mes-Año
-                macro["inflation"] = f"{val:.1f}% ({ultimo.get('fecha', '')[:7]})"
+                if val < 1: val_mostrar = val * 100 
+                else: val_mostrar = val
+                macro["inflation"] = f"{val_mostrar:.1f}% ({ultimo.get('fecha', '')[:7]})"
+                
+                # Crear el diccionario de IPCs para JavaScript ("YYYY-MM": 0.025)
+                ipc_history = {}
+                for item in datos_inf:
+                    fecha_mes = item.get("fecha", "")[:7]
+                    valor_decimal = item.get("valor", 0)
+                    if valor_decimal > 1: valor_decimal = valor_decimal / 100
+                    ipc_history[fecha_mes] = valor_decimal
+                macro["ipc_history"] = ipc_history
     except Exception as e:
         print("Error inflación:", e)
 
