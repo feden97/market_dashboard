@@ -503,14 +503,18 @@
                     });
                     document.getElementById('usdt-table-body').innerHTML = exchangeRows;
 
-                    // NUEVO GET DOLAR: Fuerza el GD30 para el CCL y AL30 para MEP
-                    const getDolar = (obj, type) => {
-                        if (!obj) return 0; if (typeof obj === 'number') return obj; if (obj.ask) return obj.ask; if (obj.price) return obj.price;
-                        if (type === 'ccl' && obj.gd30) {
-                            if (obj.gd30['48hs'] && obj.gd30['48hs'].price) return obj.gd30['48hs'].price;
-                            if (obj.gd30.ci && obj.gd30.ci.price) return obj.gd30.ci.price;
-                        }
-                        if (obj.al30) { if (obj.al30['48hs']) return obj.al30['48hs'].price; if (obj.al30.ci) return obj.al30.ci.price; } return 0;
+                    // NUEVO GET DOLAR: Fuerza el AL30 a 24hs (El mismo de tu fórmula de Excel)
+                    const getDolar = (obj) => {
+                        if (!obj) return 0; 
+                        if (typeof obj === 'number') return obj; 
+                        if (obj.ask) return obj.ask; 
+                        if (obj.price) return obj.price;
+                        // Va a buscar AL30 -> 24hs -> Price directo
+                        if (obj.al30) { 
+                            if (obj.al30['24hs'] && obj.al30['24hs'].price) return obj.al30['24hs'].price; 
+                            if (obj.al30.ci && obj.al30.ci.price) return obj.al30.ci.price; 
+                        } 
+                        return 0;
                     };
 
                     const fiatValues = { ccl: getDolar(criptoYaDolar.ccl, 'ccl'), mep: getDolar(criptoYaDolar.mep, 'mep'), oficial: getDolar(criptoYaDolar.oficial), blue: getDolar(criptoYaDolar.blue), usdt: maxVenta };
