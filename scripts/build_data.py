@@ -269,52 +269,47 @@ def create_rs_chart_png(rrs_data, ticker, charts_dir):
         return None
 
 def get_argentina_macro_data():
-    macro = {"ipc_history": {}, "riesgo_pais": "N/A", "holidays": []}
+    macro = {"ipc_history": {}, "riesgo_pais": {}, "holidays": []}
     
-    # 1. Próximos 2 Feriados
+    # 1. Feriados
     try:
         year = datetime.now().year
         r_feriados = requests.get(f"https://api.argentinadatos.com/v1/feriados/{year}")
         if r_feriados.status_code == 200:
             data_fer = r_feriados.json()
             today_str = datetime.now().strftime("%Y-%m-%d")
-            # Filtrar futuros y ordenar
             future_holidays = [f for f in data_fer if f.get("fecha") >= today_str]
             future_holidays.sort(key=lambda x: x["fecha"])
-            next_two = future_holidays[:2]
-            formatted_holidays = []
-            for h in next_two:
-                d_obj = datetime.strptime(h["fecha"], "%Y-%m-%d")
-                formatted_holidays.append(f"{d_obj.strftime('%d-%m-%Y')} - {h.get('nombre', '')}")
-            macro["holidays"] = formatted_holidays
+            macro["holidays"] = [f"{datetime.strptime(h['fecha'], '%Y-%m-%d').strftime('%d-%m-%Y')} - {h.get('nombre', '')}" for h in future_holidays[:2]]
     except Exception as e:
         print("Error feriados:", e)
 
-    # 2. Historial de Inflación
+    # 2. Inflación
     try:
         r_inf = requests.get("https://api.argentinadatos.com/v1/finanzas/indices/inflacion")
         if r_inf.status_code == 200:
             datos_inf = r_inf.json()
             if datos_inf:
-                ipc_history = {}
-                for item in datos_inf:
-                    fecha_mes = item.get("fecha", "")[:7]
-                    valor_decimal = item.get("valor", 0)
-                    if valor_decimal > 1: valor_decimal = valor_decimal / 100
-                    ipc_history[fecha_mes] = valor_decimal
-                macro["ipc_history"] = ipc_history
+                macro["ipc_history"] = {item.get("fecha", "")[:7]: (item.get("valor", 0)/100 if item.get("valor", 0) > 1 else item.get("valor", 0)) for item in datos_inf}
     except Exception as e:
         print("Error inflacion:", e)
         
-    # 3. Riesgo País
+    # 3. Riesgo País (Con Variación)
     try:
         r_rp = requests.get("https://api.argentinadatos.com/v1/finanzas/indices/riesgo-pais")
         if r_rp.status_code == 200:
             data_rp = r_rp.json()
-            if data_rp:
+            if len(data_rp) >= 2:
                 ultimo = data_rp[-1]
-                d_obj = datetime.strptime(ultimo["fecha"][:10], "%Y-%m-%d")
-                macro["riesgo_pais"] = f"{int(ultimo['valor'])} pts ({d_obj.strftime('%d-%m-%Y')})"
+                anterior = data_rp[-2]
+                val_u = ultimo['valor']
+                val_a = anterior['valor']
+                var_pct = ((val_u / val_a) - 1) * 100 if val_a else 0
+                macro["riesgo_pais"] = {
+                    "valor": int(val_u),
+                    "fecha": datetime.strptime(ultimo["fecha"][:10], "%Y-%m-%d").strftime('%d-%m-%Y'),
+                    "variacion": round(var_pct, 2)
+                }
     except Exception as e:
         print("Error riesgo pais:", e)
 
@@ -387,6 +382,7 @@ def get_historical_fiat_data():
                 "blue": round(row.get('blue', 0), 2),
                 "oficial": round(row.get('oficial', 0), 2),
                 "usdt": round(row.get('usdt', 0), 2)
+                "mayorista": round(row.get('mayorista', 0), 2) if pd.notna(row.get('mayorista')) else 0
             })
         return result
     except Exception as e:
