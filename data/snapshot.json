@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-03-05T23:24:33.166798Z",
+  "built_at": "2026-03-06T02:21:23.719264Z",
   "groups": {
     "Índices y Cripto (USD)": [
       {
@@ -1629,7 +1629,7 @@
     "cripto": {
       "fiwind": 1472,
       "lemoncash": 1487.4,
-      "binancep2p": 1465.5
+      "binancep2p": 1465.99
     }
   },
   "spread_chart": "data/charts/spread_ccl_cripto.png"
