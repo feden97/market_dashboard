@@ -502,7 +502,17 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
+                plugins: { 
+                    legend: { display: false },
+                    // 👇 ESTE BLOQUE NUEVO FUERZA LOS 2 DECIMALES EN EL HOVER
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Spread: ' + context.parsed.y.toFixed(2) + '%';
+                            }
+                        }
+                    }
+                },
                 scales: {
                     x: { display: true, ticks: { color: '#808080', maxTicksLimit: 6 } },
                     y: { 
@@ -635,6 +645,26 @@
             `;
             document.getElementById('fiat-table-body').innerHTML = fiatRows;
 
+            // 👇 NUEVO: Inyectar el dato en vivo al final del gráfico histórico
+            if (window.spreadChartInstance) {
+                let currentTarget = baseCurrency === 'usdt' ? 'ccl' : 'usdt';
+                let currentSpread = ((fiatValues[currentTarget] / fiatValues[baseCurrency]) - 1) * 100;
+                
+                let todayStr = new Date().toLocaleDateString('es-AR', {day: '2-digit', month: '2-digit', year: 'numeric'}).replace(/\//g, '-');
+                let chart = window.spreadChartInstance;
+                let labels = chart.data.labels;
+                let data = chart.data.datasets[0].data;
+                
+                // Si el último dato del gráfico ya es el de hoy, lo actualiza. Si no, lo agrega.
+                if (labels[labels.length - 1] === todayStr) {
+                    data[data.length - 1] = currentSpread; 
+                } else {
+                    labels.push(todayStr); 
+                    data.push(currentSpread);
+                }
+                chart.update('none'); // Update sin animación para que no salte cada minuto
+            }
+            
             // 5. Progreso
             const now = new Date();
             document.getElementById('last-updated-time').innerText = `Última act: ${now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
