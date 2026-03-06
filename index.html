@@ -22,8 +22,10 @@
         
         .panel-ancho { width: 100%; max-width: 1400px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
         
-        /* TARJETAS MACRO (Ahora 5 columnas) */
-        .macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        /* TARJETAS MACRO: 5 Columnas */
+        .macro-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
+        @media (max-width: 1100px) { .macro-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { .macro-grid { grid-template-columns: 1fr; } }
         .macro-card { background-color: #202c33; padding: 15px; border-radius: 6px; border: 1px solid #2a3942; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); display: flex; flex-direction: column; justify-content: space-between; }
         .macro-title { color: #a5b4fc; font-size: 0.85em; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; border-bottom: 1px solid #2a3942; padding-bottom: 5px; }
         
@@ -55,6 +57,13 @@
         .badge-green { background-color: rgba(16,185,129,0.15); color: #34d399; border-radius: 4px; padding: 2px 6px; font-weight: bold; border: 1px solid rgba(16,185,129,0.3); }
         .tables-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         @media (max-width: 900px) { .tables-grid { grid-template-columns: 1fr; } }
+        
+        .gauge-arc {
+            width: 260px; height: 260px; border-radius: 50%;
+            background: conic-gradient(from 270deg at 50% 50%, #10b981 0deg 45deg, #facc15 45deg 135deg, #f97316 135deg 162deg, #ef4444 162deg 180deg, transparent 180deg 360deg);
+            -webkit-mask-image: radial-gradient(transparent 65%, black 66%);
+            mask-image: radial-gradient(transparent 65%, black 66%);
+        }
     </style>
 </head>
 <body>
@@ -73,22 +82,21 @@
                 
                 <div class="macro-grid">
                     <div class="macro-card">
-                        <div class="macro-title">📉 Riesgo País</div>
-                        <div>
-                            <div style="display: flex; align-items: baseline; gap: 8px;">
-                                <span id="rp-val" style="font-size: 1.8em; font-weight: bold; color: #e0e0e0;">...</span>
-                                <span id="rp-var" style="font-size: 1em; font-weight: bold;"></span>
-                            </div>
-                            <div id="rp-date" style="font-size: 0.8em; color: #6b7280; margin-top: 5px;"></div>
-                        </div>
-                    </div>
-
-                    <div class="macro-card">
                         <div class="macro-title">💸 Dólar más barato</div>
                         <div>
                             <div id="cheapest-dollar-name" style="font-size: 1em; color: #cbd5e1; font-weight:bold; text-transform: uppercase;">...</div>
                             <div id="cheapest-dollar-val" style="font-size: 1.8em; font-weight: bold; color: #34d399; margin-top: 5px;">...</div>
                         </div>
+                    </div>
+
+                    <div class="macro-card">
+                        <div class="macro-title">📈 Tasas (Próximamente)</div>
+                        <ul style="margin: 0; padding-left: 20px; color: #9ca3af; font-size: 0.85em; line-height: 1.6;">
+                            <li>Cuenta remunerada</li>
+                            <li>Plazo Fijo</li>
+                            <li>Earn StableCoin</li>
+                            <li>Caución</li>
+                        </ul>
                     </div>
 
                     <div class="macro-card">
@@ -109,13 +117,14 @@
                     </div>
 
                     <div class="macro-card">
-                        <div class="macro-title">📈 Tasas (Próximamente)</div>
-                        <ul style="margin: 0; padding-left: 20px; color: #9ca3af; font-size: 0.85em; line-height: 1.6;">
-                            <li>Cuenta remunerada</li>
-                            <li>Plazo Fijo</li>
-                            <li>Earn StableCoin</li>
-                            <li>Caución</li>
-                        </ul>
+                        <div class="macro-title">📉 Riesgo País</div>
+                        <div>
+                            <div style="display: flex; align-items: baseline; gap: 8px;">
+                                <span id="rp-val" style="font-size: 1.8em; font-weight: bold; color: #e0e0e0;">...</span>
+                                <span id="rp-var" style="font-size: 1em; font-weight: bold;"></span>
+                            </div>
+                            <div id="rp-date" style="font-size: 0.8em; color: #6b7280; margin-top: 5px;"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -170,6 +179,10 @@
                         <div id="chart-title" style="font-size: 0.85em; color: #a5b4fc; margin-bottom: 8px; text-align: left; font-weight: bold; text-transform: uppercase;">Spread CCL vs USDT (YTD)</div>
                         <div style="height: 200px; width: 100%;">
                             <canvas id="spreadChart"></canvas>
+                        </div>
+                        <div style="margin-top: 15px; padding: 10px; background-color: #111b21; border-radius: 6px; border: 1px solid #2a3942; display: flex; justify-content: space-around; font-size: 0.9em; color: #cbd5e1;">
+                            <div>Periodos ganadores CCL: <br><span id="ccl-wins" style="color: #34d399; font-weight: bold; font-size: 1.2em;">0 Días</span></div>
+                            <div>Periodos ganadores <span id="base-name-summary">...</span>: <br><span id="base-wins" style="color: #f87171; font-weight: bold; font-size: 1.2em;">0 Días</span></div>
                         </div>
                     </div>
                 </div>
@@ -315,7 +328,6 @@
 
             function renderMacro(macro) {
                 if(!macro) return;
-                
                 if(macro.riesgo_pais && macro.riesgo_pais.valor) {
                     document.getElementById('rp-val').innerText = macro.riesgo_pais.valor + ' pts';
                     let var_rp = macro.riesgo_pais.variacion;
@@ -324,13 +336,11 @@
                     document.getElementById('rp-var').innerHTML = `<span style="color: ${col_rp}">${sig_rp}${var_rp}%</span>`;
                     document.getElementById('rp-date').innerText = `(Ref: ${macro.riesgo_pais.fecha})`;
                 }
-
                 if(macro.holidays && macro.holidays.length > 0) {
                     let html = '';
                     macro.holidays.forEach(h => html += `<li>${h}</li>`);
                     document.getElementById('feriados-list').innerHTML = html;
                 }
-
                 if(macro.ipc_history && Object.keys(macro.ipc_history).length > 0) {
                     let rows = ''; let acum = 1;
                     const months = {'01':'Ene', '02':'Feb', '03':'Mar', '04':'Abr', '05':'May', '06':'Jun', '07':'Jul', '08':'Ago', '09':'Sep', '10':'Oct', '11':'Nov', '12':'Dic'};
@@ -384,6 +394,18 @@
             let nextUpdateSecs = 60;
             let progressInterval = null;
 
+            function updateSpreadSummary(chart, baseCurrency) {
+                if (!chart || !chart.data.datasets[0].data) return;
+                let cclWins = 0, baseWins = 0;
+                chart.data.datasets[0].data.forEach(val => {
+                    if (val > 0) cclWins++;
+                    else if (val < 0) baseWins++;
+                });
+                document.getElementById('ccl-wins').innerText = `${cclWins} Días`;
+                document.getElementById('base-name-summary').innerText = baseCurrency === 'oficial' ? 'Oficial' : baseCurrency === 'blue' ? 'Blue' : baseCurrency.toUpperCase();
+                document.getElementById('base-wins').innerText = `${baseWins} Días`;
+            }
+
             function renderSpreadChart(historicalData) {
                 if (!historicalData || historicalData.length === 0) return;
                 let dToday = new Date();
@@ -391,15 +413,12 @@
                 var baseCurrency = document.getElementById('base-currency-select').value;
                 document.getElementById('chart-title').innerText = `Spread CCL vs ${baseCurrency.toUpperCase()} (YTD)`;
 
-                var labels = [];
-                var data = [];
+                var labels = []; var data = [];
                 historicalData.forEach(d => {
                     if (d.date === todayStr) return;
-                    var targetVal = d.ccl;
-                    var baseVal = d[baseCurrency];
+                    var targetVal = d.ccl; var baseVal = d[baseCurrency];
                     if (targetVal && baseVal && baseVal > 0) {
-                        labels.push(d.date);
-                        data.push(((targetVal / baseVal) - 1) * 100);
+                        labels.push(d.date); data.push(((targetVal / baseVal) - 1) * 100);
                     }
                 });
 
@@ -410,6 +429,7 @@
                     data: { labels: labels, datasets: [{ data: data, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1, segment: { borderColor: function(ctx) { return ctx.p0.parsed.y >= 0 ? '#34d399' : '#f87171'; } } }] },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } }, scales: { x: { display: true, ticks: { color: '#808080', maxTicksLimit: 6 } }, y: { display: true, ticks: { color: '#808080' }, grid: { color: function(ctx) { return ctx.tick.value === 0 ? 'rgba(255, 255, 255, 0.7)' : '#2a3942'; }, lineWidth: function(ctx) { return ctx.tick.value === 0 ? 2 : 1; } } } }, interaction: { mode: 'index', intersect: false } }
                 });
+                updateSpreadSummary(window.spreadChartInstance, baseCurrency);
             }
 
             function renderBandasChart(historicalFiat) {
@@ -418,12 +438,10 @@
                 historicalFiat.forEach(d => { if(d.mayorista) mayoristaMap[d.date] = d.mayorista; });
                 
                 let labels = [], dataSup = [], dataInf = [], dataMay = [];
-                let dToday = new Date();
-                let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
+                let dToday = new Date(); let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
                 
                 datosBandas.forEach(b => {
-                    let parts = b.date.split('-');
-                    let bDate = new Date(parts[2], parts[1]-1, parts[0]);
+                    let parts = b.date.split('-'); let bDate = new Date(parts[2], parts[1]-1, parts[0]);
                     if (bDate <= dToday || b.date === todayStr) {
                         labels.push(b.date); dataSup.push(b.sup); dataInf.push(b.inf); dataMay.push(mayoristaMap[b.date] || null);
                     }
@@ -452,8 +470,7 @@
 
                     let yesterdayData = null;
                     if (snapshot && snapshot.historical_fiat) {
-                        let dToday = new Date();
-                        let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
+                        let dToday = new Date(); let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
                         for (let i = snapshot.historical_fiat.length - 1; i >= 0; i--) {
                             if (snapshot.historical_fiat[i].date !== todayStr) { yesterdayData = snapshot.historical_fiat[i]; break; }
                         }
@@ -482,18 +499,22 @@
                     let exchangeRows = '';
                     exList.forEach(e => {
                         let isMin = e.compra_a === minCompra; let isMax = e.venta_a === maxVenta;
-                        exchangeRows += `<tr><td>${e.name}</td><td style="text-align: center;"><span class="${isMin ? 'badge-green' : ''}">$${e.compra_a.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></td><td style="text-align: center;"><span class="${isMax ? 'badge-green' : ''}">$${e.venta_a.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></td></tr>`;
+                        exchangeRows += `<tr><td>${e.name}</td><td style="text-align: center;"><span class="${isMin ? 'badge-green' : ''}">$${e.compra_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></td><td style="text-align: center;"><span class="${isMax ? 'badge-green' : ''}">$${e.venta_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></td></tr>`;
                     });
                     document.getElementById('usdt-table-body').innerHTML = exchangeRows;
 
-                    const getDolar = (obj) => {
+                    // NUEVO GET DOLAR: Fuerza el GD30 para el CCL y AL30 para MEP
+                    const getDolar = (obj, type) => {
                         if (!obj) return 0; if (typeof obj === 'number') return obj; if (obj.ask) return obj.ask; if (obj.price) return obj.price;
+                        if (type === 'ccl' && obj.gd30) {
+                            if (obj.gd30['48hs'] && obj.gd30['48hs'].price) return obj.gd30['48hs'].price;
+                            if (obj.gd30.ci && obj.gd30.ci.price) return obj.gd30.ci.price;
+                        }
                         if (obj.al30) { if (obj.al30['48hs']) return obj.al30['48hs'].price; if (obj.al30.ci) return obj.al30.ci.price; } return 0;
                     };
 
-                    const fiatValues = { ccl: getDolar(criptoYaDolar.ccl), mep: getDolar(criptoYaDolar.mep), oficial: getDolar(criptoYaDolar.oficial), blue: getDolar(criptoYaDolar.blue), usdt: maxVenta };
+                    const fiatValues = { ccl: getDolar(criptoYaDolar.ccl, 'ccl'), mep: getDolar(criptoYaDolar.mep, 'mep'), oficial: getDolar(criptoYaDolar.oficial), blue: getDolar(criptoYaDolar.blue), usdt: maxVenta };
                     
-                    // Cálculo del más barato
                     let minFiatName = ""; let minFiatVal = Infinity;
                     for (let f of ['ccl', 'mep', 'oficial', 'blue', 'usdt']) {
                         if (fiatValues[f] > 0 && fiatValues[f] < minFiatVal) { minFiatVal = fiatValues[f]; minFiatName = f; }
@@ -504,16 +525,19 @@
                     var baseCurrency = document.getElementById('base-currency-select').value;
                     var basePrice = fiatValues[baseCurrency];
                     
+                    const calcBrecha = (val) => {
+                        if(!basePrice || !val) return "-";
+                        const pct = ((val / basePrice) - 1) * 100; return `<span style="color:${pct >= 0 ? '#34d399' : '#f87171'}">${pct > 0 ? '+':''}${pct.toFixed(2)}%</span>`;
+                    };
+
                     let fiatRows = '';
                     ['ccl', 'mep', 'oficial', 'blue'].forEach(f => {
                         let yV = yesterdayData ? yesterdayData[f] : 0;
-                        let pct = basePrice ? ((fiatValues[f] / basePrice) - 1) * 100 : 0;
-                        fiatRows += `<tr><td style="color:#cbd5e1; text-transform: uppercase;">${f}</td><td style="font-weight:bold;">$${fiatValues[f].toLocaleString('es-AR', {minimumFractionDigits: 2})}</td><td>${calcVar(fiatValues[f], yV)}</td><td>${f === baseCurrency ? '-' : `<span style="color:${pct >= 0 ? '#34d399' : '#f87171'}">${pct > 0 ? '+':''}${pct.toFixed(2)}%</span>`}</td></tr>`;
+                        fiatRows += `<tr><td style="color:#cbd5e1; text-transform: uppercase;">${f}</td><td style="font-weight:bold;">$${fiatValues[f].toLocaleString('es-AR', {minimumFractionDigits: 2})}</td><td>${calcVar(fiatValues[f], yV)}</td><td>${f === baseCurrency ? '-' : calcBrecha(fiatValues[f])}</td></tr>`;
                     });
                     
                     let yV_usdt = yesterdayData ? yesterdayData.usdt : 0;
-                    let pct_u = basePrice ? ((fiatValues.usdt / basePrice) - 1) * 100 : 0;
-                    fiatRows += `<tr><td style="color:#cbd5e1; display:flex; align-items:center;">USDT <div class="tooltip-container"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Dólar cripto que cotiza 24hs. Precio más alto para vender USDT en exchanges locales o Binance P2P.</div></div></td><td style="font-weight:bold;">$${fiatValues.usdt.toLocaleString('es-AR', {minimumFractionDigits: 2})}</td><td>${calcVar(fiatValues.usdt, yV_usdt)}</td><td>${baseCurrency === 'usdt' ? '-' : `<span style="color:${pct_u >= 0 ? '#34d399' : '#f87171'}">${pct_u > 0 ? '+':''}${pct_u.toFixed(2)}%</span>`}</td></tr>`;
+                    fiatRows += `<tr><td style="color:#cbd5e1; display:flex; align-items:center;">USDT <div class="tooltip-container"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Dólar cripto que cotiza 24hs. Es el precio de Venta más alto entre los exchanges locales y Binance P2P.</div></div></td><td style="font-weight:bold;">$${fiatValues.usdt.toLocaleString('es-AR', {minimumFractionDigits: 2})}</td><td>${calcVar(fiatValues.usdt, yV_usdt)}</td><td>${baseCurrency === 'usdt' ? '-' : calcBrecha(fiatValues.usdt)}</td></tr>`;
                     document.getElementById('fiat-table-body').innerHTML = fiatRows;
 
                     if (window.spreadChartInstance && fiatValues[baseCurrency] > 0 && fiatValues.ccl > 0) {
@@ -523,6 +547,7 @@
                         if (chart.data.labels[chart.data.labels.length - 1] === todayStr) { chart.data.datasets[0].data[chart.data.datasets[0].data.length - 1] = currentSpread; } 
                         else { chart.data.labels.push(todayStr); chart.data.datasets[0].data.push(currentSpread); }
                         chart.update('none'); 
+                        updateSpreadSummary(chart, baseCurrency);
                     }
 
                     // --- CALCULAR BANDAS Y VELOCÍMETRO ---
