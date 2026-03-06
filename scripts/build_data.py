@@ -341,7 +341,7 @@ def generate_spread_chart(charts_dir):
         df_cripto['fecha'] = pd.to_datetime(df_cripto['fecha'])
 
         # Filtramos los últimos 60 días
-        cutoff = datetime.now() - timedelta(days=60)
+        cutoff = datetime(datetime.now().year, 1, 1)
         df_ccl = df_ccl[df_ccl['fecha'] >= cutoff][['fecha', 'venta']].set_index('fecha')
         df_cripto = df_cripto[df_cripto['fecha'] >= cutoff][['fecha', 'venta']].set_index('fecha')
 
