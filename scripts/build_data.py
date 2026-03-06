@@ -269,37 +269,33 @@ def create_rs_chart_png(rrs_data, ticker, charts_dir):
         return None
 
 def get_argentina_macro_data():
-    macro = {"holiday": None, "inflation": None}
-    today_str = datetime.now().strftime("%Y-%m-%d")
-
-    # 1. Próximo Feriado
+    macro = {"ipc_history": {}, "riesgo_pais": "N/A", "holidays": []}
+    
+    # 1. Próximos 2 Feriados
     try:
-        r_feriados = requests.get("https://api.argentinadatos.com/v1/feriados")
+        year = datetime.now().year
+        r_feriados = requests.get(f"https://api.argentinadatos.com/v1/feriados/{year}")
         if r_feriados.status_code == 200:
-            feriados = r_feriados.json()
-            futuros = [f for f in feriados if f.get("fecha") >= today_str]
-            if futuros:
-                futuros.sort(key=lambda x: x["fecha"])
-                prox = futuros[0]
-                # Convertimos fecha a Día-Mes-Año
-                fecha_obj = datetime.strptime(prox['fecha'], "%Y-%m-%d")
-                macro["holiday"] = f"{fecha_obj.strftime('%d-%m-%Y')} - {prox.get('nombre', '')}"
+            data_fer = r_feriados.json()
+            today_str = datetime.now().strftime("%Y-%m-%d")
+            # Filtrar futuros y ordenar
+            future_holidays = [f for f in data_fer if f.get("fecha") >= today_str]
+            future_holidays.sort(key=lambda x: x["fecha"])
+            next_two = future_holidays[:2]
+            formatted_holidays = []
+            for h in next_two:
+                d_obj = datetime.strptime(h["fecha"], "%Y-%m-%d")
+                formatted_holidays.append(f"{d_obj.strftime('%d-%m-%Y')} - {h.get('nombre', '')}")
+            macro["holidays"] = formatted_holidays
     except Exception as e:
         print("Error feriados:", e)
 
-    # 2. Última Inflación y Todo el Historial (Para Bandas Cambiarias)
+    # 2. Historial de Inflación
     try:
         r_inf = requests.get("https://api.argentinadatos.com/v1/finanzas/indices/inflacion")
         if r_inf.status_code == 200:
             datos_inf = r_inf.json()
             if datos_inf:
-                ultimo = datos_inf[-1]
-                val = ultimo.get("valor", 0)
-                if val < 1: val_mostrar = val * 100 
-                else: val_mostrar = val
-                macro["inflation"] = f"{val_mostrar:.1f}% ({ultimo.get('fecha', '')[:7]})"
-                
-                # Crear el diccionario de IPCs para JavaScript ("YYYY-MM": 0.025)
                 ipc_history = {}
                 for item in datos_inf:
                     fecha_mes = item.get("fecha", "")[:7]
@@ -308,7 +304,19 @@ def get_argentina_macro_data():
                     ipc_history[fecha_mes] = valor_decimal
                 macro["ipc_history"] = ipc_history
     except Exception as e:
-        print("Error inflación:", e)
+        print("Error inflacion:", e)
+        
+    # 3. Riesgo País
+    try:
+        r_rp = requests.get("https://api.argentinadatos.com/v1/finanzas/indices/riesgo-pais")
+        if r_rp.status_code == 200:
+            data_rp = r_rp.json()
+            if data_rp:
+                ultimo = data_rp[-1]
+                d_obj = datetime.strptime(ultimo["fecha"][:10], "%Y-%m-%d")
+                macro["riesgo_pais"] = f"{int(ultimo['valor'])} pts ({d_obj.strftime('%d-%m-%Y')})"
+    except Exception as e:
+        print("Error riesgo pais:", e)
 
     return macro
 
