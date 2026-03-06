@@ -22,7 +22,6 @@
         
         .panel-ancho { width: 100%; max-width: 1400px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
         
-        /* TARJETAS MACRO: 5 Columnas */
         .macro-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
         @media (max-width: 1100px) { .macro-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 768px) { .macro-grid { grid-template-columns: 1fr; } }
@@ -191,19 +190,15 @@
                     <h2 style="color: #e0e0e0; margin: 0 0 20px 0; font-size: 1.2em;">Bandas Cambiarias y Dólar Mayorista</h2>
                     
                     <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start; margin-bottom: 25px;">
-                        
                         <div style="flex: 1; min-width: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 10px;">
                             <div style="position: relative; width: 340px; height: 170px; margin: 0 auto; margin-top: 20px;">
                                 <span id="velocimetro-mid" style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); color: #9ca3af; font-size: 0.9em; font-weight: bold;">$0.00</span>
                                 <span id="velocimetro-inf" style="position: absolute; bottom: -25px; left: 0; color: #9ca3af; font-size: 0.9em; font-weight: bold;">$0.00</span>
                                 <span id="velocimetro-sup" style="position: absolute; bottom: -25px; right: 0; color: #9ca3af; font-size: 0.9em; font-weight: bold;">$0.00</span>
-                                
                                 <div style="width: 100%; height: 200%; border-radius: 50%; background: conic-gradient(from 270deg at 50% 50%, #10b981 0deg 45deg, #facc15 45deg 135deg, #f97316 135deg 162deg, #ef4444 162deg 180deg, transparent 180deg 360deg); -webkit-mask-image: radial-gradient(transparent 55%, black 56%); mask-image: radial-gradient(transparent 55%, black 56%);"></div>
-                                
                                 <div id="gauge-needle" style="position: absolute; bottom: 0; left: 50%; width: 6px; height: 120px; background-color: #ffffff; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1); border-radius: 6px; box-shadow: 0 0 6px rgba(0,0,0,0.5); z-index: 10;"></div>
                                 <div style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 24px; height: 24px; background-color: #ffffff; border-radius: 50%; z-index: 11; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>
                             </div>
-                            
                             <div style="text-align: center; margin-top: 35px;">
                                 <div style="color: #9ca3af; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 5px;">Dólar Mayorista</div>
                                 <div id="gauge-mayorista-box" style="display: inline-block; font-size: 1.8em; font-weight: bold; background-color: #10b981; color: #ffffff; padding: 4px 16px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: all 0.5s ease;">$0.00</div>
@@ -398,8 +393,7 @@
                 if (!chart || !chart.data.datasets[0].data) return;
                 let cclWins = 0, baseWins = 0;
                 chart.data.datasets[0].data.forEach(val => {
-                    if (val > 0) cclWins++;
-                    else if (val < 0) baseWins++;
+                    if (val > 0) cclWins++; else if (val < 0) baseWins++;
                 });
                 document.getElementById('ccl-wins').innerText = `${cclWins} Días`;
                 document.getElementById('base-name-summary').innerText = baseCurrency === 'oficial' ? 'Oficial' : baseCurrency === 'blue' ? 'Blue' : baseCurrency.toUpperCase();
@@ -408,8 +402,7 @@
 
             function renderSpreadChart(historicalData) {
                 if (!historicalData || historicalData.length === 0) return;
-                let dToday = new Date();
-                let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
+                let dToday = new Date(); let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
                 var baseCurrency = document.getElementById('base-currency-select').value;
                 document.getElementById('chart-title').innerText = `Spread CCL vs ${baseCurrency.toUpperCase()} (YTD)`;
 
@@ -417,9 +410,7 @@
                 historicalData.forEach(d => {
                     if (d.date === todayStr) return;
                     var targetVal = d.ccl; var baseVal = d[baseCurrency];
-                    if (targetVal && baseVal && baseVal > 0) {
-                        labels.push(d.date); data.push(((targetVal / baseVal) - 1) * 100);
-                    }
+                    if (targetVal && baseVal && baseVal > 0) { labels.push(d.date); data.push(((targetVal / baseVal) - 1) * 100); }
                 });
 
                 if(window.spreadChartInstance) window.spreadChartInstance.destroy();
@@ -468,18 +459,11 @@
                     const [resCrypto, resP2P, resCriptoYaDolar] = await Promise.all([ fetch("https://criptoya.com/api/usdt/ars/0.1"), fetch("https://criptoya.com/api/binancep2p/usdt/ars/0.1"), fetch("https://criptoya.com/api/dolar") ]);
                     const cryptoData = await resCrypto.json(); const p2pData = await resP2P.json(); const criptoYaDolar = await resCriptoYaDolar.json();
 
-                    let yesterdayData = null;
-                    if (snapshot && snapshot.historical_fiat) {
-                        let dToday = new Date(); let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
-                        for (let i = snapshot.historical_fiat.length - 1; i >= 0; i--) {
-                            if (snapshot.historical_fiat[i].date !== todayStr) { yesterdayData = snapshot.historical_fiat[i]; break; }
-                        }
-                    }
-
-                    const calcVar = (current, prev) => {
-                        if (!prev || prev <= 0) return "-";
-                        const pct = ((current / prev) - 1) * 100;
-                        return `<span style="color:${pct >= 0 ? '#34d399' : '#f87171'}; font-weight:bold;">${pct > 0 ? '+':''}${pct.toFixed(2)}%</span>`;
+                    // --- FUNCIÓN NATIVA DE CRIPTOYA PARA VARIACIÓN ---
+                    const formatVar = (v) => {
+                        if (v === undefined || v === null) return "-";
+                        const col = v >= 0 ? '#34d399' : '#f87171';
+                        return `<span style="color:${col}; font-weight:bold;">${v > 0 ? '+':''}${v.toFixed(2)}%</span>`;
                     };
 
                     let minCompra = Infinity; let maxVenta = 0; let exList = [];
@@ -503,31 +487,42 @@
                     });
                     document.getElementById('usdt-table-body').innerHTML = exchangeRows;
 
-                    // NUEVO GET DOLAR: Fuerza el AL30 a 24hs (El mismo de tu fórmula de Excel)
-                    const getDolar = (obj) => {
-                        if (!obj) return 0; 
-                        if (typeof obj === 'number') return obj; 
-                        if (obj.ask) return obj.ask; 
-                        if (obj.price) return obj.price;
-                        // Va a buscar AL30 -> 24hs -> Price directo
-                        if (obj.al30) { 
-                            if (obj.al30['24hs'] && obj.al30['24hs'].price) return obj.al30['24hs'].price; 
-                            if (obj.al30.ci && obj.al30.ci.price) return obj.al30.ci.price; 
-                        } 
-                        return 0;
+                    // NUEVO CAZADOR EXACTO (Caza el precio y la variación nativa)
+                    const getDolarData = (obj) => {
+                        if (!obj) return { price: 0, variation: 0 };
+                        let p = 0, v = 0;
+                        if (obj.al30) {
+                            if (obj.al30['24hs']) { p = obj.al30['24hs'].price; v = obj.al30['24hs'].variation; } 
+                            else if (obj.al30.ci) { p = obj.al30.ci.price; v = obj.al30.ci.variation; }
+                        } else {
+                            p = obj.ask || obj.price || 0;
+                            v = obj.variation || 0;
+                        }
+                        return { price: p, var: v };
                     };
 
-                    const fiatValues = { ccl: getDolar(criptoYaDolar.ccl, 'ccl'), mep: getDolar(criptoYaDolar.mep, 'mep'), oficial: getDolar(criptoYaDolar.oficial), blue: getDolar(criptoYaDolar.blue), usdt: maxVenta };
+                    const fiatData = { 
+                        ccl: getDolarData(criptoYaDolar.ccl), 
+                        mep: getDolarData(criptoYaDolar.mep), 
+                        oficial: getDolarData(criptoYaDolar.oficial), 
+                        blue: getDolarData(criptoYaDolar.blue)
+                    };
                     
+                    let usdt_var = 0;
+                    if (criptoYaDolar.cripto && criptoYaDolar.cripto.usdt) usdt_var = criptoYaDolar.cripto.usdt.variation;
+                    
+                    // Cálculo del más barato
                     let minFiatName = ""; let minFiatVal = Infinity;
-                    for (let f of ['ccl', 'mep', 'oficial', 'blue', 'usdt']) {
-                        if (fiatValues[f] > 0 && fiatValues[f] < minFiatVal) { minFiatVal = fiatValues[f]; minFiatName = f; }
+                    for (let f of ['ccl', 'mep', 'oficial', 'blue']) {
+                        if (fiatData[f].price > 0 && fiatData[f].price < minFiatVal) { minFiatVal = fiatData[f].price; minFiatName = f; }
                     }
+                    if (maxVenta > 0 && maxVenta < minFiatVal) { minFiatVal = maxVenta; minFiatName = 'usdt'; }
+                    
                     document.getElementById('cheapest-dollar-name').innerText = minFiatName.toUpperCase();
                     document.getElementById('cheapest-dollar-val').innerText = `$${minFiatVal.toLocaleString('es-AR', {minimumFractionDigits: 2})}`;
 
                     var baseCurrency = document.getElementById('base-currency-select').value;
-                    var basePrice = fiatValues[baseCurrency];
+                    var basePrice = baseCurrency === 'usdt' ? maxVenta : fiatData[baseCurrency].price;
                     
                     const calcBrecha = (val) => {
                         if(!basePrice || !val) return "-";
@@ -536,16 +531,14 @@
 
                     let fiatRows = '';
                     ['ccl', 'mep', 'oficial', 'blue'].forEach(f => {
-                        let yV = yesterdayData ? yesterdayData[f] : 0;
-                        fiatRows += `<tr><td style="color:#cbd5e1; text-transform: uppercase;">${f}</td><td style="font-weight:bold;">$${fiatValues[f].toLocaleString('es-AR', {minimumFractionDigits: 2})}</td><td>${calcVar(fiatValues[f], yV)}</td><td>${f === baseCurrency ? '-' : calcBrecha(fiatValues[f])}</td></tr>`;
+                        fiatRows += `<tr><td style="color:#cbd5e1; text-transform: uppercase;">${f}</td><td style="font-weight:bold;">$${fiatData[f].price.toLocaleString('es-AR', {minimumFractionDigits: 2})}</td><td>${formatVar(fiatData[f].var)}</td><td>${f === baseCurrency ? '-' : calcBrecha(fiatData[f].price)}</td></tr>`;
                     });
                     
-                    let yV_usdt = yesterdayData ? yesterdayData.usdt : 0;
-                    fiatRows += `<tr><td style="color:#cbd5e1; display:flex; align-items:center;">USDT <div class="tooltip-container"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Dólar cripto que cotiza 24hs. Es el precio de Venta más alto entre los exchanges locales y Binance P2P.</div></div></td><td style="font-weight:bold;">$${fiatValues.usdt.toLocaleString('es-AR', {minimumFractionDigits: 2})}</td><td>${calcVar(fiatValues.usdt, yV_usdt)}</td><td>${baseCurrency === 'usdt' ? '-' : calcBrecha(fiatValues.usdt)}</td></tr>`;
+                    fiatRows += `<tr><td style="color:#cbd5e1; display:flex; align-items:center;">USDT <div class="tooltip-container"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Dólar cripto que cotiza 24hs. Es el precio de Venta más alto entre los exchanges locales y Binance P2P.</div></div></td><td style="font-weight:bold;">$${maxVenta.toLocaleString('es-AR', {minimumFractionDigits: 2})}</td><td>${formatVar(usdt_var)}</td><td>${baseCurrency === 'usdt' ? '-' : calcBrecha(maxVenta)}</td></tr>`;
                     document.getElementById('fiat-table-body').innerHTML = fiatRows;
 
-                    if (window.spreadChartInstance && fiatValues[baseCurrency] > 0 && fiatValues.ccl > 0) {
-                        let currentSpread = ((fiatValues.ccl / fiatValues[baseCurrency]) - 1) * 100;
+                    if (window.spreadChartInstance && basePrice > 0 && fiatData.ccl.price > 0) {
+                        let currentSpread = ((fiatData.ccl.price / basePrice) - 1) * 100;
                         let chart = window.spreadChartInstance;
                         let dToday = new Date(); let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
                         if (chart.data.labels[chart.data.labels.length - 1] === todayStr) { chart.data.datasets[0].data[chart.data.datasets[0].data.length - 1] = currentSpread; } 
@@ -570,7 +563,7 @@
                     document.getElementById('r-pre-min').innerText = fmt(c75); document.getElementById('r-pre-max').innerText = fmt(c90);
                     document.getElementById('r-cri-min').innerText = fmt(c90); document.getElementById('r-cri-max').innerText = fmt(sup);
 
-                    let may = getDolar(criptoYaDolar.mayorista);
+                    let may = getDolarData(criptoYaDolar.mayorista).price;
                     if(may > 0) {
                         let posPct = Math.max(0, Math.min(100, ((may - inf) / rango) * 100));
                         document.getElementById('gauge-needle').style.transform = `translateX(-50%) rotate(${(posPct / 100 * 180) - 90}deg)`;
