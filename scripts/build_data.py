@@ -304,17 +304,25 @@ def get_argentina_macro_data():
     return macro
 
 
-def get_historical_spread_data():
+def get_historical_fiat_data():
     try:
-        # 1. Traer historial del CCL de ArgentinaDatos
-        r_ccl = requests.get("https://api.argentinadatos.com/v1/cotizaciones/dolares/contadoconliqui")
-        if r_ccl.status_code != 200:
-            return None
-        
-        df_ccl = pd.DataFrame(r_ccl.json())
-        df_ccl['fecha'] = pd.to_datetime(df_ccl['fecha'])
+        endpoints = {"ccl": "contadoconliqui", "mep": "mep", "blue": "blue", "oficial": "oficial"}
+        dfs = []
         cutoff = datetime(datetime.now().year, 1, 1)
-        df_ccl = df_ccl[df_ccl['fecha'] >= cutoff][['fecha', 'venta']].set_index('fecha')
+
+        # 1. Traer historial de todos los fiats de ArgentinaDatos
+        for key, path in endpoints.items():
+            r = requests.get(f"https://api.argentinadatos.com/v1/cotizaciones/dolares/{path}")
+            if r.status_code == 200:
+                df = pd.DataFrame(r.json())
+                df['fecha'] = pd.to_datetime(df['fecha'])
+                df = df[df['fecha'] >= cutoff][['fecha', 'venta']].rename(columns={'venta': key}).set_index('fecha')
+                dfs.append(df)
+
+        if not dfs: return None
+        master_df = dfs[0]
+        for i in range(1, len(dfs)):
+            master_df = master_df.join(dfs[i], how='outer')
 
         # 2. Leer nuestra base de datos de USDT
         history_file = "data/usdt_history.json"
@@ -322,14 +330,13 @@ def get_historical_spread_data():
         if os.path.exists(history_file):
             with open(history_file, "r") as f:
                 usdt_history = json.load(f)
-        
-        # 3. Buscar el USDT de HOY (El Ask más alto) y guardarlo en la base
+
+        # 3. Guardar el USDT de hoy
         today_str = datetime.now().strftime("%Y-%m-%d")
         try:
             r_crypto = requests.get("https://criptoya.com/api/usdt/ars/0.1")
             r_p2p = requests.get("https://criptoya.com/api/binancep2p/usdt/ars/0.1")
             max_ask = 0
-            
             if r_crypto.status_code == 200:
                 data_c = r_crypto.json()
                 for ex in ['buenbit', 'fiwind', 'lemoncash', 'tiendacrypto']:
@@ -339,33 +346,34 @@ def get_historical_spread_data():
                 data_p2p = r_p2p.json()
                 if data_p2p.get('totalAsk', 0) > max_ask:
                     max_ask = data_p2p['totalAsk']
-            
             if max_ask > 0:
                 usdt_history[today_str] = max_ask
-                # Guardar la base actualizada en el archivo
                 with open(history_file, "w") as f:
                     json.dump(usdt_history, f, indent=2)
         except Exception as e:
-            print("Error actualizando USDT history:", e)
+            pass
 
-        # 4. Cruzar el CCL con nuestro historial de USDT para graficar
-        df_cripto = pd.DataFrame(list(usdt_history.items()), columns=['fecha', 'venta'])
-        df_cripto['fecha'] = pd.to_datetime(df_cripto['fecha'])
-        df_cripto = df_cripto[df_cripto['fecha'] >= cutoff].set_index('fecha')
+        # 4. Cruzar USDT con el resto
+        df_usdt = pd.DataFrame(list(usdt_history.items()), columns=['fecha', 'usdt'])
+        df_usdt['fecha'] = pd.to_datetime(df_usdt['fecha'])
+        df_usdt = df_usdt[df_usdt['fecha'] >= cutoff].set_index('fecha')
 
-        df = df_ccl.join(df_cripto, lsuffix='_ccl', rsuffix='_cripto').dropna()
-        # Fórmula: (CCL / Cripto - 1) * 100
-        df['spread'] = ((df['venta_ccl'] / df['venta_cripto']) - 1) * 100
+        # Unimos todo y rellenamos huecos (fines de semana) con el último precio disponible
+        master_df = master_df.join(df_usdt, how='outer').ffill().dropna()
 
         result = []
-        for date, row in df.iterrows():
+        for date, row in master_df.iterrows():
             result.append({
-                "date": date.strftime("%d-%m-%Y"), # Formato Día-Mes-Año
-                "spread": round(row['spread'], 2)
+                "date": date.strftime("%d-%m-%Y"),
+                "ccl": round(row.get('ccl', 0), 2),
+                "mep": round(row.get('mep', 0), 2),
+                "blue": round(row.get('blue', 0), 2),
+                "oficial": round(row.get('oficial', 0), 2),
+                "usdt": round(row.get('usdt', 0), 2)
             })
         return result
     except Exception as e:
-        print("Error generando datos de spread:", e)
+        print("Error generando historial fiat:", e)
         return None
         
 def get_stock_data(ticker_symbol, charts_dir):
@@ -465,16 +473,16 @@ def main():
             "20d": (min(twenty_v) if twenty_v else -30, max(twenty_v) if twenty_v else 30),
         }
 
-    print("Fetching Argentina macro and building spread historical data...")
+    print("Fetching Argentina macro and building fiat historical data...")
     macro_data = get_argentina_macro_data()
-    spread_data = get_historical_spread_data()
+    fiat_data = get_historical_fiat_data()
 
     snapshot = {
         "built_at": datetime.utcnow().isoformat() + "Z",
         "groups": groups_data,
         "column_ranges": column_ranges,
         "argentina_macro": macro_data,
-        "spread_data": spread_data
+        "historical_fiat": fiat_data
     }
     
     meta = {
