@@ -9,15 +9,9 @@
         * { box-sizing: border-box; }
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; background-color: #111b21; color: #e0e0e0; overflow: hidden; }
         
-        .top-nav {
-            position: sticky; top: 0; z-index: 1000; background-color: #202c33; border-bottom: 1px solid #2a3942;
-            display: flex; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-        }
+        .top-nav { position: sticky; top: 0; z-index: 1000; background-color: #202c33; border-bottom: 1px solid #2a3942; display: flex; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); }
         .nav-container { display: flex; gap: 10px; }
-        .nav-tab {
-            background: none; border: none; color: #9ca3af; font-size: 15px; font-weight: bold;
-            padding: 16px 20px; cursor: pointer; transition: color 0.2s; position: relative;
-        }
+        .nav-tab { background: none; border: none; color: #9ca3af; font-size: 15px; font-weight: bold; padding: 16px 20px; cursor: pointer; transition: color 0.2s; position: relative; }
         .nav-tab:hover { color: #f3f4f6; }
         .nav-tab.active { color: #60a5fa; } 
         .nav-tab.active::after { content: ""; position: absolute; bottom: -1px; left: 0; right: 0; height: 3px; background-color: #60a5fa; border-radius: 3px 3px 0 0; }
@@ -26,10 +20,7 @@
         .tab-pane { display: none; height: 100%; width: 100%; overflow-y: auto; padding-bottom: 40px; }
         .tab-pane.active { display: block; }
         
-        /* Panel Ancho para aprovechar el monitor */
         .panel-ancho { width: 100%; max-width: 1400px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
-
-        /* Tarjetas Macro Arriba */
         .macro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         @media (max-width: 768px) { .macro-grid { grid-template-columns: 1fr; } }
         .macro-card { background-color: #202c33; padding: 15px; border-radius: 6px; border: 1px solid #2a3942; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); }
@@ -61,7 +52,6 @@
         .base-select { background-color: #111b21; color: #a5b4fc; border: 1px solid #2a3942; border-radius: 4px; padding: 2px 4px; font-size: 0.9em; outline: none; cursor: pointer; }
         
         .badge-green { background-color: rgba(16,185,129,0.15); color: #34d399; border-radius: 4px; padding: 2px 6px; font-weight: bold; border: 1px solid rgba(16,185,129,0.3); }
-        
         .tables-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         @media (max-width: 900px) { .tables-grid { grid-template-columns: 1fr; } }
     </style>
@@ -84,7 +74,7 @@
                     <div class="macro-card">
                         <div class="macro-title">🛒 Inflación 2026</div>
                         <table class="data-table" style="font-size: 0.8em; margin-bottom: 5px;">
-                            <tbody id="inflacion-table"><tr><td>Cargando datos... (Requiere Act. de GitHub)</td></tr></tbody>
+                            <tbody id="inflacion-table"><tr><td>Cargando datos...</td></tr></tbody>
                         </table>
                         <div style="text-align: right; color: #cbd5e1; font-weight: bold; font-size: 0.9em;" id="inflacion-acum">Acumulado: --</div>
                     </div>
@@ -92,7 +82,7 @@
                     <div class="macro-card">
                         <div class="macro-title">🏖️ Próximos Feriados</div>
                         <ul id="feriados-list" style="margin: 0; padding-left: 20px; color: #cbd5e1; font-size: 0.9em; line-height: 1.6;">
-                            <li>Cargando datos... (Requiere Act. de GitHub)</li>
+                            <li>Cargando datos...</li>
                         </ul>
                     </div>
                 </div>
@@ -100,11 +90,12 @@
                 <div style="background-color: #202c33; padding: 20px; border-radius: 6px; border: 1px solid #2a3942; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h2 style="color: #e0e0e0; margin: 0; font-size: 1.2em;">Panel de Cotizaciones</h2>
-                        <div style="display: flex; align-items: center; gap: 15px; width: 40%;">
-                            <div style="flex: 1; background-color: #111b21; height: 4px; border-radius: 2px; overflow: hidden; border: 1px solid #2a3942;">
+                        
+                        <div style="display: flex; align-items: center; gap: 15px; width: 50%; max-width: 400px;">
+                            <div style="flex: 1; background-color: #111b21; height: 8px; border-radius: 4px; overflow: hidden; border: 1px solid #2a3942;">
                                 <div id="update-progress-bar" style="height: 100%; width: 100%; background-color: #3b82f6; transition: width 1s linear;"></div>
                             </div>
-                            <div id="last-updated-time" style="font-size: 0.8em; color: #9ca3af; white-space: nowrap; font-family: monospace;">Actualizando...</div>
+                            <div id="last-updated-time" style="font-size: 1.1em; color: #cbd5e1; white-space: nowrap; font-family: monospace; font-weight: bold;">Act: --:--:--</div>
                         </div>
                     </div>
                     
@@ -146,9 +137,13 @@
                         </div>
                     </div>
 
-                    <div style="background-color: #111b21; padding: 12px 20px; border-radius: 6px; border: 1px solid #2a3942; margin-top: 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);">
+                    <div style="background-color: #111b21; padding: 12px 20px; border-radius: 6px; border: 1px solid #2a3942; margin-top: 20px; display: flex; align-items: center; justify-content: flex-start; gap: 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);">
                         <div style="color: #cbd5e1; font-weight: bold; font-size: 1.1em;">📉 Riesgo País (JP Morgan)</div>
-                        <div id="rp-val" style="font-size: 1.5em; font-weight: bold; color: #f87171;">...</div>
+                        <div style="display: flex; align-items: baseline; gap: 10px;">
+                            <span id="rp-val" style="font-size: 1.5em; font-weight: bold; color: #e0e0e0;">...</span>
+                            <span id="rp-var" style="font-size: 1em; font-weight: bold;"></span>
+                            <span id="rp-date" style="font-size: 0.8em; color: #6b7280; margin-left: 10px;"></span>
+                        </div>
                     </div>
 
                     <div style="text-align: center; margin-top: 25px;">
@@ -163,27 +158,24 @@
                     <h2 style="color: #e0e0e0; margin: 0 0 20px 0; font-size: 1.2em;">Bandas Cambiarias y Dólar Mayorista</h2>
                     
                     <div style="margin-bottom: 30px; display: flex; flex-direction: column; align-items: center;">
-                        <div style="display: flex; justify-content: space-between; width: 100%; max-width: 320px; color: #9ca3af; font-size: 0.9em; font-weight: bold; margin-bottom: 5px;">
-                            <span id="velocimetro-inf">$0.00</span>
-                            <span id="velocimetro-sup">$0.00</span>
-                        </div>
-                        <div style="position: relative; width: 300px; height: 150px; overflow: hidden;">
+                        <div style="position: relative; width: 300px; height: 150px; overflow: hidden; margin: 0 auto;">
                             <div style="width: 100%; height: 200%; border-radius: 50%; background: conic-gradient(from 270deg at 50% 50%, #10b981 0deg 45deg, #facc15 45deg 135deg, #f97316 135deg 162deg, #ef4444 162deg 180deg, transparent 180deg 360deg);"></div>
                             <div style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 220px; height: 110px; background-color: #202c33; border-radius: 110px 110px 0 0;"></div>
                             <div id="gauge-needle" style="position: absolute; bottom: 0; left: 50%; width: 4px; height: 135px; background-color: #ffffff; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1); border-radius: 4px; box-shadow: 0 0 8px rgba(0,0,0,0.5); z-index: 10;"></div>
                             <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; background-color: #ffffff; border-radius: 50%; z-index: 11; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>
+                            
+                            <span id="velocimetro-inf" style="position: absolute; bottom: 5px; left: 10px; color: #e0e0e0; font-size: 0.9em; font-weight: bold; z-index: 12; text-shadow: 1px 1px 2px #000;">$0.00</span>
+                            <span id="velocimetro-sup" style="position: absolute; bottom: 5px; right: 10px; color: #e0e0e0; font-size: 0.9em; font-weight: bold; z-index: 12; text-shadow: 1px 1px 2px #000;">$0.00</span>
                         </div>
-                        <div style="text-align: center; margin-top: 10px;">
+                        <div style="text-align: center; margin-top: 15px;">
                             <div style="color: #cbd5e1; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px;">Mayorista Actual</div>
-                            <div id="gauge-mayorista-label" style="font-size: 2em; font-weight: bold; color: #fff;">$0.00</div>
+                            <div id="gauge-mayorista-label" style="font-size: 2.2em; font-weight: bold; color: #fff;">$0.00</div>
                         </div>
                     </div>
 
                     <table class="data-table" style="margin-bottom: 15px;">
                         <thead>
-                            <tr>
-                                <th>Estado</th><th>Rango (%)</th><th>Valor mínimo</th><th>Valor máximo</th>
-                            </tr>
+                            <tr><th>Estado</th><th>Rango (%)</th><th>Valor mínimo</th><th>Valor máximo</th></tr>
                         </thead>
                         <tbody>
                             <tr><td><span style="color:#10b981; font-weight:bold;">● Favorable</span></td><td>0 - 25%</td><td id="r-fav-min"></td><td id="r-fav-max"></td></tr>
@@ -295,25 +287,27 @@
                 initChart(symbol);
             };
 
-            // --- LÓGICA MACRO CON FALLBACKS ---
             function renderMacro(macro) {
                 if(!macro) return;
                 
                 // Riesgo País
-                if(macro.riesgo_pais) {
-                    document.getElementById('rp-val').innerText = macro.riesgo_pais;
+                if(macro.riesgo_pais && macro.riesgo_pais.valor) {
+                    document.getElementById('rp-val').innerText = macro.riesgo_pais.valor + ' pts';
+                    let var_rp = macro.riesgo_pais.variacion;
+                    let col_rp = var_rp > 0 ? '#f87171' : (var_rp < 0 ? '#34d399' : '#9ca3af');
+                    let sig_rp = var_rp > 0 ? '+' : '';
+                    document.getElementById('rp-var').innerHTML = `<span style="color: ${col_rp}">${sig_rp}${var_rp}%</span>`;
+                    document.getElementById('rp-date').innerText = `(Ref: ${macro.riesgo_pais.fecha})`;
                 }
 
-                // Feriados (Soporta formato nuevo y el formato viejo para que no se rompa)
+                // Feriados
                 if(macro.holidays && macro.holidays.length > 0) {
                     let html = '';
                     macro.holidays.forEach(h => html += `<li>${h}</li>`);
                     document.getElementById('feriados-list').innerHTML = html;
-                } else if(macro.holiday) {
-                    document.getElementById('feriados-list').innerHTML = `<li>${macro.holiday}</li>`;
                 }
 
-                // Inflación (Soporta la tabla nueva o el dato viejo)
+                // Inflación
                 if(macro.ipc_history && Object.keys(macro.ipc_history).length > 0) {
                     let rows = '';
                     let acum = 1;
@@ -331,13 +325,9 @@
                         document.getElementById('inflacion-table').innerHTML = rows;
                         document.getElementById('inflacion-acum').innerText = `Acumulado: ${((acum - 1)*100).toFixed(2)}%`;
                     }
-                } else if(macro.inflation) {
-                    document.getElementById('inflacion-table').innerHTML = `<tr><td>Último Dato</td><td style="text-align:right; font-weight:bold; color:#34d399;">${macro.inflation}</td></tr>`;
-                    document.getElementById('inflacion-acum').innerText = "";
                 }
             }
 
-            // --- DATOS DE BANDAS ---
             const datosBandas = [
                 { date: "02-01-2026", inf: 914.78, sup: 1529.03 }, { date: "05-01-2026", inf: 912.54, sup: 1532.69 },
                 { date: "06-01-2026", inf: 911.80, sup: 1533.91 }, { date: "07-01-2026", inf: 911.05, sup: 1535.13 },
@@ -397,7 +387,13 @@
                 var ctx = document.getElementById('spreadChart').getContext('2d');
                 window.spreadChartInstance = new Chart(ctx, {
                     type: 'line',
-                    data: { labels: labels, datasets: [{ data: data, borderColor: '#60a5fa', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1 }] },
+                    data: { 
+                        labels: labels, 
+                        datasets: [{ 
+                            data: data, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1,
+                            segment: { borderColor: function(ctx) { return ctx.p0.parsed.y >= 0 ? '#34d399' : '#f87171'; } } // <-- RESTAURADOS COLORES VERDE/ROJO
+                        }] 
+                    },
                     options: {
                         responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } },
                         scales: { 
@@ -405,11 +401,7 @@
                             y: { 
                                 display: true, 
                                 ticks: { color: '#808080' }, 
-                                grid: { 
-                                    // REGLA PARA LA LÍNEA DEL 0% EN BLANCO:
-                                    color: function(ctx) { return ctx.tick.value === 0 ? 'rgba(255, 255, 255, 0.7)' : '#2a3942'; }, 
-                                    lineWidth: function(ctx) { return ctx.tick.value === 0 ? 2 : 1; } 
-                                } 
+                                grid: { color: function(ctx) { return ctx.tick.value === 0 ? 'rgba(255, 255, 255, 0.7)' : '#2a3942'; }, lineWidth: function(ctx) { return ctx.tick.value === 0 ? 2 : 1; } } 
                             } 
                         },
                         interaction: { mode: 'index', intersect: false }
@@ -429,8 +421,7 @@
                 datosBandas.forEach(b => {
                     let parts = b.date.split('-');
                     let bDate = new Date(parts[2], parts[1]-1, parts[0]);
-                    
-                    // REGLA CLAVE: Solo dibujar hasta el día de hoy, nunca futuro
+                    // REGLA: Dibuja sólo hasta el día actual
                     if (bDate <= dToday || b.date === todayStr) {
                         labels.push(b.date); 
                         dataSup.push(b.sup); 
@@ -524,7 +515,7 @@
                     
                     let yV_usdt = yesterdayData ? yesterdayData.usdt : 0;
                     fiatRows += `<tr>
-                        <td style="color:#cbd5e1; display:flex; align-items:center;">USDT <div class="tooltip-container"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">La variación diaria del USDT se calcula contra el precio registrado al cierre del día anterior.</div></div></td>
+                        <td style="color:#cbd5e1; display:flex; align-items:center;">USDT <div class="tooltip-container"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Es el dólar cripto que cotiza las 24 horas TODOS los días. Es el precio para comprar USDT en Binance p2p más aproximado posible sin la opción "comerciantes verificados".</div></div></td>
                         <td style="font-weight:bold;">$${fiatValues.usdt.toLocaleString('es-AR', {minimumFractionDigits: 2})}</td><td>${calcVar(fiatValues.usdt, yV_usdt)}</td><td>${baseCurrency === 'usdt' ? '-' : calcBrecha(fiatValues.usdt)}</td>
                     </tr>`;
                     document.getElementById('fiat-table-body').innerHTML = fiatRows;
@@ -578,7 +569,7 @@
                     }
 
                     const now = new Date();
-                    document.getElementById('last-updated-time').innerText = `Última act: ${now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}`;
+                    document.getElementById('last-updated-time').innerText = `Act: ${now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}`;
                     nextUpdateSecs = 60;
                     if (!progressInterval) {
                         progressInterval = setInterval(() => {
