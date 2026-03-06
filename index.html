@@ -182,8 +182,22 @@
                 </div>
 
                 <h2 style="color: #e0e0e0; margin: 10px 0 0 0; font-size: 1.2em;">Bandas Cambiarias y Dólar Mayorista</h2>
-                <div style="background-color: #202c33; padding: 20px; border-radius: 6px; border: 1px solid #2a3942; text-align: center; color: #9ca3af;">
-                    🚧 Próximamente: Gráfico de Bandas Cambiarias animadas.
+                <div style="background-color: #202c33; padding: 20px; border-radius: 6px; border: 1px solid #2a3942;">
+                    <div style="margin-bottom: 25px; text-align: center;">
+                        <div style="display: flex; justify-content: space-between; color: #9ca3af; font-size: 0.85em; margin-bottom: 5px;">
+                            <span id="banda-inf-actual">Inf: $---</span>
+                            <span style="color: #cbd5e1; font-weight: bold;">Mayorista Actual</span>
+                            <span id="banda-sup-actual">Sup: $---</span>
+                        </div>
+                        <div style="position: relative; height: 24px; background: linear-gradient(90deg, rgba(59,130,246,0.3) 0%, rgba(20,184,166,0.3) 50%, rgba(239,68,68,0.3) 100%); border-radius: 12px; overflow: hidden; border: 1px solid #374151;">
+                            <div id="mayorista-marker" style="position: absolute; top: 0; bottom: 0; width: 4px; background-color: #ffffff; left: 50%; transform: translateX(-50%); box-shadow: 0 0 8px #fff; transition: left 1s ease-in-out;"></div>
+                            <div id="mayorista-label" style="position: absolute; top: 3px; font-size: 0.75em; font-weight: bold; color: #fff; transform: translateX(-50%); text-shadow: 1px 1px 2px #000; left: 50%;">...</div>
+                        </div>
+                    </div>
+
+                    <div style="height: 200px; width: 100%;">
+                        <canvas id="bandasChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -513,6 +527,179 @@
                 });
             }
 
+            // --- DATOS DE BANDAS PRECALCULADOS ---
+            const datosBandas = [
+                { date: "02-01-2026", inf: 914.78, sup: 1529.03 },
+                { date: "05-01-2026", inf: 912.54, sup: 1532.69 },
+                { date: "06-01-2026", inf: 911.80, sup: 1533.91 },
+                { date: "07-01-2026", inf: 911.05, sup: 1535.13 },
+                { date: "08-01-2026", inf: 910.31, sup: 1536.35 },
+                { date: "09-01-2026", inf: 909.57, sup: 1537.58 },
+                { date: "12-01-2026", inf: 907.34, sup: 1541.26 },
+                { date: "13-01-2026", inf: 906.60, sup: 1542.49 },
+                { date: "14-01-2026", inf: 905.86, sup: 1543.71 },
+                { date: "15-01-2026", inf: 905.12, sup: 1544.94 },
+                { date: "16-01-2026", inf: 904.38, sup: 1546.18 },
+                { date: "19-01-2026", inf: 902.17, sup: 1549.88 },
+                { date: "20-01-2026", inf: 901.43, sup: 1551.11 },
+                { date: "21-01-2026", inf: 900.69, sup: 1552.35 },
+                { date: "22-01-2026", inf: 899.96, sup: 1553.58 },
+                { date: "23-01-2026", inf: 899.22, sup: 1554.82 },
+                { date: "26-01-2026", inf: 897.02, sup: 1558.54 },
+                { date: "27-01-2026", inf: 896.29, sup: 1559.78 },
+                { date: "28-01-2026", inf: 895.56, sup: 1561.03 },
+                { date: "29-01-2026", inf: 894.83, sup: 1562.27 },
+                { date: "30-01-2026", inf: 894.10, sup: 1563.51 },
+                { date: "02-02-2026", inf: 891.56, sup: 1567.85 },
+                { date: "03-02-2026", inf: 890.65, sup: 1569.40 },
+                { date: "04-02-2026", inf: 889.75, sup: 1570.95 },
+                { date: "05-02-2026", inf: 888.85, sup: 1572.50 },
+                { date: "06-02-2026", inf: 887.95, sup: 1574.05 },
+                { date: "09-02-2026", inf: 885.25, sup: 1578.71 },
+                { date: "10-02-2026", inf: 884.35, sup: 1580.27 },
+                { date: "11-02-2026", inf: 883.46, sup: 1581.83 },
+                { date: "12-02-2026", inf: 882.56, sup: 1583.39 },
+                { date: "13-02-2026", inf: 881.67, sup: 1584.95 },
+                { date: "18-02-2026", inf: 877.21, sup: 1592.79 },
+                { date: "19-02-2026", inf: 876.32, sup: 1594.36 },
+                { date: "20-02-2026", inf: 875.43, sup: 1595.93 },
+                { date: "23-02-2026", inf: 872.77, sup: 1600.66 },
+                { date: "24-02-2026", inf: 871.88, sup: 1602.24 },
+                { date: "25-02-2026", inf: 871.00, sup: 1603.82 },
+                { date: "26-02-2026", inf: 870.12, sup: 1605.40 },
+                { date: "27-02-2026", inf: 869.24, sup: 1606.99 },
+                { date: "02-03-2026", inf: 866.71, sup: 1611.54 },
+                { date: "03-03-2026", inf: 865.89, sup: 1613.03 },
+                { date: "04-03-2026", inf: 865.06, sup: 1614.52 },
+                { date: "05-03-2026", inf: 864.24, sup: 1616.01 },
+                { date: "06-03-2026", inf: 863.42, sup: 1617.50 },
+                { date: "09-03-2026", inf: 860.97, sup: 1621.98 },
+                { date: "10-03-2026", inf: 860.15, sup: 1623.48 },
+                { date: "11-03-2026", inf: 859.33, sup: 1624.97 },
+                { date: "12-03-2026", inf: 858.52, sup: 1626.47 },
+                { date: "13-03-2026", inf: 857.70, sup: 1627.97 },
+                { date: "16-03-2026", inf: 855.26, sup: 1632.48 },
+                { date: "17-03-2026", inf: 854.45, sup: 1633.99 },
+                { date: "18-03-2026", inf: 853.64, sup: 1635.50 },
+                { date: "19-03-2026", inf: 852.83, sup: 1637.01 },
+                { date: "20-03-2026", inf: 852.02, sup: 1638.52 },
+                { date: "25-03-2026", inf: 847.99, sup: 1646.09 },
+                { date: "26-03-2026", inf: 847.18, sup: 1647.61 },
+                { date: "27-03-2026", inf: 846.38, sup: 1649.13 },
+                { date: "30-03-2026", inf: 843.97, sup: 1653.70 },
+                { date: "31-03-2026", inf: 843.17, sup: 1655.22 }
+            ];
+
+            function renderBandasChart(historicalFiat) {
+                if (!historicalFiat || !datosBandas) return;
+                
+                // Mapear historial del mayorista
+                const mayoristaMap = {};
+                historicalFiat.forEach(d => {
+                    if(d.mayorista) mayoristaMap[d.date] = d.mayorista;
+                });
+
+                // Construir series de datos intersectando fechas
+                let labels = [];
+                let dataSup = [];
+                let dataInf = [];
+                let dataMay = [];
+
+                // Solo dibujamos hasta donde haya datos o la banda proyectada
+                datosBandas.forEach(b => {
+                    labels.push(b.date);
+                    dataSup.push(b.sup);
+                    dataInf.push(b.inf);
+                    dataMay.push(mayoristaMap[b.date] || null); // null si es fecha futura o no hay dato
+                });
+
+                if(window.bandasChartInstance) window.bandasChartInstance.destroy();
+                var ctx = document.getElementById('bandasChart').getContext('2d');
+
+                window.bandasChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Banda Superior', data: dataSup, borderColor: '#ef4444', borderWidth: 2, borderDash: [5, 5],
+                                pointRadius: 0, fill: false, tension: 0.1
+                            },
+                            {
+                                label: 'Banda Inferior', data: dataInf, borderColor: '#3b82f6', borderWidth: 2, borderDash: [5, 5],
+                                pointRadius: 0, fill: '-1', backgroundColor: 'rgba(59,130,246,0.05)', tension: 0.1
+                            },
+                            {
+                                label: 'Mayorista', data: dataMay, borderColor: '#ffffff', borderWidth: 2,
+                                pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { display: true, labels: { color: '#9ca3af', boxWidth: 12, font: {size: 10} } } },
+                        scales: {
+                            x: { display: true, ticks: { color: '#808080', maxTicksLimit: 6 } },
+                            y: { display: true, ticks: { color: '#808080' }, grid: { color: '#2a3942' } }
+                        },
+                        interaction: { mode: 'index', intersect: false }
+                    }
+                });
+
+                // Actualizar el Puntómetro (Gauge) con el dato más reciente
+                actualizarPuntometro();
+            }
+
+            function actualizarPuntometro() {
+                // Encontrar la banda de hoy (o la más cercana anterior si es finde)
+                let dToday = new Date();
+                let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
+                
+                let bandaHoy = datosBandas.find(b => b.date === todayStr);
+                if (!bandaHoy) {
+                    // Fallback burdo: tomar el dato de ayer o el último válido antes de hoy si es finde
+                     bandaHoy = datosBandas.slice().reverse().find(b => {
+                        let parts = b.date.split('-');
+                        let dDate = new Date(parts[2], parts[1]-1, parts[0]);
+                        return dDate <= dToday;
+                     }) || datosBandas[0];
+                }
+
+                document.getElementById('banda-inf-actual').innerText = `Inf: $${bandaHoy.inf.toFixed(2)}`;
+                document.getElementById('banda-sup-actual').innerText = `Sup: $${bandaHoy.sup.toFixed(2)}`;
+
+                // Intentar sacar el mayorista en vivo desde CriptoYa, si no del snapshot
+                fetch("https://criptoya.com/api/dolar")
+                .then(res => res.json())
+                .then(data => {
+                    let may = data.mayorista?.price || data.mayorista || 0;
+                    if(may > 0) moverAguja(may, bandaHoy.inf, bandaHoy.sup);
+                })
+                .catch(() => {
+                   // Si falla la API en vivo, no movemos la aguja o intentamos con snapshot
+                });
+            }
+
+            function moverAguja(mayorista, inf, sup) {
+                let range = sup - inf;
+                let position = ((mayorista - inf) / range) * 100;
+                
+                // Limitar entre 0 y 100 por si se sale de la banda
+                position = Math.max(0, Math.min(100, position));
+
+                let marker = document.getElementById('mayorista-marker');
+                let label = document.getElementById('mayorista-label');
+                
+                marker.style.left = `${position}%`;
+                label.style.left = `${position}%`;
+                label.innerText = `$${mayorista.toLocaleString('es-AR', {minimumFractionDigits: 2})}`;
+                
+                // Cambiar color del texto si se acerca a los bordes para que contraste
+                if(position < 15 || position > 85) {
+                    label.style.textShadow = "1px 1px 2px #000";
+                }
+            }
+
             async function fetchLiveCryptoAndFiat() {
                 try {
                     const [resCrypto, resP2P, resCriptoYaDolar] = await Promise.all([
@@ -676,6 +863,10 @@
                     }
                     if (snapshot && snapshot.historical_fiat) {
                         renderSpreadChart(snapshot.historical_fiat);
+                    }
+                    if (snapshot && snapshot.historical_fiat) {
+                        renderSpreadChart(snapshot.historical_fiat);
+                        renderBandasChart(snapshot.historical_fiat); // <--- NUEVO
                     }
 
                     fetchLiveCryptoAndFiat();
