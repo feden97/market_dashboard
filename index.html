@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,9 +22,9 @@
         .legend { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
         .legend-item { padding: 2px 6px; border-radius: 6px; font-size: 0.75em; color: white; user-select: none; }
         .ticker-table { width: 100%; border-collapse: collapse; font-size: 0.85em; table-layout: fixed; }
-        .ticker-table th:nth-child(3), .ticker-table td:nth-child(3) { width: 59px; padding: 6px 4px; overflow: hidden; }
-        .ticker-table th:nth-child(4), .ticker-table td:nth-child(4) { width: 59px; padding: 6px 4px; overflow: hidden; }
-        .ticker-table th:nth-child(5), .ticker-table td:nth-child(5) { width: 59px; padding: 6px 4px; overflow: hidden; }
+        .ticker-table th:nth-child(3), .ticker-table td:nth-child(3),
+        .ticker-table th:nth-child(4), .ticker-table td:nth-child(4),
+        .ticker-table th:nth-child(5), .ticker-table td:nth-child(5),
         .ticker-table th:nth-child(6), .ticker-table td:nth-child(6) { width: 59px; padding: 6px 4px; overflow: hidden; }
         .ticker-table th:nth-child(10), .ticker-table td:nth-child(10) { width: 110px; padding: 2px 4px; overflow: hidden; }
         .ticker-table thead { position: sticky; z-index: 2; }
@@ -50,7 +50,7 @@
         .value-text { position: relative; z-index: 1; }
         .rs-chart { width: 100%; max-width: 100px; height: 30px; display: block; object-fit: contain; }
         .tradingview-widget-container { flex: 1; min-height: 0; }
-        .key-hint { font-size: 11px; color: #9ca3af; margin-top: 15px; padding: 5px; background-color: #2d3748; border-radius: 3px; position: sticky; bottom: 0; border: 1px solid #444; }
+        .key-hint { font-size: 11px; color: #9ca3af; margin-top: 20px; margin-bottom: 20px; padding: 5px; text-align: center; }
         .long-etf { color: #4ade80; cursor: pointer; text-decoration: underline; }
         .short-etf { color: #f87171; cursor: pointer; text-decoration: underline; }
         .etf-list { white-space: nowrap; font-size: 0.8em; }
@@ -83,7 +83,6 @@
         ::-webkit-scrollbar-track { background: #1a1a1a; }
         ::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 4px; }
         
-        /* Tooltip CSS (Desplegado hacia la derecha para que no se corte) */
         .tooltip-container { position: relative; display: inline-flex; cursor: help; align-items: center; margin-left: 4px; }
         .tooltip-text {
             visibility: hidden; width: 280px; background-color: #1e293b; color: #e2e8f0;
@@ -99,20 +98,22 @@
             border-color: #475569 transparent transparent transparent;
         }
         .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; }
+        
+        .base-select { background-color: #1e293b; color: #a5b4fc; border: 1px solid #4a5568; border-radius: 4px; padding: 2px 4px; font-size: 0.9em; outline: none; cursor: pointer; }
     </style>
 </head>
 <body>
     <div class="ticker-list">
         <div class="column-guide" style="position:relative">
-            <button class="column-guide-btn" type="button">📋 COLUMN GUIDE</button>
+            <button class="column-guide-btn" type="button">📋 GUÍA DE COLUMNAS</button>
             <div class="column-guide-content">
                 <dl>
-                    <dt>Grade</dt>
-                    <dd>ABC rating (A = EMA10 &gt; EMA20 &gt; SMA50 uptrend; B = mixed; C = downtrend).</dd>
-                    <dt>ATRx</dt>
-                    <dd>Distance from SMA50 in ATR units.</dd>
-                    <dt>1M-VARS</dt>
-                    <dd>Volatility Adjusted Relative Strength Stands vs SPY over last 21 days (0–100%).</dd>
+                    <dt>Grade (Calificación)</dt>
+                    <dd>Nota ABC basada en medias móviles. <b>A:</b> Tendencia alcista fuerte (EMA10 &gt; EMA20 &gt; SMA50). <b>B:</b> Transición/Mixto. <b>C:</b> Tendencia bajista clara.</dd>
+                    <dt>ATRx (Distancia ATR)</dt>
+                    <dd>Mide qué tan lejos está el precio actual de su media de 50 días (SMA50), calculado en "unidades de volatilidad" (ATR). Útil para detectar activos sobrecomprados o sobrevendidos.</dd>
+                    <dt>1M-VARS (Fuerza Relativa)</dt>
+                    <dd>Fuerza relativa ajustada por volatilidad contra el índice SPY (0–100%) en los últimos 21 días. Un valor alto indica que la acción es mucho más fuerte que el mercado general.</dd>
                 </dl>
             </div>
         </div>
@@ -132,11 +133,19 @@
                             <tr style="border-bottom: 1px solid #444;">
                                 <th style="padding: 4px; color: #a5b4fc;">Fiat</th>
                                 <th style="padding: 4px; color: #a5b4fc;">Precio</th>
-                                <th style="padding: 4px; color: #a5b4fc;">Brecha</th>
+                                <th style="padding: 4px; color: #a5b4fc; display: flex; align-items: center; gap: 4px;">
+                                    Brecha s/
+                                    <select id="base-currency-select" class="base-select">
+                                        <option value="usdt">USDT</option>
+                                        <option value="oficial">Oficial</option>
+                                        <option value="mep">MEP</option>
+                                        <option value="ccl">CCL</option>
+                                        <option value="blue">Blue</option>
+                                    </select>
+                                </th>
                             </tr>
                         </thead>
-                        <tbody id="fiat-table-body">
-                            </tbody>
+                        <tbody id="fiat-table-body"></tbody>
                     </table>
                 </div>
 
@@ -149,8 +158,7 @@
                                 <th style="padding: 4px; color: #a5b4fc;">Venta a</th>
                             </tr>
                         </thead>
-                        <tbody id="usdt-table-body">
-                            </tbody>
+                        <tbody id="usdt-table-body"></tbody>
                     </table>
                 </div>
             </div>
@@ -158,7 +166,7 @@
             <div id="arg-macro-content" style="margin-top: 10px; border-top: 1px solid #444; padding-top: 8px; color: #cbd5e1; font-size: 0.85em;"></div>
 
             <div style="text-align: center; margin-top: 10px;">
-                <div style="font-size: 0.75em; color: #a5b4fc; margin-bottom: 4px; text-align: left; font-weight: bold;">Spread CCL vs Cripto (YTD)</div>
+                <div id="chart-title" style="font-size: 0.75em; color: #a5b4fc; margin-bottom: 4px; text-align: left; font-weight: bold;">Spread CCL vs USDT (YTD)</div>
                 <div style="height: 120px; width: 100%;">
                     <canvas id="spreadChart"></canvas>
                 </div>
@@ -166,8 +174,9 @@
         </div>
 
         <div id="groups-container"></div>
-        <div class="key-hint">↑ ↓ Use arrow keys to navigate · Data auto-refreshed daily via GitHub Actions · Yahoo Finance</div>
+        <div class="key-hint">↑ ↓ Use arrow keys to navigate · Data auto-refreshed daily via GitHub Actions</div>
     </div>
+    
     <div class="chart-container">
         <div class="tradingview-widget-container">
             <div id="tradingview-chart" style="height:100%;width:100%;"></div>
@@ -425,19 +434,45 @@
             if (e.key === 'ArrowDown') { e.preventDefault(); if (currentIndex < allTickerRows.length - 1) { currentIndex++; updateChart(allTickerRows[currentIndex].getAttribute('data-symbol'), allTickerRows[currentIndex]); } }
             if (e.key === 'ArrowUp')   { e.preventDefault(); if (currentIndex > 0) { currentIndex--; updateChart(allTickerRows[currentIndex].getAttribute('data-symbol'), allTickerRows[currentIndex]); } }
         });
+        
+        // Listener para el selector de Base Currency
+        var baseSelect = document.getElementById('base-currency-select');
+        if (baseSelect) {
+            baseSelect.addEventListener('change', function() {
+                fetchLiveCryptoAndFiat(); // Recalcula la tabla actual
+                if (snapshot && snapshot.historical_fiat) {
+                    renderSpreadChart(snapshot.historical_fiat); // Recalcula el gráfico histórico
+                }
+            });
+        }
     }
 
     // --- LÓGICA DEL PANEL ARGENTINO ---
     let nextUpdateSecs = 60;
     let progressInterval = null;
 
-    function renderSpreadChart(spreadData) {
-        if (!spreadData || spreadData.length === 0) return;
-        var ctx = document.getElementById('spreadChart').getContext('2d');
-        var labels = spreadData.map(function(d) { return d.date; });
-        var data = spreadData.map(function(d) { return d.spread; });
+    function renderSpreadChart(historicalData) {
+        if (!historicalData || historicalData.length === 0) return;
+        var baseCurrency = document.getElementById('base-currency-select').value;
+        var targetCurrency = baseCurrency === 'usdt' ? 'ccl' : 'usdt'; // Si la base es USDT mostramos CCL, sino mostramos USDT
+        
+        document.getElementById('chart-title').innerText = `Spread ${targetCurrency.toUpperCase()} vs ${baseCurrency.toUpperCase()} (YTD)`;
 
-        new Chart(ctx, {
+        var labels = [];
+        var data = [];
+        historicalData.forEach(function(d) {
+            var targetVal = d[targetCurrency];
+            var baseVal = d[baseCurrency];
+            if (targetVal && baseVal && baseVal > 0) {
+                labels.push(d.date);
+                data.push(((targetVal / baseVal) - 1) * 100);
+            }
+        });
+
+        if(window.spreadChartInstance) window.spreadChartInstance.destroy();
+        var ctx = document.getElementById('spreadChart').getContext('2d');
+
+        window.spreadChartInstance = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
@@ -486,71 +521,106 @@
             const p2pData = await resP2P.json();
             const criptoYaDolar = await resCriptoYaDolar.json();
 
-            const exchanges = ['buenbit', 'fiwind', 'lemoncash', 'tiendacrypto'];
-            let exchangeRows = '';
+            // 1. Encontrar los extremos (Más barato comprar, más caro vender)
+            let minCompra = Infinity;
             let maxVenta = 0;
+            const exchanges = ['buenbit', 'fiwind', 'lemoncash', 'tiendacrypto'];
+            let exList = [];
 
             exchanges.forEach(ex => {
                 if(cryptoData[ex]) {
                     const compra_a = cryptoData[ex].totalAsk; 
                     const venta_a = cryptoData[ex].totalBid;  
+                    if(compra_a < minCompra) minCompra = compra_a;
                     if(venta_a > maxVenta) maxVenta = venta_a;
-                    let name = ex === 'lemoncash' ? 'LemonCash' : (ex === 'tiendacrypto' ? 'TiendaCrypto' : ex.charAt(0).toUpperCase() + ex.slice(1));
-                    exchangeRows += `<tr><td style="color:#cbd5e1">${name}</td><td>$${compra_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>$${venta_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>`;
+                    exList.push({id: ex, name: ex === 'lemoncash' ? 'LemonCash' : (ex === 'tiendacrypto' ? 'TiendaCrypto' : ex.charAt(0).toUpperCase() + ex.slice(1)), compra_a, venta_a});
                 }
             });
 
             if(p2pData) {
                 const compra_a = p2pData.totalAsk;
                 const venta_a = p2pData.totalBid;
+                if(compra_a < minCompra) minCompra = compra_a;
                 if(venta_a > maxVenta) maxVenta = venta_a;
-                exchangeRows += `<tr><td style="color:#cbd5e1">BinanceP2P</td><td>$${compra_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>$${venta_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>`;
+                exList.push({id: 'p2p', name: 'BinanceP2P', compra_a, venta_a});
             }
+
+            // 2. Renderizar tabla Exchanges con semáforo
+            let exchangeRows = '';
+            exList.forEach(e => {
+                let styleC = e.compra_a === minCompra ? 'background-color:rgba(239,68,68,0.2); color:#fca5a5; border-radius:4px; padding:2px 4px;' : '';
+                let styleV = e.venta_a === maxVenta ? 'background-color:rgba(74,222,128,0.2); color:#86efac; border-radius:4px; padding:2px 4px;' : '';
+                
+                exchangeRows += `<tr>
+                    <td style="color:#cbd5e1">${e.name}</td>
+                    <td><span style="${styleC}">$${e.compra_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></td>
+                    <td><span style="${styleV}">$${e.venta_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></td>
+                </tr>`;
+            });
             document.getElementById('usdt-table-body').innerHTML = exchangeRows;
 
-            // Función cazadora mejorada para API CriptoYa
+            // 3. Obtener Dólares
             const getDolar = (obj) => {
                 if (!obj) return 0;
                 if (typeof obj === 'number') return obj;
-                if (obj.ask) return obj.ask; // Formato Blue (ask/bid)
-                if (obj.price) return obj.price; // Formato Oficial (price)
-                if (obj.al30) {                  // Formato MEP/CCL
+                if (obj.ask) return obj.ask;
+                if (obj.price) return obj.price;
+                if (obj.al30) {
                     if (obj.al30['48hs'] && obj.al30['48hs'].price) return obj.al30['48hs'].price;
                     if (obj.al30.ci && obj.al30.ci.price) return obj.al30.ci.price;
                 }
                 return 0;
             };
 
-            let ccl = getDolar(criptoYaDolar.ccl);
-            let mep = getDolar(criptoYaDolar.mep);
-            let oficial = getDolar(criptoYaDolar.oficial);
-            let blue = getDolar(criptoYaDolar.blue);
+            const fiatValues = {
+                ccl: getDolar(criptoYaDolar.ccl),
+                mep: getDolar(criptoYaDolar.mep),
+                oficial: getDolar(criptoYaDolar.oficial),
+                blue: getDolar(criptoYaDolar.blue),
+                usdt: maxVenta // El valor máximo de "Venta a"
+            };
+
+            // 4. Calcular Brecha según la Base elegida
+            var baseCurrency = document.getElementById('base-currency-select').value;
+            var basePrice = fiatValues[baseCurrency];
 
             const calcBrecha = (val) => {
-                if(!maxVenta || !val) return "-";
-                const pct = ((val / maxVenta) - 1) * 100;
+                if(!basePrice || !val) return "-";
+                const pct = ((val / basePrice) - 1) * 100;
                 const color = pct >= 0 ? '#4ade80' : '#f87171';
                 return `<span style="color:${color}">${pct > 0 ? '+':''}${pct.toFixed(2)}%</span>`;
             };
 
-            let fiatRows = `
-                <tr><td style="color:#cbd5e1">CCL</td><td>$${ccl.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>${calcBrecha(ccl)}</td></tr>
-                <tr><td style="color:#cbd5e1">MEP</td><td>$${mep.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>${calcBrecha(mep)}</td></tr>
-                <tr><td style="color:#cbd5e1">Oficial</td><td>$${oficial.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>${calcBrecha(oficial)}</td></tr>
-                <tr><td style="color:#cbd5e1">Blue</td><td>$${blue.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>${calcBrecha(blue)}</td></tr>
+            let fiatRows = '';
+            ['ccl', 'mep', 'oficial', 'blue'].forEach(f => {
+                let isBase = (f === baseCurrency);
+                let name = f === 'oficial' ? 'Oficial' : f === 'blue' ? 'Blue' : f.toUpperCase();
+                fiatRows += `
+                    <tr>
+                        <td style="color:#cbd5e1; ${isBase ? 'font-weight:bold;' : ''}">${name}</td>
+                        <td style="${isBase ? 'font-weight:bold; color:#a5b4fc' : ''}">$${fiatValues[f].toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                        <td>${isBase ? '-' : calcBrecha(fiatValues[f])}</td>
+                    </tr>`;
+            });
+            
+            // Fila de USDT con Tooltip
+            let isUsdtBase = (baseCurrency === 'usdt');
+            fiatRows += `
                 <tr style="border-top: 1px solid #444;">
-                    <td style="font-weight:bold; color:#a5b4fc; display:flex; align-items:center;">
+                    <td style="color:#cbd5e1; display:flex; align-items:center; ${isUsdtBase ? 'font-weight:bold;' : ''}">
                         USDT 
                         <div class="tooltip-container">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                            <div class="tooltip-text">Es el dólar cripto que cotiza las 24 horas TODOS los días. Es el precio para comprar USDT en Binance p2p más aproximado posible sin la opción "comerciantes verificados".</div>
+                            <div class="tooltip-text">Es el dólar cripto que cotiza las 24 horas TODOS los días. Es el precio más alto para vender USDT en Binance p2p (sin opción "comerciantes verificados") o exchanges.</div>
                         </div>
                     </td>
-                    <td style="font-weight:bold; color:#a5b4fc" colspan="2">$${maxVenta.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td style="${isUsdtBase ? 'font-weight:bold; color:#a5b4fc' : ''}">$${fiatValues.usdt.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td>${isUsdtBase ? '-' : calcBrecha(fiatValues.usdt)}</td>
                 </tr>
             `;
             document.getElementById('fiat-table-body').innerHTML = fiatRows;
 
+            // 5. Progreso
             const now = new Date();
             document.getElementById('last-updated-time').innerText = `Última act: ${now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
             
@@ -585,8 +655,8 @@
                 if (m.holiday) html += '<strong style="color: #fca5a5;">Feriado:</strong> ' + m.holiday;
                 document.getElementById('arg-macro-content').innerHTML = html;
             }
-            if (snapshot && snapshot.spread_data) {
-                renderSpreadChart(snapshot.spread_data);
+            if (snapshot && snapshot.historical_fiat) {
+                renderSpreadChart(snapshot.historical_fiat);
             }
 
             fetchLiveCryptoAndFiat();
