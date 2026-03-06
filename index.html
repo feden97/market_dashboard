@@ -23,19 +23,18 @@
         .nav-tab.active::after { content: ""; position: absolute; bottom: -1px; left: 0; right: 0; height: 3px; background-color: #60a5fa; border-radius: 3px 3px 0 0; }
 
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        /* ARREGLO DEL SCROLL: Ahora el tab-pane maneja el scroll completo */
         .tab-pane { display: none; height: 100%; width: 100%; overflow-y: auto; padding-bottom: 40px; }
         .tab-pane.active { display: block; }
         
-        /* DISEÑO ANCHO (Pantalla completa pero con márgenes sanos) */
+        /* Panel Ancho para aprovechar el monitor */
         .panel-ancho { width: 100%; max-width: 1400px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
 
-        /* Tarjetas Macro */
-        .macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+        /* Tarjetas Macro Arriba */
+        .macro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 768px) { .macro-grid { grid-template-columns: 1fr; } }
         .macro-card { background-color: #202c33; padding: 15px; border-radius: 6px; border: 1px solid #2a3942; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); }
         .macro-title { color: #a5b4fc; font-size: 0.85em; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; border-bottom: 1px solid #2a3942; padding-bottom: 5px; }
         
-        /* Tablas rediseñadas */
         .data-table { width: 100%; border-collapse: collapse; text-align: left; color: #e0e0e0; font-size: 0.9em; }
         .data-table th, .data-table td { padding: 8px 10px; border: 1px solid #2a3942; }
         .data-table th { background-color: #1a242b; color: #a5b4fc; }
@@ -54,6 +53,7 @@
         .ticker-row:hover { background-color: #2a3942; }
         .ticker-row.active { background-color: #374151; }
         .tradingview-widget-container { flex: 1; min-height: 0; height: 100%; }
+        
         .tooltip-container { position: relative; display: inline-flex; cursor: help; align-items: center; margin-left: 4px; }
         .tooltip-text { visibility: hidden; width: 280px; background-color: #202c33; color: #e2e8f0; text-align: left; border-radius: 6px; padding: 10px; position: absolute; z-index: 9999; bottom: 150%; left: 0; opacity: 0; transition: opacity 0.3s; border: 1px solid #2a3942; box-shadow: 0 4px 6px rgba(0,0,0,0.5); font-size: 12px; line-height: 1.5; white-space: normal; }
         .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 15px; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #2a3942 transparent transparent transparent; }
@@ -62,7 +62,6 @@
         
         .badge-green { background-color: rgba(16,185,129,0.15); color: #34d399; border-radius: 4px; padding: 2px 6px; font-weight: bold; border: 1px solid rgba(16,185,129,0.3); }
         
-        /* Flex grid para las tablas centrales */
         .tables-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         @media (max-width: 900px) { .tables-grid { grid-template-columns: 1fr; } }
     </style>
@@ -83,14 +82,9 @@
                 
                 <div class="macro-grid">
                     <div class="macro-card">
-                        <div class="macro-title">📉 Riesgo País</div>
-                        <div id="rp-val" style="font-size: 2em; font-weight: bold; color: #f87171;">Cargando...</div>
-                    </div>
-                    
-                    <div class="macro-card">
                         <div class="macro-title">🛒 Inflación 2026</div>
                         <table class="data-table" style="font-size: 0.8em; margin-bottom: 5px;">
-                            <tbody id="inflacion-table"><tr><td>Cargando...</td></tr></tbody>
+                            <tbody id="inflacion-table"><tr><td>Cargando datos... (Requiere Act. de GitHub)</td></tr></tbody>
                         </table>
                         <div style="text-align: right; color: #cbd5e1; font-weight: bold; font-size: 0.9em;" id="inflacion-acum">Acumulado: --</div>
                     </div>
@@ -98,7 +92,7 @@
                     <div class="macro-card">
                         <div class="macro-title">🏖️ Próximos Feriados</div>
                         <ul id="feriados-list" style="margin: 0; padding-left: 20px; color: #cbd5e1; font-size: 0.9em; line-height: 1.6;">
-                            <li>Cargando...</li>
+                            <li>Cargando datos... (Requiere Act. de GitHub)</li>
                         </ul>
                     </div>
                 </div>
@@ -120,7 +114,7 @@
                                 <thead>
                                     <tr>
                                         <th>Fiat</th>
-                                        <th>Precio Live</th>
+                                        <th>Precio</th>
                                         <th>Var. Diaria</th>
                                         <th style="display: flex; align-items: center; justify-content: space-between; border: none;">
                                             Brecha s/
@@ -142,14 +136,19 @@
                             <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <th>Exchange (USDT)</th>
-                                        <th>Compra a</th>
-                                        <th>Venta a</th>
+                                        <th style="padding: 8px 10px;">Exchange (USDT)</th>
+                                        <th style="padding: 8px 10px; text-align: center;">Compra a</th>
+                                        <th style="padding: 8px 10px; text-align: center;">Venta a</th>
                                     </tr>
                                 </thead>
                                 <tbody id="usdt-table-body"></tbody>
                             </table>
                         </div>
+                    </div>
+
+                    <div style="background-color: #111b21; padding: 12px 20px; border-radius: 6px; border: 1px solid #2a3942; margin-top: 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);">
+                        <div style="color: #cbd5e1; font-weight: bold; font-size: 1.1em;">📉 Riesgo País (JP Morgan)</div>
+                        <div id="rp-val" style="font-size: 1.5em; font-weight: bold; color: #f87171;">...</div>
                     </div>
 
                     <div style="text-align: center; margin-top: 25px;">
@@ -296,19 +295,26 @@
                 initChart(symbol);
             };
 
-            // --- LÓGICA MACRO ---
+            // --- LÓGICA MACRO CON FALLBACKS ---
             function renderMacro(macro) {
                 if(!macro) return;
                 
-                if(macro.riesgo_pais) document.getElementById('rp-val').innerText = macro.riesgo_pais;
-                
+                // Riesgo País
+                if(macro.riesgo_pais) {
+                    document.getElementById('rp-val').innerText = macro.riesgo_pais;
+                }
+
+                // Feriados (Soporta formato nuevo y el formato viejo para que no se rompa)
                 if(macro.holidays && macro.holidays.length > 0) {
                     let html = '';
                     macro.holidays.forEach(h => html += `<li>${h}</li>`);
                     document.getElementById('feriados-list').innerHTML = html;
+                } else if(macro.holiday) {
+                    document.getElementById('feriados-list').innerHTML = `<li>${macro.holiday}</li>`;
                 }
 
-                if(macro.ipc_history) {
+                // Inflación (Soporta la tabla nueva o el dato viejo)
+                if(macro.ipc_history && Object.keys(macro.ipc_history).length > 0) {
                     let rows = '';
                     let acum = 1;
                     const months = {'01':'Ene', '02':'Feb', '03':'Mar', '04':'Abr', '05':'May', '06':'Jun', '07':'Jul', '08':'Ago', '09':'Sep', '10':'Oct', '11':'Nov', '12':'Dic'};
@@ -325,13 +331,13 @@
                         document.getElementById('inflacion-table').innerHTML = rows;
                         document.getElementById('inflacion-acum').innerText = `Acumulado: ${((acum - 1)*100).toFixed(2)}%`;
                     }
+                } else if(macro.inflation) {
+                    document.getElementById('inflacion-table').innerHTML = `<tr><td>Último Dato</td><td style="text-align:right; font-weight:bold; color:#34d399;">${macro.inflation}</td></tr>`;
+                    document.getElementById('inflacion-acum').innerText = "";
                 }
             }
 
-            // --- LÓGICA DEL PANEL ARGENTINO ---
-            let nextUpdateSecs = 60;
-            let progressInterval = null;
-
+            // --- DATOS DE BANDAS ---
             const datosBandas = [
                 { date: "02-01-2026", inf: 914.78, sup: 1529.03 }, { date: "05-01-2026", inf: 912.54, sup: 1532.69 },
                 { date: "06-01-2026", inf: 911.80, sup: 1533.91 }, { date: "07-01-2026", inf: 911.05, sup: 1535.13 },
@@ -365,6 +371,9 @@
                 { date: "31-03-2026", inf: 843.17, sup: 1655.22 }
             ];
 
+            let nextUpdateSecs = 60;
+            let progressInterval = null;
+
             function renderSpreadChart(historicalData) {
                 if (!historicalData || historicalData.length === 0) return;
                 let dToday = new Date();
@@ -391,7 +400,18 @@
                     data: { labels: labels, datasets: [{ data: data, borderColor: '#60a5fa', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1 }] },
                     options: {
                         responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } },
-                        scales: { x: { display: true, ticks: { color: '#808080', maxTicksLimit: 6 } }, y: { display: true, ticks: { color: '#808080' }, grid: { color: '#2a3942' } } },
+                        scales: { 
+                            x: { display: true, ticks: { color: '#808080', maxTicksLimit: 6 } }, 
+                            y: { 
+                                display: true, 
+                                ticks: { color: '#808080' }, 
+                                grid: { 
+                                    // REGLA PARA LA LÍNEA DEL 0% EN BLANCO:
+                                    color: function(ctx) { return ctx.tick.value === 0 ? 'rgba(255, 255, 255, 0.7)' : '#2a3942'; }, 
+                                    lineWidth: function(ctx) { return ctx.tick.value === 0 ? 2 : 1; } 
+                                } 
+                            } 
+                        },
                         interaction: { mode: 'index', intersect: false }
                     }
                 });
@@ -401,9 +421,22 @@
                 if (!historicalFiat) return;
                 const mayoristaMap = {};
                 historicalFiat.forEach(d => { if(d.mayorista) mayoristaMap[d.date] = d.mayorista; });
+                
                 let labels = [], dataSup = [], dataInf = [], dataMay = [];
+                let dToday = new Date();
+                let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
+                
                 datosBandas.forEach(b => {
-                    labels.push(b.date); dataSup.push(b.sup); dataInf.push(b.inf); dataMay.push(mayoristaMap[b.date] || null);
+                    let parts = b.date.split('-');
+                    let bDate = new Date(parts[2], parts[1]-1, parts[0]);
+                    
+                    // REGLA CLAVE: Solo dibujar hasta el día de hoy, nunca futuro
+                    if (bDate <= dToday || b.date === todayStr) {
+                        labels.push(b.date); 
+                        dataSup.push(b.sup); 
+                        dataInf.push(b.inf); 
+                        dataMay.push(mayoristaMap[b.date] || null);
+                    }
                 });
 
                 if(window.bandasChartInstance) window.bandasChartInstance.destroy();
@@ -427,7 +460,6 @@
                     const [resCrypto, resP2P, resCriptoYaDolar] = await Promise.all([ fetch("https://criptoya.com/api/usdt/ars/0.1"), fetch("https://criptoya.com/api/binancep2p/usdt/ars/0.1"), fetch("https://criptoya.com/api/dolar") ]);
                     const cryptoData = await resCrypto.json(); const p2pData = await resP2P.json(); const criptoYaDolar = await resCriptoYaDolar.json();
 
-                    // Buscar datos de ayer para Variación Diaria
                     let yesterdayData = null;
                     if (snapshot && snapshot.historical_fiat) {
                         let dToday = new Date();
@@ -462,7 +494,11 @@
                     exList.forEach(e => {
                         let isMin = e.compra_a === minCompra; let isMax = e.venta_a === maxVenta;
                         let styleC = isMin ? 'badge-green' : ''; let styleV = isMax ? 'badge-green' : '';
-                        exchangeRows += `<tr><td>${e.name}</td><td><span class="${styleC}">$${e.compra_a.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></td><td><span class="${styleV}">$${e.venta_a.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></td></tr>`;
+                        exchangeRows += `<tr>
+                            <td>${e.name}</td>
+                            <td style="text-align: center;"><span class="${styleC}">$${e.compra_a.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></td>
+                            <td style="text-align: center;"><span class="${styleV}">$${e.venta_a.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></td>
+                        </tr>`;
                     });
                     document.getElementById('usdt-table-body').innerHTML = exchangeRows;
 
@@ -483,7 +519,7 @@
                     let fiatRows = '';
                     ['ccl', 'mep', 'oficial', 'blue'].forEach(f => {
                         let yV = yesterdayData ? yesterdayData[f] : 0;
-                        fiatRows += `<tr><td style="color:#cbd5e1;">${f.toUpperCase()}</td><td style="font-weight:bold;">$${fiatValues[f].toLocaleString('es-AR', {minimumFractionDigits: 2})}</td><td>${calcVar(fiatValues[f], yV)}</td><td>${f === baseCurrency ? '-' : calcBrecha(fiatValues[f])}</td></tr>`;
+                        fiatRows += `<tr><td style="color:#cbd5e1; text-transform: uppercase;">${f}</td><td style="font-weight:bold;">$${fiatValues[f].toLocaleString('es-AR', {minimumFractionDigits: 2})}</td><td>${calcVar(fiatValues[f], yV)}</td><td>${f === baseCurrency ? '-' : calcBrecha(fiatValues[f])}</td></tr>`;
                     });
                     
                     let yV_usdt = yesterdayData ? yesterdayData.usdt : 0;
@@ -529,9 +565,14 @@
                         document.getElementById('diff-inf').innerHTML = `El dólar debería <b>bajar ${fmt(dI)} (-${pI.toFixed(2)}%)</b> para la banda inferior`;
 
                         if(window.bandasChartInstance) {
-                            let bChart = window.bandasChartInstance; let mData = bChart.data.datasets[2].data;
-                            if(bChart.data.labels[bChart.data.labels.length - 1] === todayStrB) { mData[mData.length - 1] = may; } 
-                            else { bChart.data.labels.push(todayStrB); bChart.data.datasets[0].data.push(sup); bChart.data.datasets[1].data.push(inf); mData.push(may); }
+                            let bChart = window.bandasChartInstance; 
+                            let mData = bChart.data.datasets[2].data;
+                            let labels = bChart.data.labels;
+                            if(labels.length > 0 && labels[labels.length - 1] === todayStrB) { 
+                                mData[mData.length - 1] = may; 
+                            } else if (labels.length > 0) { 
+                                labels.push(todayStrB); bChart.data.datasets[0].data.push(sup); bChart.data.datasets[1].data.push(inf); mData.push(may); 
+                            }
                             bChart.update('none');
                         }
                     }
