@@ -111,15 +111,15 @@
         ::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 4px; }
         .tooltip-container { position: relative; display: inline-flex; cursor: help; align-items: center; margin-left: 4px; }
         .tooltip-text {
-            visibility: hidden; width: 280px; background-color: #1e293b; color: #e2e8f0;
+            visibility: hidden; width: 260px; background-color: #1e293b; color: #e2e8f0;
             text-align: left; border-radius: 6px; padding: 10px; position: absolute;
-            z-index: 10; bottom: 150%; left: 50%; transform: translateX(-50%);
+            z-index: 9999; bottom: 150%; left: 0; transform: none;
             opacity: 0; transition: opacity 0.3s; border: 1px solid #475569;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3); font-weight: normal; font-size: 12px;
             line-height: 1.5; white-space: normal;
         }
         .tooltip-text::after {
-            content: ""; position: absolute; top: 100%; left: 50%;
+            content: ""; position: absolute; top: 100%; left: 15px;
             margin-left: -5px; border-width: 5px; border-style: solid;
             border-color: #475569 transparent transparent transparent;
         }
@@ -128,10 +128,6 @@
 </head>
 <body>
     <div class="ticker-list">
-        <div class="economic-events" style="position:relative">
-            <button class="events-button">📅 MACRO EVENTS</button>
-            <div class="events-content" id="events-content"></div>
-        </div>
        <div id="arg-data-panel" style="margin-bottom: 10px; background-color: #2d3748; padding: 10px; border-radius: 4px; border: 1px solid #4a5568; font-size: 0.85em;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                 <div style="flex: 1; margin-right: 15px; background-color: #1a1a1a; height: 3px; border-radius: 2px; overflow: hidden;">
@@ -492,11 +488,10 @@
                     label: 'Spread (%)',
                     data: data,
                     borderWidth: 2,
-                    pointRadius: 1,
-                    pointHoverRadius: 5,
+                    pointRadius: 0,       // <--- ESTO OCULTA LOS PUNTITOS FIJOS
+                    pointHoverRadius: 5,  // <--- ESTO LOS MUESTRA AL PASAR EL MOUSE
                     fill: false,
                     tension: 0.1,
-                    // MAGIA: Pinta verde si es >= 0, rojo si es < 0
                     segment: {
                         borderColor: function(ctx) { return ctx.p0.parsed.y >= 0 ? '#4ade80' : '#f87171'; }
                     }
@@ -512,7 +507,6 @@
                         display: true, 
                         ticks: { color: '#808080' }, 
                         grid: { 
-                            // Resalta la línea del 0 en blanco brillante, el resto oscuras
                             color: function(ctx) { return ctx.tick.value === 0 ? 'rgba(255, 255, 255, 0.4)' : '#333'; },
                             lineWidth: function(ctx) { return ctx.tick.value === 0 ? 2 : 1; }
                         } 
@@ -525,15 +519,13 @@
 
     async function fetchLiveCryptoAndFiat() {
         try {
-            // Traemos DolarAPI y dos endpoints de CriptoYa
-            const [resDolar, resCrypto, resP2P, resCriptoYaDolar] = await Promise.all([
-                fetch("https://dolarapi.com/v1/dolares"),
+            // Ya no consultamos DolarAPI, solo CriptoYa para TODO
+            const [resCrypto, resP2P, resCriptoYaDolar] = await Promise.all([
                 fetch("https://criptoya.com/api/usdt/ars/0.1"),
                 fetch("https://criptoya.com/api/binancep2p/usdt/ars/0.1"),
                 fetch("https://criptoya.com/api/dolar")
             ]);
 
-            const dolarData = await resDolar.json();
             const cryptoData = await resCrypto.json();
             const p2pData = await resP2P.json();
             const criptoYaDolar = await resCriptoYaDolar.json();
@@ -541,43 +533,84 @@
             // 1. Procesar Exchanges (Cálculo del Venta A más alto = totalBid)
             const exchanges = ['buenbit', 'fiwind', 'lemoncash', 'tiendacrypto'];
             let exchangeRows = '';
-            let maxBid = 0; // Guardamos el valor más alto que nos compran (Venta a)
+            let maxVenta = 0; 
 
             exchanges.forEach(ex => {
                 if(cryptoData[ex]) {
-                    const bid = cryptoData[ex].totalBid;
-                    const ask = cryptoData[ex].totalAsk;
-                    if(bid > maxBid) maxBid = bid; 
+                    const compra_a = cryptoData[ex].totalAsk; 
+                    const venta_a = cryptoData[ex].totalBid;  
+                    if(venta_a > maxVenta) maxVenta = venta_a;
                     let name = ex === 'lemoncash' ? 'LemonCash' : (ex === 'tiendacrypto' ? 'TiendaCrypto' : ex.charAt(0).toUpperCase() + ex.slice(1));
-                    exchangeRows += `<tr><td style="color:#cbd5e1">${name}</td><td>$${ask.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>$${bid.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>`;
+                    exchangeRows += `<tr><td style="color:#cbd5e1">${name}</td><td>$${compra_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>$${venta_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>`;
                 }
             });
 
             if(p2pData) {
-                const bid = p2pData.totalBid;
-                const ask = p2pData.totalAsk;
-                if(bid > maxBid) maxBid = bid;
-                exchangeRows += `<tr><td style="color:#cbd5e1">BinanceP2P</td><td>$${ask.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>$${bid.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>`;
+                const compra_a = p2pData.totalAsk;
+                const venta_a = p2pData.totalBid;
+                if(venta_a > maxVenta) maxVenta = venta_a;
+                exchangeRows += `<tr><td style="color:#cbd5e1">BinanceP2P</td><td>$${compra_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>$${venta_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>`;
             }
             document.getElementById('usdt-table-body').innerHTML = exchangeRows;
 
-            // 2. Procesar Dólares (MEP y CCL desde CriptoYa para tiempo real puro)
-            let ccl = criptoYaDolar.ccl;
-            let mep = criptoYaDolar.mep;
-            let oficial = 0, blue = 0;
-            
-            dolarData.forEach(d => {
-                if(d.casa === 'oficial') oficial = d.venta;
-                if(d.casa === 'blue') blue = d.venta;
-            });
+            // 2. Función cazadora de precios (porque CriptoYa los esconde distinto)
+            const getDolar = (obj) => {
+                if (!obj) return 0;
+                if (typeof obj === 'number') return obj;
+                if (obj.price) return obj.price; // Para Oficial y Blue
+                if (obj.al30) {                  // Para MEP y CCL
+                    if (obj.al30['48hs']) return obj.al30['48hs'].price;
+                    if (obj.al30.ci) return obj.al30.ci.price;
+                }
+                return 0;
+            };
+
+            let ccl = getDolar(criptoYaDolar.ccl);
+            let mep = getDolar(criptoYaDolar.mep);
+            let oficial = getDolar(criptoYaDolar.oficial);
+            let blue = getDolar(criptoYaDolar.blue);
 
             const calcBrecha = (val) => {
-                if(!maxBid || !val) return "-";
-                const pct = ((val / maxBid) - 1) * 100;
+                if(!maxVenta || !val) return "-";
+                const pct = ((val / maxVenta) - 1) * 100;
                 const color = pct >= 0 ? '#4ade80' : '#f87171';
                 return `<span style="color:${color}">${pct > 0 ? '+':''}${pct.toFixed(2)}%</span>`;
             };
 
+            let fiatRows = `
+                <tr><td style="color:#cbd5e1">CCL</td><td>$${ccl.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>${calcBrecha(ccl)}</td></tr>
+                <tr><td style="color:#cbd5e1">MEP</td><td>$${mep.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>${calcBrecha(mep)}</td></tr>
+                <tr><td style="color:#cbd5e1">Oficial</td><td>$${oficial.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>${calcBrecha(oficial)}</td></tr>
+                <tr><td style="color:#cbd5e1">Blue</td><td>$${blue.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>${calcBrecha(blue)}</td></tr>
+                <tr style="border-top: 1px solid #444;">
+                    <td style="font-weight:bold; color:#a5b4fc; display:flex; align-items:center;">
+                        USDT 
+                        <div class="tooltip-container">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                            <div class="tooltip-text">Es el dólar cripto que cotiza las 24 horas TODOS los días. Es el precio para comprar USDT en Binance p2p más aproximado posible sin la opción "comerciantes verificados".</div>
+                        </div>
+                    </td>
+                    <td style="font-weight:bold; color:#a5b4fc" colspan="2">$${maxVenta.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                </tr>
+            `;
+            document.getElementById('fiat-table-body').innerHTML = fiatRows;
+
+            const now = new Date();
+            document.getElementById('last-updated-time').innerText = `Última act: ${now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
+            
+            nextUpdateSecs = 60;
+            if (!progressInterval) {
+                progressInterval = setInterval(function() {
+                    nextUpdateSecs--;
+                    if(nextUpdateSecs < 0) nextUpdateSecs = 0;
+                    document.getElementById('update-progress-bar').style.width = ((nextUpdateSecs / 60) * 100) + '%';
+                }, 1000);
+            }
+        } catch (error) {
+            console.error("Error consultando APIs en vivo", error);
+            document.getElementById('last-updated-time').innerText = "Error de conexión en vivo";
+        }
+    }
             // Construimos la tabla de dólares
             let fiatRows = `
                 <tr><td style="color:#cbd5e1">CCL</td><td>$${ccl.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>${calcBrecha(ccl)}</td></tr>
