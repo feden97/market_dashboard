@@ -108,12 +108,20 @@
             <button class="column-guide-btn" type="button">📋 GUÍA DE COLUMNAS</button>
             <div class="column-guide-content">
                 <dl>
-                    <dt>Grade (Calificación)</dt>
-                    <dd>Nota ABC basada en medias móviles. <b>A:</b> Tendencia alcista fuerte (EMA10 &gt; EMA20 &gt; SMA50). <b>B:</b> Transición/Mixto. <b>C:</b> Tendencia bajista clara.</dd>
-                    <dt>ATRx (Distancia ATR)</dt>
-                    <dd>Mide qué tan lejos está el precio actual de su media de 50 días (SMA50), calculado en "unidades de volatilidad" (ATR). Útil para detectar activos sobrecomprados o sobrevendidos.</dd>
-                    <dt>1M-VARS (Fuerza Relativa)</dt>
-                    <dd>Fuerza relativa ajustada por volatilidad contra el índice SPY (0–100%) en los últimos 21 días. Un valor alto indica que la acción es mucho más fuerte que el mercado general.</dd>
+                    <dt>Grade (Calificación ABC)</dt>
+                    <dd>Tendencia basada en cruces de medias móviles. <br><b>A:</b> Tendencia alcista clara (precio sobre medias cortas y largas). <br><b>B:</b> Transición o lateralización. <br><b>C:</b> Tendencia bajista (precio por debajo de las medias).</dd>
+
+                    <dt>ATR% (Volatilidad Diaria)</dt>
+                    <dd>Muestra cuánto fluctúa el precio en promedio por día. <br><b>• Menor a 2%:</b> Baja volatilidad (muy estable).<br><b>• Entre 2% y 5%:</b> Volatilidad media (movimiento normal del mercado).<br><b>• Mayor a 5%:</b> Alta volatilidad (movimientos bruscos, mayor riesgo).</dd>
+
+                    <dt>ATRx (Distancia a la Media)</dt>
+                    <dd>Mide si el activo subió o bajó demasiado rápido respecto a su media de 50 días (SMA50). <br><b>• Mayor a +2.0:</b> Sobrecomprada (subió muy rápido, alerta de posible corrección).<br><b>• Entre -1.0 y +1.0:</b> Zona de precio "normal" o de descanso.<br><b>• Menor a -2.0:</b> Sobrevendida (cayó demasiado, alerta de posible rebote).</dd>
+
+                    <dt>1M-VARS (Fuerza Relativa Numérica)</dt>
+                    <dd>Compara qué tan fuerte es la acción frente al índice SPY en una escala de 0 a 100%. <br><b>• Mayor a 75%:</b> Líder del mercado (muy fuerte).<br><b>• Entre 30% y 75%:</b> Rendimiento promedio.<br><b>• Menor a 30%:</b> Rezagada (muy débil respecto al resto).</dd>
+                    
+                    <dt>VARS (Gráfico de Fuerza Relativa)</dt>
+                    <dd>Es la representación visual del indicador anterior. Muestra la evolución de la Fuerza Relativa en los últimos 20 días. La barra verde brillante indica el día de mayor fuerza reciente. Es ideal para ver rápidamente si la acción está ganando o perdiendo impulso direccional.</dd>
                 </dl>
             </div>
         </div>
@@ -174,7 +182,7 @@
         </div>
 
         <div id="groups-container"></div>
-        <div class="key-hint">↑ ↓ Use arrow keys to navigate · Data auto-refreshed daily via GitHub Actions</div>
+        <div class="key-hint">↑ ↓ Usa las flechas del teclado para navegar · Las acciones y CEDEARs se actualizan mediante GitHub Actions al cierre del mercado</div>
     </div>
     
     <div class="chart-container">
@@ -453,10 +461,12 @@
 
     function renderSpreadChart(historicalData) {
         if (!historicalData || historicalData.length === 0) return;
-        var baseCurrency = document.getElementById('base-currency-select').value;
-        var targetCurrency = baseCurrency === 'usdt' ? 'ccl' : 'usdt'; // Si la base es USDT mostramos CCL, sino mostramos USDT
         
-        document.getElementById('chart-title').innerText = `Spread ${targetCurrency.toUpperCase()} vs ${baseCurrency.toUpperCase()} (YTD)`;
+        var baseCurrency = document.getElementById('base-currency-select').value;
+        var targetCurrency = 'ccl'; // FIJADO: Siempre comparamos el CCL contra la base elegida
+        
+        var baseTitle = baseCurrency === 'oficial' ? 'Oficial' : baseCurrency === 'blue' ? 'Blue' : baseCurrency.toUpperCase();
+        document.getElementById('chart-title').innerText = `Spread CCL vs ${baseTitle} (YTD)`;
 
         var labels = [];
         var data = [];
@@ -545,19 +555,22 @@
                 exList.push({id: 'p2p', name: 'BinanceP2P', compra_a, venta_a});
             }
 
-            // 2. Renderizar tabla Exchanges con semáforo
+            // 2. Renderizar tabla Exchanges con semáforo ALINEADO
             let exchangeRows = '';
             exList.forEach(e => {
-                let styleC = e.compra_a === minCompra ? 'background-color:rgba(239,68,68,0.2); color:#fca5a5; border-radius:4px; padding:2px 4px;' : '';
-                let styleV = e.venta_a === maxVenta ? 'background-color:rgba(74,222,128,0.2); color:#86efac; border-radius:4px; padding:2px 4px;' : '';
+                let isMin = e.compra_a === minCompra;
+                let isMax = e.venta_a === maxVenta;
+                
+                let styleC = isMin ? 'background-color:rgba(239,68,68,0.2); color:#fca5a5;' : 'color:#e0e0e0;';
+                let styleV = isMax ? 'background-color:rgba(74,222,128,0.2); color:#86efac;' : 'color:#e0e0e0;';
+                let baseStyle = 'border-radius:4px; padding:2px 4px; display:inline-block; min-width: 75px;';
                 
                 exchangeRows += `<tr>
                     <td style="color:#cbd5e1">${e.name}</td>
-                    <td><span style="${styleC}">$${e.compra_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></td>
-                    <td><span style="${styleV}">$${e.venta_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></td>
+                    <td><span style="${baseStyle} ${styleC}">$${e.compra_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></td>
+                    <td><span style="${baseStyle} ${styleV}">$${e.venta_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></td>
                 </tr>`;
             });
-            document.getElementById('usdt-table-body').innerHTML = exchangeRows;
 
             // 3. Obtener Dólares
             const getDolar = (obj) => {
