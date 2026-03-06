@@ -572,6 +572,8 @@
                 </tr>`;
             });
 
+            document.getElementById('usdt-table-body').innerHTML = exchangeRows;
+
             // 3. Obtener Dólares
             const getDolar = (obj) => {
                 if (!obj) return 0;
