@@ -125,7 +125,75 @@
         <div id="tab-argentina" class="tab-pane active">
             <div class="panel-centrado">
                 
-                <h2 style="color: #e0e0e0; margin: 0; font-size: 1.2em;">Cotizaciones de Moneda Extranjera</h2>
+                <h2 style="color: #e0e0e0; margin: 10px 0 0 0; font-size: 1.2em;">Bandas Cambiarias y Dólar Mayorista</h2>
+                <div style="background-color: #202c33; padding: 20px; border-radius: 6px; border: 1px solid #2a3942;">
+                    
+                    <div style="margin-bottom: 30px; margin-top: 10px; display: flex; flex-direction: column; align-items: center;">
+                        <div style="display: flex; justify-content: space-between; width: 100%; max-width: 320px; color: #9ca3af; font-size: 0.9em; font-weight: bold; margin-bottom: 5px;">
+                            <span id="velocimetro-inf">$0.00</span>
+                            <span id="velocimetro-sup">$0.00</span>
+                        </div>
+                        
+                        <div style="position: relative; width: 300px; height: 150px; overflow: hidden;">
+                            <div style="width: 100%; height: 200%; border-radius: 50%; background: conic-gradient(from 270deg at 50% 50%, #10b981 0deg 45deg, #facc15 45deg 135deg, #f97316 135deg 162deg, #ef4444 162deg 180deg, transparent 180deg 360deg);"></div>
+                            <div style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 220px; height: 110px; background-color: #202c33; border-radius: 110px 110px 0 0;"></div>
+                            
+                            <div id="gauge-needle" style="position: absolute; bottom: 0; left: 50%; width: 4px; height: 135px; background-color: #ffffff; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1); border-radius: 4px; box-shadow: 0 0 8px rgba(0,0,0,0.5); z-index: 10;"></div>
+                            <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; background-color: #ffffff; border-radius: 50%; z-index: 11; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 10px;">
+                            <div style="color: #cbd5e1; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px;">Mayorista Actual</div>
+                            <div id="gauge-mayorista-label" style="font-size: 2em; font-weight: bold; color: #fff;">$0.00</div>
+                        </div>
+                    </div>
+
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85em; margin-bottom: 15px;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid #2a3942; color: #a5b4fc;">
+                                <th style="padding: 8px;">Estado</th>
+                                <th style="padding: 8px;">Rango (%)</th>
+                                <th style="padding: 8px;">Valor mínimo</th>
+                                <th style="padding: 8px;">Valor máximo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #2a3942;">
+                                <td style="padding: 8px;"><span style="color:#10b981; font-weight:bold;">● Favorable</span></td>
+                                <td style="padding: 8px;">0 - 25%</td>
+                                <td style="padding: 8px;" id="r-fav-min">$0.00</td>
+                                <td style="padding: 8px;" id="r-fav-max">$0.00</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #2a3942;">
+                                <td style="padding: 8px;"><span style="color:#facc15; font-weight:bold;">● Intermedio</span></td>
+                                <td style="padding: 8px;">25 - 75%</td>
+                                <td style="padding: 8px;" id="r-int-min">$0.00</td>
+                                <td style="padding: 8px;" id="r-int-max">$0.00</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #2a3942;">
+                                <td style="padding: 8px;"><span style="color:#f97316; font-weight:bold;">● Precaución</span></td>
+                                <td style="padding: 8px;">75 - 90%</td>
+                                <td style="padding: 8px;" id="r-pre-min">$0.00</td>
+                                <td style="padding: 8px;" id="r-pre-max">$0.00</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #2a3942;">
+                                <td style="padding: 8px;"><span style="color:#ef4444; font-weight:bold;">● Crítico</span></td>
+                                <td style="padding: 8px;">90 - 100%</td>
+                                <td style="padding: 8px;" id="r-cri-min">$0.00</td>
+                                <td style="padding: 8px;" id="r-cri-max">$0.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="background-color: #111b21; padding: 12px; border-radius: 4px; font-size: 0.85em; color: #cbd5e1; margin-bottom: 20px; border-left: 3px solid #60a5fa;">
+                        <div id="diff-sup" style="margin-bottom: 6px;">El dólar debería subir $0.00 (0.00%) para llegar a la banda superior</div>
+                        <div id="diff-inf">El dólar debería bajar $0.00 (0.00%) para llegar a la banda inferior</div>
+                    </div>
+
+                    <div style="height: 200px; width: 100%;">
+                        <canvas id="bandasChart"></canvas>
+                    </div>
+                </div>
                 <div id="arg-data-panel" style="background-color: #202c33; padding: 15px; border-radius: 6px; border: 1px solid #2a3942; font-size: 0.85em; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                         <div style="flex: 1; margin-right: 15px; background-color: #111b21; height: 3px; border-radius: 2px; overflow: hidden;">
@@ -651,13 +719,11 @@
             }
 
             function actualizarPuntometro() {
-                // Encontrar la banda de hoy (o la más cercana anterior si es finde)
                 let dToday = new Date();
                 let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
                 
                 let bandaHoy = datosBandas.find(b => b.date === todayStr);
                 if (!bandaHoy) {
-                    // Fallback burdo: tomar el dato de ayer o el último válido antes de hoy si es finde
                      bandaHoy = datosBandas.slice().reverse().find(b => {
                         let parts = b.date.split('-');
                         let dDate = new Date(parts[2], parts[1]-1, parts[0]);
@@ -665,39 +731,77 @@
                      }) || datosBandas[0];
                 }
 
-                document.getElementById('banda-inf-actual').innerText = `Inf: $${bandaHoy.inf.toFixed(2)}`;
-                document.getElementById('banda-sup-actual').innerText = `Sup: $${bandaHoy.sup.toFixed(2)}`;
+                document.getElementById('velocimetro-inf').innerText = `$${bandaHoy.inf.toFixed(2)}`;
+                document.getElementById('velocimetro-sup').innerText = `$${bandaHoy.sup.toFixed(2)}`;
 
-                // Intentar sacar el mayorista en vivo desde CriptoYa, si no del snapshot
+                // Calcular Rangos (25%, 75%, 90%)
+                let inf = bandaHoy.inf;
+                let sup = bandaHoy.sup;
+                let rango = sup - inf;
+
+                let corte25 = inf + (rango * 0.25);
+                let corte75 = inf + (rango * 0.75);
+                let corte90 = inf + (rango * 0.90);
+
+                // Llenar la Tabla
+                const fmt = (num) => `$${num.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                document.getElementById('r-fav-min').innerText = fmt(inf); document.getElementById('r-fav-max').innerText = fmt(corte25);
+                document.getElementById('r-int-min').innerText = fmt(corte25); document.getElementById('r-int-max').innerText = fmt(corte75);
+                document.getElementById('r-pre-min').innerText = fmt(corte75); document.getElementById('r-pre-max').innerText = fmt(corte90);
+                document.getElementById('r-cri-min').innerText = fmt(corte90); document.getElementById('r-cri-max').innerText = fmt(sup);
+
                 fetch("https://criptoya.com/api/dolar")
                 .then(res => res.json())
                 .then(data => {
                     let may = data.mayorista?.price || data.mayorista || 0;
-                    if(may > 0) moverAguja(may, bandaHoy.inf, bandaHoy.sup);
+                    if(may > 0) {
+                        // Animamos el velocímetro
+                        moverAguja(may, inf, sup);
+
+                        // Calculamos diferencias porcentuales para subir o bajar
+                        let diffSup = sup - may;
+                        let pctSup = (diffSup / may) * 100;
+                        let diffInf = may - inf;
+                        let pctInf = (diffInf / may) * 100;
+
+                        document.getElementById('diff-sup').innerHTML = `El dólar debería <b>subir ${fmt(diffSup)} (+${pctSup.toFixed(2)}%)</b> para llegar a la banda superior`;
+                        document.getElementById('diff-inf').innerHTML = `El dólar debería <b>bajar ${fmt(diffInf)} (-${pctInf.toFixed(2)}%)</b> para llegar a la banda inferior`;
+
+                        // 🔥 ARREGLO DEL GRÁFICO: Inyectar Mayorista en vivo en el gráfico de Bandas
+                        if(window.bandasChartInstance) {
+                            let chart = window.bandasChartInstance;
+                            // El dataset[2] es la línea del Mayorista
+                            let mayData = chart.data.datasets[2].data;
+                            if(chart.data.labels[chart.data.labels.length - 1] === todayStr) {
+                                mayData[mayData.length - 1] = may;
+                            } else {
+                                chart.data.labels.push(todayStr);
+                                chart.data.datasets[0].data.push(sup);
+                                chart.data.datasets[1].data.push(inf);
+                                mayData.push(may);
+                            }
+                            chart.update('none');
+                        }
+                    }
                 })
-                .catch(() => {
-                   // Si falla la API en vivo, no movemos la aguja o intentamos con snapshot
-                });
+                .catch(e => console.error("Error obteniendo mayorista", e));
             }
 
             function moverAguja(mayorista, inf, sup) {
                 let range = sup - inf;
-                let position = ((mayorista - inf) / range) * 100;
+                let positionPct = ((mayorista - inf) / range) * 100;
                 
                 // Limitar entre 0 y 100 por si se sale de la banda
-                position = Math.max(0, Math.min(100, position));
+                positionPct = Math.max(0, Math.min(100, positionPct));
 
-                let marker = document.getElementById('mayorista-marker');
-                let label = document.getElementById('mayorista-label');
+                // Convertir posición 0-100% a grados rotación (-90deg a +90deg)
+                let grados = (positionPct / 100 * 180) - 90;
+
+                let marker = document.getElementById('gauge-needle');
+                let label = document.getElementById('gauge-mayorista-label');
                 
-                marker.style.left = `${position}%`;
-                label.style.left = `${position}%`;
-                label.innerText = `$${mayorista.toLocaleString('es-AR', {minimumFractionDigits: 2})}`;
-                
-                // Cambiar color del texto si se acerca a los bordes para que contraste
-                if(position < 15 || position > 85) {
-                    label.style.textShadow = "1px 1px 2px #000";
-                }
+                marker.style.transform = `translateX(-50%) rotate(${grados}deg)`;
+                label.innerText = `$${mayorista.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
             }
 
             async function fetchLiveCryptoAndFiat() {
@@ -826,6 +930,8 @@
                         }
                         chart.update('none'); 
                     }
+
+                    actualizarPuntometro();
 
                     const now = new Date();
                     document.getElementById('last-updated-time').innerText = `Última act: ${now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
