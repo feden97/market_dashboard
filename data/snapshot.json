@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-03-06T22:30:03.890504Z",
+  "built_at": "2026-03-06T23:17:27.041953Z",
   "groups": {
     "Índices y Cripto (USD)": [
       {
@@ -2611,9 +2611,9 @@
       "2026-01": 0.028999999999999998
     },
     "riesgo_pais": {
-      "valor": 534,
-      "fecha": "04-03-2026",
-      "variacion": -6.81
+      "valor": 546,
+      "fecha": "05-03-2026",
+      "variacion": 2.25
     },
     "holidays": [
       "23-03-2026 - Puente turístico no laborable",
@@ -3199,12 +3199,12 @@
     },
     {
       "date": "06-03-2026",
-      "ccl": 1475.3,
-      "mep": 1437.1,
-      "blue": 1400.0,
-      "oficial": 1425.0,
-      "usdt": 1493.83,
-      "mayorista": 1407.0
+      "ccl": 1478.7,
+      "mep": 1439.5,
+      "blue": 1415.0,
+      "oficial": 1435.0,
+      "usdt": 1494.04,
+      "mayorista": 1416.0
     }
   ]
 }
