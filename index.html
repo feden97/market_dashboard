@@ -451,24 +451,113 @@
             if (e.key === 'ArrowUp')   { e.preventDefault(); if (currentIndex > 0) { currentIndex--; updateChart(allTickerRows[currentIndex].getAttribute('data-symbol'), allTickerRows[currentIndex]); } }
         });
     }
-    // Mostramos los datos de Inflación y Feriado estáticos
-            if (snapshot.argentina_macro) {
-                var m = snapshot.argentina_macro;
-                var html = '';
-                if (m.inflation) html += '<strong style="color: #a5b4fc;">Inflación:</strong> ' + m.inflation + ' &nbsp; | &nbsp; ';
-                if (m.holiday) html += '<strong style="color: #fca5a5;">Feriado:</strong> ' + m.holiday;
-                document.getElementById('arg-macro-content').innerHTML = html;
-            }
-            
-            // Dibujamos el gráfico interactivo
-            if (snapshot.spread_data) {
-                renderSpreadChart(snapshot.spread_data);
-            }
 
-            // Arrancamos el motor de precios en tiempo real!
-            fetchLiveCryptoAndFiat();
-            setInterval(fetchLiveCryptoAndFiat, 60000); // Se repite cada 60.000 milisegundos (1 minuto)
-    
+    // --- NUEVAS FUNCIONES PARA EL PANEL ARGENTINO ---
+
+    function renderSpreadChart(spreadData) {
+        if (!spreadData || spreadData.length === 0) return;
+        var ctx = document.getElementById('spreadChart').getContext('2d');
+        var labels = spreadData.map(function(d) { return d.date; });
+        var data = spreadData.map(function(d) { return d.spread; });
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Spread (%)',
+                    data: data,
+                    borderColor: '#4ade80',
+                    borderWidth: 2,
+                    pointRadius: 1,
+                    pointHoverRadius: 5,
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { display: true, ticks: { color: '#808080', maxTicksLimit: 6 } },
+                    y: { display: true, ticks: { color: '#808080' }, grid: { color: '#333' } }
+                },
+                interaction: { mode: 'index', intersect: false }
+            }
+        });
+    }
+
+    async function fetchLiveCryptoAndFiat() {
+        try {
+            const [resDolar, resCrypto, resP2P] = await Promise.all([
+                fetch("https://dolarapi.com/v1/dolares"),
+                fetch("https://criptoya.com/api/usdt/ars/0.1"),
+                fetch("https://criptoya.com/api/binancep2p/usdt/ars/0.1")
+            ]);
+
+            const dolarData = await resDolar.json();
+            const cryptoData = await resCrypto.json();
+            const p2pData = await resP2P.json();
+
+            const exchanges = ['buenbit', 'fiwind', 'lemoncash', 'tiendacrypto'];
+            let exchangeRows = '';
+            let maxAsk = 0;
+
+            exchanges.forEach(ex => {
+                if(cryptoData[ex]) {
+                    const bid = cryptoData[ex].totalBid;
+                    const ask = cryptoData[ex].totalAsk;
+                    if(ask > maxAsk) maxAsk = ask;
+                    let name = ex === 'lemoncash' ? 'Lemon' : ex.charAt(0).toUpperCase() + ex.slice(1);
+                    exchangeRows += `<tr><td>${name}</td><td style="color:#4ade80">$${bid.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>$${ask.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>`;
+                }
+            });
+
+            if(p2pData) {
+                const bid = p2pData.totalBid;
+                const ask = p2pData.totalAsk;
+                if(ask > maxAsk) maxAsk = ask;
+                exchangeRows += `<tr><td>BinP2P</td><td style="color:#4ade80">$${bid.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>$${ask.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>`;
+            }
+            document.getElementById('usdt-table-body').innerHTML = exchangeRows;
+
+            let ccl=0, mep=0, oficial=0, blue=0;
+            dolarData.forEach(d => {
+                if(d.casa === 'contadoconliqui') ccl = d.venta;
+                if(d.casa === 'mep') mep = d.venta;
+                if(d.casa === 'oficial') oficial = d.venta;
+                if(d.casa === 'blue') blue = d.venta;
+            });
+
+            const calcBrecha = (val) => {
+                if(!maxAsk || !val) return "-";
+                const pct = ((val / maxAsk) - 1) * 100;
+                const color = pct >= 0 ? '#4ade80' : '#f87171';
+                return `<span style="color:${color}">${pct > 0 ? '+':''}${pct.toFixed(2)}%</span>`;
+            };
+
+            let fiatRows = `
+                <tr><td>CCL</td><td>$${ccl.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>${calcBrecha(ccl)}</td></tr>
+                <tr><td>MEP</td><td>$${mep.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>${calcBrecha(mep)}</td></tr>
+                <tr><td>Oficial</td><td>$${oficial.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>${calcBrecha(oficial)}</td></tr>
+                <tr><td>Blue</td><td>$${blue.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>${calcBrecha(blue)}</td></tr>
+                <tr style="border-top: 1px solid #444;"><td style="font-weight:bold; color:#a5b4fc">Ref. USDT</td><td style="font-weight:bold; color:#a5b4fc">$${maxAsk.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>-</td></tr>
+            `;
+            document.getElementById('fiat-table-body').innerHTML = fiatRows;
+
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('last-updated-time').innerText = `Última act: Hoy a las ${timeStr}`;
+
+        } catch (error) {
+            console.error("Error consultando APIs en vivo", error);
+            document.getElementById('last-updated-time').innerText = "Error de conexión en vivo";
+        }
+    }
+
+    // --- FIN NUEVAS FUNCIONES ---
+
     function loadData() {
         Promise.all([
             fetch('data/snapshot.json').then(function(res) { return res.ok ? res.json() : null; }).catch(function() { return null; }),
@@ -478,10 +567,28 @@
             snapshot = results[0];
             var events = results[1];
             meta = results[2];
+            
             renderEvents(events);
             renderGroups();
-            if (snapshot.argentina_macro) { renderArgData(snapshot); }
-        }).catch(function() {
+            
+            // Renderizamos los datos argentinos estáticos y el gráfico
+            if (snapshot && snapshot.argentina_macro) {
+                var m = snapshot.argentina_macro;
+                var html = '';
+                if (m.inflation) html += '<strong style="color: #a5b4fc;">Inflación:</strong> ' + m.inflation + ' &nbsp; | &nbsp; ';
+                if (m.holiday) html += '<strong style="color: #fca5a5;">Feriado:</strong> ' + m.holiday;
+                document.getElementById('arg-macro-content').innerHTML = html;
+            }
+            if (snapshot && snapshot.spread_data) {
+                renderSpreadChart(snapshot.spread_data);
+            }
+
+            // Arrancamos el motor en vivo
+            fetchLiveCryptoAndFiat();
+            setInterval(fetchLiveCryptoAndFiat, 60000);
+
+        }).catch(function(e) {
+            console.error("Error global:", e);
             document.getElementById('groups-container').innerHTML = '<div class="loading-msg">LOADING DATA... (Run scripts/build_data.py or wait for GitHub Actions)</div>';
         });
     }
