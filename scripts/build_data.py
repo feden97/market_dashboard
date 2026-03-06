@@ -322,7 +322,6 @@ def get_historical_fiat_data():
         dfs = []
         cutoff = datetime(datetime.now().year, 1, 1)
 
-        # 1. Traer historial de todos los fiats de ArgentinaDatos
         for key, path in endpoints.items():
             r = requests.get(f"https://api.argentinadatos.com/v1/cotizaciones/dolares/{path}")
             if r.status_code == 200:
@@ -336,14 +335,17 @@ def get_historical_fiat_data():
         for i in range(1, len(dfs)):
             master_df = master_df.join(dfs[i], how='outer')
 
-        # 2. Leer nuestra base de datos de USDT
+        # Proteger columnas faltantes para que no dé error
+        for col in ["ccl", "mep", "blue", "oficial", "mayorista"]:
+            if col not in master_df.columns:
+                master_df[col] = np.nan
+
         history_file = "data/usdt_history.json"
         usdt_history = {}
         if os.path.exists(history_file):
             with open(history_file, "r") as f:
                 usdt_history = json.load(f)
 
-        # 3. Guardar el USDT de hoy
         today_str = datetime.now().strftime("%Y-%m-%d")
         try:
             r_crypto = requests.get("https://criptoya.com/api/usdt/ars/0.1")
@@ -365,23 +367,21 @@ def get_historical_fiat_data():
         except Exception as e:
             pass
 
-        # 4. Cruzar USDT con el resto
         df_usdt = pd.DataFrame(list(usdt_history.items()), columns=['fecha', 'usdt'])
         df_usdt['fecha'] = pd.to_datetime(df_usdt['fecha'])
         df_usdt = df_usdt[df_usdt['fecha'] >= cutoff].set_index('fecha')
 
-        # Unimos todo y rellenamos huecos (fines de semana) con el último precio disponible
-        master_df = master_df.join(df_usdt, how='outer').ffill().dropna()
+        master_df = master_df.join(df_usdt, how='outer').ffill().dropna(subset=['ccl'])
 
         result = []
         for date, row in master_df.iterrows():
             result.append({
                 "date": date.strftime("%d-%m-%Y"),
-                "ccl": round(row.get('ccl', 0), 2),
-                "mep": round(row.get('mep', 0), 2),
-                "blue": round(row.get('blue', 0), 2),
-                "oficial": round(row.get('oficial', 0), 2),
-                "usdt": round(row.get('usdt', 0), 2)
+                "ccl": round(row.get('ccl', 0), 2) if pd.notna(row.get('ccl')) else 0,
+                "mep": round(row.get('mep', 0), 2) if pd.notna(row.get('mep')) else 0,
+                "blue": round(row.get('blue', 0), 2) if pd.notna(row.get('blue')) else 0,
+                "oficial": round(row.get('oficial', 0), 2) if pd.notna(row.get('oficial')) else 0,
+                "usdt": round(row.get('usdt', 0), 2) if pd.notna(row.get('usdt')) else 0,
                 "mayorista": round(row.get('mayorista', 0), 2) if pd.notna(row.get('mayorista')) else 0
             })
         return result
