@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Chart Viewer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { box-sizing: border-box; }
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; height: 100vh; background-color: #1a1a1a; color: #e0e0e0; }
@@ -116,11 +117,46 @@
             <button class="events-button">📅 MACRO EVENTS</button>
             <div class="events-content" id="events-content"></div>
         </div>
-        <div id="arg-data-panel" style="margin-bottom: 10px; background-color: #2d3748; padding: 10px; border-radius: 4px; border: 1px solid #4a5568; font-size: 0.85em;">
-            <div id="arg-macro-content" style="color: #cbd5e1; margin-bottom: 10px; line-height: 1.6;">Cargando datos locales...</div>
-            <div style="text-align: center;">
+       <div id="arg-data-panel" style="margin-bottom: 10px; background-color: #2d3748; padding: 10px; border-radius: 4px; border: 1px solid #4a5568; font-size: 0.85em;">
+            <div id="last-updated-time" style="font-size: 0.75em; color: #9ca3af; text-align: right; margin-bottom: 5px;">Actualizando datos en vivo...</div>
+            
+            <div style="display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 140px;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; color: #e0e0e0;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid #444;">
+                                <th style="padding: 4px; color: #a5b4fc;">Fiat</th>
+                                <th style="padding: 4px; color: #a5b4fc;">Precio</th>
+                                <th style="padding: 4px; color: #a5b4fc;">Brecha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fiat-table-body">
+                            </tbody>
+                    </table>
+                </div>
+
+                <div style="flex: 1; min-width: 160px;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; color: #e0e0e0;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid #444;">
+                                <th style="padding: 4px; color: #a5b4fc;">Stable</th>
+                                <th style="padding: 4px; color: #a5b4fc;">Compra</th>
+                                <th style="padding: 4px; color: #a5b4fc;">Venta</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usdt-table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="arg-macro-content" style="margin-top: 10px; border-top: 1px solid #444; padding-top: 8px; color: #cbd5e1; font-size: 0.85em;"></div>
+
+            <div style="text-align: center; margin-top: 10px;">
                 <div style="font-size: 0.75em; color: #a5b4fc; margin-bottom: 4px; text-align: left; font-weight: bold;">Spread CCL vs Cripto (YTD)</div>
-                <img id="spread-chart-img" style="max-width: 100%; border-radius: 4px; display: none;" alt="Spread CCL vs Cripto">
+                <div style="height: 120px; width: 100%;">
+                    <canvas id="spreadChart"></canvas>
+                </div>
             </div>
         </div>
         <div class="column-guide" style="position:relative">
@@ -415,45 +451,24 @@
             if (e.key === 'ArrowUp')   { e.preventDefault(); if (currentIndex > 0) { currentIndex--; updateChart(allTickerRows[currentIndex].getAttribute('data-symbol'), allTickerRows[currentIndex]); } }
         });
     }
-    function renderArgData(data) {
-        var macro = data.argentina_macro || {};
-        var rates = data.exchange_rates || { dolares: {}, cripto: {} };
-        
-        var html = '<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">';
-        
-        // Columna Izquierda: Dólares Libres
-        html += '<div style="flex: 1; min-width: 120px;">';
-        html += '<strong style="color: #a5b4fc;">Dólares:</strong><br>';
-        if (rates.dolares.blue) html += 'Blue: $' + rates.dolares.blue + '<br>';
-        if (rates.dolares.mep) html += 'MEP: $' + rates.dolares.mep + '<br>';
-        if (rates.dolares.contadoconliqui) html += 'CCL: $' + rates.dolares.contadoconliqui + '<br>';
-        html += '</div>';
+    // Mostramos los datos de Inflación y Feriado estáticos
+            if (snapshot.argentina_macro) {
+                var m = snapshot.argentina_macro;
+                var html = '';
+                if (m.inflation) html += '<strong style="color: #a5b4fc;">Inflación:</strong> ' + m.inflation + ' &nbsp; | &nbsp; ';
+                if (m.holiday) html += '<strong style="color: #fca5a5;">Feriado:</strong> ' + m.holiday;
+                document.getElementById('arg-macro-content').innerHTML = html;
+            }
+            
+            // Dibujamos el gráfico interactivo
+            if (snapshot.spread_data) {
+                renderSpreadChart(snapshot.spread_data);
+            }
 
-        // Columna Derecha: Cripto e Inflación
-        html += '<div style="flex: 1; min-width: 120px;">';
-        html += '<strong style="color: #a5b4fc;">USDT (Ask):</strong><br>';
-        if (rates.cripto.lemoncash) html += 'Lemon: $' + rates.cripto.lemoncash + '<br>';
-        if (rates.cripto.fiwind) html += 'Fiwind: $' + rates.cripto.fiwind + '<br>';
-        html += '<div style="margin-top: 5px;"><strong style="color: #a5b4fc;">Inflación:</strong> ' + (macro.inflation || 'N/A') + '</div>';
-        html += '</div>';
-        html += '</div>';
-
-        // Feriado abajo
-        if (macro.holiday) {
-            html += '<div style="margin-top: 8px; border-top: 1px solid #4a5568; padding-top: 8px;">';
-            html += '<strong style="color: #fca5a5;">Próx. Feriado:</strong> ' + macro.holiday;
-            html += '</div>';
-        }
-
-        document.getElementById('arg-macro-content').innerHTML = html;
-
-        // Mostrar el gráfico de spread
-        if (data.spread_chart) {
-            var img = document.getElementById('spread-chart-img');
-            img.src = data.spread_chart + '?t=' + new Date().getTime(); // Se le agrega la fecha para evitar que el navegador guarde la imagen vieja en caché
-            img.style.display = 'block';
-        }
-    }
+            // Arrancamos el motor de precios en tiempo real!
+            fetchLiveCryptoAndFiat();
+            setInterval(fetchLiveCryptoAndFiat, 60000); // Se repite cada 60.000 milisegundos (1 minuto)
+    
     function loadData() {
         Promise.all([
             fetch('data/snapshot.json').then(function(res) { return res.ok ? res.json() : null; }).catch(function() { return null; }),
