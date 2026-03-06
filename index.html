@@ -100,9 +100,45 @@
         .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; }
         
         .base-select { background-color: #1e293b; color: #a5b4fc; border: 1px solid #4a5568; border-radius: 4px; padding: 2px 4px; font-size: 0.9em; outline: none; cursor: pointer; }
+        
+        /* Estilos para las Pestañas */
+        .tabs-nav { display: flex; background-color: #2d3748; padding: 10px 10px 0 10px; border-bottom: 2px solid #4a5568; gap: 5px; }
+        .tab-btn { 
+            background-color: #1a1a1a; color: #9ca3af; border: 1px solid #4a5568; border-bottom: none; 
+            padding: 10px 20px; cursor: pointer; border-radius: 6px 6px 0 0; font-weight: bold; transition: all 0.2s;
+        }
+        .tab-btn:hover { background-color: #374151; color: #e0e0e0; }
+        .tab-btn.active { background-color: #4a5568; color: #ffffff; border-top: 2px solid #3b82f6; }
+        .tab-content { display: none; height: calc(100vh - 45px); overflow-y: auto; padding: 15px; width: 100%; }
+        .tab-content.active { display: flex; }
     </style>
 </head>
 <body>
+    <div style="width: 100%; display: flex; flex-direction: column;">
+        
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('tab-argentina', this)">🇦🇷 Dashboard Argentina</button>
+            <button class="tab-btn" onclick="switchTab('tab-tasas', this)">💰 Tasas</button>
+            <button class="tab-btn" onclick="switchTab('tab-renta', this)">📈 Renta Variable</button>
+        </div>
+
+        <div id="tab-argentina" class="tab-content active" style="flex-direction: column;">
+            <h2>Dashboard Local en construcción...</h2>
+        </div>
+
+        <div id="tab-tasas" class="tab-content" style="flex-direction: column;">
+            <h2>Tasas de interés en construcción...</h2>
+        </div>
+
+        <div id="tab-renta" class="tab-content">
+            <div class="ticker-list">
+               </div>
+            <div class="chart-container">
+               </div>
+        </div>
+
+    </div>
+    
     <div class="ticker-list">
         <div class="column-guide" style="position:relative">
             <button class="column-guide-btn" type="button">📋 GUÍA DE COLUMNAS</button>
@@ -714,6 +750,16 @@
     
     loadData();
 })();
+        window.switchTab = function(tabId, btnElement) {
+        // Ocultar todos los contenidos
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        // Quitar la clase active de todos los botones
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        
+        // Mostrar la pestaña seleccionada y pintar el botón
+        document.getElementById(tabId).classList.add('active');
+        btnElement.classList.add('active');
+    };
     </script>
 </body>
 </html>
