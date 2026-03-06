@@ -54,6 +54,14 @@
         .badge-green { background-color: rgba(16,185,129,0.15); color: #34d399; border-radius: 4px; padding: 2px 6px; font-weight: bold; border: 1px solid rgba(16,185,129,0.3); }
         .tables-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         @media (max-width: 900px) { .tables-grid { grid-template-columns: 1fr; } }
+        
+        /* Arco Dolarito CSS Mask */
+        .gauge-arc {
+            width: 260px; height: 260px; border-radius: 50%;
+            background: conic-gradient(from 270deg at 50% 50%, #10b981 0deg 45deg, #facc15 45deg 135deg, #f97316 135deg 162deg, #ef4444 162deg 180deg, transparent 180deg 360deg);
+            -webkit-mask-image: radial-gradient(transparent 65%, black 66%);
+            mask-image: radial-gradient(transparent 65%, black 66%);
+        }
     </style>
 </head>
 <body>
@@ -90,7 +98,6 @@
                 <div style="background-color: #202c33; padding: 20px; border-radius: 6px; border: 1px solid #2a3942; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h2 style="color: #e0e0e0; margin: 0; font-size: 1.2em;">Panel de Cotizaciones</h2>
-                        
                         <div style="display: flex; align-items: center; gap: 15px; width: 50%; max-width: 400px;">
                             <div style="flex: 1; background-color: #111b21; height: 8px; border-radius: 4px; overflow: hidden; border: 1px solid #2a3942;">
                                 <div id="update-progress-bar" style="height: 100%; width: 100%; background-color: #3b82f6; transition: width 1s linear;"></div>
@@ -104,9 +111,7 @@
                             <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <th>Fiat</th>
-                                        <th>Precio</th>
-                                        <th>Var. Diaria</th>
+                                        <th>Fiat</th><th>Precio</th><th>Var. Diaria</th>
                                         <th style="display: flex; align-items: center; justify-content: space-between; border: none;">
                                             Brecha s/
                                             <select id="base-currency-select" class="base-select">
@@ -157,37 +162,40 @@
                 <div style="background-color: #202c33; padding: 20px; border-radius: 6px; border: 1px solid #2a3942;">
                     <h2 style="color: #e0e0e0; margin: 0 0 20px 0; font-size: 1.2em;">Bandas Cambiarias y Dólar Mayorista</h2>
                     
-                    <div style="margin-bottom: 30px; display: flex; flex-direction: column; align-items: center;">
-                        <div style="position: relative; width: 300px; height: 150px; overflow: hidden; margin: 0 auto;">
-                            <div style="width: 100%; height: 200%; border-radius: 50%; background: conic-gradient(from 270deg at 50% 50%, #10b981 0deg 45deg, #facc15 45deg 135deg, #f97316 135deg 162deg, #ef4444 162deg 180deg, transparent 180deg 360deg);"></div>
-                            <div style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 220px; height: 110px; background-color: #202c33; border-radius: 110px 110px 0 0;"></div>
-                            <div id="gauge-needle" style="position: absolute; bottom: 0; left: 50%; width: 4px; height: 135px; background-color: #ffffff; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1); border-radius: 4px; box-shadow: 0 0 8px rgba(0,0,0,0.5); z-index: 10;"></div>
-                            <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; background-color: #ffffff; border-radius: 50%; z-index: 11; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>
-                            
-                            <span id="velocimetro-inf" style="position: absolute; bottom: 5px; left: 10px; color: #e0e0e0; font-size: 0.9em; font-weight: bold; z-index: 12; text-shadow: 1px 1px 2px #000;">$0.00</span>
-                            <span id="velocimetro-sup" style="position: absolute; bottom: 5px; right: 10px; color: #e0e0e0; font-size: 0.9em; font-weight: bold; z-index: 12; text-shadow: 1px 1px 2px #000;">$0.00</span>
+                    <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start; margin-bottom: 25px;">
+                        
+                        <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div style="position: relative; width: 260px; height: 130px; overflow: hidden; margin: 0 auto;">
+                                <div class="gauge-arc"></div>
+                                <div id="gauge-needle" style="position: absolute; bottom: 0; left: 50%; width: 4px; height: 110px; background-color: #ffffff; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1); border-radius: 4px; box-shadow: 0 0 5px rgba(0,0,0,0.5); z-index: 10;"></div>
+                                <div style="position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); width: 16px; height: 16px; background-color: #ffffff; border-radius: 50%; z-index: 11; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>
+                                
+                                <span id="velocimetro-inf" style="position: absolute; bottom: 0; left: 0; color: #e0e0e0; font-size: 0.85em; font-weight: bold; z-index: 12;">$0.00</span>
+                                <span id="velocimetro-sup" style="position: absolute; bottom: 0; right: 0; color: #e0e0e0; font-size: 0.85em; font-weight: bold; z-index: 12;">$0.00</span>
+                            </div>
+                            <div style="text-align: center; margin-top: 15px;">
+                                <div style="color: #9ca3af; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">Dólar Mayorista</div>
+                                <div id="gauge-mayorista-label" style="font-size: 2.2em; font-weight: bold; color: #fff;">$0.00</div>
+                            </div>
                         </div>
-                        <div style="text-align: center; margin-top: 15px;">
-                            <div style="color: #cbd5e1; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px;">Mayorista Actual</div>
-                            <div id="gauge-mayorista-label" style="font-size: 2.2em; font-weight: bold; color: #fff;">$0.00</div>
+
+                        <div style="flex: 1.5; min-width: 350px;">
+                            <table class="data-table" style="margin-bottom: 15px;">
+                                <thead>
+                                    <tr><th>Estado</th><th>Rango (%)</th><th>Valor mínimo</th><th>Valor máximo</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><span style="color:#10b981; font-weight:bold;">● Favorable</span></td><td>0 - 25%</td><td id="r-fav-min"></td><td id="r-fav-max"></td></tr>
+                                    <tr><td><span style="color:#facc15; font-weight:bold;">● Intermedio</span></td><td>25 - 75%</td><td id="r-int-min"></td><td id="r-int-max"></td></tr>
+                                    <tr><td><span style="color:#f97316; font-weight:bold;">● Precaución</span></td><td>75 - 90%</td><td id="r-pre-min"></td><td id="r-pre-max"></td></tr>
+                                    <tr><td><span style="color:#ef4444; font-weight:bold;">● Crítico</span></td><td>90 - 100%</td><td id="r-cri-min"></td><td id="r-cri-max"></td></tr>
+                                </tbody>
+                            </table>
+                            <div style="background-color: #111b21; padding: 12px; border-radius: 4px; font-size: 0.9em; color: #cbd5e1; border-left: 3px solid #60a5fa;">
+                                <div id="diff-sup" style="margin-bottom: 8px;">El dólar debería subir...</div>
+                                <div id="diff-inf">El dólar debería bajar...</div>
+                            </div>
                         </div>
-                    </div>
-
-                    <table class="data-table" style="margin-bottom: 15px;">
-                        <thead>
-                            <tr><th>Estado</th><th>Rango (%)</th><th>Valor mínimo</th><th>Valor máximo</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td><span style="color:#10b981; font-weight:bold;">● Favorable</span></td><td>0 - 25%</td><td id="r-fav-min"></td><td id="r-fav-max"></td></tr>
-                            <tr><td><span style="color:#facc15; font-weight:bold;">● Intermedio</span></td><td>25 - 75%</td><td id="r-int-min"></td><td id="r-int-max"></td></tr>
-                            <tr><td><span style="color:#f97316; font-weight:bold;">● Precaución</span></td><td>75 - 90%</td><td id="r-pre-min"></td><td id="r-pre-max"></td></tr>
-                            <tr><td><span style="color:#ef4444; font-weight:bold;">● Crítico</span></td><td>90 - 100%</td><td id="r-cri-min"></td><td id="r-cri-max"></td></tr>
-                        </tbody>
-                    </table>
-
-                    <div style="background-color: #111b21; padding: 12px; border-radius: 4px; font-size: 0.85em; color: #cbd5e1; margin-bottom: 25px; border-left: 3px solid #60a5fa;">
-                        <div id="diff-sup" style="margin-bottom: 6px;"></div>
-                        <div id="diff-inf"></div>
                     </div>
 
                     <div style="height: 250px; width: 100%;">
@@ -290,7 +298,6 @@
             function renderMacro(macro) {
                 if(!macro) return;
                 
-                // Riesgo País
                 if(macro.riesgo_pais && macro.riesgo_pais.valor) {
                     document.getElementById('rp-val').innerText = macro.riesgo_pais.valor + ' pts';
                     let var_rp = macro.riesgo_pais.variacion;
@@ -300,14 +307,12 @@
                     document.getElementById('rp-date').innerText = `(Ref: ${macro.riesgo_pais.fecha})`;
                 }
 
-                // Feriados
                 if(macro.holidays && macro.holidays.length > 0) {
                     let html = '';
                     macro.holidays.forEach(h => html += `<li>${h}</li>`);
                     document.getElementById('feriados-list').innerHTML = html;
                 }
 
-                // Inflación
                 if(macro.ipc_history && Object.keys(macro.ipc_history).length > 0) {
                     let rows = '';
                     let acum = 1;
@@ -391,7 +396,7 @@
                         labels: labels, 
                         datasets: [{ 
                             data: data, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1,
-                            segment: { borderColor: function(ctx) { return ctx.p0.parsed.y >= 0 ? '#34d399' : '#f87171'; } } // <-- RESTAURADOS COLORES VERDE/ROJO
+                            segment: { borderColor: function(ctx) { return ctx.p0.parsed.y >= 0 ? '#34d399' : '#f87171'; } } 
                         }] 
                     },
                     options: {
@@ -399,8 +404,7 @@
                         scales: { 
                             x: { display: true, ticks: { color: '#808080', maxTicksLimit: 6 } }, 
                             y: { 
-                                display: true, 
-                                ticks: { color: '#808080' }, 
+                                display: true, ticks: { color: '#808080' }, 
                                 grid: { color: function(ctx) { return ctx.tick.value === 0 ? 'rgba(255, 255, 255, 0.7)' : '#2a3942'; }, lineWidth: function(ctx) { return ctx.tick.value === 0 ? 2 : 1; } } 
                             } 
                         },
@@ -421,12 +425,8 @@
                 datosBandas.forEach(b => {
                     let parts = b.date.split('-');
                     let bDate = new Date(parts[2], parts[1]-1, parts[0]);
-                    // REGLA: Dibuja sólo hasta el día actual
                     if (bDate <= dToday || b.date === todayStr) {
-                        labels.push(b.date); 
-                        dataSup.push(b.sup); 
-                        dataInf.push(b.inf); 
-                        dataMay.push(mayoristaMap[b.date] || null);
+                        labels.push(b.date); dataSup.push(b.sup); dataInf.push(b.inf); dataMay.push(mayoristaMap[b.date] || null);
                     }
                 });
 
@@ -552,8 +552,9 @@
 
                         let dS = sup - may; let pS = (dS / may) * 100;
                         let dI = may - inf; let pI = (dI / may) * 100;
-                        document.getElementById('diff-sup').innerHTML = `El dólar debería <b>subir ${fmt(dS)} (+${pS.toFixed(2)}%)</b> para la banda superior`;
-                        document.getElementById('diff-inf').innerHTML = `El dólar debería <b>bajar ${fmt(dI)} (-${pI.toFixed(2)}%)</b> para la banda inferior`;
+                        
+                        document.getElementById('diff-sup').innerHTML = `El dólar debería subir <span style="color:#34d399; font-weight:bold;">${fmt(dS)} (+${pS.toFixed(2)}%)</span> para llegar a la banda superior`;
+                        document.getElementById('diff-inf').innerHTML = `El dólar debería bajar <span style="color:#f87171; font-weight:bold;">${fmt(dI)} (-${pI.toFixed(2)}%)</span> para llegar a la banda inferior`;
 
                         if(window.bandasChartInstance) {
                             let bChart = window.bandasChartInstance; 
