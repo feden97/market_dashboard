@@ -3,7 +3,7 @@ name: Refresh dashboard data
 
 on:
   schedule:
-    - cron: '*/30 14-21 * * 1-5'
+    - cron: '30 20 * * *'
   workflow_dispatch: # Allow manual run
 
 jobs:
