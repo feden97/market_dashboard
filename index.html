@@ -70,7 +70,7 @@
             --bg-select: rgba(0, 0, 0, 0.03);
             --select-arrow: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f172a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             
-            --chart-grid-color: rgba(0, 0, 0, 0.06);
+            --chart-grid-color: rgba(0, 0, 0, 0.03);
             --chart-text-color: #64748b;
         }
 
@@ -100,8 +100,9 @@
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border-color);
             display: flex;
+            flex-direction: column;
             justify-content: center;
-            padding: 16px 0;
+            padding: 8px 0 0 0; /* Reduced padding and pushed bottom elements closer */
         }
 
         .nav-container {
@@ -112,7 +113,7 @@
             border: none;
             width: 100%;
             max-width: 1400px;
-            justify-content: center;
+            justify-content: center; /* True center for the main tabs */
             align-items: center;
             position: relative;
         }
@@ -137,6 +138,37 @@
             color: var(--nav-active-color);
             background-color: transparent;
             font-weight: 600;
+        }
+
+        .sub-tab {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 12px 10px 12px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .sub-tab:hover {
+            color: var(--text-main);
+        }
+
+        .sub-tab.active {
+            color: var(--nav-active-color);
+            font-weight: 600;
+        }
+
+        .sub-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--accent);
+            border-radius: 2px 2px 0 0;
         }
 
         .main-content {
@@ -197,7 +229,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.2s ease;
         }
 
         .macro-card:hover {
@@ -454,14 +486,13 @@
         }
         
         .card-header-gradient {
-            background: linear-gradient(90deg, var(--bg-card-hover), transparent);
-            padding: 12px 16px;
+            background: transparent;
+            padding: 0 0 12px 0;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
-            margin: -20px -20px 20px -20px;
+            margin-bottom: 16px;
         }
         
         
@@ -520,15 +551,33 @@
 
     <nav class="top-nav">
         <div class="nav-container">
-            <div style="flex: 1; display: flex; align-items: center;"></div>
             <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;">
                 <button class="nav-tab active" onclick="switchTab('tab-argentina', this)">🇦🇷 Dólares y Bandas</button>
                 <button class="nav-tab" onclick="switchTab('tab-tasas', this)">💰 Tasas</button>
                 <button class="nav-tab" onclick="switchTab('tab-renta', this)">📈 Renta Variable</button>
             </div>
-            <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
-                <button id="theme-toggle" class="nav-tab" style="padding: 6px 10px; font-size: 16px;" title="Cambiar Tema" onclick="toggleTheme()">🌓</button>
+            <div style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); display: flex; align-items: center;">
+                <button id="theme-toggle" class="nav-tab" style="padding: 6px 10px; font-size: 20px; display: flex; align-items: center; justify-content: center;" title="Cambiar Tema" onclick="toggleTheme()">
+                    <svg id="theme-icon-light" style="display: none; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg id="theme-icon-dark" style="display: none; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
             </div>
+        </div>
+        <div id="submenu-tasas" style="display: none; width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 16px; gap: 24px; margin-top: 4px; border-top: 1px solid var(--border-color); justify-content: center;">
+            <button class="sub-tab active" onclick="switchTasasTab('tasas-pesos', this)">🇦🇷 Pesos (ARS)</button>
+            <button class="sub-tab" onclick="switchTasasTab('tasas-cripto', this)">🪙 Stablecoins</button>
         </div>
     </nav>
 
@@ -786,10 +835,6 @@
             <div class="panel-ancho">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                     <h2 style="color: var(--text-main); margin: 0; font-size: 18px; font-weight: 600;">Tasas de Interés y Rendimientos</h2>
-                    <div style="display: flex; gap: 8px; background-color: var(--bg-card-solid); padding: 4px; border-radius: 12px; border: 1px solid var(--border-color);">
-                        <button class="nav-tab active" onclick="switchTasasTab('tasas-pesos', this)" style="padding: 6px 16px; font-size: 13px;">🇦🇷 Pesos (ARS)</button>
-                        <button class="nav-tab" onclick="switchTasasTab('tasas-cripto', this)" style="padding: 6px 16px; font-size: 13px;">🪙 Stablecoins</button>
-                    </div>
                 </div>
 
                 <!-- PESOS (ARS) VIEW -->
@@ -909,7 +954,7 @@
                 // Add robust grid color overriding while protecting the zero-line
                 window.spreadChartInstance.options.scales.y.grid = window.spreadChartInstance.options.scales.y.grid || {};
                 window.spreadChartInstance.options.scales.y.grid.color = function(ctx) {
-                    return (ctx.tick && ctx.tick.value === 0) ? (document.documentElement.getAttribute('data-theme') === 'light' ? 'rgba(0,0,0,0.15)' : 'rgba(255, 255, 255, 0.4)') : gridColor;
+                    return (ctx.tick && ctx.tick.value === 0) ? (document.documentElement.getAttribute('data-theme') === 'light' ? 'rgba(0,0,0,0.06)' : 'rgba(255, 255, 255, 0.4)') : gridColor;
                 };
                 window.spreadChartInstance.options.scales.x.grid = window.spreadChartInstance.options.scales.x.grid || {};
                 window.spreadChartInstance.options.scales.x.grid.color = gridColor;
@@ -938,12 +983,21 @@
             }
         }
 
+        function updateThemeIcon(theme) {
+            const lightIcon = document.getElementById("theme-icon-light");
+            const darkIcon = document.getElementById("theme-icon-dark");
+            if (lightIcon && darkIcon) {
+                lightIcon.style.display = theme === "dark" ? "none" : "block";
+                darkIcon.style.display = theme === "dark" ? "block" : "none";
+            }
+        }
+
         function toggleTheme() {
             const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
             const newTheme = currentTheme === "dark" ? "light" : "dark";
             document.documentElement.setAttribute("data-theme", newTheme);
             localStorage.setItem("theme-preference", newTheme);
-            document.getElementById("theme-toggle").innerHTML = newTheme === "dark" ? "🌓" : "🌑";
+            updateThemeIcon(newTheme);
             applyChartThemeOverrides();
         }
 
@@ -953,16 +1007,20 @@
             const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
             const initialTheme = savedTheme ? savedTheme : (systemPrefersDark ? "dark" : "light");
             document.documentElement.setAttribute("data-theme", initialTheme);
-            document.getElementById("theme-toggle").innerHTML = initialTheme === "dark" ? "🌓" : "🌑";
             
             // Listen for system theme changes if not explicitly overridden by user
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
                 if(!localStorage.getItem("theme-preference")) {
                     const newTheme = event.matches ? "dark" : "light";
                     document.documentElement.setAttribute("data-theme", newTheme);
-                    document.getElementById("theme-toggle").innerHTML = newTheme === "dark" ? "🌓" : "🌑";
+                    updateThemeIcon(newTheme);
                     applyChartThemeOverrides();
                 }
+            });
+            
+            // Wait for DOM to load before setting initial icon
+            document.addEventListener('DOMContentLoaded', () => {
+                updateThemeIcon(initialTheme);
             });
         })();
         // -------------------
@@ -973,13 +1031,19 @@
             btnElement.closest('.nav-container').querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btnElement.classList.add('active');
+            
+            // Toggle submenu
+            const submenu = document.getElementById('submenu-tasas');
+            if (submenu) {
+                submenu.style.display = (tabId === 'tab-tasas') ? 'flex' : 'none';
+            }
         }
 
         function switchTasasTab(subId, btnElement) {
             document.getElementById('tasas-pesos').style.display = 'none';
             document.getElementById('tasas-cripto').style.display = 'none';
             // Remove active from child pills
-            btnElement.parentElement.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+            btnElement.parentElement.querySelectorAll('.sub-tab').forEach(el => el.classList.remove('active'));
             document.getElementById(subId).style.display = 'block';
             btnElement.classList.add('active');
             
