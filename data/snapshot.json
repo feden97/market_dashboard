@@ -1,7 +1,7 @@
 {
   "built_at": "2026-03-09T17:06:30.741073Z",
   "groups": {
-    "Índices y Cripto (USD)": [
+    "\u00cdndices y Cripto (USD)": [
       {
         "ticker": "SPY",
         "daily": -0.25,
@@ -109,7 +109,7 @@
         "abc": "C"
       }
     ],
-    "CEDEARs Índices (ARS)": [
+    "CEDEARs \u00cdndices (ARS)": [
       {
         "ticker": "SPY.BA",
         "daily": -0.44,
@@ -1485,7 +1485,7 @@
     ]
   },
   "column_ranges": {
-    "Índices y Cripto (USD)": {
+    "\u00cdndices y Cripto (USD)": {
       "daily": [
         -2.29,
         2.65
@@ -1503,7 +1503,7 @@
         -1.19
       ]
     },
-    "CEDEARs Índices (ARS)": {
+    "CEDEARs \u00cdndices (ARS)": {
       "daily": [
         -0.86,
         1.41
@@ -2616,8 +2616,29 @@
       "variacion": 5.31
     },
     "holidays": [
-      "23-03-2026 - Puente turístico no laborable",
-      "24-03-2026 - Día Nacional de la Memoria por la Verdad y la Justicia"
+      "23-03-2026 - Puente tur\u00edstico no laborable",
+      "24-03-2026 - D\u00eda Nacional de la Memoria por la Verdad y la Justicia"
+    ],
+    "full_holidays": [
+      "2026-01-01",
+      "2026-02-16",
+      "2026-02-17",
+      "2026-03-23",
+      "2026-03-24",
+      "2026-04-02",
+      "2026-04-03",
+      "2026-05-01",
+      "2026-05-25",
+      "2026-06-15",
+      "2026-06-20",
+      "2026-07-09",
+      "2026-07-10",
+      "2026-08-17",
+      "2026-10-12",
+      "2026-11-23",
+      "2026-12-07",
+      "2026-12-08",
+      "2026-12-25"
     ]
   },
   "historical_fiat": [
@@ -3203,7 +3224,25 @@
       "mep": 1439.5,
       "blue": 1415.0,
       "oficial": 1435.0,
-      "usdt": 1493.99,
+      "usdt": 1462.5,
+      "mayorista": 1416.0
+    },
+    {
+      "date": "07-03-2026",
+      "ccl": 1478.7,
+      "mep": 1439.5,
+      "blue": 1415.0,
+      "oficial": 1435.0,
+      "usdt": 1463.0,
+      "mayorista": 1416.0
+    },
+    {
+      "date": "08-03-2026",
+      "ccl": 1478.7,
+      "mep": 1439.5,
+      "blue": 1415.0,
+      "oficial": 1435.0,
+      "usdt": 1463.0,
       "mayorista": 1416.0
     },
     {

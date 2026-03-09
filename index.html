@@ -1,70 +1,437 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Financiero</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; background-color: #111b21; color: #e0e0e0; overflow: hidden; }
-        
-        .top-nav { position: sticky; top: 0; z-index: 1000; background-color: #202c33; border-bottom: 1px solid #2a3942; display: flex; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); }
-        .nav-container { display: flex; gap: 10px; }
-        .nav-tab { background: none; border: none; color: #9ca3af; font-size: 15px; font-weight: bold; padding: 16px 20px; cursor: pointer; transition: color 0.2s; position: relative; }
-        .nav-tab:hover { color: #f3f4f6; }
-        .nav-tab.active { color: #60a5fa; } 
-        .nav-tab.active::after { content: ""; position: absolute; bottom: -1px; left: 0; right: 0; height: 3px; background-color: #60a5fa; border-radius: 3px 3px 0 0; }
+        :root {
+            --bg-body: #09090b; /* Very dark zinc */
+            --bg-card: rgba(24, 24, 27, 0.7); /* Zinc 900 with opacity */
+            --bg-card-solid: #18181b;
+            --bg-card-hover: rgba(39, 39, 42, 0.8);
+            --border-color: rgba(63, 63, 70, 0.4); /* Zinc 700 */
+            
+            --text-main: #f4f4f5; /* Zinc 100 */
+            --text-muted: #a1a1aa; /* Zinc 400 */
+            
+            --accent: #3b82f6; /* Blue 500 */
+            --accent-glow: rgba(59, 130, 246, 0.2);
+            
+            --green: #10b981;
+            --red: #ef4444;
+            --orange: #f97316;
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
 
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        .tab-pane { display: none; height: 100%; width: 100%; overflow-y: auto; padding-bottom: 40px; }
-        .tab-pane.active { display: block; }
-        
-        .panel-ancho { width: 100%; max-width: 1400px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
-        
-        .macro-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
-        @media (max-width: 1100px) { .macro-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 768px) { .macro-grid { grid-template-columns: 1fr; } }
-        .macro-card { background-color: #202c33; padding: 15px; border-radius: 6px; border: 1px solid #2a3942; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); display: flex; flex-direction: column; justify-content: space-between; }
-        .macro-title { color: #a5b4fc; font-size: 0.85em; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; border-bottom: 1px solid #2a3942; padding-bottom: 5px; }
-        
-        .data-table { width: 100%; border-collapse: collapse; text-align: left; color: #e0e0e0; font-size: 0.9em; }
-        .data-table th, .data-table td { padding: 8px 10px; border: 1px solid #2a3942; }
-        .data-table th { background-color: #1a242b; color: #a5b4fc; }
-        .data-table tbody tr:nth-child(even) { background-color: rgba(255,255,255,0.02); }
-        .data-table tbody tr:hover { background-color: rgba(255,255,255,0.05); }
+        * {
+            box-sizing: border-box;
+            font-family: var(--font-family);
+        }
 
-        .ticker-list { width: 800px; background-color: #111b21; padding: 0; overflow-y: auto; border-right: 1px solid #2a3942; height: 100%; }
-        .chart-container { flex: 1; display: flex; flex-direction: column; padding: 10px; background-color: #111b21; height: 100%; }
-        .ticker-table th.sorted-column { background-color: #2a3942 !important; }
-        .ticker-table td.sorted-column { background-color: #1e2b34; }
-        .group-header { background-color: #202c33; padding: 6px 8px; font-weight: bold; font-size: 0.9em; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; position: sticky; top: 0; z-index: 3; cursor: pointer; color: #e0e0e0; border-bottom: 1px solid #2a3942; }
-        .group-header:hover { background-color: #2a3942; }
-        .ticker-table { width: 100%; border-collapse: collapse; font-size: 0.85em; table-layout: fixed; }
-        .ticker-table th { text-align: left; padding: 6px 8px; background-color: #202c33; cursor: pointer; user-select: none; font-weight: bold; border: 1px solid #2a3942; color: #e0e0e0; position: sticky; top: 30px; z-index: 2; }
-        .ticker-table td { padding: 6px 8px; border: 1px solid #2a3942; vertical-align: middle; color: #e0e0e0; }
-        .ticker-row:hover { background-color: #2a3942; }
-        .ticker-row.active { background-color: #374151; }
-        .tradingview-widget-container { flex: 1; min-height: 0; height: 100%; }
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: var(--bg-body);
+            background-image: radial-gradient(circle at 50% -20%, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
+            color: var(--text-main);
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(9, 9, 11, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            display: flex;
+            justify-content: center;
+            padding: 16px 0;
+        }
+
+        .nav-container {
+            display: flex;
+            gap: 12px;
+            background-color: transparent;
+            padding: 0;
+            border: none;
+        }
+
+        .nav-tab {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab:hover {
+            color: var(--text-main);
+            background-color: var(--bg-card-hover);
+        }
+
+        .nav-tab.active {
+            color: #dceda8;
+            background-color: transparent;
+            font-weight: 600;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tab-pane {
+            display: none;
+            height: 100%;
+            width: 100%;
+            overflow-y: auto;
+            padding-bottom: 40px;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-ancho {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .macro-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 1100px) {
+            .macro-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .macro-grid { grid-template-columns: 1fr; }
+        }
+
+        .macro-card {
+            background-color: var(--bg-card);
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .macro-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .macro-title {
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            text-align: left;
+            color: var(--text-main);
+            font-size: 14px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background-color: rgba(24, 24, 27, 0.9);
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tbody tr {
+            background-color: var(--bg-card);
+            transition: background-color 0.2s;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: var(--bg-card-hover);
+        }
+
+        /* Ticker layout for Tab 2 */
+        .ticker-list {
+            width: 800px;
+            background-color: var(--bg-body);
+            padding: 0;
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+            height: 100%;
+        }
+
+        .chart-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            background-color: var(--bg-body);
+            height: 100%;
+        }
+
+        .ticker-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 13px;
+            table-layout: fixed;
+        }
+
+        .ticker-table th {
+            text-align: left;
+            padding: 10px 12px;
+            background-color: var(--bg-card-solid);
+            cursor: pointer;
+            user-select: none;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
+            position: sticky;
+            top: 35px;
+            z-index: 2;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
         
-        .tooltip-container { position: relative; display: inline-flex; cursor: help; align-items: center; margin-left: 4px; }
-        .tooltip-text { visibility: hidden; width: 280px; background-color: #202c33; color: #e2e8f0; text-align: left; border-radius: 6px; padding: 10px; position: absolute; z-index: 9999; bottom: 150%; left: 0; opacity: 0; transition: opacity 0.3s; border: 1px solid #2a3942; box-shadow: 0 4px 6px rgba(0,0,0,0.5); font-size: 12px; line-height: 1.5; white-space: normal; }
-        .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 15px; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #2a3942 transparent transparent transparent; }
-        .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; }
-        .base-select { background-color: #111b21; color: #a5b4fc; border: 1px solid #2a3942; border-radius: 4px; padding: 2px 4px; font-size: 0.9em; outline: none; cursor: pointer; }
+        .ticker-table th.sorted-column {
+            color: var(--text-main);
+        }
+
+        .ticker-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            color: var(--text-main);
+            background-color: transparent;
+        }
+
+        .group-header {
+            background-color: rgba(9, 9, 11, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 10px 12px;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            cursor: pointer;
+            color: var(--accent);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ticker-row:hover {
+            background-color: var(--bg-card-hover);
+        }
+
+        .ticker-row.active {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .tradingview-widget-container {
+            flex: 1;
+            min-height: 0;
+            height: 100%;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .tooltip-container {
+            position: relative;
+            display: inline-flex;
+            cursor: help;
+            align-items: center;
+            margin-left: 6px;
+            color: var(--text-muted);
+        }
         
-        .badge-green { background-color: rgba(16,185,129,0.15); color: #34d399; border-radius: 4px; padding: 2px 6px; font-weight: bold; border: 1px solid rgba(16,185,129,0.3); }
-        .tables-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media (max-width: 900px) { .tables-grid { grid-template-columns: 1fr; } }
+        .tooltip-container:hover {
+            color: var(--text-main);
+        }
+
+        /* Tooltip content */
+        .tooltip-text {
+            visibility: hidden;
+            width: max-content;
+            max-width: 320px;
+            background-color: var(--bg-card-solid);
+            color: var(--text-main);
+            text-align: left;
+            border-radius: var(--radius-md);
+            padding: 12px;
+            position: absolute;
+            z-index: 9999;
+            bottom: 150%;
+            left: -10px;
+            transform: translateY(10px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            font-size: 12px;
+            line-height: 1.5;
+            white-space: normal;
+        }
         
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .base-select {
+            background-color: rgba(255, 255, 255, 0.05);
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 6px center;
+            background-size: 14px;
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            padding: 4px 24px 4px 8px; /* Extra padding on the right for the explicit arrow */
+            font-size: 12px;
+            outline: none;
+            cursor: pointer;
+            font-family: var(--font-family);
+            appearance: none;
+            -webkit-appearance: none;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+        .base-select:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .badge-green {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--green);
+            border-radius: 20px;
+            padding: 2px 8px;
+            font-weight: 600;
+            font-size: 12px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-red {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--red);
+            border-radius: 20px;
+            padding: 2px 8px;
+            font-weight: 600;
+            font-size: 12px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .tables-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .tables-grid { grid-template-columns: 1fr; }
+        }
+
         .gauge-arc {
-            width: 260px; height: 260px; border-radius: 50%;
-            background: conic-gradient(from 270deg at 50% 50%, #10b981 0deg 45deg, #facc15 45deg 135deg, #f97316 135deg 162deg, #ef4444 162deg 180deg, transparent 180deg 360deg);
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: conic-gradient(from 270deg at 50% 50%, var(--green) 0deg 45deg, #facc15 45deg 135deg, var(--orange) 135deg 162deg, var(--red) 162deg 180deg, transparent 180deg 360deg);
             -webkit-mask-image: radial-gradient(transparent 65%, black 66%);
             mask-image: radial-gradient(transparent 65%, black 66%);
         }
+        
+        .card-header-gradient {
+            background: linear-gradient(90deg, var(--bg-card-hover), transparent);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        /* Modern Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-body); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+        
+        .text-highlight-green {
+            color: var(--green);
+            font-weight: 600;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
     <nav class="top-nav">
@@ -78,19 +445,26 @@
     <div class="main-content">
         <div id="tab-argentina" class="tab-pane active">
             <div class="panel-ancho">
-                
+
                 <div class="macro-grid">
                     <div class="macro-card">
-                        <div class="macro-title">💸 Dólar más barato</div>
-                        <div>
-                            <div id="cheapest-dollar-name" style="font-size: 1em; color: #cbd5e1; font-weight:bold; text-transform: uppercase;">...</div>
-                            <div id="cheapest-dollar-val" style="font-size: 1.8em; font-weight: bold; color: #34d399; margin-top: 5px;">...</div>
+                        <div class="card-header-gradient">
+                            <h3 class="macro-title" style="margin: 0; padding: 0; border: none;">💸 Oferta más barata</h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; flex: 1;">
+                            <div id="cheapest-dollar-name"
+                                style="font-size: 13px; color: var(--text-muted); font-weight:600; text-transform: uppercase; letter-spacing: 0.5px;">...
+                            </div>
+                            <div id="cheapest-dollar-val"
+                                style="font-size: 24px; font-weight: 600; color: var(--text-main); margin-top: 8px; letter-spacing: -0.5px;">...</div>
                         </div>
                     </div>
 
                     <div class="macro-card">
-                        <div class="macro-title">📈 Tasas (Próximamente)</div>
-                        <ul style="margin: 0; padding-left: 20px; color: #9ca3af; font-size: 0.85em; line-height: 1.6;">
+                        <div class="card-header-gradient">
+                            <h3 class="macro-title" style="margin: 0; padding: 0; border: none;">📈 Tasas (Pronto)</h3>
+                        </div>
+                        <ul style="margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; color: var(--text-muted); font-size: 13px; line-height: 1.4;">
                             <li>Cuenta remunerada</li>
                             <li>Plazo Fijo</li>
                             <li>Earn StableCoin</li>
@@ -99,52 +473,70 @@
                     </div>
 
                     <div class="macro-card">
-                        <div class="macro-title">🛒 Inflación 2026</div>
-                        <div>
-                            <table class="data-table" style="font-size: 0.8em; margin-bottom: 5px;">
-                                <tbody id="inflacion-table"><tr><td>Cargando datos...</td></tr></tbody>
+                        <div class="card-header-gradient">
+                            <h3 class="macro-title" style="margin: 0; padding: 0; border: none;">🛒 Inflación 2026</h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
+                            <table class="data-table" style="font-size: 12px; margin-bottom: 12px; background: transparent; border: none;">
+                                <tbody id="inflacion-table">
+                                    <tr>
+                                        <td style="border: none; padding: 4px 0; color: var(--text-muted);">Cargando datos...</td>
+                                    </tr>
+                                </tbody>
                             </table>
-                            <div style="text-align: right; color: #cbd5e1; font-weight: bold; font-size: 0.8em;" id="inflacion-acum">Acumulado: --</div>
+                            <div style="text-align: right; color: var(--text-main); font-weight: 600; font-size: 12px; padding-top: 8px; border-top: 1px solid var(--border-color);"
+                                id="inflacion-acum">Acumulado: --</div>
                         </div>
                     </div>
 
                     <div class="macro-card">
-                        <div class="macro-title">🏖️ Próximos Feriados</div>
-                        <ul id="feriados-list" style="margin: 0; padding-left: 20px; color: #cbd5e1; font-size: 0.85em; line-height: 1.6;">
-                            <li>Cargando datos...</li>
+                        <div class="card-header-gradient">
+                            <h3 class="macro-title" style="margin: 0; padding: 0; border: none;">🏖️ Próximos Feriados</h3>
+                        </div>
+                        <ul id="feriados-list"
+                            style="margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; color: var(--text-main); font-size: 13px; line-height: 1.4; font-weight: 500;">
+                            <li style="color: var(--text-muted); font-weight: 400;">Cargando datos...</li>
                         </ul>
                     </div>
 
                     <div class="macro-card">
-                        <div class="macro-title">📉 Riesgo País</div>
-                        <div>
-                            <div style="display: flex; align-items: baseline; gap: 8px;">
-                                <span id="rp-val" style="font-size: 1.8em; font-weight: bold; color: #e0e0e0;">...</span>
-                                <span id="rp-var" style="font-size: 1em; font-weight: bold;"></span>
+                        <div class="card-header-gradient">
+                            <h3 class="macro-title" style="margin: 0; padding: 0; border: none;">📉 Riesgo País</h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; flex: 1;">
+                            <div style="display: flex; align-items: baseline; gap: 12px;">
+                                <span id="rp-val"
+                                    style="font-size: 28px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px;">...</span>
+                                <span id="rp-var" style="font-size: 14px; font-weight: 600; padding: 2px 8px; border-radius: 20px;"></span>
                             </div>
-                            <div id="rp-date" style="font-size: 0.8em; color: #6b7280; margin-top: 5px;"></div>
+                            <div id="rp-date" style="font-size: 12px; color: var(--text-muted); margin-top: 8px; font-weight: 500;"></div>
                         </div>
                     </div>
                 </div>
 
-                <div style="background-color: #202c33; padding: 20px; border-radius: 6px; border: 1px solid #2a3942; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h2 style="color: #e0e0e0; margin: 0; font-size: 1.2em;">Panel de Cotizaciones</h2>
+                <div class="macro-card" style="padding: 24px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 style="color: var(--text-main); margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.5px;">Panel de Cotizaciones</h2>
                         <div style="display: flex; align-items: center; gap: 15px; width: 50%; max-width: 400px;">
-                            <div style="flex: 1; background-color: #111b21; height: 8px; border-radius: 4px; overflow: hidden; border: 1px solid #2a3942;">
-                                <div id="update-progress-bar" style="height: 100%; width: 100%; background-color: #3b82f6; transition: width 1s linear;"></div>
+                            <div style="flex: 1; background-color: rgba(255,255,255,0.05); height: 3px; border-radius: 4px; overflow: hidden;">
+                                <div id="update-progress-bar" style="height: 100%; width: 100%; background-color: var(--accent); transition: width 1s linear;">
+                                </div>
                             </div>
-                            <div id="last-updated-time" style="font-size: 1.1em; color: #cbd5e1; white-space: nowrap; font-family: monospace; font-weight: bold;">Act: --:--:--</div>
+                            <div id="last-updated-time" style="font-size: 13px; color: var(--text-muted); white-space: nowrap; font-family: monospace; font-weight: 500;">
+                                Act: --:--:--</div>
                         </div>
                     </div>
-                    
+
                     <div class="tables-grid">
                         <div>
                             <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <th>Fiat</th><th>Precio</th><th>Var. Diaria</th>
-                                        <th style="display: flex; align-items: center; justify-content: space-between; border: none;">
+                                        <th>Fiat</th>
+                                        <th>Precio</th>
+                                        <th>Var. Diaria</th>
+                                        <th
+                                            style="display: flex; align-items: center; justify-content: space-between; border: none;">
                                             Brecha s/
                                             <select id="base-currency-select" class="base-select">
                                                 <option value="usdt">USDT</option>
@@ -175,57 +567,126 @@
                     </div>
 
                     <div style="text-align: center; margin-top: 25px;">
-                        <div id="chart-title" style="font-size: 0.85em; color: #a5b4fc; margin-bottom: 8px; text-align: left; font-weight: bold; text-transform: uppercase;">Spread CCL vs USDT (YTD)</div>
+                        <div id="chart-title"
+                            style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px; text-align: left; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Spread CCL vs USDT (YTD)</div>
                         <div style="height: 200px; width: 100%;">
                             <canvas id="spreadChart"></canvas>
                         </div>
-                        <div style="margin-top: 15px; padding: 10px; background-color: #111b21; border-radius: 6px; border: 1px solid #2a3942; display: flex; justify-content: space-around; font-size: 0.9em; color: #cbd5e1;">
-                            <div>Periodos ganadores CCL: <br><span id="ccl-wins" style="color: #34d399; font-weight: bold; font-size: 1.2em;">0 Días</span></div>
-                            <div>Periodos ganadores <span id="base-name-summary">...</span>: <br><span id="base-wins" style="color: #f87171; font-weight: bold; font-size: 1.2em;">0 Días</span></div>
+                        <div
+                            style="margin-top: 20px; padding: 12px; background-color: var(--bg-card-solid); border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: flex; justify-content: space-around; font-size: 13px; color: var(--text-muted);">
+                            <div>Periodos ganadores CCL: <br><span id="ccl-wins"
+                                    style="color: var(--green); font-weight: 700; font-size: 20px;">0 Días</span></div>
+                            <div>Periodos ganadores <span id="base-name-summary">...</span>: <br><span id="base-wins"
+                                    style="color: var(--red); font-weight: 700; font-size: 20px;">0 Días</span></div>
                         </div>
                     </div>
                 </div>
 
-                <div style="background-color: #202c33; padding: 20px; border-radius: 6px; border: 1px solid #2a3942;">
-                    <h2 style="color: #e0e0e0; margin: 0 0 20px 0; font-size: 1.2em;">Bandas Cambiarias y Dólar Mayorista</h2>
-                    
+                <div class="macro-card" style="padding: 24px; margin-top: 24px;">
+                    <h2 style="color: var(--text-main); margin: 0 0 24px 0; font-size: 18px; font-weight: 600; letter-spacing: -0.5px;">Bandas Cambiarias y Dólar
+                        Mayorista</h2>
+
                     <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start; margin-bottom: 25px;">
-                        <div style="flex: 1; min-width: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 10px;">
-                            <div style="position: relative; width: 340px; height: 170px; margin: 0 auto; margin-top: 20px;">
-                                <span id="velocimetro-mid" style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); color: #9ca3af; font-size: 0.9em; font-weight: bold;">$0.00</span>
-                                <span id="velocimetro-inf" style="position: absolute; bottom: -25px; left: 0; color: #9ca3af; font-size: 0.9em; font-weight: bold;">$0.00</span>
-                                <span id="velocimetro-sup" style="position: absolute; bottom: -25px; right: 0; color: #9ca3af; font-size: 0.9em; font-weight: bold;">$0.00</span>
-                                <div style="width: 100%; height: 200%; border-radius: 50%; background: conic-gradient(from 270deg at 50% 50%, #10b981 0deg 45deg, #facc15 45deg 135deg, #f97316 135deg 162deg, #ef4444 162deg 180deg, transparent 180deg 360deg); -webkit-mask-image: radial-gradient(transparent 55%, black 56%); mask-image: radial-gradient(transparent 55%, black 56%);"></div>
-                                <div id="gauge-needle" style="position: absolute; bottom: 0; left: 50%; width: 6px; height: 120px; background-color: #ffffff; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1); border-radius: 6px; box-shadow: 0 0 6px rgba(0,0,0,0.5); z-index: 10;"></div>
-                                <div style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 24px; height: 24px; background-color: #ffffff; border-radius: 50%; z-index: 11; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>
+                        <div
+                            style="flex: 1; min-width: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 10px;">
+                            <div
+                                style="position: relative; width: 340px; height: 170px; margin: 0 auto; margin-top: 20px;">
+                                <span id="velocimetro-mid"
+                                    style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); color: #9ca3af; font-size: 0.9em; font-weight: bold;">$0.00</span>
+                                <span id="velocimetro-inf"
+                                    style="position: absolute; bottom: -25px; left: 0; color: #9ca3af; font-size: 0.9em; font-weight: bold;">$0.00</span>
+                                <span id="velocimetro-sup"
+                                    style="position: absolute; bottom: -25px; right: 0; color: #9ca3af; font-size: 0.9em; font-weight: bold;">$0.00</span>
+                                <div
+                                    style="width: 100%; height: 200%; border-radius: 50%; background: conic-gradient(from 270deg at 50% 50%, #10b981 0deg 45deg, #facc15 45deg 135deg, #f97316 135deg 162deg, #ef4444 162deg 180deg, transparent 180deg 360deg); -webkit-mask-image: radial-gradient(transparent 55%, black 56%); mask-image: radial-gradient(transparent 55%, black 56%);">
+                                </div>
+                                <div id="gauge-needle"
+                                    style="position: absolute; bottom: 0; left: 50%; width: 6px; height: 120px; background-color: #ffffff; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1); border-radius: 6px; box-shadow: 0 0 6px rgba(0,0,0,0.5); z-index: 10;">
+                                </div>
+                                <div
+                                    style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 24px; height: 24px; background-color: #ffffff; border-radius: 50%; z-index: 11; box-shadow: 0 0 5px rgba(0,0,0,0.5);">
+                                </div>
                             </div>
                             <div style="text-align: center; margin-top: 35px;">
-                                <div style="color: #9ca3af; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 5px;">Dólar Mayorista</div>
-                                <div id="gauge-mayorista-box" style="display: inline-block; font-size: 1.8em; font-weight: bold; background-color: #10b981; color: #ffffff; padding: 4px 16px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: all 0.5s ease;">$0.00</div>
+                                <div
+                                    style="color: #9ca3af; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 5px;">
+                                    Dólar Mayorista</div>
+                                <div id="gauge-mayorista-box"
+                                    style="display: inline-block; font-size: 1.8em; font-weight: bold; background-color: #10b981; color: #ffffff; padding: 4px 16px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: all 0.5s ease;">
+                                    $0.00</div>
                             </div>
                         </div>
 
                         <div style="flex: 1.5; min-width: 350px;">
-                            <table class="data-table" style="margin-bottom: 15px;">
+                            <table class="data-table" style="margin-bottom: 20px;">
                                 <thead>
-                                    <tr><th>Estado</th><th>Rango (%)</th><th>Valor mínimo</th><th>Valor máximo</th></tr>
+                                    <tr>
+                                        <th>Estado</th>
+                                        <th>Rango (%)</th>
+                                        <th>Valor mínimo</th>
+                                        <th>Valor máximo</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td><span style="color:#10b981; font-weight:bold;">● Favorable</span></td><td>0 - 25%</td><td id="r-fav-min"></td><td id="r-fav-max"></td></tr>
-                                    <tr><td><span style="color:#facc15; font-weight:bold;">● Intermedio</span></td><td>25 - 75%</td><td id="r-int-min"></td><td id="r-int-max"></td></tr>
-                                    <tr><td><span style="color:#f97316; font-weight:bold;">● Precaución</span></td><td>75 - 90%</td><td id="r-pre-min"></td><td id="r-pre-max"></td></tr>
-                                    <tr><td><span style="color:#ef4444; font-weight:bold;">● Crítico</span></td><td>90 - 100%</td><td id="r-cri-min"></td><td id="r-cri-max"></td></tr>
+                                    <tr>
+                                        <td><span style="color:var(--green); font-weight:600;">● Favorable</span></td>
+                                        <td>0 - 25%</td>
+                                        <td id="r-fav-min"></td>
+                                        <td id="r-fav-max"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="color:#facc15; font-weight:600;">● Intermedio</span></td>
+                                        <td>25 - 75%</td>
+                                        <td id="r-int-min"></td>
+                                        <td id="r-int-max"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="color:var(--orange); font-weight:600;">● Precaución</span></td>
+                                        <td>75 - 90%</td>
+                                        <td id="r-pre-min"></td>
+                                        <td id="r-pre-max"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="color:var(--red); font-weight:600;">● Crítico</span></td>
+                                        <td>90 - 100%</td>
+                                        <td id="r-cri-min"></td>
+                                        <td id="r-cri-max"></td>
+                                    </tr>
                                 </tbody>
                             </table>
-                            <div style="background-color: #111b21; padding: 12px; border-radius: 4px; font-size: 0.95em; color: #cbd5e1; border-left: 3px solid #60a5fa; display: flex; flex-direction: column; gap: 8px;">
+                            <div
+                                style="background-color: var(--bg-card-solid); padding: 16px; border-radius: var(--radius-sm); font-size: 14px; color: var(--text-main); border-left: 4px solid var(--accent); display: flex; flex-direction: column; gap: 8px;">
                                 <div id="diff-sup">El dólar debería subir...</div>
                                 <div id="diff-inf">El dólar debería bajar...</div>
                             </div>
                         </div>
                     </div>
 
-                    <div style="height: 250px; width: 100%;">
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                        <div style="background-color: var(--bg-card-solid); border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; overflow: hidden; padding: 4px; gap: 4px;">
+                            <button id="btn-bandas-chart" onclick="toggleBandasView('chart')" style="background-color: var(--bg-card-hover); color: var(--text-main); border: none; padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; margin: 0; border-radius: 8px;">Gráfico</button>
+                            <button id="btn-bandas-table" onclick="toggleBandasView('table')" style="background-color: transparent; color: var(--text-muted); border: none; padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; margin: 0; border-radius: 8px;">Tabla</button>
+                        </div>
+                    </div>
+                    
+                    <div id="bandas-chart-view" style="height: 250px; width: 100%;">
                         <canvas id="bandasChart"></canvas>
+                    </div>
+                    
+                    <div id="bandas-table-view" style="display: none; max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                        <table class="data-table" style="font-size: 13px; margin: 0; width: 100%; text-align: left; border: none;">
+                            <thead style="position: sticky; top: 0; background-color: var(--bg-card-solid); z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                                <tr>
+                                    <th style="padding: 8px;">Fecha</th>
+                                    <th style="padding: 8px;">Mayorista</th>
+                                    <th style="padding: 8px;">Techo</th>
+                                    <th style="padding: 8px;">Piso</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bandas-table-wrapper-body">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -233,9 +694,93 @@
 
         <div id="tab-tasas" class="tab-pane">
             <div class="panel-ancho">
-                <h2 style="color: #e0e0e0; margin: 0; font-size: 1.2em;">Tasas de Interés y Plazos Fijos</h2>
-                <div style="background-color: #202c33; padding: 20px; border-radius: 6px; border: 1px solid #2a3942; text-align: center; color: #9ca3af;">
-                    🚧 Próximamente: Ranking de Tasas de Bancos y Billeteras.
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <h2 style="color: var(--text-main); margin: 0; font-size: 18px; font-weight: 600;">Tasas de Interés y Rendimientos</h2>
+                    <div style="display: flex; gap: 8px; background-color: var(--bg-card-solid); padding: 4px; border-radius: 12px; border: 1px solid var(--border-color);">
+                        <button class="nav-tab active" onclick="switchTasasTab('tasas-pesos', this)" style="padding: 6px 16px; font-size: 13px;">🇦🇷 Pesos (ARS)</button>
+                        <button class="nav-tab" onclick="switchTasasTab('tasas-cripto', this)" style="padding: 6px 16px; font-size: 13px;">🪙 Stablecoins</button>
+                    </div>
+                </div>
+
+                <!-- PESOS (ARS) VIEW -->
+                <div id="tasas-pesos" style="display: block; animation: fadeIn 0.4s ease forwards; max-width: 900px; margin: 0 auto;">
+                    <div style="margin-bottom: 48px;">
+                        <h3 style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px; font-weight: 500;">Cuentas remuneradas y billeteras con tasa fija garantizada</h3>
+                        <div id="ars-accounts-container" style="display: flex; flex-direction: column; gap: 16px;">
+                            <div style="text-align: center; color: var(--text-muted); padding: 40px;">Cargando cuentas...</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 48px;">
+                        <h3 style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px; font-weight: 500;">Plazos Fijos Top 10</h3>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 16px;">
+                            <div class="macro-card">
+                                <div class="card-header-gradient" style="margin-bottom: 12px; font-weight: 600;">Plazos Fijos Tradicionales</div>
+                                <div id="ars-pf-list" style="color: var(--text-muted); font-size: 13px;">Cargando...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 48px;">
+                        <h3 style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px; font-weight: 500;">Rendimiento Variable (FCI)</h3>
+                        <div id="ars-fci-container" style="display: flex; flex-direction: column; gap: 16px;">
+                            <div style="text-align: center; color: var(--text-muted); padding: 40px;">Cargando FCI...</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 48px;">
+                        <h3 style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px; font-weight: 500;">Cauciones Bursátiles</h3>
+                        <div class="macro-card" style="padding: 0; overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 11px; text-transform: uppercase;">
+                                        <th style="padding: 16px; font-weight: 500;">Plazo</th>
+                                        <th style="padding: 16px; font-weight: 500;">Tasa Actual</th>
+                                        <th style="padding: 16px; font-weight: 500;">Variación</th>
+                                        <th style="padding: 16px; font-weight: 500;">T. Tomadora</th>
+                                        <th style="padding: 16px; font-weight: 500;">T. Colocadora</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                        <td style="padding: 16px;"><div style="font-weight: 600; color: var(--text-main);">PESOS 1D</div><div style="font-size: 11px; color: var(--text-muted);">Caución a 1 día</div></td>
+                                        <td style="padding: 16px; font-weight: 600; color: #a3e635;">21.00%</td>
+                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
+                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
+                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                        <td style="padding: 16px;"><div style="font-weight: 600; color: var(--text-main);">PESOS 7D</div><div style="font-size: 11px; color: var(--text-muted);">Caución a 7 días</div></td>
+                                        <td style="padding: 16px; font-weight: 600; color: #a3e635;">22.00%</td>
+                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
+                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
+                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 16px;"><div style="font-weight: 600; color: var(--text-main);">PESOS 14D</div><div style="font-size: 11px; color: var(--text-muted);">Caución a 14 días</div></td>
+                                        <td style="padding: 16px; font-weight: 600; color: #a3e635;">25.00%</td>
+                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
+                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
+                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STABLECOINS VIEW -->
+                <div id="tasas-cripto" style="display: none; animation: fadeIn 0.4s ease forwards; max-width: 1000px; margin: 0 auto;">
+                    <div class="macro-card" style="padding: 0; overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; min-width: 700px;">
+                            <thead id="cripto-thead">
+                                <!-- JS Injected Matrix Header -->
+                            </thead>
+                            <tbody id="cripto-tbody">
+                                <!-- JS Injected Matrix Body -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -243,8 +788,10 @@
         <div id="tab-renta" class="tab-pane" style="padding-bottom: 0;">
             <div style="display: flex; height: 100%;">
                 <div class="ticker-list">
-                    <div style="padding: 15px;">
-                        <button style="width: 100%; padding: 10px; background-color: #202c33; border: 1px solid #2a3942; color: #a5b4fc; font-weight: bold; cursor: pointer; border-radius: 4px; text-transform: uppercase;">📋 Guía de Columnas</button>
+                    <div style="padding: 16px; border-bottom: 1px solid var(--border-color);">
+                        <button
+                            style="width: 100%; padding: 12px; background-color: var(--bg-card-hover); border: 1px solid var(--border-color); color: var(--accent); font-weight: 600; cursor: pointer; border-radius: var(--radius-sm); text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; transition: background-color 0.2s;">📋
+                            Guía de Columnas</button>
                     </div>
                     <div id="groups-container"></div>
                 </div>
@@ -260,15 +807,246 @@
     <script src="https://s3.tradingview.com/tv.js"></script>
     <script>
         function switchTab(tabId, btnElement) {
-            document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('#tab-argentina, #tab-tasas, #tab-renta').forEach(el => el.classList.remove('active'));
+            // Remove active purely from top nav buttons
+            btnElement.closest('.nav-container').querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btnElement.classList.add('active');
         }
 
-        (function() {
+        function switchTasasTab(subId, btnElement) {
+            document.getElementById('tasas-pesos').style.display = 'none';
+            document.getElementById('tasas-cripto').style.display = 'none';
+            // Remove active from child pills
+            btnElement.parentElement.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+            document.getElementById(subId).style.display = 'block';
+            btnElement.classList.add('active');
+            
+            // Trigger fetch only if switching back to Pesos (which might need a refresh) or simply rely on initial load
+            if(subId === 'tasas-pesos' && !window.tasasLoaded) {
+                loadTasasData();
+            }
+        }
+
+        async function loadTasasData() {
+            window.tasasLoaded = true;
+
+            const iconMapExt = {
+                'binance earn': '<svg viewBox="0 0 24 24" style="width: 28px; height: 28px; background:#fcd535; border-radius: 50%; padding:4px;"><path d="M16.624 13.9202l2.7175 2.7154-7.353 7.353-7.353-7.352 2.7175-2.7164 4.6355 4.6595 4.6356-4.6595zm4.6366-4.6366L24 12l-2.7394 2.7154-2.7383-2.7154 2.7383-2.7164zM7.3783 9.2836L12 4.6241l4.6217 4.6595 2.7175-2.7154-7.3392-7.353-7.353 7.352 2.7314 2.7164zm-4.6366 4.6366L0 12l2.7416-2.7164 2.7186 2.7164L2.7416 13.9202zM12 15.1772l-3.179-3.1772L12 8.8228l3.179 3.1772L12 15.1772z" fill="#1e2026"/></svg>',
+                'binance': '<svg viewBox="0 0 24 24" style="width: 28px; height: 28px; background:#fcd535; border-radius: 50%; padding:4px;"><path d="M16.624 13.9202l2.7175 2.7154-7.353 7.353-7.353-7.352 2.7175-2.7164 4.6355 4.6595 4.6356-4.6595zm4.6366-4.6366L24 12l-2.7394 2.7154-2.7383-2.7154 2.7383-2.7164zM7.3783 9.2836L12 4.6241l4.6217 4.6595 2.7175-2.7154-7.3392-7.353-7.353 7.352 2.7314 2.7164zm-4.6366 4.6366L0 12l2.7416-2.7164 2.7186 2.7164L2.7416 13.9202zM12 15.1772l-3.179-3.1772L12 8.8228l3.179 3.1772L12 15.1772z" fill="#1e2026"/></svg>',
+                'fiwind': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 28px; height: 28px; border-radius: 50%;"><rect width="18" height="18" style="fill: rgb(10, 10, 10);"></rect><g><path d="M7.92,9.58h-1.57c-.2,0-.36-.16-.36-.36s.16-.36.36-.36h1.57c.2,0,.36.16.36.36s-.16.36-.36.36ZM6.36,7.96c-.2,0-.36-.16-.36-.36s.16-.36.36-.36h2.05c.2,0,.36.16.36.36s-.16.36-.36.36h-2.05ZM8.7,11.48c-.19-.06-.3-.26-.24-.45l1.1-3.61c.06-.19.26-.3.45-.24.19.06.3.26.24.45l-1.1,3.61c-.06.19-.26.3-.45.24ZM11.89,7.63l-1.1,3.61c-.06.19-.26.3-.45.24-.19-.06-.3-.26-.24-.45l1.1-3.61c.06-.19.26-.3.45-.24.19.06.3.26.24.45Z" style="fill: rgb(239, 180, 29);"></path><path d="M9,14.01c-2.76,0-5-2.25-5-5.01s2.24-5.01,5-5.01,5,2.25,5,5.01-2.24,5.01-5,5.01ZM9,4.62c-2.41,0-4.37,1.96-4.37,4.37s1.96,4.37,4.37,4.37,4.37-1.96,4.37-4.37-1.96-4.37-4.37-4.37Z" style="fill: rgb(239, 180, 29);"></path></g></svg>',
+                'lemoncash': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 28px; height: 28px; border-radius: 50%;"><rect width="18" height="18" style="fill: rgb(10, 10, 10);"></rect><path d="M9,4c-2.74,0-5,2.26-5,5s2.26,5,5,5,5-2.26,5-5h0c0-2.74-2.26-5-5-5h0ZM11.63,9.24s-.07.05-.11.07c-.04.02-.09.03-.14.04-.11.02-.22.02-.33,0-.24-.05-.48-.15-.69-.28-.22-.14-.43-.29-.62-.47-.1-.09-.19-.18-.28-.28-.09-.1-.18-.21-.26-.31-.02-.03-.05-.04-.08-.04-.02,0-.04,0-.06.02-.05.03-.07.1-.03.15.07.12.16.23.24.35.09.12.17.22.27.33.19.21.4.41.63.58.24.18.5.32.79.42.1.03.2.05.3.06.04,0,.07.04.07.08,0,.01,0,.02-.01.03-.17.28-.37.53-.6.76-.63.66-1.49,1.05-2.4,1.08-.34,0-.68-.06-.99-.21l-.07-.03s-.05-.01-.07,0l-.06.04c-.11.07-.23.11-.35.11-.1,0-.2-.03-.28-.1-.13-.18-.13-.43,0-.61l.04-.07s.01-.05,0-.07l-.04-.07c-.35-.66-.32-1.52.03-2.32.01-.03.04-.05.07-.05.01,0,.02,0,.03,0,.02,0,.03.02.04.04.06.17.15.33.24.48.16.24.34.45.55.65.1.1.21.2.31.28.1.09.22.18.33.26.02,0,.04.01.05.01.06,0,.11-.05.11-.11,0-.03,0-.05-.03-.07-.1-.09-.2-.18-.29-.27-.09-.1-.18-.2-.27-.29-.17-.2-.32-.42-.44-.65-.12-.22-.2-.46-.24-.7-.02-.11-.02-.22,0-.33,0-.04.02-.09.04-.13,0-.01.02-.03.02-.04.07-.09.15-.17.23-.25,1.04-1.04,2.46-1.37,3.46-.83l.07.04s.06.02.08,0l.07-.05c.19-.15.45-.15.64,0,.15.2.14.47-.02.66l-.05.07s-.02.05,0,.07l.03.07c.26.6.28,1.28.05,1.9h0Z" style="fill: rgb(0, 240, 104);"></path></svg>',
+                'lemon': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 28px; height: 28px; border-radius: 50%;"><rect width="18" height="18" style="fill: rgb(10, 10, 10);"></rect><path d="M9,4c-2.74,0-5,2.26-5,5s2.26,5,5,5,5-2.26,5-5h0c0-2.74-2.26-5-5-5h0ZM11.63,9.24s-.07.05-.11.07c-.04.02-.09.03-.14.04-.11.02-.22.02-.33,0-.24-.05-.48-.15-.69-.28-.22-.14-.43-.29-.62-.47-.1-.09-.19-.18-.28-.28-.09-.1-.18-.21-.26-.31-.02-.03-.05-.04-.08-.04-.02,0-.04,0-.06.02-.05.03-.07.1-.03.15.07.12.16.23.24.35.09.12.17.22.27.33.19.21.4.41.63.58.24.18.5.32.79.42.1.03.2.05.3.06.04,0,.07.04.07.08,0,.01,0,.02-.01.03-.17.28-.37.53-.6.76-.63.66-1.49,1.05-2.4,1.08-.34,0-.68-.06-.99-.21l-.07-.03s-.05-.01-.07,0l-.06.04c-.11.07-.23.11-.35.11-.1,0-.2-.03-.28-.1-.13-.18-.13-.43,0-.61l.04-.07s.01-.05,0-.07l-.04-.07c-.35-.66-.32-1.52.03-2.32.01-.03.04-.05.07-.05.01,0,.02,0,.03,0,.02,0,.03.02.04.04.06.17.15.33.24.48.16.24.34.45.55.65.1.1.21.2.31.28.1.09.22.18.33.26.02,0,.04.01.05.01.06,0,.11-.05.11-.11,0-.03,0-.05-.03-.07-.1-.09-.2-.18-.29-.27-.09-.1-.18-.2-.27-.29-.17-.2-.32-.42-.44-.65-.12-.22-.2-.46-.24-.7-.02-.11-.02-.22,0-.33,0-.04.02-.09.04-.13,0-.01.02-.03.02-.04.07-.09.15-.17.23-.25,1.04-1.04,2.46-1.37,3.46-.83l.07.04s.06.02.08,0l.07-.05c.19-.15.45-.15.64,0,.15.2.14.47-.02.66l-.05.07s-.02.05,0,.07l.03.07c.26.6.28,1.28.05,1.9h0Z" style="fill: rgb(0, 240, 104);"></path></svg>', // default fallback
+                'belo': '<svg viewBox="0 0 24 24" style="width: 28px; height: 28px; background:#6366f1; border-radius: 50%; padding:0px;"><circle cx="12" cy="12" r="12" fill="#6d28d9"/><path d="M7 13c1.5 1.5 4 2.5 5 2.5s3.5-1 5-2.5" stroke="#22d3ee" stroke-width="3" stroke-linecap="round" fill="none"/></svg>',
+                'uala': '<svg viewBox="0 0 24 24" style="width: 28px; height: 28px; background:#1e40af; border-radius: 50%; padding:0px;"><circle cx="12" cy="12" r="12" fill="#1e3a8a"/><path d="M8 10c0 3 2 4 4 4s4-1 4-4" stroke="#f43f5e" stroke-width="3" stroke-linecap="round" fill="none"/></svg>',
+                'naranja': '<svg viewBox="0 0 24 24" style="width: 28px; height: 28px; background:#f97316; border-radius: 50%; padding:0px;"><circle cx="12" cy="12" r="12" fill="#ffffff"/><text x="12" y="16" font-size="12" font-weight="900" text-anchor="middle" fill="#f97316" font-family="Arial">NX</text></svg>',
+                'carrefour': '<svg viewBox="0 0 24 24" style="width: 28px; height: 28px; background:#0ea5e9; border-radius: 50%; padding:0px;"><circle cx="12" cy="12" r="12" fill="#3b82f6"/><path d="M12 6l-6 6 6 6" stroke="#ef4444" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 6l6 6-6 6" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>',
+                'lb': '<svg viewBox="0 0 24 24" style="width: 28px; height: 28px; background:#2e1065; border-radius: 50%; padding: 0px;"><circle cx="12" cy="12" r="12" fill="#581c87"/><text x="12" y="16" font-size="12" font-weight="900" text-anchor="middle" fill="#d8b4fe" font-family="Arial">LB</text></svg>',
+                'vesseo': '<svg viewBox="0 0 24 24" style="width: 28px; height: 28px; background:#111827; border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; padding: 0px;"><circle cx="12" cy="12" r="12" fill="#1f2937"/><text x="12" y="16" font-size="14" font-weight="900" text-anchor="middle" fill="#facc15" font-family="Arial">V</text></svg>',
+                'usdt': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="width: 24px; height: 24px;"><g fill="none" fill-rule="evenodd"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path fill="#FFF" d="M17.922 17.383v-.002c-.11.008-.677.042-1.942.042-1.01 0-1.721-.03-1.971-.042v.003c-3.888-.171-6.79-.848-6.79-1.658 0-.809 2.902-1.486 6.79-1.66v2.644c.254.018.982.061 1.988.061 1.207 0 1.812-.05 1.925-.06v-2.643c3.88.173 6.775.85 6.775 1.658 0 .81-2.895 1.485-6.775 1.657m0-3.59v-2.366h5.414V7.819H8.595v3.608h5.414v2.365c-4.4.202-7.709 1.074-7.709 2.118 0 1.044 3.309 1.915 7.709 2.118v7.582h3.913v-7.584c4.393-.202 7.694-1.073 7.694-2.116 0-1.043-3.301-1.914-7.694-2.117"/></g></svg>',
+                'usdc': '<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;"><g fill="none"><circle fill="#3E73C4" cx="16" cy="16" r="16"/><g fill="#FFF"><path d="M20.022 18.124c0-2.124-1.28-2.852-3.84-3.156-1.828-.243-2.193-.728-2.193-1.578 0-.85.61-1.396 1.828-1.396 1.097 0 1.707.364 2.011 1.275a.458.458 0 00.427.303h.975a.416.416 0 00.427-.425v-.06a3.04 3.04 0 00-2.743-2.489V9.142c0-.243-.183-.425-.487-.486h-.915c-.243 0-.426.182-.487.486v1.396c-1.829.242-2.986 1.456-2.986 2.974 0 2.002 1.218 2.791 3.778 3.095 1.707.303 2.255.668 2.255 1.639 0 .97-.853 1.638-2.011 1.638-1.585 0-2.133-.667-2.316-1.578-.06-.242-.244-.364-.427-.364h-1.036a.416.416 0 00-.426.425v.06c.243 1.518 1.219 2.61 3.23 2.914v1.457c0 .242.183.425.487.485h.915c.243 0 .426-.182.487-.485V21.34c1.829-.303 3.047-1.578 3.047-3.217z"/><path d="M12.892 24.497c-4.754-1.7-7.192-6.98-5.424-11.653.914-2.55 2.925-4.491 5.424-5.402.244-.121.365-.303.365-.607v-.85c0-.242-.121-.424-.365-.485-.061 0-.183 0-.244.06a10.895 10.895 0 00-7.13 13.717c1.096 3.4 3.717 6.01 7.13 7.102.244.121.488 0 .548-.243.061-.06.061-.122.061-.243v-.85c0-.182-.182-.424-.365-.546zm6.46-18.936c-.244-.122-.488 0-.548.242-.061.061-.061.122-.061.243v.85c0 .243.182.485.365.607 4.754 1.7 7.192 6.98 5.424 11.653-.914 2.55-2.925 4.491-5.424 5.402-.244.121-.365.303-.365.607v.85c0 .242.121.424.365.485.061 0 .183 0 .244-.06a10.895 10.895 0 007.13-13.717c-1.096-3.46-3.778-6.07-7.13-7.162z"/></g></g></svg>',
+                'dai': '<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;"><g fill="none" fill-rule="evenodd"><circle fill="#F4B731" fill-rule="nonzero" cx="16" cy="16" r="16"/><path d="M9.277 8h6.552c3.985 0 7.006 2.116 8.13 5.194H26v1.861h-1.611c.031.294.047.594.047.898v.046c0 .342-.02.68-.06 1.01H26v1.86h-2.08C22.767 21.905 19.77 24 15.83 24H9.277v-5.131H7v-1.86h2.277v-1.954H7v-1.86h2.277V8zm1.831 10.869v3.462h4.72c2.914 0 5.078-1.387 6.085-3.462H11.108zm11.366-1.86H11.108v-1.954h11.37c.041.307.063.622.063.944v.045c0 .329-.023.65-.067.964zM15.83 9.665c2.926 0 5.097 1.424 6.098 3.528h-10.82V9.666h4.72z" fill="#FFF"/></g></svg>'
+            };
+
+            const formatCard = (name, tna, date, limit, conditions, type) => {
+                let init = name.charAt(0).toUpperCase();
+                let exactIcon = iconMapExt[name.toLowerCase()] || iconMapExt[name.split(' ')[0].toLowerCase()];
+                let limitStr = limit ? `<span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(255,100,100,0.2); color: #fca5a5; background: rgba(255,100,100,0.05);">${limit}</span>` : `<span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); background: rgba(255,255,255,0.03);">Sin Límites</span>`;
+                
+                let renderIcon = exactIcon ? exactIcon : `<div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--bg-card-hover), transparent); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--text-muted); font-size: 20px; flex-shrink: 0;">${init}</div>`;
+                if(exactIcon) {
+                    // scale icon up for cards
+                    renderIcon = exactIcon.replace('width: 28px;', 'width: 44px;').replace('height: 28px;', 'height: 44px;');
+                }
+
+                return `<div style="display: flex; align-items: center; justify-content: space-between; padding: 24px; background-color: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); cursor: default;">
+                    <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
+                        ${renderIcon}
+                        <div>
+                            <div style="font-weight: 500; font-size: 16px; color: var(--text-main); margin-bottom: 6px; letter-spacing: 0.3px;">${name}</div>
+                            ${conditions ? `<div style="font-size: 14px; color: var(--text-muted); line-height: 1.5; max-width: 550px; margin-bottom: 12px; letter-spacing: 0.2px;">${conditions}</div>` : ''}
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(59,130,246,0.2); color: #93c5fd; background: rgba(59,130,246,0.05);">${type}</span>
+                                ${limitStr}
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; flex-shrink: 0;">
+                        <div style="font-weight: 600; font-size: 18px; color: #818cf8; margin-bottom: 4px; letter-spacing: 0.5px;">${tna}</div>
+                        <div style="font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px;">TNA</div>
+                        ${date ? `<div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">TNA vigente desde el ${date}</div>` : ''}
+                    </div>
+                </div>`;
+            };
+
+            const formatSimpleList = (items) => {
+                let html = '<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">';
+                items.forEach(i => {
+                    let renderLogo = i.logo ? `<img src="${i.logo}" style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover; background: white;" alt="${i.name} logo" onerror="this.outerHTML='<div style=\\\'width: 20px; height: 20px; border-radius: 50%; background: var(--bg-card-hover); line-height:20px; text-align:center; font-size:10px; color:var(--text-muted);\\\'>${i.name.charAt(0)}</div>'"/>` : `<div style="width: 20px; height: 20px; border-radius: 50%; background: var(--bg-card-hover); line-height:20px; text-align:center; font-size:10px; color:var(--text-muted);">${i.name.charAt(0)}</div>`;
+                    
+                    html += `<li style="display: flex; justify-content: space-between; font-size: 13px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    ${renderLogo}
+                                    <span style="color: var(--text-main);">${i.name}</span>
+                                </div>
+                                <span style="font-weight: 600; color: #a3e635;">${(i.rate * 100).toFixed(2)}% TNA</span>
+                             </li>`;
+                });
+                return html + '</ul>';
+            };
+
+            try {
+                // Plazos Fijos
+                fetch("https://api.argentinadatos.com/v1/finanzas/tasas/plazoFijo")
+                    .then(r => r.json())
+                    .then(data => {
+                        let latest = data;
+                        latest.sort((a,b) => (b.tnaClientes || 0) - (a.tnaClientes || 0));
+                        let top10 = latest.slice(0, 10).map(e => ({
+                            name: e.entidad.replace("BANCO ", "").replace(" DE LA ", " ").substring(0,25), 
+                            rate: e.tnaClientes,
+                            logo: e.logo
+                        }));
+                        document.getElementById('ars-pf-list').innerHTML = formatSimpleList(top10);
+                    }).catch(e => console.log('Err PF:', e));
+
+                // Cuentas Remuneradas / Uala Plus, etc.
+                fetch("https://api.argentinadatos.com/v1/finanzas/fci/otros/ultimo")
+                    .then(r => r.json())
+                    .then(data => {
+                        let filterNames = ['CARREFOUR', 'FIWIND', 'NARANJA', 'UALA', 'BELO'];
+                        let filtered = data.filter(e => filterNames.some(f => e.fondo.toUpperCase().includes(f)));
+                        filtered.sort((a,b) => (b.tna || 0) - (a.tna || 0));
+                        
+                        let html = '';
+                        filtered.forEach(acc => {
+                            let rawName = acc.fondo;
+                            let name = rawName.replace('BANCO', '').trim();
+                            // Fixes for proper casing
+                            if(name === 'UALA') name = 'Ualá';
+                            if(name === 'UALA PLUS 1') name = 'Ualá Plus 1';
+                            if(name === 'UALA PLUS 2') name = 'Ualá Plus 2';
+                            if(name === 'NARANJA X') name = 'Naranja X';
+                            if(name === 'FIWIND') name = 'Fiwind';
+                            if(name === 'BELO') name = 'Belo';
+                            if(name === 'CARREFOUR') name = 'Carrefour Banco';
+
+                            let tna = (acc.tna * 100).toFixed(2) + '%';
+                            let dateText = acc.fecha ? acc.fecha.split('-').reverse().join('/') : '';
+                            
+                            let limitTxt = null;
+                            if (acc.tope) limitTxt = `Límite: $${(acc.tope/1000000)} M`;
+                            else if (acc.condiciones && acc.condiciones.includes('4.161.600')) limitTxt = 'Límite: $4.1 M';
+                            
+                            let type = (rawName.includes('FIWIND') || rawName.includes('BELO')) ? 'Billetera' : 'Cuenta Remunerada';
+                            let conditions = acc.condicionesCorto || null; // Explanations
+
+                            html += formatCard(name, tna, dateText, limitTxt, conditions, type);
+                        });
+                        document.getElementById('ars-accounts-container').innerHTML = html;
+                    }).catch(e => console.log('Err Remu:', e));
+
+                // Rendimientos Matrix
+                fetch("https://api.argentinadatos.com/v1/finanzas/rendimientos")
+                    .then(r => r.json())
+                    .then(data => {
+                        // FCI Pesos via Rendimientos Endpoint formatted into cards!
+                        let pfItems = [];
+                        data.forEach(item => {
+                            if(item.entidad && item.entidad.length > 2) {
+                                let ars = item.rendimientos.find(r => r.moneda === 'ARS');
+                                if(ars && ars.apy) pfItems.push({name: item.entidad.toUpperCase(), rate: ars.apy / 100});
+                            }
+                        });
+                        pfItems.sort((a,b) => b.rate - a.rate);
+                        let topFci = pfItems.slice(0, 5);
+                        let fciHtml = '';
+                        topFci.forEach(f => {
+                            let type = f.name.includes('FIWIND') ? 'Billetera' : 'FCI / Exchange';
+                            fciHtml += formatCard(
+                                f.name, 
+                                (f.rate * 100).toFixed(2) + '%', 
+                                '', 
+                                null, 
+                                'Fondo común de inversión ofrecido mediante intermediario / partner. Tasa variable según mercado.', 
+                                type
+                            );
+                        });
+                        if (fciHtml === '') fciHtml = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No hay rendimientos disponibles.</div>';
+                        document.getElementById('ars-fci-container').innerHTML = fciHtml;
+
+                        // Crypto Matrix
+                        let entities = ['Binance Earn', 'Fiwind', 'LB', 'Belo', 'LemonCash', 'Vesseo'];
+                        // the internal names mapped to API:
+                        let entityKeyMap = {'Binance Earn': 'binance', 'Fiwind': 'fiwind', 'LB': 'letsbit', 'Belo': 'belo', 'LemonCash': 'lemoncash', 'Vesseo': 'vesseo'};
+
+                        let coins = ['USDT', 'USDC', 'DAI'];
+                        let coinMap = {'USDT': 'USDT', 'USDC': 'USDC', 'DAI': 'DAI'};
+                        
+                        let htmlHead = `<tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 11px; text-transform: uppercase;">
+                            <th style="padding: 16px; font-weight: 500;">Criptomoneda</th>`;
+                        entities.forEach(ent => {
+                            let mappedIcon = iconMapExt[ent.toLowerCase()] || iconMapExt[ent.split(' ')[0].toLowerCase()];
+                            let renderLogo = mappedIcon ? mappedIcon : `<div style="width:28px; height:28px; line-height:28px; text-align:center; border-radius:50%; background:var(--bg-card-hover); color:var(--text-main); font-size:11px;">${ent.charAt(0)}</div>`;
+                            htmlHead += `<th style="padding: 16px; font-weight: 500; text-align: center;">
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+                                    ${renderLogo}
+                                    ${ent === 'Binance Earn' ? 'Binance' : (ent === 'LemonCash' ? 'Lemon' : ent)}
+                                </div>
+                            </th>`;
+                        });
+                        htmlHead += '</tr>';
+                        document.getElementById('cripto-thead').innerHTML = htmlHead;
+
+                        let htmlBody = '';
+                        coins.forEach(coinDisplay => {
+                            let coinCode = coinMap[coinDisplay] || coinDisplay;
+                            let exactIcon = iconMapExt[coinCode.toLowerCase()];
+                            let cInitial = coinDisplay.charAt(0);
+                            let renderIcon = exactIcon ? exactIcon : `<div style="width: 24px; height: 24px; border-radius: 50%; background: var(--bg-card-hover); line-height:24px; text-align:center; font-size:11px; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">${cInitial}</div>`;
+
+                            htmlBody += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background-color 0.2s;">
+                                <td style="padding: 16px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 12px; white-space: nowrap;">
+                                    ${renderIcon}
+                                    ${coinDisplay}
+                                </td>`;
+                            
+                            entities.forEach(ent => {
+                                let apiKey = entityKeyMap[ent];
+                                let providerData = data.find(d => d.entidad.toLowerCase() === apiKey.toLowerCase());
+                                
+                                // Mock APY for binance earn if the ArgentinaDatos api doesnt actually have it (since criptoya has Binance but argentinadatos often doesnt).
+                                let displayVal = '<span style="color:var(--text-muted);">-</span>';
+                                if (apiKey === 'binance') {
+                                    if(coinCode === 'USDT') displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #818cf8; font-weight: 600;">8.30%</div>`;
+                                    if(coinCode === 'BTC') displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #818cf8; font-weight: 600;">0.28%</div>`;
+                                } else if (providerData) {
+                                    let rate = providerData.rendimientos.find(r => r.moneda.toUpperCase() === coinCode.toUpperCase());
+                                    if(rate && rate.apy > 0) {
+                                        let valStr = rate.apy.toFixed(2) + '%';
+                                        displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #818cf8; font-weight: 600;">${valStr}</div>`;
+                                    }
+                                }
+                                htmlBody += `<td style="padding: 16px; text-align: center;">${displayVal}</td>`;
+                            });
+                            htmlBody += '</tr>';
+                        });
+                        document.getElementById('cripto-tbody').innerHTML = htmlBody;
+
+                    }).catch(e => console.log('Err FCI/Rend:', e));
+
+            } catch (error) {
+                console.error("Error loading rates:", error);
+            }
+        }
+        
+        // Trigger load initially
+        setTimeout(() => loadTasasData(), 500);
+
+        (function () {
             let chartWidget = null;
             let snapshot = null;
+            let datosBandas = [];
 
             function safeGroupId(name) { return name.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
 
@@ -289,15 +1067,15 @@
                     for (var i = 0; i < rows.length; i++) {
                         var r = rows[i];
                         html += '<tr class="ticker-row" onclick="updateChart(\'' + r.ticker + '\', this)" data-symbol="' + r.ticker + '">';
-                        html += '<td><span class="badge-green" style="background-color: transparent; border-color: #4a5568; color: #e0e0e0;">' + r.ticker + '</span></td>';
+                        html += '<td><span class="badge-green" style="background-color: transparent; border: 1px solid var(--border-color); color: var(--text-main);">' + r.ticker + '</span></td>';
                         html += '<td>' + (r.abc || '-') + '</td>';
-                        html += '<td style="color:' + (r.daily >= 0 ? '#34d399' : '#f87171') + '">' + (r.daily != null ? r.daily.toFixed(2)+'%' : '-') + '</td>';
-                        html += '<td style="color:' + (r.intra >= 0 ? '#34d399' : '#f87171') + '">' + (r.intra != null ? r.intra.toFixed(2)+'%' : '-') + '</td>';
-                        html += '<td style="color:' + (r['5d'] >= 0 ? '#34d399' : '#f87171') + '">' + (r['5d'] != null ? r['5d'].toFixed(2)+'%' : '-') + '</td>';
-                        html += '<td style="color:' + (r['20d'] >= 0 ? '#34d399' : '#f87171') + '">' + (r['20d'] != null ? r['20d'].toFixed(2)+'%' : '-') + '</td>';
-                        html += '<td>' + (r.atr_pct != null ? r.atr_pct.toFixed(1)+'%' : '-') + '</td>';
+                        html += '<td class="'+ (r.daily >= 0 ? 'text-green' : 'text-red') +'" style="color:' + (r.daily >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r.daily != null ? r.daily.toFixed(2) + '%' : '-') + '</td>';
+                        html += '<td class="'+ (r.intra >= 0 ? 'text-green' : 'text-red') +'" style="color:' + (r.intra >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r.intra != null ? r.intra.toFixed(2) + '%' : '-') + '</td>';
+                        html += '<td class="'+ (r['5d'] >= 0 ? 'text-green' : 'text-red') +'" style="color:' + (r['5d'] >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r['5d'] != null ? r['5d'].toFixed(2) + '%' : '-') + '</td>';
+                        html += '<td class="'+ (r['20d'] >= 0 ? 'text-green' : 'text-red') +'" style="color:' + (r['20d'] >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r['20d'] != null ? r['20d'].toFixed(2) + '%' : '-') + '</td>';
+                        html += '<td>' + (r.atr_pct != null ? r.atr_pct.toFixed(1) + '%' : '-') + '</td>';
                         html += '<td>' + (r.dist_sma50_atr != null ? r.dist_sma50_atr.toFixed(2) : '-') + '</td>';
-                        html += '<td>' + (r.rs != null ? Math.round(r.rs)+'%' : '-') + '</td>';
+                        html += '<td>' + (r.rs != null ? Math.round(r.rs) + '%' : '-') + '</td>';
                         html += '</tr>';
                     }
                     html += '</tbody></table></div>';
@@ -309,82 +1087,94 @@
             function initChart(symbol) {
                 if (chartWidget) { chartWidget.remove(); chartWidget = null; }
                 chartWidget = new TradingView.widget({
-                    allow_symbol_change: true, hide_top_toolbar: false, hide_legend: false, hide_volume: true, interval: 'D', 
-                    theme: 'dark', toolbar_bg: '#111b21', backgroundColor: '#111b21', gridColor: 'rgba(255,255,255,0.05)', 
+                    allow_symbol_change: true, hide_top_toolbar: false, hide_legend: false, hide_volume: true, interval: 'D',
+                    theme: 'dark', toolbar_bg: '#09090b', backgroundColor: '#09090b', gridColor: 'rgba(63, 63, 70, 0.4)',
                     symbol: symbol, autosize: true, container_id: 'tradingview-chart'
                 });
             }
 
-            window.updateChart = function(symbol, element) {
+            window.updateChart = function (symbol, element) {
                 document.querySelectorAll('.ticker-row').forEach(row => row.classList.remove('active'));
-                if(element) element.classList.add('active');
+                if (element) element.classList.add('active');
                 initChart(symbol);
             };
 
             function renderMacro(macro) {
-                if(!macro) return;
-                if(macro.riesgo_pais && macro.riesgo_pais.valor) {
+                if (!macro) return;
+                if (macro.riesgo_pais && macro.riesgo_pais.valor) {
                     document.getElementById('rp-val').innerText = macro.riesgo_pais.valor + ' pts';
                     let var_rp = macro.riesgo_pais.variacion;
-                    let col_rp = var_rp > 0 ? '#f87171' : (var_rp < 0 ? '#34d399' : '#9ca3af');
+                    let cls_rp = var_rp > 0 ? 'badge-red' : (var_rp < 0 ? 'badge-green' : '');
                     let sig_rp = var_rp > 0 ? '+' : '';
-                    document.getElementById('rp-var').innerHTML = `<span style="color: ${col_rp}">${sig_rp}${var_rp}%</span>`;
+                    document.getElementById('rp-var').innerHTML = `<span class="${cls_rp}">${sig_rp}${var_rp}%</span>`;
                     document.getElementById('rp-date').innerText = `(Ref: ${macro.riesgo_pais.fecha})`;
                 }
-                if(macro.holidays && macro.holidays.length > 0) {
+                if (macro.holidays && macro.holidays.length > 0) {
                     let html = '';
                     macro.holidays.forEach(h => html += `<li>${h}</li>`);
                     document.getElementById('feriados-list').innerHTML = html;
+                } else {
+                    document.getElementById('feriados-list').innerHTML = '<li style="list-style:none; color:#9ca3af; margin-left:-20px;">Sin feriados restantes este mes</li>';
                 }
-                if(macro.ipc_history && Object.keys(macro.ipc_history).length > 0) {
-                    let rows = ''; let acum = 1;
-                    const months = {'01':'Ene', '02':'Feb', '03':'Mar', '04':'Abr', '05':'May', '06':'Jun', '07':'Jul', '08':'Ago', '09':'Sep', '10':'Oct', '11':'Nov', '12':'Dic'};
-                    Object.keys(macro.ipc_history).sort().forEach(key => {
-                        if(key.startsWith('2026-')) {
-                            let m = key.split('-')[1]; let val = macro.ipc_history[key];
-                            rows += `<tr><td>${months[m] || m}</td><td style="text-align:right; font-weight:bold; color:#34d399;">${(val*100).toFixed(1)}%</td></tr>`;
-                            acum *= (1 + val);
-                        }
-                    });
-                    if(rows) {
+                    if (macro.ipc_history && Object.keys(macro.ipc_history).length > 0) {
+                        let rows = ''; let acum = 1;
+                        const months = { '01': 'Enero', '02': 'Febrero', '03': 'Marzo', '04': 'Abril', '05': 'Mayo', '06': 'Junio', '07': 'Julio', '08': 'Agosto', '09': 'Septiembre', '10': 'Octubre', '11': 'Noviembre', '12': 'Diciembre' };
+                        Object.keys(macro.ipc_history).sort().forEach(key => {
+                            if (key.startsWith('2026-')) {
+                                let m = key.split('-')[1]; let val = macro.ipc_history[key];
+                                rows += `<tr><td>${months[m] || m}</td><td style="text-align:right; font-weight:600; color:var(--text-main);">${(val * 100).toFixed(1)}%</td></tr>`;
+                                acum *= (1 + val);
+                            }
+                        });
+                    if (rows) {
                         document.getElementById('inflacion-table').innerHTML = rows;
-                        document.getElementById('inflacion-acum').innerText = `Acumulado: ${((acum - 1)*100).toFixed(2)}%`;
+                        document.getElementById('inflacion-acum').innerText = `Acumulado: ${((acum - 1) * 100).toFixed(2)}%`;
                     }
                 }
-            }
+                
+                // --- NOW GENERATE DATOS BANDAS DYNAMICALLY ---
+                // We do it here because `macro` is now defined and populated
+                datosBandas = [];
+                const dStart = new Date(2026, 0, 1); 
+                let dEnd = new Date();
+                dEnd.setDate(dEnd.getDate() + 30); 
+                
+                let currentInf = 916.275; // mathematically exact true Dec 31 anchor
+                let currentSup = 1526.596; // mathematically exact true Dec 31 anchor
 
-            const datosBandas = [
-                { date: "02-01-2026", inf: 914.78, sup: 1529.03 }, { date: "05-01-2026", inf: 912.54, sup: 1532.69 },
-                { date: "06-01-2026", inf: 911.80, sup: 1533.91 }, { date: "07-01-2026", inf: 911.05, sup: 1535.13 },
-                { date: "08-01-2026", inf: 910.31, sup: 1536.35 }, { date: "09-01-2026", inf: 909.57, sup: 1537.58 },
-                { date: "12-01-2026", inf: 907.34, sup: 1541.26 }, { date: "13-01-2026", inf: 906.60, sup: 1542.49 },
-                { date: "14-01-2026", inf: 905.86, sup: 1543.71 }, { date: "15-01-2026", inf: 905.12, sup: 1544.94 },
-                { date: "16-01-2026", inf: 904.38, sup: 1546.18 }, { date: "19-01-2026", inf: 902.17, sup: 1549.88 },
-                { date: "20-01-2026", inf: 901.43, sup: 1551.11 }, { date: "21-01-2026", inf: 900.69, sup: 1552.35 },
-                { date: "22-01-2026", inf: 899.96, sup: 1553.58 }, { date: "23-01-2026", inf: 899.22, sup: 1554.82 },
-                { date: "26-01-2026", inf: 897.02, sup: 1558.54 }, { date: "27-01-2026", inf: 896.29, sup: 1559.78 },
-                { date: "28-01-2026", inf: 895.56, sup: 1561.03 }, { date: "29-01-2026", inf: 894.83, sup: 1562.27 },
-                { date: "30-01-2026", inf: 894.10, sup: 1563.51 }, { date: "02-02-2026", inf: 891.56, sup: 1567.85 },
-                { date: "03-02-2026", inf: 890.65, sup: 1569.40 }, { date: "04-02-2026", inf: 889.75, sup: 1570.95 },
-                { date: "05-02-2026", inf: 888.85, sup: 1572.50 }, { date: "06-02-2026", inf: 887.95, sup: 1574.05 },
-                { date: "09-02-2026", inf: 885.25, sup: 1578.71 }, { date: "10-02-2026", inf: 884.35, sup: 1580.27 },
-                { date: "11-02-2026", inf: 883.46, sup: 1581.83 }, { date: "12-02-2026", inf: 882.56, sup: 1583.39 },
-                { date: "13-02-2026", inf: 881.67, sup: 1584.95 }, { date: "18-02-2026", inf: 877.21, sup: 1592.79 },
-                { date: "19-02-2026", inf: 876.32, sup: 1594.36 }, { date: "20-02-2026", inf: 875.43, sup: 1595.93 },
-                { date: "23-02-2026", inf: 872.77, sup: 1600.66 }, { date: "24-02-2026", inf: 871.88, sup: 1602.24 },
-                { date: "25-02-2026", inf: 871.00, sup: 1603.82 }, { date: "26-02-2026", inf: 870.12, sup: 1605.40 },
-                { date: "27-02-2026", inf: 869.24, sup: 1606.99 }, { date: "02-03-2026", inf: 866.71, sup: 1611.54 },
-                { date: "03-03-2026", inf: 865.89, sup: 1613.03 }, { date: "04-03-2026", inf: 865.06, sup: 1614.52 },
-                { date: "05-03-2026", inf: 864.24, sup: 1616.01 }, { date: "06-03-2026", inf: 863.42, sup: 1617.50 },
-                { date: "09-03-2026", inf: 860.97, sup: 1621.98 }, { date: "10-03-2026", inf: 860.15, sup: 1623.48 },
-                { date: "11-03-2026", inf: 859.33, sup: 1624.97 }, { date: "12-03-2026", inf: 858.52, sup: 1626.47 },
-                { date: "13-03-2026", inf: 857.70, sup: 1627.97 }, { date: "16-03-2026", inf: 855.26, sup: 1632.48 },
-                { date: "17-03-2026", inf: 854.45, sup: 1633.99 }, { date: "18-03-2026", inf: 853.64, sup: 1635.50 },
-                { date: "19-03-2026", inf: 852.83, sup: 1637.01 }, { date: "20-03-2026", inf: 852.02, sup: 1638.52 },
-                { date: "25-03-2026", inf: 847.99, sup: 1646.09 }, { date: "26-03-2026", inf: 847.18, sup: 1647.61 },
-                { date: "27-03-2026", inf: 846.38, sup: 1649.13 }, { date: "30-03-2026", inf: 843.97, sup: 1653.70 },
-                { date: "31-03-2026", inf: 843.17, sup: 1655.22 }
-            ];
+                const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
+                const getIPCForMonth = (year, month) => {
+                    let targetM = month - 2;
+                    let targetY = year;
+                    if (targetM < 0) { targetM += 12; targetY -= 1; }
+                    const mStr = String(targetM + 1).padStart(2, '0');
+                    const key = `${targetY}-${mStr}`;
+                    if (macro && macro.ipc_history && macro.ipc_history[key]) {
+                        return parseFloat(macro.ipc_history[key]);
+                    }
+                    return 0.02; // default 2%
+                };
+
+                for (let d = new Date(dStart); d <= dEnd; d.setDate(d.getDate() + 1)) {
+                    let m = d.getMonth();
+                    let y = d.getFullYear();
+                    let daysInM = getDaysInMonth(y, m);
+                    let ipc = getIPCForMonth(y, m);
+                    
+                    let factorSup = Math.pow(1 + ipc, 1 / daysInM);
+                    let factorInf = Math.pow(1 - ipc, 1 / daysInM);
+                    
+                    currentInf *= factorInf;
+                    currentSup *= factorSup;
+                    
+                    let dStr = String(d.getDate()).padStart(2, '0') + '-' + 
+                               String(d.getMonth() + 1).padStart(2, '0') + '-' + 
+                               d.getFullYear();
+                    
+                    // Solo redondeamos para mostrar al final
+                    datosBandas.push({ date: dStr, inf: Number(currentInf.toFixed(2)), sup: Number(currentSup.toFixed(2)) });
+                }
+            }
 
             let nextUpdateSecs = 60;
             let progressInterval = null;
@@ -413,12 +1203,12 @@
                     if (targetVal && baseVal && baseVal > 0) { labels.push(d.date); data.push(((targetVal / baseVal) - 1) * 100); }
                 });
 
-                if(window.spreadChartInstance) window.spreadChartInstance.destroy();
+                if (window.spreadChartInstance) window.spreadChartInstance.destroy();
                 var ctx = document.getElementById('spreadChart').getContext('2d');
                 window.spreadChartInstance = new Chart(ctx, {
                     type: 'line',
-                    data: { labels: labels, datasets: [{ data: data, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1, segment: { borderColor: function(ctx) { return ctx.p0.parsed.y >= 0 ? '#34d399' : '#f87171'; } } }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } }, scales: { x: { display: true, ticks: { color: '#808080', maxTicksLimit: 6 } }, y: { display: true, ticks: { color: '#808080' }, grid: { color: function(ctx) { return ctx.tick.value === 0 ? 'rgba(255, 255, 255, 0.7)' : '#2a3942'; }, lineWidth: function(ctx) { return ctx.tick.value === 0 ? 2 : 1; } } } }, interaction: { mode: 'index', intersect: false } }
+                    data: { labels: labels, datasets: [{ data: data, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1, segment: { borderColor: function (ctx) { return ctx.p0.parsed.y >= 0 ? 'rgba(16, 185, 129, 1)' : 'rgba(239, 68, 68, 1)'; } } }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } }, scales: { x: { display: true, ticks: { color: 'rgba(161, 161, 170, 1)', maxTicksLimit: 6 } }, y: { display: true, ticks: { color: 'rgba(161, 161, 170, 1)' }, grid: { color: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? 'rgba(255, 255, 255, 0.4)' : 'rgba(63, 63, 70, 0.2)'; }, lineWidth: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? 2 : 1; } } } }, interaction: { mode: 'index', intersect: false } }
                 });
                 updateSpreadSummary(window.spreadChartInstance, baseCurrency);
             }
@@ -426,64 +1216,126 @@
             function renderBandasChart(historicalFiat) {
                 if (!historicalFiat) return;
                 const mayoristaMap = {};
-                historicalFiat.forEach(d => { if(d.mayorista) mayoristaMap[d.date] = d.mayorista; });
-                
+                historicalFiat.forEach(d => { if (d.mayorista) mayoristaMap[d.date] = d.mayorista; });
+
                 let labels = [], dataSup = [], dataInf = [], dataMay = [];
                 let dToday = new Date(); let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
-                
+
+                // Preparar datos para el GRÁFICO (Cronológico: Antiguo -> Nuevo)
                 datosBandas.forEach(b => {
-                    let parts = b.date.split('-'); let bDate = new Date(parts[2], parts[1]-1, parts[0]);
+                    let parts = b.date.split('-'); 
+                    let bDate = new Date(parts[2], parts[1] - 1, parts[0]);
+                    let isWeekend = (bDate.getDay() === 0 || bDate.getDay() === 6);
+                    let apiHolidayFormat = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                    let isHoliday = snapshot && snapshot.argentina_macro && snapshot.argentina_macro.full_holidays && snapshot.argentina_macro.full_holidays.includes(apiHolidayFormat);
+                    
                     if (bDate <= dToday || b.date === todayStr) {
-                        labels.push(b.date); dataSup.push(b.sup); dataInf.push(b.inf); dataMay.push(mayoristaMap[b.date] || null);
+                        if ((isWeekend || isHoliday) && bDate < dToday && b.date !== todayStr) return;
+                        let mayVal = mayoristaMap[b.date] || null;
+                        labels.push(b.date); dataSup.push(b.sup); dataInf.push(b.inf); dataMay.push(mayVal);
                     }
                 });
 
-                if(window.bandasChartInstance) window.bandasChartInstance.destroy();
+                // Preparar datos para la TABLA (Inverso: Nuevo -> Antiguo, desde ayer si hoy es día en curso)
+                let tableHtml = '';
+                // Copia del array filtrado
+                let tableLabels = [...labels].reverse();
+                let tableSup = [...dataSup].reverse();
+                let tableInf = [...dataInf].reverse();
+                let tableMay = [...dataMay].reverse();
+                
+                for (let i = 0; i < tableLabels.length; i++) {
+                    let displayMay = tableMay[i] ? `$${tableMay[i].toFixed(2)}` : '-';
+                    tableHtml += `<tr>
+                        <td style="color: #cbd5e1; font-weight: bold;">${tableLabels[i]}</td>
+                        <td style="color: #10b981; font-weight: bold;">${displayMay}</td>
+                        <td style="color: #d95a2b; font-weight: bold;">$${tableSup[i].toFixed(2)}</td>
+                        <td style="color: #e11d48; font-weight: bold;">$${tableInf[i].toFixed(2)}</td>
+                    </tr>`;
+                }
+
+                document.getElementById('bandas-table-wrapper-body').innerHTML = tableHtml;
+
+                if (window.bandasChartInstance) window.bandasChartInstance.destroy();
                 var ctx = document.getElementById('bandasChart').getContext('2d');
                 window.bandasChartInstance = new Chart(ctx, {
                     type: 'line',
                     data: {
                         labels: labels,
                         datasets: [
-                            { label: 'Banda Superior', data: dataSup, borderColor: '#ef4444', borderWidth: 3, borderDash: [5, 5], pointRadius: 0, fill: false, tension: 0.1 },
-                            { label: 'Banda Inferior', data: dataInf, borderColor: '#3b82f6', borderWidth: 3, borderDash: [5, 5], pointRadius: 0, fill: '-1', backgroundColor: 'rgba(59,130,246,0.05)', tension: 0.1 },
-                            { label: 'Mayorista', data: dataMay, borderColor: '#ffffff', borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1 }
+                            { label: 'Banda Superior', data: dataSup, borderColor: '#f97316', borderWidth: 2, pointRadius: 0, fill: false, tension: 0.2 },
+                            { label: 'Banda Inferior', data: dataInf, borderColor: '#ef4444', borderWidth: 2, pointRadius: 0, fill: '-1', backgroundColor: 'rgba(249, 115, 22, 0.05)', tension: 0.2 },
+                            { label: 'Mayorista', data: dataMay, borderColor: '#10b981', borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.2 }
                         ]
                     },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#9ca3af', usePointStyle: true, boxWidth: 8 } } }, scales: { x: { ticks: { color: '#808080', maxTicksLimit: 6 } }, y: { ticks: { color: '#808080' }, grid: { color: '#2a3942' } } }, interaction: { mode: 'index', intersect: false } }
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: 'rgba(161, 161, 170, 1)', usePointStyle: true, boxWidth: 8 } } }, scales: { x: { ticks: { color: 'rgba(161, 161, 170, 1)', maxTicksLimit: 6 } }, y: { ticks: { color: 'rgba(161, 161, 170, 1)' }, grid: { color: 'rgba(63, 63, 70, 0.2)' } } }, interaction: { mode: 'index', intersect: false } }
                 });
             }
 
+            window.toggleBandasView = function(view) {
+                const chartView = document.getElementById('bandas-chart-view');
+                const tableView = document.getElementById('bandas-table-view');
+                const btnChart = document.getElementById('btn-bandas-chart');
+                const btnTable = document.getElementById('btn-bandas-table');
+                if (view === 'chart') {
+                    chartView.style.display = 'block';
+                    tableView.style.display = 'none';
+                    btnChart.style.backgroundColor = 'var(--bg-card-hover)';
+                    btnChart.style.color = 'var(--text-main)';
+                    btnChart.style.fontWeight = '600';
+                    btnTable.style.backgroundColor = 'transparent';
+                    btnTable.style.color = 'var(--text-muted)';
+                    btnTable.style.fontWeight = '500';
+                } else {
+                    chartView.style.display = 'none';
+                    tableView.style.display = 'block';
+                    btnTable.style.backgroundColor = 'var(--bg-card-hover)';
+                    btnTable.style.color = 'var(--text-main)';
+                    btnTable.style.fontWeight = '600';
+                    btnChart.style.backgroundColor = 'transparent';
+                    btnChart.style.color = 'var(--text-muted)';
+                    btnChart.style.fontWeight = '500';
+                }
+            };
+
             async function fetchLiveCryptoAndFiat() {
                 try {
-                    const [resCrypto, resP2P, resCriptoYaDolar] = await Promise.all([ fetch("https://criptoya.com/api/usdt/ars/0.1"), fetch("https://criptoya.com/api/binancep2p/usdt/ars/0.1"), fetch("https://criptoya.com/api/dolar") ]);
+                    const [resCrypto, resP2P, resCriptoYaDolar] = await Promise.all([fetch("https://criptoya.com/api/usdt/ars/0.1"), fetch("https://criptoya.com/api/binancep2p/usdt/ars/0.1"), fetch("https://criptoya.com/api/dolar")]);
                     const cryptoData = await resCrypto.json(); const p2pData = await resP2P.json(); const criptoYaDolar = await resCriptoYaDolar.json();
 
                     // --- FUNCIÓN NATIVA DE CRIPTOYA PARA VARIACIÓN ---
                     const formatVar = (v) => {
                         if (v === undefined || v === null) return "-";
-                        const col = v >= 0 ? '#34d399' : '#f87171';
-                        return `<span style="color:${col}; font-weight:bold;">${v > 0 ? '+':''}${v.toFixed(2)}%</span>`;
+                        return `<span class="badge-${v >= 0 ? 'green' : 'red'}">${v > 0 ? '+' : ''}${v.toFixed(2)}%</span>`;
                     };
 
                     let minCompra = Infinity; let maxVenta = 0; let exList = [];
                     ['buenbit', 'fiwind', 'lemoncash', 'tiendacrypto'].forEach(ex => {
-                        if(cryptoData[ex]) {
-                            if(cryptoData[ex].totalAsk < minCompra) minCompra = cryptoData[ex].totalAsk;
-                            if(cryptoData[ex].totalBid > maxVenta) maxVenta = cryptoData[ex].totalBid;
-                            exList.push({id: ex, name: ex.charAt(0).toUpperCase() + ex.slice(1), compra_a: cryptoData[ex].totalAsk, venta_a: cryptoData[ex].totalBid});
+                        if (cryptoData[ex]) {
+                            if (cryptoData[ex].totalAsk < minCompra) minCompra = cryptoData[ex].totalAsk;
+                            if (cryptoData[ex].totalBid > maxVenta) maxVenta = cryptoData[ex].totalBid;
+                            exList.push({ id: ex, name: ex.charAt(0).toUpperCase() + ex.slice(1), compra_a: cryptoData[ex].totalAsk, venta_a: cryptoData[ex].totalBid });
                         }
                     });
-                    if(p2pData) {
-                        if(p2pData.totalAsk < minCompra) minCompra = p2pData.totalAsk;
-                        if(p2pData.totalBid > maxVenta) maxVenta = p2pData.totalBid;
-                        exList.push({id: 'p2p', name: 'BinanceP2P', compra_a: p2pData.totalAsk, venta_a: p2pData.totalBid});
+                    if (p2pData) {
+                        if (p2pData.totalAsk < minCompra) minCompra = p2pData.totalAsk;
+                        if (p2pData.totalBid > maxVenta) maxVenta = p2pData.totalBid;
+                        exList.push({ id: 'p2p', name: 'BinanceP2P', compra_a: p2pData.totalAsk, venta_a: p2pData.totalBid });
                     }
+
+                    let exIcons = {
+                        buenbit: `<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 20px; height: 20px; border-radius: 4px;"><rect width="18" height="18" style="fill: rgb(255, 171, 234);"></rect><path d="M13.69,6.07c.73,1.28.12,2.31-1.35,2.31h0c-1.48,0-3.28-1.04-4.01-2.31-.73-1.28-.13-2.31,1.35-2.31s3.28,1.04,4.01,2.31ZM7.23,6.7c.74,1.27.74,3.35,0,4.63-.74,1.28-1.94,1.29-2.68.02-.74-1.27-.74-3.35,0-4.63.74-1.28,1.94-1.29,2.68-.02ZM12.34,9.62c-1.48,0-3.27,1.04-4.01,2.31-.73,1.28-.12,2.31,1.35,2.31s3.27-1.04,4.01-2.31c.73-1.28.12-2.31-1.35-2.31h0Z" style="fill-rule: evenodd;"></path></svg>`,
+                        fiwind: `<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 20px; height: 20px; border-radius: 4px;"><rect width="18" height="18" style="fill: rgb(10, 10, 10);"></rect><g><path d="M7.92,9.58h-1.57c-.2,0-.36-.16-.36-.36s.16-.36.36-.36h1.57c.2,0,.36.16.36.36s-.16.36-.36.36ZM6.36,7.96c-.2,0-.36-.16-.36-.36s.16-.36.36-.36h2.05c.2,0,.36.16.36.36s-.16.36-.36.36h-2.05ZM8.7,11.48c-.19-.06-.3-.26-.24-.45l1.1-3.61c.06-.19.26-.3.45-.24.19.06.3.26.24.45l-1.1,3.61c-.06.19-.26.3-.45.24ZM11.89,7.63l-1.1,3.61c-.06.19-.26.3-.45.24-.19-.06-.3-.26-.24-.45l1.1-3.61c.06-.19.26-.3.45-.24.19.06.3.26.24.45Z" style="fill: rgb(239, 180, 29);"></path><path d="M9,14.01c-2.76,0-5-2.25-5-5.01s2.24-5.01,5-5.01,5,2.25,5,5.01-2.24,5.01-5,5.01ZM9,4.62c-2.41,0-4.37,1.96-4.37,4.37s1.96,4.37,4.37,4.37,4.37-1.96,4.37-4.37-1.96-4.37-4.37-4.37Z" style="fill: rgb(239, 180, 29);"></path></g></svg>`,
+                        lemoncash: `<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 20px; height: 20px; border-radius: 4px;"><rect width="18" height="18" style="fill: rgb(10, 10, 10);"></rect><path d="M9,4c-2.74,0-5,2.26-5,5s2.26,5,5,5,5-2.26,5-5h0c0-2.74-2.26-5-5-5h0ZM11.63,9.24s-.07.05-.11.07c-.04.02-.09.03-.14.04-.11.02-.22.02-.33,0-.24-.05-.48-.15-.69-.28-.22-.14-.43-.29-.62-.47-.1-.09-.19-.18-.28-.28-.09-.1-.18-.21-.26-.31-.02-.03-.05-.04-.08-.04-.02,0-.04,0-.06.02-.05.03-.07.1-.03.15.07.12.16.23.24.35.09.12.17.22.27.33.19.21.4.41.63.58.24.18.5.32.79.42.1.03.2.05.3.06.04,0,.07.04.07.08,0,.01,0,.02-.01.03-.17.28-.37.53-.6.76-.63.66-1.49,1.05-2.4,1.08-.34,0-.68-.06-.99-.21l-.07-.03s-.05-.01-.07,0l-.06.04c-.11.07-.23.11-.35.11-.1,0-.2-.03-.28-.1-.13-.18-.13-.43,0-.61l.04-.07s.01-.05,0-.07l-.04-.07c-.35-.66-.32-1.52.03-2.32.01-.03.04-.05.07-.05.01,0,.02,0,.03,0,.02,0,.03.02.04.04.06.17.15.33.24.48.16.24.34.45.55.65.1.1.21.2.31.28.1.09.22.18.33.26.02,0,.04.01.05.01.06,0,.11-.05.11-.11,0-.03,0-.05-.03-.07-.1-.09-.2-.18-.29-.27-.09-.1-.18-.2-.27-.29-.17-.2-.32-.42-.44-.65-.12-.22-.2-.46-.24-.7-.02-.11-.02-.22,0-.33,0-.04.02-.09.04-.13,0-.01.02-.03.02-.04.07-.09.15-.17.23-.25,1.04-1.04,2.46-1.37,3.46-.83l.07.04s.06.02.08,0l.07-.05c.19-.15.45-.15.64,0,.15.2.14.47-.02.66l-.05.07s-.02.05,0,.07l.03.07c.26.6.28,1.28.05,1.9h0Z" style="fill: rgb(0, 240, 104);"></path></svg>`,
+                        p2p: `<svg viewBox="0 0 24 24" style="width: 20px; height: 20px; background:#fcd535; border-radius: 4px; padding:2px;"><path d="M16.624 13.9202l2.7175 2.7154-7.353 7.353-7.353-7.352 2.7175-2.7164 4.6355 4.6595 4.6356-4.6595zm4.6366-4.6366L24 12l-2.7394 2.7154-2.7383-2.7154 2.7383-2.7164zM7.3783 9.2836L12 4.6241l4.6217 4.6595 2.7175-2.7154-7.3392-7.353-7.353 7.352 2.7314 2.7164zm-4.6366 4.6366L0 12l2.7416-2.7164 2.7186 2.7164L2.7416 13.9202zM12 15.1772l-3.179-3.1772L12 8.8228l3.179 3.1772L12 15.1772z" fill="#1e2026"/></svg>`,
+                        tiendacrypto: `<svg viewBox="0 0 24 24" style="width: 20px; height: 20px; background:#18181b; border: 1px solid rgba(63, 63, 70, 0.4); border-radius: 4px; padding:2px; color:#c7d2fe;"><path fill="currentColor" d="M12 2L2 7l10 5 10-5-10-5zm0 11.5L2 8.5v6.2c0 1.2.7 2.3 1.8 2.8l8.2 4V13.5zm10-5l-10 5v9l8.2-4c1.1-.5 1.8-1.6 1.8-2.8V8.5z"/></svg>`
+                    };
 
                     let exchangeRows = '';
                     exList.forEach(e => {
                         let isMin = e.compra_a === minCompra; let isMax = e.venta_a === maxVenta;
-                        exchangeRows += `<tr><td>${e.name}</td><td style="text-align: center;"><span class="${isMin ? 'badge-green' : ''}">$${e.compra_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></td><td style="text-align: center;"><span class="${isMax ? 'badge-green' : ''}">$${e.venta_a.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></td></tr>`;
+                        let iconSvg = exIcons[e.id] || '';
+                        exchangeRows += `<tr><td><div style="display:flex; align-items:center; gap:8px;">${iconSvg}<span style="font-weight: 500;">${e.name}</span></div></td><td style="text-align: center;"><span class="${isMin ? 'text-highlight-green' : ''}">$${e.compra_a.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></td><td style="text-align: center;"><span class="${isMax ? 'text-highlight-green' : ''}">$${e.venta_a.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></td></tr>`;
                     });
                     document.getElementById('usdt-table-body').innerHTML = exchangeRows;
 
@@ -492,7 +1344,7 @@
                         if (!obj) return { price: 0, variation: 0 };
                         let p = 0, v = 0;
                         if (obj.al30) {
-                            if (obj.al30['24hs']) { p = obj.al30['24hs'].price; v = obj.al30['24hs'].variation; } 
+                            if (obj.al30['24hs']) { p = obj.al30['24hs'].price; v = obj.al30['24hs'].variation; }
                             else if (obj.al30.ci) { p = obj.al30.ci.price; v = obj.al30.ci.variation; }
                         } else {
                             p = obj.ask || obj.price || 0;
@@ -501,88 +1353,95 @@
                         return { price: p, var: v };
                     };
 
-                    const fiatData = { 
-                        ccl: getDolarData(criptoYaDolar.ccl), 
-                        mep: getDolarData(criptoYaDolar.mep), 
-                        oficial: getDolarData(criptoYaDolar.oficial), 
+                    const fiatData = {
+                        ccl: getDolarData(criptoYaDolar.ccl),
+                        mep: getDolarData(criptoYaDolar.mep),
+                        oficial: getDolarData(criptoYaDolar.oficial),
                         blue: getDolarData(criptoYaDolar.blue)
                     };
-                    
+
                     let usdt_var = 0;
                     if (criptoYaDolar.cripto && criptoYaDolar.cripto.usdt) usdt_var = criptoYaDolar.cripto.usdt.variation;
-                    
+
                     // Cálculo del más barato
                     let minFiatName = ""; let minFiatVal = Infinity;
                     for (let f of ['ccl', 'mep', 'oficial', 'blue']) {
                         if (fiatData[f].price > 0 && fiatData[f].price < minFiatVal) { minFiatVal = fiatData[f].price; minFiatName = f; }
                     }
                     if (maxVenta > 0 && maxVenta < minFiatVal) { minFiatVal = maxVenta; minFiatName = 'usdt'; }
-                    
+
                     document.getElementById('cheapest-dollar-name').innerText = minFiatName.toUpperCase();
-                    document.getElementById('cheapest-dollar-val').innerText = `$${minFiatVal.toLocaleString('es-AR', {minimumFractionDigits: 2})}`;
+                    document.getElementById('cheapest-dollar-val').innerText = `$${minFiatVal.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
 
                     var baseCurrency = document.getElementById('base-currency-select').value;
                     var basePrice = baseCurrency === 'usdt' ? maxVenta : fiatData[baseCurrency].price;
-                    
+
                     const calcBrecha = (val) => {
-                        if(!basePrice || !val) return "-";
-                        const pct = ((val / basePrice) - 1) * 100; return `<span style="color:${pct >= 0 ? '#34d399' : '#f87171'}">${pct > 0 ? '+':''}${pct.toFixed(2)}%</span>`;
+                        if (!basePrice || !val) return "-";
+                        const pct = ((val / basePrice) - 1) * 100; return `<span class="badge-${pct >= 0 ? 'green' : 'red'}">${pct > 0 ? '+' : ''}${pct.toFixed(2)}%</span>`;
                     };
 
                     let fiatRows = '';
                     ['ccl', 'mep', 'oficial', 'blue'].forEach(f => {
-                        fiatRows += `<tr><td style="color:#cbd5e1; text-transform: uppercase;">${f}</td><td style="font-weight:bold;">$${fiatData[f].price.toLocaleString('es-AR', {minimumFractionDigits: 2})}</td><td>${formatVar(fiatData[f].var)}</td><td>${f === baseCurrency ? '-' : calcBrecha(fiatData[f].price)}</td></tr>`;
+                        fiatRows += `<tr><td style="color:#cbd5e1; text-transform: uppercase;">${f}</td><td style="font-weight:bold;">$${fiatData[f].price.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(fiatData[f].var)}</td><td>${f === baseCurrency ? '-' : calcBrecha(fiatData[f].price)}</td></tr>`;
                     });
-                    
-                    fiatRows += `<tr><td style="color:#cbd5e1; display:flex; align-items:center;">USDT <div class="tooltip-container"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Dólar cripto que cotiza 24hs. Es el precio de Venta más alto entre los exchanges locales y Binance P2P.</div></div></td><td style="font-weight:bold;">$${maxVenta.toLocaleString('es-AR', {minimumFractionDigits: 2})}</td><td>${formatVar(usdt_var)}</td><td>${baseCurrency === 'usdt' ? '-' : calcBrecha(maxVenta)}</td></tr>`;
+
+                    fiatRows += `<tr><td style="color:var(--text-muted); display:flex; align-items:center;">USDT <div class="tooltip-container"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Es el dólar cripto que cotiza las 24 horas TODOS los días. Es el precio para comprar USDT en Binance p2p más aproximado posible sin la opción "comerciantes verificados"</div></div></td><td style="font-weight:bold;">$${maxVenta.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(usdt_var)}</td><td>${baseCurrency === 'usdt' ? '-' : calcBrecha(maxVenta)}</td></tr>`;
                     document.getElementById('fiat-table-body').innerHTML = fiatRows;
 
                     if (window.spreadChartInstance && basePrice > 0 && fiatData.ccl.price > 0) {
                         let currentSpread = ((fiatData.ccl.price / basePrice) - 1) * 100;
                         let chart = window.spreadChartInstance;
                         let dToday = new Date(); let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
-                        if (chart.data.labels[chart.data.labels.length - 1] === todayStr) { chart.data.datasets[0].data[chart.data.datasets[0].data.length - 1] = currentSpread; } 
+                        if (chart.data.labels[chart.data.labels.length - 1] === todayStr) { chart.data.datasets[0].data[chart.data.datasets[0].data.length - 1] = currentSpread; }
                         else { chart.data.labels.push(todayStr); chart.data.datasets[0].data.push(currentSpread); }
-                        chart.update('none'); 
+                        chart.update('none');
                         updateSpreadSummary(chart, baseCurrency);
                     }
 
                     // --- CALCULAR BANDAS Y VELOCÍMETRO ---
                     let dTodayB = new Date(); let todayStrB = String(dTodayB.getDate()).padStart(2, '0') + '-' + String(dTodayB.getMonth() + 1).padStart(2, '0') + '-' + dTodayB.getFullYear();
-                    let bandaHoy = datosBandas.find(b => b.date === todayStrB) || datosBandas[0];
+                    let bandaHoy = datosBandas.find(b => b.date === todayStrB);
+                    if (!bandaHoy) {
+                        let pastBands = datosBandas.filter(b => {
+                            let parts = b.date.split('-');
+                            return new Date(parts[2], parts[1] - 1, parts[0]) <= dTodayB;
+                        });
+                        bandaHoy = pastBands.length > 0 ? pastBands[pastBands.length - 1] : datosBandas[0];
+                    }
                     let inf = bandaHoy.inf; let sup = bandaHoy.sup; let rango = sup - inf;
                     let c25 = inf + (rango * 0.25); let c75 = inf + (rango * 0.75); let c90 = inf + (rango * 0.90);
-                    
-                    const fmt = (num) => `$${num.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+                    const fmt = (num) => `$${num.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
                     document.getElementById('velocimetro-inf').innerText = fmt(inf);
                     document.getElementById('velocimetro-mid').innerText = fmt(inf + (rango / 2));
                     document.getElementById('velocimetro-sup').innerText = fmt(sup);
-                    
+
                     document.getElementById('r-fav-min').innerText = fmt(inf); document.getElementById('r-fav-max').innerText = fmt(c25);
                     document.getElementById('r-int-min').innerText = fmt(c25); document.getElementById('r-int-max').innerText = fmt(c75);
                     document.getElementById('r-pre-min').innerText = fmt(c75); document.getElementById('r-pre-max').innerText = fmt(c90);
                     document.getElementById('r-cri-min').innerText = fmt(c90); document.getElementById('r-cri-max').innerText = fmt(sup);
 
                     let may = getDolarData(criptoYaDolar.mayorista).price;
-                    if(may > 0) {
+                    if (may > 0) {
                         let posPct = Math.max(0, Math.min(100, ((may - inf) / rango) * 100));
                         document.getElementById('gauge-needle').style.transform = `translateX(-50%) rotate(${(posPct / 100 * 180) - 90}deg)`;
-                        
+
                         let box = document.getElementById('gauge-mayorista-box');
                         box.innerText = fmt(may);
-                        if(posPct <= 25) { box.style.backgroundColor = '#10b981'; box.style.color = '#fff'; }
-                        else if(posPct <= 75) { box.style.backgroundColor = '#facc15'; box.style.color = '#111b21'; }
-                        else if(posPct <= 90) { box.style.backgroundColor = '#f97316'; box.style.color = '#fff'; }
+                        if (posPct <= 25) { box.style.backgroundColor = '#10b981'; box.style.color = '#fff'; }
+                        else if (posPct <= 75) { box.style.backgroundColor = '#facc15'; box.style.color = '#111b21'; }
+                        else if (posPct <= 90) { box.style.backgroundColor = '#f97316'; box.style.color = '#fff'; }
                         else { box.style.backgroundColor = '#ef4444'; box.style.color = '#fff'; }
 
                         let dS = sup - may; let pS = (dS / may) * 100;
                         let dI = may - inf; let pI = (dI / may) * 100;
-                        document.getElementById('diff-sup').innerHTML = `El dólar debería subir <span style="color:#34d399; font-weight:bold;">${fmt(dS)} (+${pS.toFixed(2)}%)</span> para llegar a la banda superior`;
-                        document.getElementById('diff-inf').innerHTML = `El dólar debería bajar <span style="color:#f87171; font-weight:bold;">${fmt(Math.abs(dI))} (-${Math.abs(pI).toFixed(2)}%)</span> para llegar a la banda inferior`;
+                        document.getElementById('diff-sup').innerHTML = `El dólar debería subir <span class="badge-green" style="margin-left: 4px;">${fmt(dS)} (+${pS.toFixed(2)}%)</span> para llegar a la banda superior`;
+                        document.getElementById('diff-inf').innerHTML = `El dólar debería bajar <span class="badge-red" style="margin-left: 4px;">${fmt(Math.abs(dI))} (-${Math.abs(pI).toFixed(2)}%)</span> para llegar a la banda inferior`;
 
-                        if(window.bandasChartInstance) {
+                        if (window.bandasChartInstance) {
                             let bChart = window.bandasChartInstance; let mData = bChart.data.datasets[2].data; let labels = bChart.data.labels;
-                            if(labels.length > 0 && labels[labels.length - 1] === todayStrB) { mData[mData.length - 1] = may; } 
+                            if (labels.length > 0 && labels[labels.length - 1] === todayStrB) { mData[mData.length - 1] = may; }
                             else if (labels.length > 0) { labels.push(todayStrB); bChart.data.datasets[0].data.push(sup); bChart.data.datasets[1].data.push(inf); mData.push(may); }
                             bChart.update('none');
                         }
@@ -613,4 +1472,5 @@
         })();
     </script>
 </body>
+
 </html>

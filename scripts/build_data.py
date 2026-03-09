@@ -277,10 +277,15 @@ def get_argentina_macro_data():
         r_feriados = requests.get(f"https://api.argentinadatos.com/v1/feriados/{year}")
         if r_feriados.status_code == 200:
             data_fer = r_feriados.json()
+            macro["full_holidays"] = [f["fecha"] for f in data_fer]
             today_str = datetime.now().strftime("%Y-%m-%d")
-            future_holidays = [f for f in data_fer if f.get("fecha") >= today_str]
-            future_holidays.sort(key=lambda x: x["fecha"])
-            macro["holidays"] = [f"{datetime.strptime(h['fecha'], '%Y-%m-%d').strftime('%d-%m-%Y')} - {h.get('nombre', '')}" for h in future_holidays[:2]]
+            current_month = datetime.now().strftime("%m")
+            future_holidays_this_month = [
+                f for f in data_fer 
+                if f.get("fecha") >= today_str and f.get("fecha")[5:7] == current_month
+            ]
+            future_holidays_this_month.sort(key=lambda x: x["fecha"])
+            macro["holidays"] = [f"{datetime.strptime(h['fecha'], '%Y-%m-%d').strftime('%d-%m-%Y')} - {h.get('nombre', '')}" for h in future_holidays_this_month]
     except Exception as e:
         print("Error feriados:", e)
 
@@ -370,6 +375,7 @@ def get_historical_fiat_data():
         df_usdt = pd.DataFrame(list(usdt_history.items()), columns=['fecha', 'usdt'])
         df_usdt['fecha'] = pd.to_datetime(df_usdt['fecha'])
         df_usdt = df_usdt[df_usdt['fecha'] >= cutoff].set_index('fecha')
+        df_usdt = df_usdt.resample('D').ffill()
 
         master_df = master_df.join(df_usdt, how='outer').ffill().dropna(subset=['ccl'])
 
