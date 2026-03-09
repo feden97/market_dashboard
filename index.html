@@ -8,27 +8,70 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-body: #09090b; /* Very dark zinc */
-            --bg-card: rgba(24, 24, 27, 0.7); /* Zinc 900 with opacity */
-            --bg-card-solid: #18181b;
-            --bg-card-hover: rgba(39, 39, 42, 0.8);
-            --border-color: rgba(63, 63, 70, 0.4); /* Zinc 700 */
+            /* Spreadsheet-Inspired Dark Mode */
+            --bg-body: #121212; /* Deep background, almost pure black */
+            --bg-card: #1e1e1e; /* Distinct card background */
+            --bg-card-solid: #1e1e1e;
+            --bg-card-hover: #2a2a2a; /* Lighter gray for hover */
+            --border-color: #333333; /* Stronger borders to resemble cells */
+            --border-hover: #555555;
             
-            --text-main: #f4f4f5; /* Zinc 100 */
-            --text-muted: #a1a1aa; /* Zinc 400 */
+            --text-main: #ffffff; /* Pure white text for readability */
+            --text-muted: #aaaaaa; /* Lighter gray for muted text */
             
-            --accent: #3b82f6; /* Blue 500 */
-            --accent-glow: rgba(59, 130, 246, 0.2);
+            --accent: #a3e635; /* Lime green */
+            --accent-glow: rgba(163, 230, 53, 0.15);
+            --nav-active-color: #a3e635;
             
-            --green: #10b981;
-            --red: #ef4444;
-            --orange: #f97316;
+            --green: #4ade80; /* Bright green */
+            --red: #f87171; /* Bright red */
+            --orange: #facc15; /* Pure yellow */
+            
+            --shadow-subtle: 0 4px 15px rgba(0,0,0,0.5);
+            --shadow-hover: 0 8px 25px rgba(0,0,0,0.8);
+            --bg-table-header: #2b2b2b; /* Distinct gray header background */
+            --bg-header-alpha: rgba(30, 30, 30, 0.95);
+            --bg-select: rgba(255, 255, 255, 0.08);
+            --select-arrow: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
             
             --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            
+            --chart-grid-color: #333333; /* Darker grids */
+            --chart-text-color: #aaaaaa;
+        }
+
+        [data-theme="light"] {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-card-solid: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --border-color: #e2e8f0;
+            --border-hover: #cbd5e1;
+            
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            
+            --accent: #2563eb;
+            --accent-glow: rgba(37, 99, 235, 0.1);
+            --nav-active-color: #2563eb;
+            
+            --green: #059669;
+            --red: #dc2626;
+            --orange: #ea580c;
+            
+            --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            --bg-table-header: #f1f5f9;
+            --bg-header-alpha: rgba(255, 255, 255, 0.95);
+            --bg-select: rgba(0, 0, 0, 0.03);
+            --select-arrow: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f172a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            
+            --chart-grid-color: rgba(0, 0, 0, 0.06);
+            --chart-text-color: #64748b;
         }
 
         * {
@@ -43,7 +86,6 @@
             flex-direction: column;
             height: 100vh;
             background-color: var(--bg-body);
-            background-image: radial-gradient(circle at 50% -20%, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
             color: var(--text-main);
             overflow: hidden;
             -webkit-font-smoothing: antialiased;
@@ -53,10 +95,10 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            background-color: rgba(9, 9, 11, 0.85);
+            background-color: var(--bg-body);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: center;
             padding: 16px 0;
@@ -66,8 +108,13 @@
             display: flex;
             gap: 12px;
             background-color: transparent;
-            padding: 0;
+            padding: 0 16px;
             border: none;
+            width: 100%;
+            max-width: 1400px;
+            justify-content: center;
+            align-items: center;
+            position: relative;
         }
 
         .nav-tab {
@@ -79,7 +126,6 @@
             padding: 10px 20px;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
         .nav-tab:hover {
@@ -88,7 +134,7 @@
         }
 
         .nav-tab.active {
-            color: #dceda8;
+            color: var(--nav-active-color);
             background-color: transparent;
             font-weight: 600;
         }
@@ -147,17 +193,17 @@
             padding: 20px;
             border-radius: var(--radius-lg);
             border: 1px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow-subtle);
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .macro-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
         }
 
         .macro-title {
@@ -190,9 +236,9 @@
         }
 
         .data-table th {
-            background-color: rgba(24, 24, 27, 0.9);
-            color: var(--text-muted);
-            font-weight: 500;
+            background-color: var(--bg-table-header);
+            color: var(--text-main);
+            font-weight: 600;
             text-transform: uppercase;
             font-size: 11px;
             letter-spacing: 0.5px;
@@ -204,7 +250,6 @@
 
         .data-table tbody tr {
             background-color: var(--bg-card);
-            transition: background-color 0.2s;
         }
 
         .data-table tbody tr:hover {
@@ -213,7 +258,8 @@
 
         /* Ticker layout for Tab 2 */
         .ticker-list {
-            width: 800px;
+            width: 100%;
+            max-width: 800px;
             background-color: var(--bg-body);
             padding: 0;
             overflow-y: auto;
@@ -267,7 +313,7 @@
         }
 
         .group-header {
-            background-color: rgba(9, 9, 11, 0.95);
+            background-color: var(--bg-header-alpha);
             backdrop-filter: blur(8px);
             padding: 10px 12px;
             font-weight: 600;
@@ -331,9 +377,9 @@
             left: -10px;
             transform: translateY(10px);
             opacity: 0;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid var(--border-color);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--shadow-hover);
             font-size: 12px;
             line-height: 1.5;
             white-space: normal;
@@ -346,13 +392,13 @@
         }
 
         .base-select {
-            background-color: rgba(255, 255, 255, 0.05);
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-color: var(--bg-select);
+            background-image: var(--select-arrow);
             background-repeat: no-repeat;
             background-position: right 6px center;
             background-size: 14px;
             color: var(--text-main);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
             border-radius: var(--radius-sm);
             padding: 4px 24px 4px 8px; /* Extra padding on the right for the explicit arrow */
             font-size: 12px;
@@ -365,7 +411,7 @@
             margin-left: 6px;
         }
         .base-select:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: var(--bg-card-hover);
         }
 
         .badge-green {
@@ -418,15 +464,53 @@
             margin: -20px -20px 20px -20px;
         }
         
+        
+        .tables-grid-item {
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+        
         /* Modern Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-body); }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+        ::-webkit-scrollbar-thumb { background: rgba(161, 161, 170, 0.3); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(161, 161, 170, 0.5); }
         
         .text-highlight-green {
             color: var(--green);
             font-weight: 600;
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 768px) {
+            .tab-renta-layout {
+                flex-direction: column !important;
+            }
+            .ticker-list {
+                max-width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                max-height: 50vh; /* Don't let it consume the whole screen on mobile */
+            }
+            .chart-container {
+                min-height: 400px;
+                padding: 10px;
+            }
+            
+            .tables-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .macro-card {
+                padding: 16px;
+            }
+            
+            #tasas-pesos h3, #tasas-cripto h3 {
+                text-align: center;
+            }
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -436,9 +520,15 @@
 
     <nav class="top-nav">
         <div class="nav-container">
-            <button class="nav-tab active" onclick="switchTab('tab-argentina', this)">🇦🇷 Dólares y Bandas</button>
-            <button class="nav-tab" onclick="switchTab('tab-tasas', this)">💰 Tasas</button>
-            <button class="nav-tab" onclick="switchTab('tab-renta', this)">📈 Renta Variable</button>
+            <div style="flex: 1; display: flex; align-items: center;"></div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;">
+                <button class="nav-tab active" onclick="switchTab('tab-argentina', this)">🇦🇷 Dólares y Bandas</button>
+                <button class="nav-tab" onclick="switchTab('tab-tasas', this)">💰 Tasas</button>
+                <button class="nav-tab" onclick="switchTab('tab-renta', this)">📈 Renta Variable</button>
+            </div>
+            <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+                <button id="theme-toggle" class="nav-tab" style="padding: 6px 10px; font-size: 16px;" title="Cambiar Tema" onclick="toggleTheme()">🌓</button>
+            </div>
         </div>
     </nav>
 
@@ -528,8 +618,8 @@
                     </div>
 
                     <div class="tables-grid">
-                        <div>
-                            <table class="data-table">
+                        <div class="tables-grid-item">
+                            <table class="data-table" style="border:none;">
                                 <thead>
                                     <tr>
                                         <th>Fiat</th>
@@ -552,8 +642,8 @@
                             </table>
                         </div>
 
-                        <div>
-                            <table class="data-table">
+                        <div class="tables-grid-item">
+                            <table class="data-table" style="border:none;">
                                 <thead>
                                     <tr>
                                         <th style="padding: 8px 10px;">Exchange (USDT)</th>
@@ -613,7 +703,7 @@
                                     style="color: #9ca3af; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 5px;">
                                     Dólar Mayorista</div>
                                 <div id="gauge-mayorista-box"
-                                    style="display: inline-block; font-size: 1.8em; font-weight: bold; background-color: #10b981; color: #ffffff; padding: 4px 16px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: all 0.5s ease;">
+                                    style="display: inline-block; font-size: 1.8em; font-weight: bold; background-color: #10b981; color: #ffffff; padding: 4px 16px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">
                                     $0.00</div>
                             </div>
                         </div>
@@ -665,8 +755,8 @@
 
                     <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
                         <div style="background-color: var(--bg-card-solid); border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; overflow: hidden; padding: 4px; gap: 4px;">
-                            <button id="btn-bandas-chart" onclick="toggleBandasView('chart')" style="background-color: var(--bg-card-hover); color: var(--text-main); border: none; padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; margin: 0; border-radius: 8px;">Gráfico</button>
-                            <button id="btn-bandas-table" onclick="toggleBandasView('table')" style="background-color: transparent; color: var(--text-muted); border: none; padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; margin: 0; border-radius: 8px;">Tabla</button>
+                            <button id="btn-bandas-chart" onclick="toggleBandasView('chart')" style="background-color: var(--bg-card-hover); color: var(--text-main); border: none; padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 600; margin: 0; border-radius: 8px;">Gráfico</button>
+                            <button id="btn-bandas-table" onclick="toggleBandasView('table')" style="background-color: transparent; color: var(--text-muted); border: none; padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 500; margin: 0; border-radius: 8px;">Tabla</button>
                         </div>
                     </div>
                     
@@ -676,7 +766,7 @@
                     
                     <div id="bandas-table-view" style="display: none; max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
                         <table class="data-table" style="font-size: 13px; margin: 0; width: 100%; text-align: left; border: none;">
-                            <thead style="position: sticky; top: 0; background-color: var(--bg-card-solid); z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                            <thead style="position: sticky; top: 0; background-color: var(--bg-card-solid); z-index: 10; border-bottom: 1px solid var(--border-color);">
                                 <tr>
                                     <th style="padding: 8px;">Fecha</th>
                                     <th style="padding: 8px;">Mayorista</th>
@@ -742,23 +832,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr style="border-bottom: 1px solid var(--border-color);">
                                         <td style="padding: 16px;"><div style="font-weight: 600; color: var(--text-main);">PESOS 1D</div><div style="font-size: 11px; color: var(--text-muted);">Caución a 1 día</div></td>
-                                        <td style="padding: 16px; font-weight: 600; color: #a3e635;">21.00%</td>
+                                        <td style="padding: 16px; font-weight: 600; color: var(--green);">21.00%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                     </tr>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr style="border-bottom: 1px solid var(--border-color);">
                                         <td style="padding: 16px;"><div style="font-weight: 600; color: var(--text-main);">PESOS 7D</div><div style="font-size: 11px; color: var(--text-muted);">Caución a 7 días</div></td>
-                                        <td style="padding: 16px; font-weight: 600; color: #a3e635;">22.00%</td>
+                                        <td style="padding: 16px; font-weight: 600; color: var(--green);">22.00%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                     </tr>
                                     <tr>
                                         <td style="padding: 16px;"><div style="font-weight: 600; color: var(--text-main);">PESOS 14D</div><div style="font-size: 11px; color: var(--text-muted);">Caución a 14 días</div></td>
-                                        <td style="padding: 16px; font-weight: 600; color: #a3e635;">25.00%</td>
+                                        <td style="padding: 16px; font-weight: 600; color: var(--green);">25.00%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
@@ -786,11 +876,11 @@
         </div>
 
         <div id="tab-renta" class="tab-pane" style="padding-bottom: 0;">
-            <div style="display: flex; height: 100%;">
+            <div class="tab-renta-layout" style="display: flex; height: 100%;">
                 <div class="ticker-list">
                     <div style="padding: 16px; border-bottom: 1px solid var(--border-color);">
                         <button
-                            style="width: 100%; padding: 12px; background-color: var(--bg-card-hover); border: 1px solid var(--border-color); color: var(--accent); font-weight: 600; cursor: pointer; border-radius: var(--radius-sm); text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; transition: background-color 0.2s;">📋
+                            style="width: 100%; padding: 12px; background-color: var(--bg-card-hover); border: 1px solid var(--border-color); color: var(--accent); font-weight: 600; cursor: pointer; border-radius: var(--radius-sm); text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">📋
                             Guía de Columnas</button>
                     </div>
                     <div id="groups-container"></div>
@@ -806,6 +896,77 @@
 
     <script src="https://s3.tradingview.com/tv.js"></script>
     <script>
+        // --- THEME LOGIC ---
+        function applyChartThemeOverrides() {
+            const root = getComputedStyle(document.documentElement);
+            const gridColor = root.getPropertyValue('--chart-grid-color').trim() || 'rgba(63, 63, 70, 0.4)';
+            const textColor = root.getPropertyValue('--chart-text-color').trim() || 'rgba(161, 161, 170, 1)';
+            
+            if (window.spreadChartInstance) {
+                window.spreadChartInstance.options.scales.x.ticks.color = textColor;
+                window.spreadChartInstance.options.scales.y.ticks.color = textColor;
+                
+                // Add robust grid color overriding while protecting the zero-line
+                window.spreadChartInstance.options.scales.y.grid = window.spreadChartInstance.options.scales.y.grid || {};
+                window.spreadChartInstance.options.scales.y.grid.color = function(ctx) {
+                    return (ctx.tick && ctx.tick.value === 0) ? (document.documentElement.getAttribute('data-theme') === 'light' ? 'rgba(0,0,0,0.15)' : 'rgba(255, 255, 255, 0.4)') : gridColor;
+                };
+                window.spreadChartInstance.options.scales.x.grid = window.spreadChartInstance.options.scales.x.grid || {};
+                window.spreadChartInstance.options.scales.x.grid.color = gridColor;
+                
+                window.spreadChartInstance.update('none');
+            }
+            if (window.bandasChartInstance) {
+                window.bandasChartInstance.options.scales.x.ticks.color = textColor;
+                window.bandasChartInstance.options.scales.y.ticks.color = textColor;
+                window.bandasChartInstance.options.plugins.legend.labels.color = textColor;
+                
+                window.bandasChartInstance.options.scales.y.grid = window.bandasChartInstance.options.scales.y.grid || {};
+                window.bandasChartInstance.options.scales.y.grid.color = gridColor;
+                window.bandasChartInstance.options.scales.x.grid = window.bandasChartInstance.options.scales.x.grid || {};
+                window.bandasChartInstance.options.scales.x.grid.color = gridColor;
+                
+                window.bandasChartInstance.update('none');
+            }
+            if (window.tradingviewWidget) {
+                const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+                // Triggering a TV widget theme update requires recreating it. We'll do it if it exists.
+                if (document.querySelector('.ticker-row.active')) {
+                   const sym = document.querySelector('.ticker-row.active').getAttribute('data-symbol');
+                   initChart(sym);
+                }
+            }
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
+            document.documentElement.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme-preference", newTheme);
+            document.getElementById("theme-toggle").innerHTML = newTheme === "dark" ? "🌓" : "🌑";
+            applyChartThemeOverrides();
+        }
+
+        (function() {
+            // Check system preference & localStorage
+            const savedTheme = localStorage.getItem("theme-preference");
+            const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            const initialTheme = savedTheme ? savedTheme : (systemPrefersDark ? "dark" : "light");
+            document.documentElement.setAttribute("data-theme", initialTheme);
+            document.getElementById("theme-toggle").innerHTML = initialTheme === "dark" ? "🌓" : "🌑";
+            
+            // Listen for system theme changes if not explicitly overridden by user
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                if(!localStorage.getItem("theme-preference")) {
+                    const newTheme = event.matches ? "dark" : "light";
+                    document.documentElement.setAttribute("data-theme", newTheme);
+                    document.getElementById("theme-toggle").innerHTML = newTheme === "dark" ? "🌓" : "🌑";
+                    applyChartThemeOverrides();
+                }
+            });
+        })();
+        // -------------------
+
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('#tab-argentina, #tab-tasas, #tab-renta').forEach(el => el.classList.remove('active'));
             // Remove active purely from top nav buttons
@@ -851,9 +1012,9 @@
             const formatCard = (name, tna, date, limit, conditions, type) => {
                 let init = name.charAt(0).toUpperCase();
                 let exactIcon = iconMapExt[name.toLowerCase()] || iconMapExt[name.split(' ')[0].toLowerCase()];
-                let limitStr = limit ? `<span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(255,100,100,0.2); color: #fca5a5; background: rgba(255,100,100,0.05);">${limit}</span>` : `<span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); background: rgba(255,255,255,0.03);">Sin Límites</span>`;
+                let limitStr = limit ? `<span class="badge-red" style="font-size: 11px;">${limit}</span>` : `<span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--border-color); color: var(--text-muted); background: var(--bg-card-hover);">Sin Límites</span>`;
                 
-                let renderIcon = exactIcon ? exactIcon : `<div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--bg-card-hover), transparent); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--text-muted); font-size: 20px; flex-shrink: 0;">${init}</div>`;
+                let renderIcon = exactIcon ? exactIcon : `<div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--bg-card-hover), transparent); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--text-muted); font-size: 20px; flex-shrink: 0;">${init}</div>`;
                 if(exactIcon) {
                     // scale icon up for cards
                     renderIcon = exactIcon.replace('width: 28px;', 'width: 44px;').replace('height: 28px;', 'height: 44px;');
@@ -884,12 +1045,12 @@
                 items.forEach(i => {
                     let renderLogo = i.logo ? `<img src="${i.logo}" style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover; background: white;" alt="${i.name} logo" onerror="this.outerHTML='<div style=\\\'width: 20px; height: 20px; border-radius: 50%; background: var(--bg-card-hover); line-height:20px; text-align:center; font-size:10px; color:var(--text-muted);\\\'>${i.name.charAt(0)}</div>'"/>` : `<div style="width: 20px; height: 20px; border-radius: 50%; background: var(--bg-card-hover); line-height:20px; text-align:center; font-size:10px; color:var(--text-muted);">${i.name.charAt(0)}</div>`;
                     
-                    html += `<li style="display: flex; justify-content: space-between; font-size: 13px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); align-items: center;">
+                    html += `<li style="display: flex; justify-content: space-between; font-size: 13px; padding: 8px 0; border-bottom: 1px solid var(--border-color); align-items: center;">
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     ${renderLogo}
                                     <span style="color: var(--text-main);">${i.name}</span>
                                 </div>
-                                <span style="font-weight: 600; color: #a3e635;">${(i.rate * 100).toFixed(2)}% TNA</span>
+                                <span style="font-weight: 600; color: var(--green);">${(i.rate * 100).toFixed(2)}% TNA</span>
                              </li>`;
                 });
                 return html + '</ul>';
@@ -1005,7 +1166,7 @@
                             let cInitial = coinDisplay.charAt(0);
                             let renderIcon = exactIcon ? exactIcon : `<div style="width: 24px; height: 24px; border-radius: 50%; background: var(--bg-card-hover); line-height:24px; text-align:center; font-size:11px; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">${cInitial}</div>`;
 
-                            htmlBody += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background-color 0.2s;">
+                            htmlBody += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                                 <td style="padding: 16px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 12px; white-space: nowrap;">
                                     ${renderIcon}
                                     ${coinDisplay}
@@ -1086,11 +1247,16 @@
 
             function initChart(symbol) {
                 if (chartWidget) { chartWidget.remove(); chartWidget = null; }
+                const isLight = document.documentElement.getAttribute("data-theme") === "light";
                 chartWidget = new TradingView.widget({
                     allow_symbol_change: true, hide_top_toolbar: false, hide_legend: false, hide_volume: true, interval: 'D',
-                    theme: 'dark', toolbar_bg: '#09090b', backgroundColor: '#09090b', gridColor: 'rgba(63, 63, 70, 0.4)',
+                    theme: isLight ? 'light' : 'dark', 
+                    toolbar_bg: isLight ? '#f8fafc' : '#09090b', 
+                    backgroundColor: isLight ? '#f8fafc' : '#09090b', 
+                    gridColor: isLight ? 'rgba(226, 232, 240, 1)' : 'rgba(63, 63, 70, 0.4)',
                     symbol: symbol, autosize: true, container_id: 'tradingview-chart'
                 });
+                window.tradingviewWidget = chartWidget;
             }
 
             window.updateChart = function (symbol, element) {
@@ -1205,10 +1371,15 @@
 
                 if (window.spreadChartInstance) window.spreadChartInstance.destroy();
                 var ctx = document.getElementById('spreadChart').getContext('2d');
+                
+                const root = getComputedStyle(document.documentElement);
+                const gridColor = root.getPropertyValue('--chart-grid-color').trim() || 'rgba(63, 63, 70, 0.4)';
+                const textColor = root.getPropertyValue('--chart-text-color').trim() || 'rgba(161, 161, 170, 1)';
+
                 window.spreadChartInstance = new Chart(ctx, {
                     type: 'line',
                     data: { labels: labels, datasets: [{ data: data, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1, segment: { borderColor: function (ctx) { return ctx.p0.parsed.y >= 0 ? 'rgba(16, 185, 129, 1)' : 'rgba(239, 68, 68, 1)'; } } }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } }, scales: { x: { display: true, ticks: { color: 'rgba(161, 161, 170, 1)', maxTicksLimit: 6 } }, y: { display: true, ticks: { color: 'rgba(161, 161, 170, 1)' }, grid: { color: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? 'rgba(255, 255, 255, 0.4)' : 'rgba(63, 63, 70, 0.2)'; }, lineWidth: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? 2 : 1; } } } }, interaction: { mode: 'index', intersect: false } }
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } }, scales: { x: { display: true, ticks: { color: textColor, maxTicksLimit: 6 }, grid: { color: gridColor } }, y: { display: true, ticks: { color: textColor }, grid: { color: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? (document.documentElement.getAttribute('data-theme') === 'light' ? 'rgba(0,0,0,0.15)' : 'rgba(255, 255, 255, 0.4)') : gridColor; }, lineWidth: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? 2 : 1; } } } }, interaction: { mode: 'index', intersect: false } }
                 });
                 updateSpreadSummary(window.spreadChartInstance, baseCurrency);
             }
@@ -1247,10 +1418,10 @@
                 for (let i = 0; i < tableLabels.length; i++) {
                     let displayMay = tableMay[i] ? `$${tableMay[i].toFixed(2)}` : '-';
                     tableHtml += `<tr>
-                        <td style="color: #cbd5e1; font-weight: bold;">${tableLabels[i]}</td>
-                        <td style="color: #10b981; font-weight: bold;">${displayMay}</td>
-                        <td style="color: #d95a2b; font-weight: bold;">$${tableSup[i].toFixed(2)}</td>
-                        <td style="color: #e11d48; font-weight: bold;">$${tableInf[i].toFixed(2)}</td>
+                        <td style="color: var(--text-muted); font-weight: 600;">${tableLabels[i]}</td>
+                        <td style="color: var(--green); font-weight: bold;">${displayMay}</td>
+                        <td style="color: var(--orange); font-weight: bold;">$${tableSup[i].toFixed(2)}</td>
+                        <td style="color: var(--red); font-weight: bold;">$${tableInf[i].toFixed(2)}</td>
                     </tr>`;
                 }
 
@@ -1258,6 +1429,11 @@
 
                 if (window.bandasChartInstance) window.bandasChartInstance.destroy();
                 var ctx = document.getElementById('bandasChart').getContext('2d');
+                
+                const root = getComputedStyle(document.documentElement);
+                const gridColor = root.getPropertyValue('--chart-grid-color').trim() || 'rgba(63, 63, 70, 0.4)';
+                const textColor = root.getPropertyValue('--chart-text-color').trim() || 'rgba(161, 161, 170, 1)';
+
                 window.bandasChartInstance = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -1268,7 +1444,7 @@
                             { label: 'Mayorista', data: dataMay, borderColor: '#10b981', borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.2 }
                         ]
                     },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: 'rgba(161, 161, 170, 1)', usePointStyle: true, boxWidth: 8 } } }, scales: { x: { ticks: { color: 'rgba(161, 161, 170, 1)', maxTicksLimit: 6 } }, y: { ticks: { color: 'rgba(161, 161, 170, 1)' }, grid: { color: 'rgba(63, 63, 70, 0.2)' } } }, interaction: { mode: 'index', intersect: false } }
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: textColor, usePointStyle: true, boxWidth: 8 } } }, scales: { x: { ticks: { color: textColor, maxTicksLimit: 6 } }, y: { ticks: { color: textColor }, grid: { color: gridColor } } }, interaction: { mode: 'index', intersect: false } }
                 });
             }
 
@@ -1383,7 +1559,7 @@
 
                     let fiatRows = '';
                     ['ccl', 'mep', 'oficial', 'blue'].forEach(f => {
-                        fiatRows += `<tr><td style="color:#cbd5e1; text-transform: uppercase;">${f}</td><td style="font-weight:bold;">$${fiatData[f].price.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(fiatData[f].var)}</td><td>${f === baseCurrency ? '-' : calcBrecha(fiatData[f].price)}</td></tr>`;
+                        fiatRows += `<tr><td style="color:var(--text-muted); text-transform: uppercase;">${f}</td><td style="font-weight:bold;">$${fiatData[f].price.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(fiatData[f].var)}</td><td>${f === baseCurrency ? '-' : calcBrecha(fiatData[f].price)}</td></tr>`;
                     });
 
                     fiatRows += `<tr><td style="color:var(--text-muted); display:flex; align-items:center;">USDT <div class="tooltip-container"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Es el dólar cripto que cotiza las 24 horas TODOS los días. Es el precio para comprar USDT en Binance p2p más aproximado posible sin la opción "comerciantes verificados"</div></div></td><td style="font-weight:bold;">$${maxVenta.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(usdt_var)}</td><td>${baseCurrency === 'usdt' ? '-' : calcBrecha(maxVenta)}</td></tr>`;
