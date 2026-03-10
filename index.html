@@ -1093,22 +1093,13 @@
             const gridColor = isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
             const textColor = isLight ? '#64748b' : '#aaaaaa';
 
-            // Chart.js v3+ does NOT re-evaluate grid.color callbacks on update().
-            // The only reliable fix is to fully recreate the spread chart.
+            // Fully recreate charts on theme change.
+            // renderSpreadChart / renderBandasChart are exposed via window inside the IIFE.
             if (window.spreadChartInstance && window._lastHistoricalFiat) {
-                renderSpreadChart(window._lastHistoricalFiat);
+                window._renderSpreadChart(window._lastHistoricalFiat);
             }
-            if (window.bandasChartInstance) {
-                window.bandasChartInstance.options.scales.x.ticks.color = textColor;
-                window.bandasChartInstance.options.scales.y.ticks.color = textColor;
-                window.bandasChartInstance.options.plugins.legend.labels.color = textColor;
-
-                window.bandasChartInstance.options.scales.y.grid = window.bandasChartInstance.options.scales.y.grid || {};
-                window.bandasChartInstance.options.scales.y.grid.color = gridColor;
-                window.bandasChartInstance.options.scales.x.grid = window.bandasChartInstance.options.scales.x.grid || {};
-                window.bandasChartInstance.options.scales.x.grid.color = gridColor;
-
-                window.bandasChartInstance.update('none');
+            if (window.bandasChartInstance && window._lastHistoricalFiat) {
+                window._renderBandasChart(window._lastHistoricalFiat);
             }
             if (window.tradingviewWidget) {
                 const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
@@ -1634,6 +1625,7 @@
             function renderSpreadChart(historicalData) {
                 if (!historicalData || historicalData.length === 0) return;
                 window._lastHistoricalFiat = historicalData;
+                window._renderSpreadChart = renderSpreadChart;
                 let dToday = new Date(); let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
                 var baseCurrency = document.getElementById('base-currency-select').value;
                 document.getElementById('chart-title').innerText = `Spread CCL vs ${baseCurrency.toUpperCase()} (YTD)`;
@@ -1652,16 +1644,39 @@
                 const gridColor = isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
                 const textColor = isLight ? '#64748b' : '#aaaaaa';
 
+                // Zero-line plugin: draws a solid line at y=0 directly on canvas
+                const zeroLinePlugin = {
+                    id: 'zeroLine',
+                    afterDraw(chart) {
+                        const yScale = chart.scales.y;
+                        if (!yScale) return;
+                        const yPixel = yScale.getPixelForValue(0);
+                        if (yPixel < yScale.top || yPixel > yScale.bottom) return;
+                        const ctx = chart.ctx;
+                        const lt = document.documentElement.getAttribute('data-theme') === 'light';
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.moveTo(chart.chartArea.left, yPixel);
+                        ctx.lineTo(chart.chartArea.right, yPixel);
+                        ctx.lineWidth = 1.5;
+                        ctx.strokeStyle = lt ? 'rgba(0,0,0,0.25)' : 'rgba(255,255,255,0.3)';
+                        ctx.stroke();
+                        ctx.restore();
+                    }
+                };
+
                 window.spreadChartInstance = new Chart(ctx, {
                     type: 'line',
                     data: { labels: labels, datasets: [{ data: data, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1, segment: { borderColor: function (ctx) { return (ctx.p0 && ctx.p0.parsed && ctx.p0.parsed.y >= 0) ? 'rgba(16, 185, 129, 1)' : 'rgba(239, 68, 68, 1)'; } } }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } }, scales: { x: { display: true, ticks: { color: textColor, maxTicksLimit: 6 }, grid: { color: gridColor } }, y: { display: true, ticks: { color: textColor }, grid: { color: function (ctx) { const ctxIsLight = document.documentElement.getAttribute('data-theme') === 'light'; return (ctx.tick && ctx.tick.value === 0) ? (ctxIsLight ? 'rgba(0,0,0,0.2)' : 'rgba(255, 255, 255, 0.25)') : (ctxIsLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'); }, lineWidth: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? 1.5 : 1; } } } }, interaction: { mode: 'index', intersect: false } }
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } }, scales: { x: { display: true, ticks: { color: textColor, maxTicksLimit: 6 }, grid: { color: gridColor } }, y: { display: true, ticks: { color: textColor }, grid: { color: gridColor } } }, interaction: { mode: 'index', intersect: false } },
+                    plugins: [zeroLinePlugin]
                 });
                 updateSpreadSummary(window.spreadChartInstance, baseCurrency);
             }
 
             function renderBandasChart(historicalFiat) {
                 if (!historicalFiat) return;
+                window._renderBandasChart = renderBandasChart;
                 const mayoristaMap = {};
                 historicalFiat.forEach(d => { if (d.mayorista) mayoristaMap[d.date] = d.mayorista; });
 
