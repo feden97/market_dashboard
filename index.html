@@ -59,21 +59,21 @@
             /* Tasas section colors */
             --rate-color: #818cf8;
             --badge-type-color: #93c5fd;
-            --badge-type-border: rgba(59,130,246,0.2);
-            --badge-type-bg: rgba(59,130,246,0.05);
+            --badge-type-border: rgba(59, 130, 246, 0.2);
+            --badge-type-bg: rgba(59, 130, 246, 0.05);
             --badge-liquidity-color: #34d399;
-            --badge-liquidity-border: rgba(16,185,129,0.3);
-            --badge-liquidity-bg: rgba(16,185,129,0.1);
+            --badge-liquidity-border: rgba(16, 185, 129, 0.3);
+            --badge-liquidity-bg: rgba(16, 185, 129, 0.1);
             --badge-variable-color: #a78bfa;
-            --badge-variable-border: rgba(167,139,250,0.3);
-            --badge-variable-bg: rgba(167,139,250,0.1);
+            --badge-variable-border: rgba(167, 139, 250, 0.3);
+            --badge-variable-bg: rgba(167, 139, 250, 0.1);
             --badge-lock-color: #fbbf24;
-            --badge-lock-border: rgba(245,158,11,0.3);
-            --badge-lock-bg: rgba(245,158,11,0.1);
+            --badge-lock-border: rgba(245, 158, 11, 0.3);
+            --badge-lock-bg: rgba(245, 158, 11, 0.1);
             --matrix-rate-color: #818cf8;
             --matrix-rate-bg: rgba(59, 130, 246, 0.1);
             --matrix-rate-border: rgba(59, 130, 246, 0.2);
-            --matrix-row-border: rgba(255,255,255,0.05);
+            --matrix-row-border: rgba(255, 255, 255, 0.05);
             --info-box-bg: rgba(59, 130, 246, 0.05);
             --info-box-border: rgba(59, 130, 246, 0.2);
             --info-box-title: #93c5fd;
@@ -112,21 +112,21 @@
             /* Tasas section colors */
             --rate-color: #4f46e5;
             --badge-type-color: #2563eb;
-            --badge-type-border: rgba(37,99,235,0.25);
-            --badge-type-bg: rgba(37,99,235,0.08);
+            --badge-type-border: rgba(37, 99, 235, 0.25);
+            --badge-type-bg: rgba(37, 99, 235, 0.08);
             --badge-liquidity-color: #059669;
-            --badge-liquidity-border: rgba(5,150,105,0.3);
-            --badge-liquidity-bg: rgba(5,150,105,0.08);
+            --badge-liquidity-border: rgba(5, 150, 105, 0.3);
+            --badge-liquidity-bg: rgba(5, 150, 105, 0.08);
             --badge-variable-color: #7c3aed;
-            --badge-variable-border: rgba(124,58,237,0.25);
-            --badge-variable-bg: rgba(124,58,237,0.08);
+            --badge-variable-border: rgba(124, 58, 237, 0.25);
+            --badge-variable-bg: rgba(124, 58, 237, 0.08);
             --badge-lock-color: #b45309;
-            --badge-lock-border: rgba(180,83,9,0.3);
-            --badge-lock-bg: rgba(180,83,9,0.1);
+            --badge-lock-border: rgba(180, 83, 9, 0.3);
+            --badge-lock-bg: rgba(180, 83, 9, 0.1);
             --matrix-rate-color: #4f46e5;
             --matrix-rate-bg: rgba(79, 70, 229, 0.08);
             --matrix-rate-border: rgba(79, 70, 229, 0.2);
-            --matrix-row-border: rgba(0,0,0,0.06);
+            --matrix-row-border: rgba(0, 0, 0, 0.06);
             --info-box-bg: rgba(37, 99, 235, 0.06);
             --info-box-border: rgba(37, 99, 235, 0.15);
             --info-box-title: #2563eb;
@@ -611,76 +611,25 @@
             height: calc(100vh - 60px);
             gap: 0;
         }
+
         .tab-renta-layout .ticker-list {
             width: 28%;
             min-width: 320px;
             max-width: none;
             flex-shrink: 0;
         }
+
         .tab-renta-layout .chart-container {
             flex: 1;
             min-width: 0;
-            padding: 12px;
-        }
-        .tab-renta-layout .info-panel {
-            width: 22%;
-            min-width: 240px;
-            max-width: 300px;
-            flex-shrink: 0;
-            overflow-y: auto;
-            border-left: 1px solid var(--border-color);
-            background-color: var(--bg-body);
-            padding: 16px;
+            padding: 0;
+            /* maximize view area */
         }
 
-        /* Info Panel Cards */
-        .info-panel-header {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 6px;
-            letter-spacing: 0.3px;
+        .tab-renta-layout .tradingview-widget-container {
+            border: none;
+            border-radius: 0;
         }
-        .info-panel-sub {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .info-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 12px;
-            margin-bottom: 10px;
-        }
-        .info-card-title {
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-        .info-card-value {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-        .info-card-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 13px;
-        }
-        .info-card-row:last-child { border-bottom: none; }
-        .info-card-row .label { color: var(--text-muted); font-weight: 500; }
-        .info-card-row .val { color: var(--text-main); font-weight: 600; }
-        .info-letf-long { color: #4ade80; cursor: pointer; text-decoration: underline; font-weight: 600; }
-        .info-letf-short { color: #f87171; cursor: pointer; text-decoration: underline; font-weight: 600; }
 
         /* Value Bars (horizontal bars behind Daily/Intra/5D/20D) */
         .value-visualization {
@@ -692,6 +641,7 @@
             max-width: 100%;
             text-align: right;
         }
+
         .value-bar {
             position: absolute;
             top: 0;
@@ -701,9 +651,24 @@
             z-index: 0;
             max-width: 100%;
         }
-        .value-bar.positive { background-color: var(--green); left: 0; }
-        .value-bar.negative { background-color: var(--red); right: 0; left: auto; }
-        .value-text { position: relative; z-index: 1; font-weight: 600; font-size: 12px; }
+
+        .value-bar.positive {
+            background-color: var(--green);
+            left: 0;
+        }
+
+        .value-bar.negative {
+            background-color: var(--red);
+            right: 0;
+            left: auto;
+        }
+
+        .value-text {
+            position: relative;
+            z-index: 1;
+            font-weight: 600;
+            font-size: 12px;
+        }
 
         /* Grade Badges */
         .abc-rating {
@@ -717,11 +682,27 @@
             font-size: 11px;
             color: white;
         }
-        .abc-a { background-color: #22c55e; }
-        .abc-b { background-color: #84cc16; }
-        .abc-c { background-color: #eab308; color: #1a1a1a; }
-        .abc-d { background-color: #f97316; }
-        .abc-f { background-color: #ef4444; }
+
+        .abc-a {
+            background-color: #22c55e;
+        }
+
+        .abc-b {
+            background-color: #84cc16;
+        }
+
+        .abc-c {
+            background-color: #eab308;
+            color: #1a1a1a;
+        }
+
+        .abc-d {
+            background-color: #f97316;
+        }
+
+        .abc-f {
+            background-color: #ef4444;
+        }
 
         /* Ticker Label */
         .rv-ticker-label {
@@ -737,14 +718,36 @@
         }
 
         /* Sort indicators */
-        .ticker-table th.sortable { cursor: pointer; }
-        .ticker-table th.sortable:hover { color: var(--accent); }
-        .ticker-table th.sort-asc::after { content: " ↑"; color: var(--accent); }
-        .ticker-table th.sort-desc::after { content: " ↓"; color: var(--accent); }
-        .ticker-table td.sorted-column { background-color: rgba(59, 130, 246, 0.04); }
+        .ticker-table th.sortable {
+            cursor: pointer;
+        }
+
+        .ticker-table th.sortable:hover {
+            color: var(--accent);
+        }
+
+        .ticker-table th.sort-asc::after {
+            content: " ↑";
+            color: var(--accent);
+        }
+
+        .ticker-table th.sort-desc::after {
+            content: " ↓";
+            color: var(--accent);
+        }
+
+        .ticker-table td.sorted-column {
+            background-color: rgba(59, 130, 246, 0.04);
+        }
 
         /* Legend items for Industries */
-        .rv-legend { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .rv-legend {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
         .rv-legend-item {
             padding: 2px 6px;
             border-radius: 6px;
@@ -754,64 +757,61 @@
             user-select: none;
         }
 
-        /* LETF links */
-        .rv-long-etf { color: #4ade80; cursor: pointer; text-decoration: underline; font-size: 11px; }
-        .rv-short-etf { color: #f87171; cursor: pointer; text-decoration: underline; font-size: 11px; }
-        .rv-etf-list { white-space: nowrap; font-size: 11px; }
-        .rv-etf-list span:hover { font-weight: bold; }
-
-        /* RS Chart mini images */
-        .rs-chart {
-            width: 100%;
-            max-width: 80px;
-            height: 26px;
-            display: block;
-            object-fit: contain;
+        /* Header Popover Tooltip */
+        .rv-th-wrap {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            border-bottom: 1px dotted var(--text-muted);
         }
 
-        /* Column Guide Dropdown */
-        .rv-column-guide { position: relative; }
-        .rv-column-guide-content {
+        .rv-th-popover {
             display: none;
             position: absolute;
             top: 100%;
-            left: 0;
-            right: 0;
-            background-color: var(--bg-card-solid);
-            z-index: 999;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            padding: 10px 12px;
+            margin-top: 6px;
+            background: var(--bg-card-solid);
+            border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            max-height: 420px;
-            overflow-y: auto;
-            padding: 12px 14px;
-            border: 1px solid var(--border-color);
-            margin-top: 4px;
-            font-size: 12px;
-            color: var(--text-main);
-            line-height: 1.6;
             box-shadow: var(--shadow-hover);
-        }
-        .rv-column-guide:hover .rv-column-guide-content { display: block; }
-        .rv-column-guide dt { font-weight: 700; color: var(--accent); margin-top: 10px; }
-        .rv-column-guide dt:first-child { margin-top: 0; }
-        .rv-column-guide dd { margin: 2px 0 0 14px; color: var(--text-muted); }
-
-        /* Key Hint */
-        .rv-key-hint {
+            z-index: 999;
             font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 12px;
-            padding: 8px 12px;
-            background-color: var(--bg-card);
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-color);
-            position: sticky;
-            bottom: 0;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--text-main);
+            text-align: left;
+            white-space: normal;
+            pointer-events: none;
+        }
+
+        .rv-th-popover strong {
+            color: var(--accent);
+        }
+
+        .rv-th-wrap:hover .rv-th-popover {
+            display: block;
         }
 
         /* Renta Variable Ticker Table column widths */
-        #tab-renta .ticker-table { table-layout: auto; font-size: 12px; }
-        #tab-renta .ticker-table th { padding: 8px 6px; font-size: 10px; top: 35px; }
-        #tab-renta .ticker-table td { padding: 7px 6px; font-size: 12px; }
+        #tab-renta .ticker-table {
+            table-layout: auto;
+            font-size: 12px;
+        }
+
+        #tab-renta .ticker-table th {
+            padding: 8px 6px;
+            font-size: 10px;
+            top: 35px;
+        }
+
+        #tab-renta .ticker-table td {
+            padding: 7px 6px;
+            font-size: 12px;
+        }
 
         /* Mobile specific adjustments */
         @media (max-width: 768px) {
@@ -833,7 +833,7 @@
             }
 
             #bandas-chart-view,
-            .chart-container > div {
+            .chart-container>div {
                 min-height: 250px;
             }
 
@@ -862,6 +862,361 @@
             #tasas-pesos h3,
             #tasas-cripto h3 {
                 text-align: center;
+            }
+        }
+
+        /* ========================================
+           TASAS TAB — Redesign (scoped)
+           ======================================== */
+        #tab-tasas .tasas-section {
+            margin-bottom: 36px;
+        }
+
+        #tab-tasas .tasas-section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #tab-tasas .tasas-section-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        /* Compact Row */
+        #tab-tasas .tasas-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: 8px;
+        }
+
+        #tab-tasas .tasas-row:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        #tab-tasas .tasas-row.best-rate {
+            border-left: 3px solid var(--accent);
+            background: var(--accent-glow);
+        }
+
+        #tab-tasas .tasas-row-icon {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card-hover);
+            border: 1px solid var(--border-color);
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-muted);
+            overflow: hidden;
+        }
+
+        #tab-tasas .tasas-row-icon img,
+        #tab-tasas .tasas-row-icon svg {
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        #tab-tasas .tasas-row-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        #tab-tasas .tasas-row-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #tab-tasas .tasas-row-meta {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        #tab-tasas .tasas-badge {
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        #tab-tasas .tasas-badge-type {
+            color: var(--badge-type-color);
+            border: 1px solid var(--badge-type-border);
+            background: var(--badge-type-bg);
+        }
+
+        #tab-tasas .tasas-badge-liquidity {
+            color: var(--badge-liquidity-color);
+            border: 1px solid var(--badge-liquidity-border);
+            background: var(--badge-liquidity-bg);
+        }
+
+        #tab-tasas .tasas-badge-variable {
+            color: var(--badge-variable-color);
+            border: 1px solid var(--badge-variable-border);
+            background: var(--badge-variable-bg);
+        }
+
+        #tab-tasas .tasas-badge-lock {
+            color: var(--badge-lock-color);
+            border: 1px solid var(--badge-lock-border);
+            background: var(--badge-lock-bg);
+        }
+
+        #tab-tasas .tasas-badge-limit {
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        #tab-tasas .tasas-row-rate {
+            flex-shrink: 0;
+            text-align: right;
+        }
+
+        #tab-tasas .tasas-rate-value {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--rate-color);
+            letter-spacing: 0.3px;
+        }
+
+        #tab-tasas .tasas-rate-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        #tab-tasas .tasas-row-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Collapsible Guide */
+        #tab-tasas .tasas-guide {
+            margin-bottom: 28px;
+        }
+
+        #tab-tasas .tasas-guide summary {
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent);
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            background: var(--info-box-bg);
+            border: 1px solid var(--info-box-border);
+            border-radius: var(--radius-md);
+        }
+
+        #tab-tasas .tasas-guide summary::-webkit-details-marker {
+            display: none;
+        }
+
+        #tab-tasas .tasas-guide summary::before {
+            content: '▶';
+            font-size: 10px;
+            transition: transform 0.2s;
+        }
+
+        #tab-tasas .tasas-guide[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        #tab-tasas .tasas-guide .tasas-guide-body {
+            padding: 14px 16px;
+            font-size: 12px;
+            line-height: 1.7;
+            color: var(--text-muted);
+            border: 1px solid var(--info-box-border);
+            border-top: none;
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            background: var(--info-box-bg);
+        }
+
+        #tab-tasas .tasas-guide .tasas-guide-body strong {
+            color: var(--text-main);
+        }
+
+        /* Stablecoins Card Grid */
+        #tab-tasas .cripto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 14px;
+        }
+
+        #tab-tasas .cripto-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+        }
+
+        #tab-tasas .cripto-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        #tab-tasas .cripto-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #tab-tasas .cripto-card-header-icon {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+        }
+
+        #tab-tasas .cripto-card-header-icon svg,
+        #tab-tasas .cripto-card-header-icon img {
+            width: 32px !important;
+            height: 32px !important;
+            border-radius: 50%;
+        }
+
+        #tab-tasas .cripto-card-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        #tab-tasas .cripto-card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #tab-tasas .cripto-card-row:last-child {
+            border-bottom: none;
+        }
+
+        #tab-tasas .cripto-card-coin {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        #tab-tasas .cripto-card-coin svg {
+            width: 20px !important;
+            height: 20px !important;
+        }
+
+        #tab-tasas .cripto-rate-pill {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            background: var(--matrix-rate-bg);
+            border: 1px solid var(--matrix-rate-border);
+            color: var(--matrix-rate-color);
+        }
+
+        #tab-tasas .cripto-rate-pill.best-crypto-rate {
+            background: rgba(74, 222, 128, 0.12);
+            border-color: rgba(74, 222, 128, 0.4);
+            color: var(--green);
+        }
+
+        [data-theme="light"] #tab-tasas .cripto-rate-pill.best-crypto-rate {
+            background: rgba(5, 150, 105, 0.1);
+            border-color: rgba(5, 150, 105, 0.3);
+            color: var(--green);
+        }
+
+        #tab-tasas .cripto-rate-na {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Cauciones table */
+        #tab-tasas .cauciones-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        #tab-tasas .cauciones-table thead tr {
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        #tab-tasas .cauciones-table th,
+        #tab-tasas .cauciones-table td {
+            padding: 14px 16px;
+        }
+
+        #tab-tasas .cauciones-table th {
+            font-weight: 500;
+        }
+
+        #tab-tasas .cauciones-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #tab-tasas .cauciones-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 768px) {
+            #tab-tasas .cripto-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #tab-tasas .tasas-row {
+                padding: 10px 12px;
+                gap: 10px;
+            }
+
+            #tab-tasas .tasas-rate-value {
+                font-size: 16px;
             }
         }
     </style>
@@ -1033,7 +1388,11 @@
                                     </tr>
                                 </thead>
                                 <tbody id="fiat-table-body">
-                                    <tr><td colspan="4" style="text-align:center; padding: 20px; color: var(--text-muted);">Cargando cotizaciones en vivo...</td></tr>
+                                    <tr>
+                                        <td colspan="4"
+                                            style="text-align:center; padding: 20px; color: var(--text-muted);">Cargando
+                                            cotizaciones en vivo...</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -1048,7 +1407,11 @@
                                     </tr>
                                 </thead>
                                 <tbody id="usdt-table-body">
-                                    <tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--text-muted);">Cargando cotizaciones en vivo...</td></tr>
+                                    <tr>
+                                        <td colspan="3"
+                                            style="text-align:center; padding: 20px; color: var(--text-muted);">Cargando
+                                            cotizaciones en vivo...</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -1191,111 +1554,105 @@
 
         <div id="tab-tasas" class="tab-pane">
             <div class="panel-ancho">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                    <h2 style="color: var(--text-main); margin: 0; font-size: 18px; font-weight: 600;">Tasas de Interés
-                        y Rendimientos</h2>
-                </div>
+                <h2 style="color: var(--text-main); margin: 0 0 20px 0; font-size: 18px; font-weight: 600;">Tasas de
+                    Interés y Rendimientos</h2>
 
                 <!-- PESOS (ARS) VIEW -->
                 <div id="tasas-pesos"
                     style="display: block; animation: fadeIn 0.4s ease forwards; max-width: 900px; margin: 0 auto;">
-                    <div style="margin-bottom: 48px;">
-                        <h3 style="color: var(--text-main); font-size: 16px; margin-bottom: 4px; font-weight: 500;">
-                            Cuentas remuneradas y billeteras</h3>
-                        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
-                            Interés fijo preestablecido por la entidad. Liquidez inmediata con pago de rendimientos diarios.</p>
-                        <div id="ars-accounts-container" style="display: flex; flex-direction: column; gap: 16px;">
-                            <div style="text-align: center; color: var(--text-muted); padding: 40px;">Cargando
-                                cuentas...</div>
+
+                    <details class="tasas-guide">
+                        <summary>ℹ️ ¿Cómo interpretar las tasas?</summary>
+                        <div class="tasas-guide-body">
+                            <strong>Cuenta Remunerada:</strong> La tasa es establecida por la billetera en cada período.
+                            Cobras rendimientos todos los días y tu dinero está disponible siempre.<br>
+                            <strong>Plazo Fijo:</strong> La Tasa Nominal Anual (TNA) es fija y garantizada, pero tu
+                            capital queda bloqueado un mínimo de 30 días.<br>
+                            <strong>Fondos Comunes (FCI):</strong> Rendimiento variable que cambia a diario. La tasa
+                            mostrada se calcula comparando la variación del valor del fondo en las últimas 48 horas
+                            vigentes (CAFCI) y anualizando el resultado. Liquidez inmediata.
+                        </div>
+                    </details>
+
+                    <div class="tasas-section">
+                        <div class="tasas-section-title">💳 Cuentas Remuneradas y Billeteras</div>
+                        <div class="tasas-section-sub">Interés fijo preestablecido por la entidad. Liquidez inmediata
+                            con pago de rendimientos diarios.</div>
+                        <div id="ars-accounts-container">
+                            <div style="text-align: center; color: var(--text-muted); padding: 30px; font-size: 13px;">
+                                Cargando cuentas...</div>
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 48px;">
-                        <h3 style="color: var(--text-main); font-size: 16px; margin-bottom: 4px; font-weight: 500;">
-                            Plazos Fijos Top 10</h3>
-                        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
-                            Tasa fija garantizada. Requiere inmovilizar el capital por un mínimo de 30 días.</p>
-                        <div style="display: grid; grid-template-columns: 1fr; gap: 16px;">
-                            <div class="macro-card">
-                                <div class="card-header-gradient" style="margin-bottom: 12px; font-weight: 600;">Plazos
-                                    Fijos Tradicionales</div>
-                                <div id="ars-pf-list" style="color: var(--text-muted); font-size: 13px;">Cargando...
-                                </div>
-                            </div>
+                    <div class="tasas-section">
+                        <div class="tasas-section-title">🏦 Plazos Fijos — Top 10</div>
+                        <div class="tasas-section-sub">Tasa fija garantizada. Requiere inmovilizar el capital por un
+                            mínimo de 30 días.</div>
+                        <div id="ars-pf-list">
+                            <div style="text-align: center; color: var(--text-muted); padding: 30px; font-size: 13px;">
+                                Cargando...</div>
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 48px;">
-                        <h3 style="color: var(--text-main); font-size: 16px; margin-bottom: 4px; font-weight: 500;">
-                            Fondos Comunes de Inversión</h3>
-                        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
-                            Rendimiento variable. Estimación basada en lo que rindió el fondo en los últimos días. Liquidez inmediata (rescate en el día).</p>
-                        <div id="ars-fci-container" style="display: flex; flex-direction: column; gap: 16px;">
-                            <div style="text-align: center; color: var(--text-muted); padding: 40px;">Cargando FCI...
-                            </div>
+                    <div class="tasas-section">
+                        <div class="tasas-section-title">📊 Fondos Comunes de Inversión</div>
+                        <div class="tasas-section-sub">Rendimiento variable. Estimación basada en lo que rindió el fondo
+                            en los últimos días. Liquidez inmediata (rescate en el día).</div>
+                        <div id="ars-fci-container">
+                            <div style="text-align: center; color: var(--text-muted); padding: 30px; font-size: 13px;">
+                                Cargando FCI...</div>
                         </div>
                     </div>
-                    
-                    <div style="margin-bottom: 48px; background-color: var(--info-box-bg); border: 1px solid var(--info-box-border); border-radius: var(--radius-lg); padding: 20px;">
-                        <h4 style="color: var(--info-box-title); font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
-                            ¿Cómo leer estas tasas?
-                        </h4>
-                        <ul style="color: var(--text-muted); font-size: 13px; line-height: 1.6; padding-left: 20px; margin: 0; display: flex; flex-direction: column; gap: 8px;">
-                            <li><strong style="color: var(--text-main);">Plazo Fijo:</strong> La Tasa Nominal Anual (TNA) es fija, pero no puedes usar tu dinero por un mínimo de 30 días.</li>
-                            <li><strong style="color: var(--text-main);">Cuentas Remuneradas:</strong> La tasa es establecida en cada período por la billetera, cobras todos los días y puedes usar tu dinero cuando quieras.</li>
-                            <li><strong style="color: var(--text-main);">Fondos Comunes (FCI):</strong> Al componerse de muchos instrumentos de mercado, su rendimiento cambia a diario. La tasa mostrada aquí se calcula comparando la variación del valor oficial del fondo reportado las últimas 48 horas vigentes (CAFCI) y anualizando el resultado.</li>
-                        </ul>
-                    </div>
 
-                    <div style="margin-bottom: 48px;">
-                        <h3 style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px; font-weight: 500;">
-                            Cauciones Bursátiles</h3>
-                        <div class="macro-card" style="padding: 0; overflow-x: auto;">
-                            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
+                    <div class="tasas-section">
+                        <div class="tasas-section-title">📈 Cauciones Bursátiles</div>
+                        <div class="tasas-section-sub">Tasas de referencia del mercado bursátil para cauciones en pesos.
+                        </div>
+                        <div
+                            style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow-x: auto;">
+                            <table class="cauciones-table">
                                 <thead>
-                                    <tr
-                                        style="border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 11px; text-transform: uppercase;">
-                                        <th style="padding: 16px; font-weight: 500;">Plazo</th>
-                                        <th style="padding: 16px; font-weight: 500;">Tasa Actual</th>
-                                        <th style="padding: 16px; font-weight: 500;">Variación</th>
-                                        <th style="padding: 16px; font-weight: 500;">T. Tomadora</th>
-                                        <th style="padding: 16px; font-weight: 500;">T. Colocadora</th>
+                                    <tr>
+                                        <th>Plazo</th>
+                                        <th>Tasa Actual</th>
+                                        <th>Variación</th>
+                                        <th>T. Tomadora</th>
+                                        <th>T. Colocadora</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr style="border-bottom: 1px solid var(--border-color);">
-                                        <td style="padding: 16px;">
+                                    <tr>
+                                        <td>
                                             <div style="font-weight: 600; color: var(--text-main);">PESOS 1D</div>
                                             <div style="font-size: 11px; color: var(--text-muted);">Caución a 1 día
                                             </div>
                                         </td>
-                                        <td style="padding: 16px; font-weight: 600; color: var(--green);">21.00%</td>
-                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
-                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
-                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
+                                        <td style="font-weight: 600; color: var(--green);">21.00%</td>
+                                        <td style="color: var(--text-muted);">0%</td>
+                                        <td style="color: var(--text-muted);">0%</td>
+                                        <td style="color: var(--text-muted);">0%</td>
                                     </tr>
-                                    <tr style="border-bottom: 1px solid var(--border-color);">
-                                        <td style="padding: 16px;">
+                                    <tr>
+                                        <td>
                                             <div style="font-weight: 600; color: var(--text-main);">PESOS 7D</div>
                                             <div style="font-size: 11px; color: var(--text-muted);">Caución a 7 días
                                             </div>
                                         </td>
-                                        <td style="padding: 16px; font-weight: 600; color: var(--green);">22.00%</td>
-                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
-                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
-                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
+                                        <td style="font-weight: 600; color: var(--green);">22.00%</td>
+                                        <td style="color: var(--text-muted);">0%</td>
+                                        <td style="color: var(--text-muted);">0%</td>
+                                        <td style="color: var(--text-muted);">0%</td>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 16px;">
+                                        <td>
                                             <div style="font-weight: 600; color: var(--text-main);">PESOS 14D</div>
                                             <div style="font-size: 11px; color: var(--text-muted);">Caución a 14 días
                                             </div>
                                         </td>
-                                        <td style="padding: 16px; font-weight: 600; color: var(--green);">25.00%</td>
-                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
-                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
-                                        <td style="padding: 16px; color: var(--text-muted);">0%</td>
+                                        <td style="font-weight: 600; color: var(--green);">25.00%</td>
+                                        <td style="color: var(--text-muted);">0%</td>
+                                        <td style="color: var(--text-muted);">0%</td>
+                                        <td style="color: var(--text-muted);">0%</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1306,17 +1663,13 @@
                 <!-- STABLECOINS VIEW -->
                 <div id="tasas-cripto"
                     style="display: none; animation: fadeIn 0.4s ease forwards; max-width: 1000px; margin: 0 auto;">
-                    <div class="macro-card"
-                        style="padding: 0; overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
-                        <table
-                            style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; min-width: 700px;">
-                            <thead id="cripto-thead">
-                                <!-- JS Injected Matrix Header -->
-                            </thead>
-                            <tbody id="cripto-tbody">
-                                <!-- JS Injected Matrix Body -->
-                            </tbody>
-                        </table>
+                    <div class="tasas-section-title" style="margin-bottom: 14px;">🪙 Rendimientos en Stablecoins</div>
+                    <div class="tasas-section-sub">Tasas APY ofrecidas por plataformas cripto argentinas. La mejor tasa
+                        de cada moneda se destaca en verde.</div>
+                    <div id="cripto-cards-container" class="cripto-grid">
+                        <div
+                            style="text-align: center; color: var(--text-muted); padding: 40px; font-size: 13px; grid-column: 1 / -1;">
+                            Cargando rendimientos...</div>
                     </div>
                 </div>
             </div>
@@ -1326,28 +1679,7 @@
             <div class="tab-renta-layout">
                 <!-- LEFT: Ticker Table -->
                 <div class="ticker-list">
-                    <div style="padding: 10px 12px; border-bottom: 1px solid var(--border-color);">
-                        <div class="rv-column-guide">
-                            <button style="width: 100%; padding: 10px 12px; background-color: var(--bg-card-hover); border: 1px solid var(--border-color); color: var(--accent); font-weight: 600; cursor: pointer; border-radius: var(--radius-sm); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; text-align: left;">📋 Guía de Columnas</button>
-                            <div class="rv-column-guide-content">
-                                <dl>
-                                    <dt>Ticker</dt><dd>Símbolo del activo en el mercado.</dd>
-                                    <dt>Grade</dt><dd>Calificación ABC: A = EMA10 > EMA20 > SMA50 (tendencia alcista); B = mixta; C = bajista.</dd>
-                                    <dt>Daily</dt><dd>Variación porcentual del día.</dd>
-                                    <dt>Intra</dt><dd>Variación intradía (desde la apertura).</dd>
-                                    <dt>5D</dt><dd>Variación porcentual en los últimos 5 días hábiles.</dd>
-                                    <dt>20D</dt><dd>Variación porcentual en los últimos 20 días hábiles.</dd>
-                                    <dt>ATR%</dt><dd>Rango Verdadero Promedio como porcentaje del precio (volatilidad a 21 días).</dd>
-                                    <dt>ATRx</dt><dd>Distancia a la SMA50 en unidades de ATR.</dd>
-                                    <dt>1M-VARS</dt><dd>Puntaje de Fuerza Relativa ajustado por Volatilidad vs SPY (últimos 21 días, 0–100%).</dd>
-                                    <dt>VARS</dt><dd>Mini-gráfico de la evolución del VARS en el último mes.</dd>
-                                    <dt>LETF</dt><dd>ETFs apalancados relacionados (verde = largo, rojo = corto).</dd>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
                     <div id="groups-container"></div>
-                    <div class="rv-key-hint">↑ ↓ Usa las flechas para navegar · Datos actualizados diariamente via GitHub Actions</div>
                 </div>
                 <!-- CENTER: TradingView Chart -->
                 <div class="chart-container">
@@ -1376,11 +1708,11 @@
                 window._renderBandasChart(window._lastHistoricalFiat);
             }
             if (window.tradingviewWidget) {
-                const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-                // Triggering a TV widget theme update requires recreating it. We'll do it if it exists.
                 if (document.querySelector('.ticker-row.active')) {
                     const sym = document.querySelector('.ticker-row.active').getAttribute('data-symbol');
-                    initChart(sym);
+                    window.initChart(sym);
+                } else if (window._lastChartSymbol) {
+                    window.initChart(window._lastChartSymbol);
                 }
             }
         }
@@ -1475,61 +1807,63 @@
                 'dai': '<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;"><g fill="none" fill-rule="evenodd"><circle fill="#F4B731" fill-rule="nonzero" cx="16" cy="16" r="16"/><path d="M9.277 8h6.552c3.985 0 7.006 2.116 8.13 5.194H26v1.861h-1.611c.031.294.047.594.047.898v.046c0 .342-.02.68-.06 1.01H26v1.86h-2.08C22.767 21.905 19.77 24 15.83 24H9.277v-5.131H7v-1.86h2.277v-1.954H7v-1.86h2.277V8zm1.831 10.869v3.462h4.72c2.914 0 5.078-1.387 6.085-3.462H11.108zm11.366-1.86H11.108v-1.954h11.37c.041.307.063.622.063.944v.045c0 .329-.023.65-.067.964zM15.83 9.665c2.926 0 5.097 1.424 6.098 3.528h-10.82V9.666h4.72z" fill="#FFF"/></g></svg>'
             };
 
-            const formatCard = (name, tna, date, limit, conditions, type) => {
+            const formatCard = (name, tna, date, limit, conditions, type, isBest = false) => {
                 let init = name.charAt(0).toUpperCase();
                 let exactIcon = iconMapExt[name.toLowerCase()] || iconMapExt[name.split(' ')[0].toLowerCase()];
-                let limitStr = limit ? `<span class="badge-red" style="font-size: 11px;">${limit}</span>` : `<span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--border-color); color: var(--text-muted); background: var(--bg-card-hover);">Sin Límites</span>`;
+                let renderIcon = exactIcon
+                    ? exactIcon.replace('width: 28px;', 'width: 36px;').replace('height: 28px;', 'height: 36px;')
+                    : `<span>${init}</span>`;
 
-                let renderIcon = exactIcon ? exactIcon : `<div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--bg-card-hover), transparent); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--text-muted); font-size: 20px; flex-shrink: 0;">${init}</div>`;
-                if (exactIcon) {
-                    // scale icon up for cards
-                    renderIcon = exactIcon.replace('width: 28px;', 'width: 44px;').replace('height: 28px;', 'height: 44px;');
-                }
-
-                let badgesHtml = `<span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--badge-type-border); color: var(--badge-type-color); background: var(--badge-type-bg);">${type}</span>`;
+                let badges = `<span class="tasas-badge tasas-badge-type">${type}</span>`;
                 if (type === 'Cuenta Remunerada' || type === 'Billetera') {
-                    badgesHtml += ` <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--badge-liquidity-border); color: var(--badge-liquidity-color); background: var(--badge-liquidity-bg);">Liquidez Diaria</span>`;
+                    badges += `<span class="tasas-badge tasas-badge-liquidity">Liquidez Diaria</span>`;
                 }
                 if (type === 'FCI') {
-                    badgesHtml += ` <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--badge-liquidity-border); color: var(--badge-liquidity-color); background: var(--badge-liquidity-bg);">Liquidez Diaria</span>
-                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--badge-variable-border); color: var(--badge-variable-color); background: var(--badge-variable-bg);">Tasa Variable</span>`;
+                    badges += `<span class="tasas-badge tasas-badge-liquidity">Liquidez Diaria</span>`;
+                    badges += `<span class="tasas-badge tasas-badge-variable">Tasa Variable</span>`;
+                }
+                if (limit) {
+                    badges += `<span class="tasas-badge tasas-badge-limit">${limit}</span>`;
                 }
 
-                return `<div style="display: flex; align-items: center; justify-content: space-between; padding: 24px; background-color: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); cursor: default;">
-                    <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
-                        ${renderIcon}
-                        <div>
-                            <div style="font-weight: 500; font-size: 16px; color: var(--text-main); margin-bottom: 6px; letter-spacing: 0.3px;">${name}</div>
-                            ${conditions ? `<div style="font-size: 14px; color: var(--text-muted); line-height: 1.5; max-width: 550px; margin-bottom: 12px; letter-spacing: 0.2px;">${conditions}</div>` : ''}
-                            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                                ${badgesHtml}
-                                ${limitStr}
-                            </div>
-                        </div>
+                let descHtml = conditions ? `<div class="tasas-row-desc">${conditions}</div>` : '';
+
+                return `<div class="tasas-row${isBest ? ' best-rate' : ''}">
+                    <div class="tasas-row-icon">${renderIcon}</div>
+                    <div class="tasas-row-info">
+                        <div class="tasas-row-name">${name}</div>
+                        ${descHtml}
+                        <div class="tasas-row-meta">${badges}</div>
                     </div>
-                    <div style="text-align: right; flex-shrink: 0;">
-                        <div style="font-weight: 600; font-size: 18px; color: var(--rate-color); margin-bottom: 4px; letter-spacing: 0.5px;">${tna}</div>
-                        <div style="font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px;">TNA</div>
-                        ${date ? `<div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">TNA vigente desde el ${date}</div>` : ''}
+                    <div class="tasas-row-rate">
+                        <div class="tasas-rate-value">${tna}</div>
+                        <div class="tasas-rate-label">TNA</div>
                     </div>
                 </div>`;
             };
 
             const formatSimpleList = (items) => {
-                let html = '<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">';
-                items.forEach(i => {
-                    let renderLogo = i.logo ? `<img src="${i.logo}" style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover; background: white;" alt="${i.name} logo" onerror="this.outerHTML='<div style=\\\'width: 20px; height: 20px; border-radius: 50%; background: var(--bg-card-hover); line-height:20px; text-align:center; font-size:10px; color:var(--text-muted);\\\'>${i.name.charAt(0)}</div>'"/>` : `<div style="width: 20px; height: 20px; border-radius: 50%; background: var(--bg-card-hover); line-height:20px; text-align:center; font-size:10px; color:var(--text-muted);">${i.name.charAt(0)}</div>`;
+                let html = '';
+                items.forEach((i, idx) => {
+                    let renderLogo = i.logo
+                        ? `<img src="${i.logo}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: white;" alt="${i.name}" onerror="this.outerHTML='<span>${i.name.charAt(0)}</span>'"/>`
+                        : `<span>${i.name.charAt(0)}</span>`;
 
-                    html += `<li style="display: flex; justify-content: space-between; font-size: 13px; padding: 8px 0; border-bottom: 1px solid var(--border-color); align-items: center;">
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    ${renderLogo}
-                                    <span style="color: var(--text-main); font-weight: 500;">${i.name}</span>
-                                    <span style="font-size: 10px; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--badge-lock-border); color: var(--badge-lock-color); background: var(--badge-lock-bg);">Bloqueo 30 días</span>
-                                </div>
-                                <span style="font-weight: 600; color: var(--green);">${(i.rate * 100).toFixed(2)}% TNA</span>
-                             </li>`;
+                    html += `<div class="tasas-row${idx === 0 ? ' best-rate' : ''}">
+                        <div class="tasas-row-icon">${renderLogo}</div>
+                        <div class="tasas-row-info">
+                            <div class="tasas-row-name">${i.name}</div>
+                            <div class="tasas-row-meta">
+                                <span class="tasas-badge tasas-badge-lock">Bloqueo 30 días</span>
+                            </div>
+                        </div>
+                        <div class="tasas-row-rate">
+                            <div class="tasas-rate-value">${(i.rate * 100).toFixed(2)}%</div>
+                            <div class="tasas-rate-label">TNA</div>
+                        </div>
+                    </div>`;
                 });
-                return html + '</ul>';
+                return html;
             };
 
             try {
@@ -1552,7 +1886,7 @@
                     for (let p of filteredPf) {
                         let entUpperCase = p.entidad.toUpperCase();
                         let cleanName = p.entidad.replace("BANCO ", "").replace(" DE LA ", " ").substring(0, 25);
-                        
+
                         if (entUpperCase.includes('NACION')) cleanName = 'Banco Nación';
                         else if (entUpperCase.includes('PROVINCIA')) cleanName = 'Banco Provincia';
                         else if (entUpperCase.includes('CIUDAD')) cleanName = 'Banco Ciudad';
@@ -1585,10 +1919,9 @@
                     filtered.sort((a, b) => (b.tna || 0) - (a.tna || 0));
 
                     let remuHtml = '';
-                    filtered.forEach(acc => {
+                    filtered.forEach((acc, idx) => {
                         let rawName = acc.fondo;
                         let name = rawName.replace('BANCO', '').trim();
-                        // Fixes for proper casing
                         if (name === 'UALA') name = 'Ualá';
                         if (name === 'UALA PLUS 1') name = 'Ualá Plus 1';
                         if (name === 'UALA PLUS 2') name = 'Ualá Plus 2';
@@ -1605,9 +1938,9 @@
                         else if (acc.condiciones && acc.condiciones.includes('4.161.600')) limitTxt = 'Límite: $4.1 M';
 
                         let type = (rawName.includes('FIWIND') || rawName.includes('BELO')) ? 'Billetera' : 'Cuenta Remunerada';
-                        let conditions = acc.condicionesCorto || null; // Explanations
+                        let conditions = acc.condicionesCorto || null;
 
-                        remuHtml += formatCard(name, tna, dateText, limitTxt, conditions, type);
+                        remuHtml += formatCard(name, tna, dateText, limitTxt, conditions, type, idx === 0);
                     });
                     document.getElementById('ars-accounts-container').innerHTML = remuHtml;
 
@@ -1623,17 +1956,17 @@
                     ];
 
                     let fciItems = [];
-                    
+
                     allowedFci.forEach(f => {
-                        let ultNode = fciUltimo.find(item => item.fondo && item.fondo.toUpperCase() === f.desc.toUpperCase()); 
-                        let penNode = fciPenultimo.find(item => item.fondo && item.fondo.toUpperCase() === f.desc.toUpperCase()); 
-                        
+                        let ultNode = fciUltimo.find(item => item.fondo && item.fondo.toUpperCase() === f.desc.toUpperCase());
+                        let penNode = fciPenultimo.find(item => item.fondo && item.fondo.toUpperCase() === f.desc.toUpperCase());
+
                         if (ultNode && penNode && ultNode.vcp && penNode.vcp) {
                             let yieldPeriod = (ultNode.vcp / penNode.vcp) - 1;
-                            
+
                             let tUlt = new Date(ultNode.fecha);
                             let tPen = new Date(penNode.fecha);
-                            
+
                             let days = (tUlt - tPen) / (1000 * 60 * 60 * 24);
                             if (days > 0) {
                                 let dailyYield = yieldPeriod / days;
@@ -1641,7 +1974,7 @@
 
                                 let formatDate = (dStr) => {
                                     if (!dStr) return '';
-                                    let p = dStr.split('-'); 
+                                    let p = dStr.split('-');
                                     return p[2] + '/' + p[1] + '/' + p[0];
                                 }
                                 let dateStr = `Entre ${formatDate(penNode.fecha)} y ${formatDate(ultNode.fecha)}`;
@@ -1657,10 +1990,10 @@
                     });
 
                     fciItems.sort((a, b) => b.rate - a.rate);
-                    let fciHtml = '';
+                    let fciHtml = ''; let fciIdx = 0;
                     fciItems.forEach(f => {
                         let type = f.name === 'Prex' || f.name === 'Personal Pay' || f.name === 'Ualá' || f.name === 'Claro Pay' || f.name === 'Mercado Pago' || f.name === 'Lemon' || f.name === 'Fiwind' ? 'Billetera' : 'FCI';
-                        
+
                         let combinedDesc = f.descText + '<br><span style="font-size: 11px; color: var(--text-main); margin-top: 4px; display: block;">' + f.dateStr + '</span>';
 
                         fciHtml += formatCard(
@@ -1669,70 +2002,83 @@
                             '',
                             null,
                             combinedDesc,
-                            type
+                            type,
+                            fciIdx === 0
                         );
+                        fciIdx++;
                     });
-                    
+
                     if (fciHtml === '') fciHtml = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No hay rendimientos disponibles.</div>';
                     document.getElementById('ars-fci-container').innerHTML = fciHtml;
 
-                    // Crypto Matrix
+                    // Crypto Card Grid
                     let entities = ['Binance Earn', 'Fiwind', 'LB', 'Belo', 'LemonCash', 'Vesseo'];
-                    // the internal names mapped to API:
+                    let entityDisplayName = { 'Binance Earn': 'Binance', 'LemonCash': 'Lemon' };
                     let entityKeyMap = { 'Binance Earn': 'binance', 'Fiwind': 'fiwind', 'LB': 'letsbit', 'Belo': 'belo', 'LemonCash': 'lemoncash', 'Vesseo': 'vesseo' };
-
                     let coins = ['USDT', 'USDC', 'DAI'];
-                    let coinMap = { 'USDT': 'USDT', 'USDC': 'USDC', 'DAI': 'DAI' };
 
-                    let htmlHead = `<tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 11px; text-transform: uppercase;">
-                        <th style="padding: 16px; font-weight: 500;">Criptomoneda</th>`;
+                    // Build a rates map: rateMap[entity][coin] = numericRate
+                    let rateMap = {};
                     entities.forEach(ent => {
-                        let mappedIcon = iconMapExt[ent.toLowerCase()] || iconMapExt[ent.split(' ')[0].toLowerCase()];
-                        let renderLogo = mappedIcon ? mappedIcon : `<div style="width:28px; height:28px; line-height:28px; text-align:center; border-radius:50%; background:var(--bg-card-hover); color:var(--text-main); font-size:11px;">${ent.charAt(0)}</div>`;
-                        htmlHead += `<th style="padding: 16px; font-weight: 500; text-align: center;">
-                            <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-                                ${renderLogo}
-                                ${ent === 'Binance Earn' ? 'Binance' : (ent === 'LemonCash' ? 'Lemon' : ent)}
-                            </div>
-                        </th>`;
-                    });
-                    htmlHead += '</tr>';
-                    document.getElementById('cripto-thead').innerHTML = htmlHead;
-
-                    let htmlBody = '';
-                    coins.forEach(coinDisplay => {
-                        let coinCode = coinMap[coinDisplay] || coinDisplay;
-                        let exactIcon = iconMapExt[coinCode.toLowerCase()];
-                        let cInitial = coinDisplay.charAt(0);
-                        let renderIcon = exactIcon ? exactIcon : `<div style="width: 24px; height: 24px; border-radius: 50%; background: var(--bg-card-hover); line-height:24px; text-align:center; font-size:11px; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">${cInitial}</div>`;
-
-                        htmlBody += `<tr style="border-bottom: 1px solid var(--matrix-row-border);">
-                            <td style="padding: 16px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 12px; white-space: nowrap;">
-                                ${renderIcon}
-                                ${coinDisplay}
-                            </td>`;
-
-                        entities.forEach(ent => {
-                            let apiKey = entityKeyMap[ent];
-                            let providerData = rendData.find(d => d.entidad.toLowerCase() === apiKey.toLowerCase());
-
-                            // Mock APY for binance earn if the ArgentinaDatos api doesnt actually have it (since criptoya has Binance but argentinadatos often doesnt).
-                            let displayVal = '<span style="color:var(--text-muted);">-</span>';
+                        let apiKey = entityKeyMap[ent];
+                        rateMap[ent] = {};
+                        coins.forEach(coin => {
+                            let val = null;
                             if (apiKey === 'binance') {
-                                if (coinCode === 'USDT') displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: var(--matrix-rate-bg); border: 1px solid var(--matrix-rate-border); color: var(--matrix-rate-color); font-weight: 600;">8.30%</div>`;
-                                if (coinCode === 'BTC') displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: var(--matrix-rate-bg); border: 1px solid var(--matrix-rate-border); color: var(--matrix-rate-color); font-weight: 600;">0.28%</div>`;
-                            } else if (providerData) {
-                                let rate = providerData.rendimientos.find(r => r.moneda.toUpperCase() === coinCode.toUpperCase());
-                                if (rate && rate.apy > 0) {
-                                    let valStr = rate.apy.toFixed(2) + '%';
-                                    displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: var(--matrix-rate-bg); border: 1px solid var(--matrix-rate-border); color: var(--matrix-rate-color); font-weight: 600;">${valStr}</div>`;
+                                if (coin === 'USDT') val = 8.30;
+                            } else {
+                                let providerData = rendData.find(d => d.entidad.toLowerCase() === apiKey.toLowerCase());
+                                if (providerData) {
+                                    let rate = providerData.rendimientos.find(r => r.moneda.toUpperCase() === coin);
+                                    if (rate && rate.apy > 0) val = rate.apy;
                                 }
                             }
-                            htmlBody += `<td style="padding: 16px; text-align: center;">${displayVal}</td>`;
+                            rateMap[ent][coin] = val;
                         });
-                        htmlBody += '</tr>';
                     });
-                    document.getElementById('cripto-tbody').innerHTML = htmlBody;
+
+                    // Find best rate per coin
+                    let bestPerCoin = {};
+                    coins.forEach(coin => {
+                        let best = -1;
+                        entities.forEach(ent => {
+                            if (rateMap[ent][coin] !== null && rateMap[ent][coin] > best) best = rateMap[ent][coin];
+                        });
+                        bestPerCoin[coin] = best > 0 ? best : null;
+                    });
+
+                    // Build cards HTML
+                    let cardsHtml = '';
+                    entities.forEach(ent => {
+                        let displayName = entityDisplayName[ent] || ent;
+                        let entIcon = iconMapExt[ent.toLowerCase()] || iconMapExt[ent.split(' ')[0].toLowerCase()];
+                        let iconHtml = entIcon
+                            ? `<div class="cripto-card-header-icon">${entIcon}</div>`
+                            : `<div class="cripto-card-header-icon" style="width:32px;height:32px;border-radius:50%;background:var(--bg-card-hover);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--text-muted);">${displayName.charAt(0)}</div>`;
+
+                        let rowsHtml = '';
+                        coins.forEach(coin => {
+                            let coinIcon = iconMapExt[coin.toLowerCase()] || '';
+                            let rate = rateMap[ent][coin];
+                            let isBest = rate !== null && bestPerCoin[coin] !== null && rate === bestPerCoin[coin];
+                            let rateHtml = rate !== null
+                                ? `<span class="cripto-rate-pill${isBest ? ' best-crypto-rate' : ''}">${rate.toFixed(2)}%</span>`
+                                : `<span class="cripto-rate-na">—</span>`;
+                            rowsHtml += `<div class="cripto-card-row">
+                                <div class="cripto-card-coin">${coinIcon} ${coin}</div>
+                                ${rateHtml}
+                            </div>`;
+                        });
+
+                        cardsHtml += `<div class="cripto-card">
+                            <div class="cripto-card-header">
+                                ${iconHtml}
+                                <div class="cripto-card-name">${displayName}</div>
+                            </div>
+                            ${rowsHtml}
+                        </div>`;
+                    });
+                    document.getElementById('cripto-cards-container').innerHTML = cardsHtml;
 
                 }).catch(e => console.error("Error in fetching rates concurrently:", e));
 
@@ -1779,7 +2125,7 @@
                     var rows = snapshot.groups[groupName];
                     if (!rows || rows.length === 0) continue;
                     var safeId = safeGroupId(groupName);
-                    var ranges = (snapshot.column_ranges && snapshot.column_ranges[groupName]) || { daily: [-10,10], intra: [-10,10], '5d': [-20,20], '20d': [-30,30] };
+                    var ranges = (snapshot.column_ranges && snapshot.column_ranges[groupName]) || { daily: [-10, 10], intra: [-10, 10], '5d': [-20, 20], '20d': [-30, 30] };
 
                     html += '<div class="group-container" id="group-' + safeId + '">';
                     html += '<div class="group-header" onclick="scrollToGroup(\'' + groupName.replace(/'/g, "\\'") + '\')">';
@@ -1793,18 +2139,21 @@
                     html += '</div>';
 
                     html += '<table class="ticker-table" data-group="' + groupName.replace(/"/g, '&quot;') + '"><thead><tr>';
-                    var th = function(key, label, title) { return '<th class="sortable" data-sort-by="' + key + '" title="' + (title || label) + '">' + label + '</th>'; };
+                    var th = function (key, label, title) {
+                        return '<th class="sortable" data-sort-by="' + key + '" title="' + (title || label) + '">' + label + '</th>';
+                    };
+                    var thPop = function (key, label, popoverHtml) {
+                        return '<th class="sortable" data-sort-by="' + key + '"><span class="rv-th-wrap">' + label + '<div class="rv-th-popover">' + popoverHtml + '</div></span></th>';
+                    };
                     html += th('symbol', 'Ticker', 'Símbolo del activo');
                     html += th('abc', 'Grade', 'Calificación: A=Alcista, B=Mixta, C=Bajista');
                     html += th('daily', 'Daily', 'Variación porcentual del día');
                     html += th('intra', 'Intra', 'Variación intradía');
                     html += th('5d', '5D', 'Variación últimos 5 días hábiles');
                     html += th('20d', '20D', 'Variación últimos 20 días hábiles');
-                    html += th('atr_pct', 'ATR%', 'Rango Verdadero Promedio (volatilidad 21d)');
-                    html += th('dist_sma50_atr', 'ATRx', 'Distancia a SMA50 en unidades ATR');
-                    html += th('rs', '1M-VARS', 'Fuerza Relativa ajustada por Volatilidad vs SPY (0-100%)');
-                    html += '<th title="Mini-gráfico VARS último mes">VARS</th>';
-                    html += th('letf', 'LETF', 'ETFs apalancados (verde=largo, rojo=corto)');
+                    html += thPop('atr_pct', 'ATR%', '<strong>Rango Verdadero Promedio</strong> (21d) como % del precio. Mide la volatilidad.<br><br>• <strong>&lt; 2%</strong> → Baja volatilidad<br>• <strong>2–4%</strong> → Normal<br>• <strong>&gt; 5%</strong> → Alta volatilidad y mayor riesgo');
+                    html += thPop('dist_sma50_atr', 'ATRx', '<strong>Distancia a SMA50</strong> medida en unidades de ATR. Mide cuán lejos está el precio de su media.<br><br>• <strong>&gt; +3</strong> → Sobrecompra extrema<br>• <strong>-1 a +1</strong> → Cerca de la media<br>• <strong>&lt; -3</strong> → Sobreventa extrema');
+                    html += thPop('rs', '1M‑VARS', '<strong>Fuerza Relativa vs SPY</strong> ajustada por volatilidad (0–100%).<br><br>• <strong>&gt; 70%</strong> → Líder del mercado<br>• <strong>30–70%</strong> → Rango normal<br>• <strong>&lt; 30%</strong> → Debilidad extrema');
                     html += '</tr></thead><tbody id="' + safeId + '-body">';
 
                     for (var i = 0; i < rows.length; i++) {
@@ -1818,11 +2167,10 @@
                         var rs = r.rs != null ? r.rs : 0;
                         var atrPct = r.atr_pct != null ? r.atr_pct : 0;
                         var dist = r.dist_sma50_atr != null ? r.dist_sma50_atr : 0;
-                        var letf = (r.long && r.long.length) || (r.short && r.short.length) ? '1' : '0';
                         var labelClass = getGroupLabelClass(groupName, r.ticker);
                         var extraCls = labelClass ? labelClass : 'rv-ticker-label';
 
-                        html += '<tr class="ticker-row" onclick="updateChart(\'' + r.ticker + '\', this)" data-symbol="' + r.ticker + '" data-group="' + groupName.replace(/"/g, '&quot;') + '" data-daily="' + (daily || 0) + '" data-intra="' + (intra || 0) + '" data-5d="' + (five || 0) + '" data-20d="' + (twenty || 0) + '" data-atr_pct="' + atrPct + '" data-dist_sma50_atr="' + dist + '" data-rs="' + rs + '" data-abc="' + abc + '" data-letf="' + letf + '" data-index="' + i + '">';
+                        html += '<tr class="ticker-row" onclick="updateChart(\'' + r.ticker + '\', this)" data-symbol="' + r.ticker + '" data-group="' + groupName.replace(/"/g, '&quot;') + '" data-daily="' + (daily || 0) + '" data-intra="' + (intra || 0) + '" data-5d="' + (five || 0) + '" data-20d="' + (twenty || 0) + '" data-atr_pct="' + atrPct + '" data-dist_sma50_atr="' + dist + '" data-rs="' + rs + '" data-abc="' + abc + '" data-index="' + i + '">';
 
                         // Ticker
                         html += '<td><span class="' + extraCls + '">' + r.ticker + '</span></td>';
@@ -1830,7 +2178,7 @@
                         html += '<td>' + (abc ? '<span class="abc-rating abc-' + abc.toLowerCase() + '">' + abc + '</span>' : '-') + '</td>';
 
                         // Value-bar columns: Daily, Intra, 5D, 20D
-                        var makeBar = function(val, w) {
+                        var makeBar = function (val, w) {
                             if (val == null) return '<td>-</td>';
                             var cls = val >= 0 ? 'positive' : 'negative';
                             var sign = val >= 0 ? '+' : '';
@@ -1846,15 +2194,7 @@
                         html += '<td>' + (r.dist_sma50_atr != null ? r.dist_sma50_atr.toFixed(2) : '-') + '</td>';
                         html += '<td>' + (r.rs != null ? Math.round(r.rs) + '%' : '-') + '</td>';
 
-                        // VARS chart
-                        html += '<td>' + (r.rs_chart ? '<img src="' + r.rs_chart + '" class="rs-chart" alt="RS">' : '-') + '</td>';
-
-                        // LETF
-                        html += '<td class="rv-etf-list">';
-                        if (r.long && r.long.length) html += r.long.map(function(etf){ return '<span class="rv-long-etf" onclick="event.stopPropagation();updateChart(\'' + etf + '\')">' + etf + '</span>'; }).join(', ');
-                        if (r.short && r.short.length) { if (r.long && r.long.length) html += ' '; html += r.short.map(function(etf){ return '<span class="rv-short-etf" onclick="event.stopPropagation();updateChart(\'' + etf + '\')">' + etf + '</span>'; }).join(', '); }
-                        if (!(r.long && r.long.length) && !(r.short && r.short.length)) html += '-';
-                        html += '</td></tr>';
+                        html += '</tr>';
                     }
                     html += '</tbody></table></div>';
                 }
@@ -1875,7 +2215,7 @@
 
             function initRentaApp() {
                 allTickerRows = [].slice.call(document.querySelectorAll('#tab-renta .ticker-row'));
-                document.querySelectorAll('#tab-renta .ticker-table').forEach(function(table) {
+                document.querySelectorAll('#tab-renta .ticker-table').forEach(function (table) {
                     var g = table.getAttribute('data-group');
                     currentSortStates[g] = { sortBy: null, direction: 1, count: 0 };
                 });
@@ -1884,7 +2224,7 @@
                 var listEl = document.querySelector('#tab-renta .ticker-list');
                 if (listEl && !listEl._sortDelegate) {
                     listEl._sortDelegate = true;
-                    listEl.addEventListener('click', function(ev) {
+                    listEl.addEventListener('click', function (ev) {
                         var th = ev.target.closest('th.sortable');
                         if (!th) return;
                         var table = th.closest('table.ticker-table');
@@ -1900,7 +2240,7 @@
                 if (allTickerRows.length > 0) allTickerRows[0].classList.add('active');
 
                 // Keyboard navigation
-                document.addEventListener('keydown', function(e) {
+                document.addEventListener('keydown', function (e) {
                     // Only when renta tab is visible
                     if (document.getElementById('tab-renta').style.display === 'none') return;
                     if (e.key === 'ArrowDown') { e.preventDefault(); if (currentIndex < allTickerRows.length - 1) { currentIndex++; updateChart(allTickerRows[currentIndex].getAttribute('data-symbol'), allTickerRows[currentIndex]); } }
@@ -1908,12 +2248,12 @@
                 });
             }
 
-            window.scrollToGroup = function(groupName) {
+            window.scrollToGroup = function (groupName) {
                 var el = document.getElementById('group-' + safeGroupId(groupName));
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
             };
 
-            window.sortGroup = function(group, sortBy) {
+            window.sortGroup = function (group, sortBy) {
                 var tables = document.querySelectorAll('#tab-renta .ticker-table');
                 var table = null;
                 for (var t = 0; t < tables.length; t++) { if (tables[t].getAttribute('data-group') === group) { table = tables[t]; break; } }
@@ -1923,14 +2263,14 @@
                 var state = currentSortStates[group] || { sortBy: null, direction: 1, count: 0 };
                 currentSortStates[group] = state;
 
-                table.querySelectorAll('th, td').forEach(function(el) { el.classList.remove('sort-asc', 'sort-desc', 'sorted-column'); });
+                table.querySelectorAll('th, td').forEach(function (el) { el.classList.remove('sort-asc', 'sort-desc', 'sorted-column'); });
 
                 if (state.sortBy === sortBy) {
                     state.count++;
                     if (state.count >= 3) {
                         state.sortBy = null; state.direction = 1; state.count = 0;
-                        rows.sort(function(a, b) { return parseInt(a.getAttribute('data-index')) - parseInt(b.getAttribute('data-index')); });
-                        tbody.innerHTML = ''; rows.forEach(function(r) { tbody.appendChild(r); });
+                        rows.sort(function (a, b) { return parseInt(a.getAttribute('data-index')) - parseInt(b.getAttribute('data-index')); });
+                        tbody.innerHTML = ''; rows.forEach(function (r) { tbody.appendChild(r); });
                         allTickerRows = [].slice.call(document.querySelectorAll('#tab-renta .ticker-row'));
                         return;
                     }
@@ -1938,32 +2278,32 @@
                 state.sortBy = sortBy;
                 if (state.count === 2) state.direction *= -1; else state.direction = 1;
 
-                var colMap = { symbol: 0, abc: 1, daily: 2, intra: 3, '5d': 4, '20d': 5, atr_pct: 6, dist_sma50_atr: 7, rs: 8, letf: 10 };
-                var hi = colMap[sortBy] !== undefined ? colMap[sortBy] : 9;
-                var headerIndices = (sortBy === 'rs') ? [8, 9] : [hi];
-                headerIndices.forEach(function(idx) {
+                var colMap = { symbol: 0, abc: 1, daily: 2, intra: 3, '5d': 4, '20d': 5, atr_pct: 6, dist_sma50_atr: 7, rs: 8 };
+                var hi = colMap[sortBy] !== undefined ? colMap[sortBy] : 8;
+                var headerIndices = [hi];
+                headerIndices.forEach(function (idx) {
                     var h = table.querySelectorAll('th')[idx];
                     if (h) h.classList.add(state.direction === 1 ? 'sort-asc' : 'sort-desc', 'sorted-column');
                 });
-                rows.forEach(function(row) {
+                rows.forEach(function (row) {
                     var cells = row.querySelectorAll('td');
-                    headerIndices.forEach(function(idx) { if (cells[idx]) cells[idx].classList.add('sorted-column'); });
+                    headerIndices.forEach(function (idx) { if (cells[idx]) cells[idx].classList.add('sorted-column'); });
                 });
 
-                rows.sort(function(a, b) {
+                rows.sort(function (a, b) {
                     if (sortBy === 'symbol') return (a.getAttribute('data-symbol').toLowerCase().localeCompare(b.getAttribute('data-symbol').toLowerCase())) * state.direction;
                     if (sortBy === 'abc') return ((a.getAttribute('data-abc') || '').localeCompare(b.getAttribute('data-abc') || '')) * state.direction;
-                    if (sortBy === 'letf') return (parseInt(a.getAttribute('data-letf') || '0') - parseInt(b.getAttribute('data-letf') || '0')) * state.direction;
                     return (parseFloat(a.getAttribute('data-' + sortBy)) - parseFloat(b.getAttribute('data-' + sortBy))) * state.direction;
                 });
-                tbody.innerHTML = ''; rows.forEach(function(r) { tbody.appendChild(r); });
+                tbody.innerHTML = ''; rows.forEach(function (r) { tbody.appendChild(r); });
                 allTickerRows = [].slice.call(document.querySelectorAll('#tab-renta .ticker-row'));
                 var ar = document.querySelector('#tab-renta .ticker-row.active');
                 if (ar) currentIndex = allTickerRows.indexOf(ar);
             };
 
-            function initChart(symbol) {
+            window.initChart = function (symbol) {
                 if (chartWidget) { chartWidget.remove(); chartWidget = null; }
+                window._lastChartSymbol = symbol;
                 const isLight = document.documentElement.getAttribute("data-theme") === "light";
                 chartWidget = new TradingView.widget({
                     allow_symbol_change: true, calendar: false, details: true,
@@ -1980,7 +2320,7 @@
                     withdateranges: true
                 });
                 window.tradingviewWidget = chartWidget;
-            }
+            };
 
 
             window.updateChart = function (symbol, element) {
@@ -1989,7 +2329,7 @@
                     element.classList.add('active');
                     currentIndex = allTickerRows.indexOf(element);
                 } else {
-                    var row = [].slice.call(document.querySelectorAll('#tab-renta .ticker-row')).filter(function(r) { return r.getAttribute('data-symbol') === symbol; })[0];
+                    var row = [].slice.call(document.querySelectorAll('#tab-renta .ticker-row')).filter(function (r) { return r.getAttribute('data-symbol') === symbol; })[0];
                     if (row) { row.classList.add('active'); currentIndex = allTickerRows.indexOf(row); }
                 }
                 initChart(symbol);
