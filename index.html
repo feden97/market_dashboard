@@ -1066,9 +1066,9 @@
     <script>
         // --- THEME LOGIC ---
         function applyChartThemeOverrides() {
-            const root = getComputedStyle(document.documentElement);
-            const gridColor = root.getPropertyValue('--chart-grid-color').trim() || 'rgba(63, 63, 70, 0.4)';
-            const textColor = root.getPropertyValue('--chart-text-color').trim() || 'rgba(161, 161, 170, 1)';
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            const gridColor = isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
+            const textColor = isLight ? '#64748b' : '#aaaaaa';
 
             if (window.spreadChartInstance) {
                 window.spreadChartInstance.options.scales.x.ticks.color = textColor;
@@ -1077,7 +1077,7 @@
                 // Add robust grid color overriding while protecting the zero-line
                 window.spreadChartInstance.options.scales.y.grid = window.spreadChartInstance.options.scales.y.grid || {};
                 window.spreadChartInstance.options.scales.y.grid.color = function (ctx) {
-                    return (ctx.tick && ctx.tick.value === 0) ? (document.documentElement.getAttribute('data-theme') === 'light' ? 'rgba(0,0,0,0.06)' : 'rgba(255, 255, 255, 0.4)') : gridColor;
+                    return (ctx.tick && ctx.tick.value === 0) ? (document.documentElement.getAttribute('data-theme') === 'light' ? 'rgba(0,0,0,0.15)' : 'rgba(255, 255, 255, 0.15)') : gridColor;
                 };
                 window.spreadChartInstance.options.scales.x.grid = window.spreadChartInstance.options.scales.x.grid || {};
                 window.spreadChartInstance.options.scales.x.grid.color = gridColor;
@@ -1633,14 +1633,14 @@
                 if (window.spreadChartInstance) window.spreadChartInstance.destroy();
                 var ctx = document.getElementById('spreadChart').getContext('2d');
 
-                const root = getComputedStyle(document.documentElement);
-                const gridColor = root.getPropertyValue('--chart-grid-color').trim() || 'rgba(63, 63, 70, 0.4)';
-                const textColor = root.getPropertyValue('--chart-text-color').trim() || 'rgba(161, 161, 170, 1)';
+                const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+                const gridColor = isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
+                const textColor = isLight ? '#64748b' : '#aaaaaa';
 
                 window.spreadChartInstance = new Chart(ctx, {
                     type: 'line',
-                    data: { labels: labels, datasets: [{ data: data, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1, segment: { borderColor: function (ctx) { return ctx.p0.parsed.y >= 0 ? 'rgba(16, 185, 129, 1)' : 'rgba(239, 68, 68, 1)'; } } }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } }, scales: { x: { display: true, ticks: { color: textColor, maxTicksLimit: 6 }, grid: { color: gridColor } }, y: { display: true, ticks: { color: textColor }, grid: { color: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? (document.documentElement.getAttribute('data-theme') === 'light' ? 'rgba(0,0,0,0.15)' : 'rgba(255, 255, 255, 0.4)') : gridColor; }, lineWidth: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? 2 : 1; } } } }, interaction: { mode: 'index', intersect: false } }
+                    data: { labels: labels, datasets: [{ data: data, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1, segment: { borderColor: function (ctx) { return (ctx.p0 && ctx.p0.parsed && ctx.p0.parsed.y >= 0) ? 'rgba(16, 185, 129, 1)' : 'rgba(239, 68, 68, 1)'; } } }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } }, scales: { x: { display: true, ticks: { color: textColor, maxTicksLimit: 6 }, grid: { color: gridColor } }, y: { display: true, ticks: { color: textColor }, grid: { color: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? (isLight ? 'rgba(0,0,0,0.15)' : 'rgba(255, 255, 255, 0.15)') : gridColor; }, lineWidth: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? 2 : 1; } } } }, interaction: { mode: 'index', intersect: false } }
                 });
                 updateSpreadSummary(window.spreadChartInstance, baseCurrency);
             }
@@ -1691,9 +1691,9 @@
                 if (window.bandasChartInstance) window.bandasChartInstance.destroy();
                 var ctx = document.getElementById('bandasChart').getContext('2d');
 
-                const root = getComputedStyle(document.documentElement);
-                const gridColor = root.getPropertyValue('--chart-grid-color').trim() || 'rgba(63, 63, 70, 0.4)';
-                const textColor = root.getPropertyValue('--chart-text-color').trim() || 'rgba(161, 161, 170, 1)';
+                const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+                const gridColor = isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
+                const textColor = isLight ? '#64748b' : '#aaaaaa';
 
                 window.bandasChartInstance = new Chart(ctx, {
                     type: 'line',
