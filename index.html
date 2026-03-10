@@ -1093,23 +1093,10 @@
             const gridColor = isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
             const textColor = isLight ? '#64748b' : '#aaaaaa';
 
-            if (window.spreadChartInstance) {
-                window.spreadChartInstance.options.scales.x.ticks.color = textColor;
-                window.spreadChartInstance.options.scales.y.ticks.color = textColor;
-
-                // Add robust grid color overriding while protecting the zero-line
-                window.spreadChartInstance.options.scales.y.grid = window.spreadChartInstance.options.scales.y.grid || {};
-                window.spreadChartInstance.options.scales.y.grid.color = function (ctx) {
-                    const ctxIsLight = document.documentElement.getAttribute('data-theme') === 'light';
-                    return (ctx.tick && ctx.tick.value === 0) ? (ctxIsLight ? 'rgba(0,0,0,0.2)' : 'rgba(255, 255, 255, 0.25)') : (ctxIsLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)');
-                };
-                window.spreadChartInstance.options.scales.y.grid.lineWidth = function (ctx) {
-                    return (ctx.tick && ctx.tick.value === 0) ? 1.5 : 1;
-                };
-                window.spreadChartInstance.options.scales.x.grid = window.spreadChartInstance.options.scales.x.grid || {};
-                window.spreadChartInstance.options.scales.x.grid.color = gridColor;
-
-                window.spreadChartInstance.update('none');
+            // Chart.js v3+ does NOT re-evaluate grid.color callbacks on update().
+            // The only reliable fix is to fully recreate the spread chart.
+            if (window.spreadChartInstance && window._lastHistoricalFiat) {
+                renderSpreadChart(window._lastHistoricalFiat);
             }
             if (window.bandasChartInstance) {
                 window.bandasChartInstance.options.scales.x.ticks.color = textColor;
@@ -1646,6 +1633,7 @@
 
             function renderSpreadChart(historicalData) {
                 if (!historicalData || historicalData.length === 0) return;
+                window._lastHistoricalFiat = historicalData;
                 let dToday = new Date(); let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
                 var baseCurrency = document.getElementById('base-currency-select').value;
                 document.getElementById('chart-title').innerText = `Spread CCL vs ${baseCurrency.toUpperCase()} (YTD)`;
