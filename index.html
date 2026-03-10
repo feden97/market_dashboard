@@ -55,6 +55,28 @@
             --chart-grid-color: #333333;
             /* Darker grids */
             --chart-text-color: #aaaaaa;
+
+            /* Tasas section colors */
+            --rate-color: #818cf8;
+            --badge-type-color: #93c5fd;
+            --badge-type-border: rgba(59,130,246,0.2);
+            --badge-type-bg: rgba(59,130,246,0.05);
+            --badge-liquidity-color: #34d399;
+            --badge-liquidity-border: rgba(16,185,129,0.3);
+            --badge-liquidity-bg: rgba(16,185,129,0.1);
+            --badge-variable-color: #a78bfa;
+            --badge-variable-border: rgba(167,139,250,0.3);
+            --badge-variable-bg: rgba(167,139,250,0.1);
+            --badge-lock-color: #fbbf24;
+            --badge-lock-border: rgba(245,158,11,0.3);
+            --badge-lock-bg: rgba(245,158,11,0.1);
+            --matrix-rate-color: #818cf8;
+            --matrix-rate-bg: rgba(59, 130, 246, 0.1);
+            --matrix-rate-border: rgba(59, 130, 246, 0.2);
+            --matrix-row-border: rgba(255,255,255,0.05);
+            --info-box-bg: rgba(59, 130, 246, 0.05);
+            --info-box-border: rgba(59, 130, 246, 0.2);
+            --info-box-title: #93c5fd;
         }
 
         [data-theme="light"] {
@@ -86,6 +108,28 @@
 
             --chart-grid-color: rgba(0, 0, 0, 0.03);
             --chart-text-color: #64748b;
+
+            /* Tasas section colors */
+            --rate-color: #4f46e5;
+            --badge-type-color: #2563eb;
+            --badge-type-border: rgba(37,99,235,0.25);
+            --badge-type-bg: rgba(37,99,235,0.08);
+            --badge-liquidity-color: #059669;
+            --badge-liquidity-border: rgba(5,150,105,0.3);
+            --badge-liquidity-bg: rgba(5,150,105,0.08);
+            --badge-variable-color: #7c3aed;
+            --badge-variable-border: rgba(124,58,237,0.25);
+            --badge-variable-bg: rgba(124,58,237,0.08);
+            --badge-lock-color: #b45309;
+            --badge-lock-border: rgba(180,83,9,0.3);
+            --badge-lock-bg: rgba(180,83,9,0.1);
+            --matrix-rate-color: #4f46e5;
+            --matrix-rate-bg: rgba(79, 70, 229, 0.08);
+            --matrix-rate-border: rgba(79, 70, 229, 0.2);
+            --matrix-row-border: rgba(0,0,0,0.06);
+            --info-box-bg: rgba(37, 99, 235, 0.06);
+            --info-box-border: rgba(37, 99, 235, 0.15);
+            --info-box-title: #2563eb;
         }
 
         * {
@@ -980,8 +1024,8 @@
                         </div>
                     </div>
                     
-                    <div style="margin-bottom: 48px; background-color: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: var(--radius-lg); padding: 20px;">
-                        <h4 style="color: #93c5fd; font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    <div style="margin-bottom: 48px; background-color: var(--info-box-bg); border: 1px solid var(--info-box-border); border-radius: var(--radius-lg); padding: 20px;">
+                        <h4 style="color: var(--info-box-title); font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
                             ¿Cómo leer estas tasas?
                         </h4>
@@ -1212,13 +1256,13 @@
                     renderIcon = exactIcon.replace('width: 28px;', 'width: 44px;').replace('height: 28px;', 'height: 44px;');
                 }
 
-                let badgesHtml = `<span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(59,130,246,0.2); color: #93c5fd; background: rgba(59,130,246,0.05);">${type}</span>`;
+                let badgesHtml = `<span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--badge-type-border); color: var(--badge-type-color); background: var(--badge-type-bg);">${type}</span>`;
                 if (type === 'Cuenta Remunerada' || type === 'Billetera') {
-                    badgesHtml += ` <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(16,185,129,0.3); color: #34d399; background: rgba(16,185,129,0.1);">Liquidez Diaria</span>`;
+                    badgesHtml += ` <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--badge-liquidity-border); color: var(--badge-liquidity-color); background: var(--badge-liquidity-bg);">Liquidez Diaria</span>`;
                 }
                 if (type === 'FCI') {
-                    badgesHtml += ` <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(16,185,129,0.3); color: #34d399; background: rgba(16,185,129,0.1);">Liquidez Diaria</span>
-                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(167,139,250,0.3); color: #a78bfa; background: rgba(167,139,250,0.1);">Tasa Variable</span>`;
+                    badgesHtml += ` <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--badge-liquidity-border); color: var(--badge-liquidity-color); background: var(--badge-liquidity-bg);">Liquidez Diaria</span>
+                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--badge-variable-border); color: var(--badge-variable-color); background: var(--badge-variable-bg);">Tasa Variable</span>`;
                 }
 
                 return `<div style="display: flex; align-items: center; justify-content: space-between; padding: 24px; background-color: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); cursor: default;">
@@ -1234,7 +1278,7 @@
                         </div>
                     </div>
                     <div style="text-align: right; flex-shrink: 0;">
-                        <div style="font-weight: 600; font-size: 18px; color: #818cf8; margin-bottom: 4px; letter-spacing: 0.5px;">${tna}</div>
+                        <div style="font-weight: 600; font-size: 18px; color: var(--rate-color); margin-bottom: 4px; letter-spacing: 0.5px;">${tna}</div>
                         <div style="font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px;">TNA</div>
                         ${date ? `<div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">TNA vigente desde el ${date}</div>` : ''}
                     </div>
@@ -1250,7 +1294,7 @@
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     ${renderLogo}
                                     <span style="color: var(--text-main); font-weight: 500;">${i.name}</span>
-                                    <span style="font-size: 10px; padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(245,158,11,0.3); color: #fbbf24; background: rgba(245,158,11,0.1);">Bloqueo 30 días</span>
+                                    <span style="font-size: 10px; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--badge-lock-border); color: var(--badge-lock-color); background: var(--badge-lock-bg);">Bloqueo 30 días</span>
                                 </div>
                                 <span style="font-weight: 600; color: var(--green);">${(i.rate * 100).toFixed(2)}% TNA</span>
                              </li>`;
@@ -1432,7 +1476,7 @@
                         let cInitial = coinDisplay.charAt(0);
                         let renderIcon = exactIcon ? exactIcon : `<div style="width: 24px; height: 24px; border-radius: 50%; background: var(--bg-card-hover); line-height:24px; text-align:center; font-size:11px; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">${cInitial}</div>`;
 
-                        htmlBody += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        htmlBody += `<tr style="border-bottom: 1px solid var(--matrix-row-border);">
                             <td style="padding: 16px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 12px; white-space: nowrap;">
                                 ${renderIcon}
                                 ${coinDisplay}
@@ -1445,13 +1489,13 @@
                             // Mock APY for binance earn if the ArgentinaDatos api doesnt actually have it (since criptoya has Binance but argentinadatos often doesnt).
                             let displayVal = '<span style="color:var(--text-muted);">-</span>';
                             if (apiKey === 'binance') {
-                                if (coinCode === 'USDT') displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #818cf8; font-weight: 600;">8.30%</div>`;
-                                if (coinCode === 'BTC') displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #818cf8; font-weight: 600;">0.28%</div>`;
+                                if (coinCode === 'USDT') displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: var(--matrix-rate-bg); border: 1px solid var(--matrix-rate-border); color: var(--matrix-rate-color); font-weight: 600;">8.30%</div>`;
+                                if (coinCode === 'BTC') displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: var(--matrix-rate-bg); border: 1px solid var(--matrix-rate-border); color: var(--matrix-rate-color); font-weight: 600;">0.28%</div>`;
                             } else if (providerData) {
                                 let rate = providerData.rendimientos.find(r => r.moneda.toUpperCase() === coinCode.toUpperCase());
                                 if (rate && rate.apy > 0) {
                                     let valStr = rate.apy.toFixed(2) + '%';
-                                    displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #818cf8; font-weight: 600;">${valStr}</div>`;
+                                    displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: var(--matrix-rate-bg); border: 1px solid var(--matrix-rate-border); color: var(--matrix-rate-color); font-weight: 600;">${valStr}</div>`;
                                 }
                             }
                             htmlBody += `<td style="padding: 16px; text-align: center;">${displayVal}</td>`;
@@ -1840,6 +1884,12 @@
                     document.getElementById('cheapest-dollar-name').innerText = minFiatName.toUpperCase();
                     document.getElementById('cheapest-dollar-val').innerText = `$${minFiatVal.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
 
+                    // --- Cache data for instant brecha recalculation ---
+                    window._cachedFiatData = fiatData;
+                    window._cachedMaxVenta = maxVenta;
+                    window._cachedUsdtVar = usdt_var;
+                    window._cachedExList = exList;
+
                     var baseCurrency = document.getElementById('base-currency-select').value;
                     var basePrice = baseCurrency === 'usdt' ? maxVenta : fiatData[baseCurrency].price;
 
@@ -1933,7 +1983,34 @@
                     if (snapshot && snapshot.historical_fiat) { renderSpreadChart(snapshot.historical_fiat); renderBandasChart(snapshot.historical_fiat); }
                     fetchLiveCryptoAndFiat(); setInterval(fetchLiveCryptoAndFiat, 60000);
                 });
-                document.getElementById('base-currency-select').addEventListener('change', () => { fetchLiveCryptoAndFiat(); if (snapshot && snapshot.historical_fiat) renderSpreadChart(snapshot.historical_fiat); });
+                document.getElementById('base-currency-select').addEventListener('change', () => {
+                    // Recalculate brechas instantly from cached data (no API call needed)
+                    if (window._cachedFiatData && window._cachedMaxVenta) {
+                        var baseCurrency = document.getElementById('base-currency-select').value;
+                        var basePrice = baseCurrency === 'usdt' ? window._cachedMaxVenta : window._cachedFiatData[baseCurrency].price;
+                        var fiatData = window._cachedFiatData;
+                        var maxVenta = window._cachedMaxVenta;
+                        var usdt_var = window._cachedUsdtVar || 0;
+
+                        const formatVar = (v) => {
+                            if (v === undefined || v === null) return "-";
+                            return `<span class="badge-${v >= 0 ? 'green' : 'red'}">${v > 0 ? '+' : ''}${v.toFixed(2)}%</span>`;
+                        };
+                        const calcBrecha = (val) => {
+                            if (!basePrice || !val) return "-";
+                            const pct = ((val / basePrice) - 1) * 100;
+                            return `<span class="badge-${pct >= 0 ? 'green' : 'red'}">${pct > 0 ? '+' : ''}${pct.toFixed(2)}%</span>`;
+                        };
+
+                        let fiatRows = '';
+                        ['ccl', 'mep', 'oficial', 'blue'].forEach(f => {
+                            fiatRows += `<tr><td style="color:var(--text-muted); text-transform: uppercase;">${f}</td><td style="font-weight:bold;">$${fiatData[f].price.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(fiatData[f].var)}</td><td>${f === baseCurrency ? '-' : calcBrecha(fiatData[f].price)}</td></tr>`;
+                        });
+                        fiatRows += `<tr><td style="color:var(--text-muted); display:flex; align-items:center;">USDT <div class="tooltip-container"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Es el dólar cripto que cotiza las 24 horas TODOS los días. Es el precio para comprar USDT en Binance p2p más aproximado posible sin la opción "comerciantes verificados"</div></div></td><td style="font-weight:bold;">$${maxVenta.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(usdt_var)}</td><td>${baseCurrency === 'usdt' ? '-' : calcBrecha(maxVenta)}</td></tr>`;
+                        document.getElementById('fiat-table-body').innerHTML = fiatRows;
+                    }
+                    if (snapshot && snapshot.historical_fiat) renderSpreadChart(snapshot.historical_fiat);
+                });
             }
             loadData();
         })();
