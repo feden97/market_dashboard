@@ -601,6 +601,218 @@
             font-weight: 600;
         }
 
+        /* ========================================
+           RENTA VARIABLE TAB — Full Redesign
+           ======================================== */
+
+        /* 3-Column Layout */
+        .tab-renta-layout {
+            display: flex !important;
+            height: calc(100vh - 60px);
+            gap: 0;
+        }
+        .tab-renta-layout .ticker-list {
+            width: 28%;
+            min-width: 320px;
+            max-width: none;
+            flex-shrink: 0;
+        }
+        .tab-renta-layout .chart-container {
+            flex: 1;
+            min-width: 0;
+            padding: 12px;
+        }
+        .tab-renta-layout .info-panel {
+            width: 22%;
+            min-width: 240px;
+            max-width: 300px;
+            flex-shrink: 0;
+            overflow-y: auto;
+            border-left: 1px solid var(--border-color);
+            background-color: var(--bg-body);
+            padding: 16px;
+        }
+
+        /* Info Panel Cards */
+        .info-panel-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+        .info-panel-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .info-card-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .info-card-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .info-card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+        }
+        .info-card-row:last-child { border-bottom: none; }
+        .info-card-row .label { color: var(--text-muted); font-weight: 500; }
+        .info-card-row .val { color: var(--text-main); font-weight: 600; }
+        .info-letf-long { color: #4ade80; cursor: pointer; text-decoration: underline; font-weight: 600; }
+        .info-letf-short { color: #f87171; cursor: pointer; text-decoration: underline; font-weight: 600; }
+
+        /* Value Bars (horizontal bars behind Daily/Intra/5D/20D) */
+        .value-visualization {
+            position: relative;
+            display: inline-block;
+            padding: 2px 4px;
+            border-radius: 4px;
+            min-width: 50px;
+            max-width: 100%;
+            text-align: right;
+        }
+        .value-bar {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            border-radius: 4px;
+            opacity: 0.18;
+            z-index: 0;
+            max-width: 100%;
+        }
+        .value-bar.positive { background-color: var(--green); left: 0; }
+        .value-bar.negative { background-color: var(--red); right: 0; left: auto; }
+        .value-text { position: relative; z-index: 1; font-weight: 600; font-size: 12px; }
+
+        /* Grade Badges */
+        .abc-rating {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 11px;
+            color: white;
+        }
+        .abc-a { background-color: #22c55e; }
+        .abc-b { background-color: #84cc16; }
+        .abc-c { background-color: #eab308; color: #1a1a1a; }
+        .abc-d { background-color: #f97316; }
+        .abc-f { background-color: #ef4444; }
+
+        /* Ticker Label */
+        .rv-ticker-label {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background-color: var(--bg-card-hover);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 0.3px;
+        }
+
+        /* Sort indicators */
+        .ticker-table th.sortable { cursor: pointer; }
+        .ticker-table th.sortable:hover { color: var(--accent); }
+        .ticker-table th.sort-asc::after { content: " ↑"; color: var(--accent); }
+        .ticker-table th.sort-desc::after { content: " ↓"; color: var(--accent); }
+        .ticker-table td.sorted-column { background-color: rgba(59, 130, 246, 0.04); }
+
+        /* Legend items for Industries */
+        .rv-legend { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .rv-legend-item {
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 10px;
+            color: white;
+            font-weight: 500;
+            user-select: none;
+        }
+
+        /* LETF links */
+        .rv-long-etf { color: #4ade80; cursor: pointer; text-decoration: underline; font-size: 11px; }
+        .rv-short-etf { color: #f87171; cursor: pointer; text-decoration: underline; font-size: 11px; }
+        .rv-etf-list { white-space: nowrap; font-size: 11px; }
+        .rv-etf-list span:hover { font-weight: bold; }
+
+        /* RS Chart mini images */
+        .rs-chart {
+            width: 100%;
+            max-width: 80px;
+            height: 26px;
+            display: block;
+            object-fit: contain;
+        }
+
+        /* Column Guide Dropdown */
+        .rv-column-guide { position: relative; }
+        .rv-column-guide-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-card-solid);
+            z-index: 999;
+            border-radius: var(--radius-md);
+            max-height: 420px;
+            overflow-y: auto;
+            padding: 12px 14px;
+            border: 1px solid var(--border-color);
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--text-main);
+            line-height: 1.6;
+            box-shadow: var(--shadow-hover);
+        }
+        .rv-column-guide:hover .rv-column-guide-content { display: block; }
+        .rv-column-guide dt { font-weight: 700; color: var(--accent); margin-top: 10px; }
+        .rv-column-guide dt:first-child { margin-top: 0; }
+        .rv-column-guide dd { margin: 2px 0 0 14px; color: var(--text-muted); }
+
+        /* Key Hint */
+        .rv-key-hint {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 12px;
+            padding: 8px 12px;
+            background-color: var(--bg-card);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            position: sticky;
+            bottom: 0;
+        }
+
+        /* Renta Variable Ticker Table column widths */
+        #tab-renta .ticker-table { table-layout: auto; font-size: 12px; }
+        #tab-renta .ticker-table th { padding: 8px 6px; font-size: 10px; top: 35px; }
+        #tab-renta .ticker-table td { padding: 7px 6px; font-size: 12px; }
+
         /* Mobile specific adjustments */
         @media (max-width: 768px) {
             .tab-renta-layout {
@@ -1111,15 +1323,33 @@
         </div>
 
         <div id="tab-renta" class="tab-pane" style="padding-bottom: 0;">
-            <div class="tab-renta-layout" style="display: flex; height: 100%;">
+            <div class="tab-renta-layout">
+                <!-- LEFT: Ticker Table -->
                 <div class="ticker-list">
-                    <div style="padding: 16px; border-bottom: 1px solid var(--border-color);">
-                        <button
-                            style="width: 100%; padding: 12px; background-color: var(--bg-card-hover); border: 1px solid var(--border-color); color: var(--accent); font-weight: 600; cursor: pointer; border-radius: var(--radius-sm); text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">📋
-                            Guía de Columnas</button>
+                    <div style="padding: 10px 12px; border-bottom: 1px solid var(--border-color);">
+                        <div class="rv-column-guide">
+                            <button style="width: 100%; padding: 10px 12px; background-color: var(--bg-card-hover); border: 1px solid var(--border-color); color: var(--accent); font-weight: 600; cursor: pointer; border-radius: var(--radius-sm); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; text-align: left;">📋 Guía de Columnas</button>
+                            <div class="rv-column-guide-content">
+                                <dl>
+                                    <dt>Ticker</dt><dd>Símbolo del activo en el mercado.</dd>
+                                    <dt>Grade</dt><dd>Calificación ABC: A = EMA10 > EMA20 > SMA50 (tendencia alcista); B = mixta; C = bajista.</dd>
+                                    <dt>Daily</dt><dd>Variación porcentual del día.</dd>
+                                    <dt>Intra</dt><dd>Variación intradía (desde la apertura).</dd>
+                                    <dt>5D</dt><dd>Variación porcentual en los últimos 5 días hábiles.</dd>
+                                    <dt>20D</dt><dd>Variación porcentual en los últimos 20 días hábiles.</dd>
+                                    <dt>ATR%</dt><dd>Rango Verdadero Promedio como porcentaje del precio (volatilidad a 21 días).</dd>
+                                    <dt>ATRx</dt><dd>Distancia a la SMA50 en unidades de ATR.</dd>
+                                    <dt>1M-VARS</dt><dd>Puntaje de Fuerza Relativa ajustado por Volatilidad vs SPY (últimos 21 días, 0–100%).</dd>
+                                    <dt>VARS</dt><dd>Mini-gráfico de la evolución del VARS en el último mes.</dd>
+                                    <dt>LETF</dt><dd>ETFs apalancados relacionados (verde = largo, rojo = corto).</dd>
+                                </dl>
+                            </div>
+                        </div>
                     </div>
                     <div id="groups-container"></div>
+                    <div class="rv-key-hint">↑ ↓ Usa las flechas para navegar · Datos actualizados diariamente via GitHub Actions</div>
                 </div>
+                <!-- CENTER: TradingView Chart -->
                 <div class="chart-container">
                     <div class="tradingview-widget-container">
                         <div id="tradingview-chart" style="height:100%;width:100%;"></div>
@@ -1519,7 +1749,26 @@
             let snapshot = null;
             let datosBandas = [];
 
+            let allTickerRows = [];
+            let currentIndex = 0;
+            let currentSortStates = {};
+            let meta = null;
+
             function safeGroupId(name) { return name.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+
+            function vizWidth(value, minVal, maxVal) {
+                if (value == null) return 0;
+                if (minVal >= maxVal) return 0;
+                if (value >= 0) { if (maxVal <= 0) return 0; return Math.min(100, Math.max(0, (value / maxVal) * 100)); }
+                if (minVal >= 0) return 0;
+                return Math.min(100, Math.max(0, (Math.abs(value) / Math.abs(minVal)) * 100));
+            }
+
+            function getGroupLabelClass(groupName, ticker) {
+                if (groupName === 'Industries' && meta && meta.Industries_COLORS && meta.Industries_COLORS[ticker])
+                    return 'rv-ticker-label-' + ticker;
+                return '';
+            }
 
             function renderGroups() {
                 if (!snapshot || !snapshot.groups) return;
@@ -1530,49 +1779,223 @@
                     var rows = snapshot.groups[groupName];
                     if (!rows || rows.length === 0) continue;
                     var safeId = safeGroupId(groupName);
+                    var ranges = (snapshot.column_ranges && snapshot.column_ranges[groupName]) || { daily: [-10,10], intra: [-10,10], '5d': [-20,20], '20d': [-30,30] };
+
                     html += '<div class="group-container" id="group-' + safeId + '">';
-                    html += '<div class="group-header"><span>' + groupName + '</span></div>';
-                    html += '<table class="ticker-table"><thead><tr>';
-                    html += '<th>Ticker</th><th>Grade</th><th>Daily</th><th>Intra</th><th>5D</th><th>20D</th><th>ATR%</th><th>ATRx</th><th>1M-VARS</th>';
-                    html += '</tr></thead><tbody>';
+                    html += '<div class="group-header" onclick="scrollToGroup(\'' + groupName.replace(/'/g, "\\'") + '\')">';
+                    html += '<span>' + groupName + '</span>';
+                    if (meta && meta.SECTOR_COLORS && (groupName === 'Industries' || groupName.toLowerCase().includes('industr'))) {
+                        html += '<div class="rv-legend" onclick="event.stopPropagation()">';
+                        for (var s in meta.SECTOR_COLORS)
+                            html += '<span class="rv-legend-item" style="background-color:' + meta.SECTOR_COLORS[s] + '">' + s + '</span>';
+                        html += '</div>';
+                    }
+                    html += '</div>';
+
+                    html += '<table class="ticker-table" data-group="' + groupName.replace(/"/g, '&quot;') + '"><thead><tr>';
+                    var th = function(key, label, title) { return '<th class="sortable" data-sort-by="' + key + '" title="' + (title || label) + '">' + label + '</th>'; };
+                    html += th('symbol', 'Ticker', 'Símbolo del activo');
+                    html += th('abc', 'Grade', 'Calificación: A=Alcista, B=Mixta, C=Bajista');
+                    html += th('daily', 'Daily', 'Variación porcentual del día');
+                    html += th('intra', 'Intra', 'Variación intradía');
+                    html += th('5d', '5D', 'Variación últimos 5 días hábiles');
+                    html += th('20d', '20D', 'Variación últimos 20 días hábiles');
+                    html += th('atr_pct', 'ATR%', 'Rango Verdadero Promedio (volatilidad 21d)');
+                    html += th('dist_sma50_atr', 'ATRx', 'Distancia a SMA50 en unidades ATR');
+                    html += th('rs', '1M-VARS', 'Fuerza Relativa ajustada por Volatilidad vs SPY (0-100%)');
+                    html += '<th title="Mini-gráfico VARS último mes">VARS</th>';
+                    html += th('letf', 'LETF', 'ETFs apalancados (verde=largo, rojo=corto)');
+                    html += '</tr></thead><tbody id="' + safeId + '-body">';
+
                     for (var i = 0; i < rows.length; i++) {
                         var r = rows[i];
-                        html += '<tr class="ticker-row" onclick="updateChart(\'' + r.ticker + '\', this)" data-symbol="' + r.ticker + '">';
-                        html += '<td><span class="badge-green" style="background-color: transparent; border: 1px solid var(--border-color); color: var(--text-main);">' + r.ticker + '</span></td>';
-                        html += '<td>' + (r.abc || '-') + '</td>';
-                        html += '<td class="' + (r.daily >= 0 ? 'text-green' : 'text-red') + '" style="color:' + (r.daily >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r.daily != null ? r.daily.toFixed(2) + '%' : '-') + '</td>';
-                        html += '<td class="' + (r.intra >= 0 ? 'text-green' : 'text-red') + '" style="color:' + (r.intra >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r.intra != null ? r.intra.toFixed(2) + '%' : '-') + '</td>';
-                        html += '<td class="' + (r['5d'] >= 0 ? 'text-green' : 'text-red') + '" style="color:' + (r['5d'] >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r['5d'] != null ? r['5d'].toFixed(2) + '%' : '-') + '</td>';
-                        html += '<td class="' + (r['20d'] >= 0 ? 'text-green' : 'text-red') + '" style="color:' + (r['20d'] >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r['20d'] != null ? r['20d'].toFixed(2) + '%' : '-') + '</td>';
+                        var daily = r.daily, intra = r.intra, five = r['5d'], twenty = r['20d'];
+                        var dailyW = vizWidth(daily, ranges.daily ? ranges.daily[0] : -10, ranges.daily ? ranges.daily[1] : 10);
+                        var intraW = vizWidth(intra, ranges.intra ? ranges.intra[0] : -10, ranges.intra ? ranges.intra[1] : 10);
+                        var fiveW = vizWidth(five, ranges['5d'] ? ranges['5d'][0] : -20, ranges['5d'] ? ranges['5d'][1] : 20);
+                        var twentyW = vizWidth(twenty, ranges['20d'] ? ranges['20d'][0] : -30, ranges['20d'] ? ranges['20d'][1] : 30);
+                        var abc = r.abc || '';
+                        var rs = r.rs != null ? r.rs : 0;
+                        var atrPct = r.atr_pct != null ? r.atr_pct : 0;
+                        var dist = r.dist_sma50_atr != null ? r.dist_sma50_atr : 0;
+                        var letf = (r.long && r.long.length) || (r.short && r.short.length) ? '1' : '0';
+                        var labelClass = getGroupLabelClass(groupName, r.ticker);
+                        var extraCls = labelClass ? labelClass : 'rv-ticker-label';
+
+                        html += '<tr class="ticker-row" onclick="updateChart(\'' + r.ticker + '\', this)" data-symbol="' + r.ticker + '" data-group="' + groupName.replace(/"/g, '&quot;') + '" data-daily="' + (daily || 0) + '" data-intra="' + (intra || 0) + '" data-5d="' + (five || 0) + '" data-20d="' + (twenty || 0) + '" data-atr_pct="' + atrPct + '" data-dist_sma50_atr="' + dist + '" data-rs="' + rs + '" data-abc="' + abc + '" data-letf="' + letf + '" data-index="' + i + '">';
+
+                        // Ticker
+                        html += '<td><span class="' + extraCls + '">' + r.ticker + '</span></td>';
+                        // Grade
+                        html += '<td>' + (abc ? '<span class="abc-rating abc-' + abc.toLowerCase() + '">' + abc + '</span>' : '-') + '</td>';
+
+                        // Value-bar columns: Daily, Intra, 5D, 20D
+                        var makeBar = function(val, w) {
+                            if (val == null) return '<td>-</td>';
+                            var cls = val >= 0 ? 'positive' : 'negative';
+                            var sign = val >= 0 ? '+' : '';
+                            return '<td><div class="value-visualization"><div class="value-bar ' + cls + '" style="width:' + w + '%"></div><span class="value-text" style="color:' + (val >= 0 ? 'var(--green)' : 'var(--red)') + '">' + sign + val.toFixed(2) + '%</span></div></td>';
+                        };
+                        html += makeBar(daily, dailyW);
+                        html += makeBar(intra, intraW);
+                        html += makeBar(five, fiveW);
+                        html += makeBar(twenty, twentyW);
+
+                        // ATR%, ATRx, 1M-VARS
                         html += '<td>' + (r.atr_pct != null ? r.atr_pct.toFixed(1) + '%' : '-') + '</td>';
                         html += '<td>' + (r.dist_sma50_atr != null ? r.dist_sma50_atr.toFixed(2) : '-') + '</td>';
                         html += '<td>' + (r.rs != null ? Math.round(r.rs) + '%' : '-') + '</td>';
-                        html += '</tr>';
+
+                        // VARS chart
+                        html += '<td>' + (r.rs_chart ? '<img src="' + r.rs_chart + '" class="rs-chart" alt="RS">' : '-') + '</td>';
+
+                        // LETF
+                        html += '<td class="rv-etf-list">';
+                        if (r.long && r.long.length) html += r.long.map(function(etf){ return '<span class="rv-long-etf" onclick="event.stopPropagation();updateChart(\'' + etf + '\')">' + etf + '</span>'; }).join(', ');
+                        if (r.short && r.short.length) { if (r.long && r.long.length) html += ' '; html += r.short.map(function(etf){ return '<span class="rv-short-etf" onclick="event.stopPropagation();updateChart(\'' + etf + '\')">' + etf + '</span>'; }).join(', '); }
+                        if (!(r.long && r.long.length) && !(r.short && r.short.length)) html += '-';
+                        html += '</td></tr>';
                     }
                     html += '</tbody></table></div>';
                 }
                 document.getElementById('groups-container').innerHTML = html;
-                initChart("QQQE");
+
+                // Inject dynamic styles for Industries ticker colors
+                if (meta && meta.Industries_COLORS) {
+                    var style = document.createElement('style');
+                    var css = '';
+                    for (var t in meta.Industries_COLORS)
+                        css += '.rv-ticker-label-' + t + '{display:inline-block;padding:2px 8px;border-radius:10px;background-color:' + meta.Industries_COLORS[t] + ';color:white;font-weight:600;font-size:12px;letter-spacing:0.3px} ';
+                    style.textContent = css;
+                    document.head.appendChild(style);
+                }
+
+                initRentaApp();
             }
+
+            function initRentaApp() {
+                allTickerRows = [].slice.call(document.querySelectorAll('#tab-renta .ticker-row'));
+                document.querySelectorAll('#tab-renta .ticker-table').forEach(function(table) {
+                    var g = table.getAttribute('data-group');
+                    currentSortStates[g] = { sortBy: null, direction: 1, count: 0 };
+                });
+
+                // Sort delegation
+                var listEl = document.querySelector('#tab-renta .ticker-list');
+                if (listEl && !listEl._sortDelegate) {
+                    listEl._sortDelegate = true;
+                    listEl.addEventListener('click', function(ev) {
+                        var th = ev.target.closest('th.sortable');
+                        if (!th) return;
+                        var table = th.closest('table.ticker-table');
+                        if (!table) return;
+                        var group = table.getAttribute('data-group');
+                        var sortBy = th.getAttribute('data-sort-by');
+                        if (group && sortBy) window.sortGroup(group, sortBy);
+                    });
+                }
+
+                var defaultSymbol = (meta && meta.default_symbol) ? meta.default_symbol : 'SPY';
+                initChart(defaultSymbol);
+                if (allTickerRows.length > 0) allTickerRows[0].classList.add('active');
+
+                // Keyboard navigation
+                document.addEventListener('keydown', function(e) {
+                    // Only when renta tab is visible
+                    if (document.getElementById('tab-renta').style.display === 'none') return;
+                    if (e.key === 'ArrowDown') { e.preventDefault(); if (currentIndex < allTickerRows.length - 1) { currentIndex++; updateChart(allTickerRows[currentIndex].getAttribute('data-symbol'), allTickerRows[currentIndex]); } }
+                    if (e.key === 'ArrowUp') { e.preventDefault(); if (currentIndex > 0) { currentIndex--; updateChart(allTickerRows[currentIndex].getAttribute('data-symbol'), allTickerRows[currentIndex]); } }
+                });
+            }
+
+            window.scrollToGroup = function(groupName) {
+                var el = document.getElementById('group-' + safeGroupId(groupName));
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            window.sortGroup = function(group, sortBy) {
+                var tables = document.querySelectorAll('#tab-renta .ticker-table');
+                var table = null;
+                for (var t = 0; t < tables.length; t++) { if (tables[t].getAttribute('data-group') === group) { table = tables[t]; break; } }
+                if (!table) return;
+                var tbody = table.querySelector('tbody');
+                var rows = [].slice.call(tbody.querySelectorAll('.ticker-row'));
+                var state = currentSortStates[group] || { sortBy: null, direction: 1, count: 0 };
+                currentSortStates[group] = state;
+
+                table.querySelectorAll('th, td').forEach(function(el) { el.classList.remove('sort-asc', 'sort-desc', 'sorted-column'); });
+
+                if (state.sortBy === sortBy) {
+                    state.count++;
+                    if (state.count >= 3) {
+                        state.sortBy = null; state.direction = 1; state.count = 0;
+                        rows.sort(function(a, b) { return parseInt(a.getAttribute('data-index')) - parseInt(b.getAttribute('data-index')); });
+                        tbody.innerHTML = ''; rows.forEach(function(r) { tbody.appendChild(r); });
+                        allTickerRows = [].slice.call(document.querySelectorAll('#tab-renta .ticker-row'));
+                        return;
+                    }
+                } else state.count = 1;
+                state.sortBy = sortBy;
+                if (state.count === 2) state.direction *= -1; else state.direction = 1;
+
+                var colMap = { symbol: 0, abc: 1, daily: 2, intra: 3, '5d': 4, '20d': 5, atr_pct: 6, dist_sma50_atr: 7, rs: 8, letf: 10 };
+                var hi = colMap[sortBy] !== undefined ? colMap[sortBy] : 9;
+                var headerIndices = (sortBy === 'rs') ? [8, 9] : [hi];
+                headerIndices.forEach(function(idx) {
+                    var h = table.querySelectorAll('th')[idx];
+                    if (h) h.classList.add(state.direction === 1 ? 'sort-asc' : 'sort-desc', 'sorted-column');
+                });
+                rows.forEach(function(row) {
+                    var cells = row.querySelectorAll('td');
+                    headerIndices.forEach(function(idx) { if (cells[idx]) cells[idx].classList.add('sorted-column'); });
+                });
+
+                rows.sort(function(a, b) {
+                    if (sortBy === 'symbol') return (a.getAttribute('data-symbol').toLowerCase().localeCompare(b.getAttribute('data-symbol').toLowerCase())) * state.direction;
+                    if (sortBy === 'abc') return ((a.getAttribute('data-abc') || '').localeCompare(b.getAttribute('data-abc') || '')) * state.direction;
+                    if (sortBy === 'letf') return (parseInt(a.getAttribute('data-letf') || '0') - parseInt(b.getAttribute('data-letf') || '0')) * state.direction;
+                    return (parseFloat(a.getAttribute('data-' + sortBy)) - parseFloat(b.getAttribute('data-' + sortBy))) * state.direction;
+                });
+                tbody.innerHTML = ''; rows.forEach(function(r) { tbody.appendChild(r); });
+                allTickerRows = [].slice.call(document.querySelectorAll('#tab-renta .ticker-row'));
+                var ar = document.querySelector('#tab-renta .ticker-row.active');
+                if (ar) currentIndex = allTickerRows.indexOf(ar);
+            };
 
             function initChart(symbol) {
                 if (chartWidget) { chartWidget.remove(); chartWidget = null; }
                 const isLight = document.documentElement.getAttribute("data-theme") === "light";
                 chartWidget = new TradingView.widget({
-                    allow_symbol_change: true, hide_top_toolbar: false, hide_legend: false, hide_volume: true, interval: 'D',
+                    allow_symbol_change: true, calendar: false, details: true,
+                    hide_side_toolbar: false, hide_top_toolbar: false,
+                    hide_legend: false, hide_volume: true, hotlist: false,
+                    interval: 'D', locale: 'es', save_image: false, style: '1',
                     theme: isLight ? 'light' : 'dark',
                     toolbar_bg: isLight ? '#f8fafc' : '#09090b',
                     backgroundColor: isLight ? '#f8fafc' : '#09090b',
                     gridColor: isLight ? 'rgba(226, 232, 240, 1)' : 'rgba(63, 63, 70, 0.4)',
-                    symbol: symbol, autosize: true, container_id: 'tradingview-chart'
+                    symbol: symbol, timezone: 'America/Argentina/Buenos_Aires',
+                    studies: ['STD;MA%Ribbon', 'Volume@tv-basicstudies'],
+                    autosize: true, enable_publishing: false, container_id: 'tradingview-chart',
+                    withdateranges: true
                 });
                 window.tradingviewWidget = chartWidget;
             }
 
+
             window.updateChart = function (symbol, element) {
-                document.querySelectorAll('.ticker-row').forEach(row => row.classList.remove('active'));
-                if (element) element.classList.add('active');
+                document.querySelectorAll('#tab-renta .ticker-row').forEach(row => row.classList.remove('active'));
+                if (element) {
+                    element.classList.add('active');
+                    currentIndex = allTickerRows.indexOf(element);
+                } else {
+                    var row = [].slice.call(document.querySelectorAll('#tab-renta .ticker-row')).filter(function(r) { return r.getAttribute('data-symbol') === symbol; })[0];
+                    if (row) { row.classList.add('active'); currentIndex = allTickerRows.indexOf(row); }
+                }
                 initChart(symbol);
+
+                var activeRow = document.querySelector('#tab-renta .ticker-row.active');
+                if (activeRow) activeRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             };
 
             function renderMacro(macro) {
