@@ -1100,7 +1100,10 @@
                 // Add robust grid color overriding while protecting the zero-line
                 window.spreadChartInstance.options.scales.y.grid = window.spreadChartInstance.options.scales.y.grid || {};
                 window.spreadChartInstance.options.scales.y.grid.color = function (ctx) {
-                    return (ctx.tick && ctx.tick.value === 0) ? (document.documentElement.getAttribute('data-theme') === 'light' ? 'rgba(0,0,0,0.15)' : 'rgba(255, 255, 255, 0.15)') : gridColor;
+                    return (ctx.tick && ctx.tick.value === 0) ? (isLight ? 'rgba(0,0,0,0.2)' : 'rgba(255, 255, 255, 0.25)') : gridColor;
+                };
+                window.spreadChartInstance.options.scales.y.grid.lineWidth = function (ctx) {
+                    return (ctx.tick && ctx.tick.value === 0) ? 1.5 : 1;
                 };
                 window.spreadChartInstance.options.scales.x.grid = window.spreadChartInstance.options.scales.x.grid || {};
                 window.spreadChartInstance.options.scales.x.grid.color = gridColor;
@@ -1663,7 +1666,7 @@
                 window.spreadChartInstance = new Chart(ctx, {
                     type: 'line',
                     data: { labels: labels, datasets: [{ data: data, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1, segment: { borderColor: function (ctx) { return (ctx.p0 && ctx.p0.parsed && ctx.p0.parsed.y >= 0) ? 'rgba(16, 185, 129, 1)' : 'rgba(239, 68, 68, 1)'; } } }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } }, scales: { x: { display: true, ticks: { color: textColor, maxTicksLimit: 6 }, grid: { color: gridColor } }, y: { display: true, ticks: { color: textColor }, grid: { color: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? (isLight ? 'rgba(0,0,0,0.15)' : 'rgba(255, 255, 255, 0.15)') : gridColor; }, lineWidth: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? 2 : 1; } } } }, interaction: { mode: 'index', intersect: false } }
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } }, scales: { x: { display: true, ticks: { color: textColor, maxTicksLimit: 6 }, grid: { color: gridColor } }, y: { display: true, ticks: { color: textColor }, grid: { color: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? (isLight ? 'rgba(0,0,0,0.2)' : 'rgba(255, 255, 255, 0.25)') : gridColor; }, lineWidth: function (ctx) { return (ctx.tick && ctx.tick.value === 0) ? 1.5 : 1; } } } }, interaction: { mode: 'index', intersect: false } }
                 });
                 updateSpreadSummary(window.spreadChartInstance, baseCurrency);
             }
