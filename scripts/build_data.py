@@ -398,10 +398,17 @@ def get_historical_fiat_data():
 def get_stock_data(ticker_symbol, charts_dir):
     try:
         stock = yf.Ticker(ticker_symbol)
-        hist = stock.history(period="21d")
-        daily = stock.history(period="60d")
-        if len(hist) < 2 or len(daily) < 50:
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=120)
+        
+        # Single fetch for 120 days
+        stock_history = stock.history(start=start_date, end=end_date)
+        if stock_history.empty or len(stock_history) < 50:
             return None
+
+        # Slice for the shorter periods
+        hist = stock_history.iloc[-21:] if len(stock_history) >= 21 else stock_history
+        daily = stock_history.iloc[-60:] if len(stock_history) >= 60 else stock_history
 
         daily_change = (hist['Close'].iloc[-1] / hist['Close'].iloc[-2] - 1) * 100
         intraday_change = (hist['Close'].iloc[-1] / hist['Open'].iloc[-1] - 1) * 100
@@ -417,12 +424,9 @@ def get_stock_data(ticker_symbol, charts_dir):
 
         rs_sts = None
         rrs_data = None
-        end_date = datetime.now()
-        start_date = end_date - timedelta(days=120)
         try:
-            stock_history = stock.history(start=start_date, end=end_date)
             spy_history = yf.Ticker("SPY").history(start=start_date, end=end_date)
-            if stock_history is not None and spy_history is not None:
+            if not stock_history.empty and spy_history is not None and not spy_history.empty:
                 rrs_data = calculate_rrs(stock_history, spy_history, atr_length=14, length_rolling=50, length_sma=20, atr_multiplier=1.0)
                 if rrs_data is not None and len(rrs_data) >= 21:
                     recent_21 = rrs_data['rollingRRS'].iloc[-21:]
@@ -464,19 +468,36 @@ def main():
     print("Fetching economic events...")
     events = get_upcoming_key_events()
 
-    print("Fetching stock data (no Liquid Stocks)...")
+    print("Fetching stock data (no Liquid Stocks) in parallel...")
     groups_data = {}
     all_ticker_data = {}
+    
+    import concurrent.futures
+
+    tasks = []
     for group_name, tickers in STOCK_GROUPS.items():
-        rows = []
-        for i, ticker in enumerate(tickers):
-            print(f"  [{group_name}] {i+1}/{len(tickers)} {ticker}")
-            row = get_stock_data(ticker, charts_dir)
-            if row:
-                rows.append(row)
-                all_ticker_data[ticker] = row
-            time.sleep(0.15)
-        groups_data[group_name] = rows
+        for ticker in tickers:
+            tasks.append((group_name, ticker))
+            
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        # Launch all tasks
+        future_map = {}
+        for group_name, ticker in tasks:
+            future = executor.submit(get_stock_data, ticker, charts_dir)
+            future_map[future] = (group_name, ticker)
+            
+        # Initialize groups_data with empty lists to preserve insertion order of dict
+        groups_data = {g: [] for g in STOCK_GROUPS.keys()}
+        
+        # Collect results, preserving order via original lists
+        for group_name, tickers in STOCK_GROUPS.items():
+            print(f"  [{group_name}] Procesando...")
+            group_futures = [f for f, (g, t) in future_map.items() if g == group_name]
+            for future in group_futures:
+                row = future.result()
+                if row:
+                    groups_data[group_name].append(row)
+                    all_ticker_data[row['ticker']] = row
 
     print("Computing column ranges...")
     column_ranges = {}

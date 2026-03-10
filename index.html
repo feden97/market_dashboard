@@ -9,38 +9,50 @@
     <style>
         :root {
             /* Spreadsheet-Inspired Dark Mode */
-            --bg-body: #121212; /* Deep background, almost pure black */
-            --bg-card: #1e1e1e; /* Distinct card background */
+            --bg-body: #121212;
+            /* Deep background, almost pure black */
+            --bg-card: #1e1e1e;
+            /* Distinct card background */
             --bg-card-solid: #1e1e1e;
-            --bg-card-hover: #2a2a2a; /* Lighter gray for hover */
-            --border-color: #333333; /* Stronger borders to resemble cells */
+            --bg-card-hover: #2a2a2a;
+            /* Lighter gray for hover */
+            --border-color: #333333;
+            /* Stronger borders to resemble cells */
             --border-hover: #555555;
-            
-            --text-main: #ffffff; /* Pure white text for readability */
-            --text-muted: #aaaaaa; /* Lighter gray for muted text */
-            
-            --accent: #a3e635; /* Lime green */
+
+            --text-main: #ffffff;
+            /* Pure white text for readability */
+            --text-muted: #aaaaaa;
+            /* Lighter gray for muted text */
+
+            --accent: #a3e635;
+            /* Lime green */
             --accent-glow: rgba(163, 230, 53, 0.15);
             --nav-active-color: #a3e635;
-            
-            --green: #4ade80; /* Bright green */
-            --red: #f87171; /* Bright red */
-            --orange: #facc15; /* Pure yellow */
-            
-            --shadow-subtle: 0 4px 15px rgba(0,0,0,0.5);
-            --shadow-hover: 0 8px 25px rgba(0,0,0,0.8);
-            --bg-table-header: #2b2b2b; /* Distinct gray header background */
+
+            --green: #4ade80;
+            /* Bright green */
+            --red: #f87171;
+            /* Bright red */
+            --orange: #facc15;
+            /* Pure yellow */
+
+            --shadow-subtle: 0 4px 15px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.8);
+            --bg-table-header: #2b2b2b;
+            /* Distinct gray header background */
             --bg-header-alpha: rgba(30, 30, 30, 0.95);
             --bg-select: rgba(255, 255, 255, 0.08);
             --select-arrow: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            
+
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
-            
+
             --font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            
-            --chart-grid-color: #333333; /* Darker grids */
+
+            --chart-grid-color: #333333;
+            /* Darker grids */
             --chart-text-color: #aaaaaa;
         }
 
@@ -51,25 +63,25 @@
             --bg-card-hover: #f1f5f9;
             --border-color: #e2e8f0;
             --border-hover: #cbd5e1;
-            
+
             --text-main: #0f172a;
             --text-muted: #64748b;
-            
+
             --accent: #2563eb;
             --accent-glow: rgba(37, 99, 235, 0.1);
             --nav-active-color: #2563eb;
-            
+
             --green: #059669;
             --red: #dc2626;
             --orange: #ea580c;
-            
+
             --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
             --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
             --bg-table-header: #f1f5f9;
             --bg-header-alpha: rgba(255, 255, 255, 0.95);
             --bg-select: rgba(0, 0, 0, 0.03);
             --select-arrow: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f172a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            
+
             --chart-grid-color: rgba(0, 0, 0, 0.03);
             --chart-text-color: #64748b;
         }
@@ -102,7 +114,8 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 8px 0 0 0; /* Reduced padding and pushed bottom elements closer */
+            padding: 8px 0 0 0;
+            /* Reduced padding and pushed bottom elements closer */
         }
 
         .nav-container {
@@ -113,7 +126,8 @@
             border: none;
             width: 100%;
             max-width: 1400px;
-            justify-content: center; /* True center for the main tabs */
+            justify-content: center;
+            /* True center for the main tabs */
             align-items: center;
             position: relative;
         }
@@ -192,8 +206,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .panel-ancho {
@@ -213,11 +234,15 @@
         }
 
         @media (max-width: 1100px) {
-            .macro-grid { grid-template-columns: repeat(3, 1fr); }
+            .macro-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
-            .macro-grid { grid-template-columns: 1fr; }
+            .macro-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .macro-card {
@@ -331,7 +356,7 @@
             font-size: 11px;
             letter-spacing: 0.5px;
         }
-        
+
         .ticker-table th.sorted-column {
             color: var(--text-main);
         }
@@ -388,7 +413,7 @@
             margin-left: 6px;
             color: var(--text-muted);
         }
-        
+
         .tooltip-container:hover {
             color: var(--text-main);
         }
@@ -416,7 +441,7 @@
             line-height: 1.5;
             white-space: normal;
         }
-        
+
         .tooltip-container:hover .tooltip-text {
             visibility: visible;
             opacity: 1;
@@ -432,7 +457,8 @@
             color: var(--text-main);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-sm);
-            padding: 4px 24px 4px 8px; /* Extra padding on the right for the explicit arrow */
+            padding: 4px 24px 4px 8px;
+            /* Extra padding on the right for the explicit arrow */
             font-size: 12px;
             outline: none;
             cursor: pointer;
@@ -442,6 +468,7 @@
             font-weight: 600;
             margin-left: 6px;
         }
+
         .base-select:hover {
             background-color: var(--bg-card-hover);
         }
@@ -473,7 +500,9 @@
         }
 
         @media (max-width: 900px) {
-            .tables-grid { grid-template-columns: 1fr; }
+            .tables-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .gauge-arc {
@@ -484,7 +513,7 @@
             -webkit-mask-image: radial-gradient(transparent 65%, black 66%);
             mask-image: radial-gradient(transparent 65%, black 66%);
         }
-        
+
         .card-header-gradient {
             background: transparent;
             padding: 0 0 12px 0;
@@ -494,20 +523,33 @@
             justify-content: space-between;
             margin-bottom: 16px;
         }
-        
-        
+
+
         .tables-grid-item {
             overflow-x: auto;
             border-radius: var(--radius-md);
             border: 1px solid var(--border-color);
         }
-        
+
         /* Modern Scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-body); }
-        ::-webkit-scrollbar-thumb { background: rgba(161, 161, 170, 0.3); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(161, 161, 170, 0.5); }
-        
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(161, 161, 170, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(161, 161, 170, 0.5);
+        }
+
         .text-highlight-green {
             color: var(--green);
             font-weight: 600;
@@ -518,28 +560,32 @@
             .tab-renta-layout {
                 flex-direction: column !important;
             }
+
             .ticker-list {
                 max-width: 100%;
                 border-right: none;
                 border-bottom: 1px solid var(--border-color);
-                max-height: 50vh; /* Don't let it consume the whole screen on mobile */
+                max-height: 50vh;
+                /* Don't let it consume the whole screen on mobile */
             }
+
             .chart-container {
                 min-height: 400px;
                 padding: 10px;
             }
-            
+
             .tables-grid {
                 display: flex;
                 flex-direction: column;
                 gap: 16px;
             }
-            
+
             .macro-card {
                 padding: 16px;
             }
-            
-            #tasas-pesos h3, #tasas-cripto h3 {
+
+            #tasas-pesos h3,
+            #tasas-cripto h3 {
                 text-align: center;
             }
         }
@@ -556,9 +602,14 @@
                 <button class="nav-tab" onclick="switchTab('tab-tasas', this)">💰 Tasas</button>
                 <button class="nav-tab" onclick="switchTab('tab-renta', this)">📈 Renta Variable</button>
             </div>
-            <div style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); display: flex; align-items: center;">
-                <button id="theme-toggle" class="nav-tab" style="padding: 6px 10px; font-size: 20px; display: flex; align-items: center; justify-content: center;" title="Cambiar Tema" onclick="toggleTheme()">
-                    <svg id="theme-icon-light" style="display: none; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24">
+            <div
+                style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); display: flex; align-items: center;">
+                <button id="theme-toggle" class="nav-tab"
+                    style="padding: 6px 10px; font-size: 20px; display: flex; align-items: center; justify-content: center;"
+                    title="Cambiar Tema" onclick="toggleTheme()">
+                    <svg id="theme-icon-light"
+                        style="display: none; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"
+                        viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="5"></circle>
                         <line x1="12" y1="1" x2="12" y2="3"></line>
                         <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -569,13 +620,16 @@
                         <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
-                    <svg id="theme-icon-dark" style="display: none; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24">
+                    <svg id="theme-icon-dark"
+                        style="display: none; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"
+                        viewBox="0 0 24 24">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
                 </button>
             </div>
         </div>
-        <div id="submenu-tasas" style="display: none; width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 16px; gap: 24px; margin-top: 4px; border-top: 1px solid var(--border-color); justify-content: center;">
+        <div id="submenu-tasas"
+            style="display: none; width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 16px; gap: 24px; margin-top: 4px; border-top: 1px solid var(--border-color); justify-content: center;">
             <button class="sub-tab active" onclick="switchTasasTab('tasas-pesos', this)">🇦🇷 Pesos (ARS)</button>
             <button class="sub-tab" onclick="switchTasasTab('tasas-cripto', this)">🪙 Stablecoins</button>
         </div>
@@ -588,14 +642,17 @@
                 <div class="macro-grid">
                     <div class="macro-card">
                         <div class="card-header-gradient">
-                            <h3 class="macro-title" style="margin: 0; padding: 0; border: none;">💸 Oferta más barata</h3>
+                            <h3 class="macro-title" style="margin: 0; padding: 0; border: none;">💸 Oferta más barata
+                            </h3>
                         </div>
                         <div style="display: flex; flex-direction: column; justify-content: center; flex: 1;">
                             <div id="cheapest-dollar-name"
-                                style="font-size: 13px; color: var(--text-muted); font-weight:600; text-transform: uppercase; letter-spacing: 0.5px;">...
+                                style="font-size: 13px; color: var(--text-muted); font-weight:600; text-transform: uppercase; letter-spacing: 0.5px;">
+                                ...
                             </div>
                             <div id="cheapest-dollar-val"
-                                style="font-size: 24px; font-weight: 600; color: var(--text-main); margin-top: 8px; letter-spacing: -0.5px;">...</div>
+                                style="font-size: 24px; font-weight: 600; color: var(--text-main); margin-top: 8px; letter-spacing: -0.5px;">
+                                ...</div>
                         </div>
                     </div>
 
@@ -603,7 +660,8 @@
                         <div class="card-header-gradient">
                             <h3 class="macro-title" style="margin: 0; padding: 0; border: none;">📈 Tasas (Pronto)</h3>
                         </div>
-                        <ul style="margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; color: var(--text-muted); font-size: 13px; line-height: 1.4;">
+                        <ul
+                            style="margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; color: var(--text-muted); font-size: 13px; line-height: 1.4;">
                             <li>Cuenta remunerada</li>
                             <li>Plazo Fijo</li>
                             <li>Earn StableCoin</li>
@@ -616,10 +674,12 @@
                             <h3 class="macro-title" style="margin: 0; padding: 0; border: none;">🛒 Inflación 2026</h3>
                         </div>
                         <div style="display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
-                            <table class="data-table" style="font-size: 12px; margin-bottom: 12px; background: transparent; border: none;">
+                            <table class="data-table"
+                                style="font-size: 12px; margin-bottom: 12px; background: transparent; border: none;">
                                 <tbody id="inflacion-table">
                                     <tr>
-                                        <td style="border: none; padding: 4px 0; color: var(--text-muted);">Cargando datos...</td>
+                                        <td style="border: none; padding: 4px 0; color: var(--text-muted);">Cargando
+                                            datos...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -630,7 +690,8 @@
 
                     <div class="macro-card">
                         <div class="card-header-gradient">
-                            <h3 class="macro-title" style="margin: 0; padding: 0; border: none;">🏖️ Próximos Feriados</h3>
+                            <h3 class="macro-title" style="margin: 0; padding: 0; border: none;">🏖️ Próximos Feriados
+                            </h3>
                         </div>
                         <ul id="feriados-list"
                             style="margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; color: var(--text-main); font-size: 13px; line-height: 1.4; font-weight: 500;">
@@ -646,22 +707,31 @@
                             <div style="display: flex; align-items: baseline; gap: 12px;">
                                 <span id="rp-val"
                                     style="font-size: 28px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px;">...</span>
-                                <span id="rp-var" style="font-size: 14px; font-weight: 600; padding: 2px 8px; border-radius: 20px;"></span>
+                                <span id="rp-var"
+                                    style="font-size: 14px; font-weight: 600; padding: 2px 8px; border-radius: 20px;"></span>
                             </div>
-                            <div id="rp-date" style="font-size: 12px; color: var(--text-muted); margin-top: 8px; font-weight: 500;"></div>
+                            <div id="rp-date"
+                                style="font-size: 12px; color: var(--text-muted); margin-top: 8px; font-weight: 500;">
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="macro-card" style="padding: 24px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h2 style="color: var(--text-main); margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.5px;">Panel de Cotizaciones</h2>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2
+                            style="color: var(--text-main); margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.5px;">
+                            Panel de Cotizaciones</h2>
                         <div style="display: flex; align-items: center; gap: 15px; width: 50%; max-width: 400px;">
-                            <div style="flex: 1; background-color: rgba(255,255,255,0.05); height: 3px; border-radius: 4px; overflow: hidden;">
-                                <div id="update-progress-bar" style="height: 100%; width: 100%; background-color: var(--accent); transition: width 1s linear;">
+                            <div
+                                style="flex: 1; background-color: rgba(255,255,255,0.05); height: 3px; border-radius: 4px; overflow: hidden;">
+                                <div id="update-progress-bar"
+                                    style="height: 100%; width: 100%; background-color: var(--accent); transition: width 1s linear;">
                                 </div>
                             </div>
-                            <div id="last-updated-time" style="font-size: 13px; color: var(--text-muted); white-space: nowrap; font-family: monospace; font-weight: 500;">
+                            <div id="last-updated-time"
+                                style="font-size: 13px; color: var(--text-muted); white-space: nowrap; font-family: monospace; font-weight: 500;">
                                 Act: --:--:--</div>
                         </div>
                     </div>
@@ -723,10 +793,13 @@
                 </div>
 
                 <div class="macro-card" style="padding: 24px; margin-top: 24px;">
-                    <h2 style="color: var(--text-main); margin: 0 0 24px 0; font-size: 18px; font-weight: 600; letter-spacing: -0.5px;">Bandas Cambiarias y Dólar
+                    <h2
+                        style="color: var(--text-main); margin: 0 0 24px 0; font-size: 18px; font-weight: 600; letter-spacing: -0.5px;">
+                        Bandas Cambiarias y Dólar
                         Mayorista</h2>
 
-                    <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start; margin-bottom: 25px;">
+                    <div
+                        style="display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start; margin-bottom: 25px;">
                         <div
                             style="flex: 1; min-width: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 10px;">
                             <div
@@ -803,19 +876,25 @@
                     </div>
 
                     <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
-                        <div style="background-color: var(--bg-card-solid); border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; overflow: hidden; padding: 4px; gap: 4px;">
-                            <button id="btn-bandas-chart" onclick="toggleBandasView('chart')" style="background-color: var(--bg-card-hover); color: var(--text-main); border: none; padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 600; margin: 0; border-radius: 8px;">Gráfico</button>
-                            <button id="btn-bandas-table" onclick="toggleBandasView('table')" style="background-color: transparent; color: var(--text-muted); border: none; padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 500; margin: 0; border-radius: 8px;">Tabla</button>
+                        <div
+                            style="background-color: var(--bg-card-solid); border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; overflow: hidden; padding: 4px; gap: 4px;">
+                            <button id="btn-bandas-chart" onclick="toggleBandasView('chart')"
+                                style="background-color: var(--bg-card-hover); color: var(--text-main); border: none; padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 600; margin: 0; border-radius: 8px;">Gráfico</button>
+                            <button id="btn-bandas-table" onclick="toggleBandasView('table')"
+                                style="background-color: transparent; color: var(--text-muted); border: none; padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 500; margin: 0; border-radius: 8px;">Tabla</button>
                         </div>
                     </div>
-                    
+
                     <div id="bandas-chart-view" style="height: 250px; width: 100%;">
                         <canvas id="bandasChart"></canvas>
                     </div>
-                    
-                    <div id="bandas-table-view" style="display: none; max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
-                        <table class="data-table" style="font-size: 13px; margin: 0; width: 100%; text-align: left; border: none;">
-                            <thead style="position: sticky; top: 0; background-color: var(--bg-card-solid); z-index: 10; border-bottom: 1px solid var(--border-color);">
+
+                    <div id="bandas-table-view"
+                        style="display: none; max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                        <table class="data-table"
+                            style="font-size: 13px; margin: 0; width: 100%; text-align: left; border: none;">
+                            <thead
+                                style="position: sticky; top: 0; background-color: var(--bg-card-solid); z-index: 10; border-bottom: 1px solid var(--border-color);">
                                 <tr>
                                     <th style="padding: 8px;">Fecha</th>
                                     <th style="padding: 8px;">Mayorista</th>
@@ -834,41 +913,70 @@
         <div id="tab-tasas" class="tab-pane">
             <div class="panel-ancho">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                    <h2 style="color: var(--text-main); margin: 0; font-size: 18px; font-weight: 600;">Tasas de Interés y Rendimientos</h2>
+                    <h2 style="color: var(--text-main); margin: 0; font-size: 18px; font-weight: 600;">Tasas de Interés
+                        y Rendimientos</h2>
                 </div>
 
                 <!-- PESOS (ARS) VIEW -->
-                <div id="tasas-pesos" style="display: block; animation: fadeIn 0.4s ease forwards; max-width: 900px; margin: 0 auto;">
+                <div id="tasas-pesos"
+                    style="display: block; animation: fadeIn 0.4s ease forwards; max-width: 900px; margin: 0 auto;">
                     <div style="margin-bottom: 48px;">
-                        <h3 style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px; font-weight: 500;">Cuentas remuneradas y billeteras con tasa fija garantizada</h3>
+                        <h3 style="color: var(--text-main); font-size: 16px; margin-bottom: 4px; font-weight: 500;">
+                            Cuentas remuneradas y billeteras</h3>
+                        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
+                            Interés fijo preestablecido por la entidad. Liquidez inmediata con pago de rendimientos diarios.</p>
                         <div id="ars-accounts-container" style="display: flex; flex-direction: column; gap: 16px;">
-                            <div style="text-align: center; color: var(--text-muted); padding: 40px;">Cargando cuentas...</div>
+                            <div style="text-align: center; color: var(--text-muted); padding: 40px;">Cargando
+                                cuentas...</div>
                         </div>
                     </div>
 
                     <div style="margin-bottom: 48px;">
-                        <h3 style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px; font-weight: 500;">Plazos Fijos Top 10</h3>
+                        <h3 style="color: var(--text-main); font-size: 16px; margin-bottom: 4px; font-weight: 500;">
+                            Plazos Fijos Top 10</h3>
+                        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
+                            Tasa fija garantizada. Requiere inmovilizar el capital por un mínimo de 30 días.</p>
                         <div style="display: grid; grid-template-columns: 1fr; gap: 16px;">
                             <div class="macro-card">
-                                <div class="card-header-gradient" style="margin-bottom: 12px; font-weight: 600;">Plazos Fijos Tradicionales</div>
-                                <div id="ars-pf-list" style="color: var(--text-muted); font-size: 13px;">Cargando...</div>
+                                <div class="card-header-gradient" style="margin-bottom: 12px; font-weight: 600;">Plazos
+                                    Fijos Tradicionales</div>
+                                <div id="ars-pf-list" style="color: var(--text-muted); font-size: 13px;">Cargando...
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div style="margin-bottom: 48px;">
-                        <h3 style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px; font-weight: 500;">Rendimiento Variable (FCI)</h3>
+                        <h3 style="color: var(--text-main); font-size: 16px; margin-bottom: 4px; font-weight: 500;">
+                            Fondos Comunes de Inversión</h3>
+                        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
+                            Rendimiento variable. Estimación basada en lo que rindió el fondo en los últimos días. Liquidez inmediata (rescate en el día).</p>
                         <div id="ars-fci-container" style="display: flex; flex-direction: column; gap: 16px;">
-                            <div style="text-align: center; color: var(--text-muted); padding: 40px;">Cargando FCI...</div>
+                            <div style="text-align: center; color: var(--text-muted); padding: 40px;">Cargando FCI...
+                            </div>
                         </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 48px; background-color: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: var(--radius-lg); padding: 20px;">
+                        <h4 style="color: #93c5fd; font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                            ¿Cómo leer estas tasas?
+                        </h4>
+                        <ul style="color: var(--text-muted); font-size: 13px; line-height: 1.6; padding-left: 20px; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+                            <li><strong style="color: var(--text-main);">Plazo Fijo:</strong> La Tasa Nominal Anual (TNA) es fija, pero no puedes usar tu dinero por un mínimo de 30 días.</li>
+                            <li><strong style="color: var(--text-main);">Cuentas Remuneradas:</strong> La tasa es establecida en cada período por la billetera, cobras todos los días y puedes usar tu dinero cuando quieras.</li>
+                            <li><strong style="color: var(--text-main);">Fondos Comunes (FCI):</strong> Al componerse de muchos instrumentos de mercado, su rendimiento cambia a diario. La tasa mostrada aquí se calcula comparando la variación del valor oficial del fondo reportado las últimas 48 horas vigentes (CAFCI) y anualizando el resultado.</li>
+                        </ul>
                     </div>
 
                     <div style="margin-bottom: 48px;">
-                        <h3 style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px; font-weight: 500;">Cauciones Bursátiles</h3>
+                        <h3 style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px; font-weight: 500;">
+                            Cauciones Bursátiles</h3>
                         <div class="macro-card" style="padding: 0; overflow-x: auto;">
                             <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
                                 <thead>
-                                    <tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 11px; text-transform: uppercase;">
+                                    <tr
+                                        style="border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 11px; text-transform: uppercase;">
                                         <th style="padding: 16px; font-weight: 500;">Plazo</th>
                                         <th style="padding: 16px; font-weight: 500;">Tasa Actual</th>
                                         <th style="padding: 16px; font-weight: 500;">Variación</th>
@@ -878,21 +986,33 @@
                                 </thead>
                                 <tbody>
                                     <tr style="border-bottom: 1px solid var(--border-color);">
-                                        <td style="padding: 16px;"><div style="font-weight: 600; color: var(--text-main);">PESOS 1D</div><div style="font-size: 11px; color: var(--text-muted);">Caución a 1 día</div></td>
+                                        <td style="padding: 16px;">
+                                            <div style="font-weight: 600; color: var(--text-main);">PESOS 1D</div>
+                                            <div style="font-size: 11px; color: var(--text-muted);">Caución a 1 día
+                                            </div>
+                                        </td>
                                         <td style="padding: 16px; font-weight: 600; color: var(--green);">21.00%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                     </tr>
                                     <tr style="border-bottom: 1px solid var(--border-color);">
-                                        <td style="padding: 16px;"><div style="font-weight: 600; color: var(--text-main);">PESOS 7D</div><div style="font-size: 11px; color: var(--text-muted);">Caución a 7 días</div></td>
+                                        <td style="padding: 16px;">
+                                            <div style="font-weight: 600; color: var(--text-main);">PESOS 7D</div>
+                                            <div style="font-size: 11px; color: var(--text-muted);">Caución a 7 días
+                                            </div>
+                                        </td>
                                         <td style="padding: 16px; font-weight: 600; color: var(--green);">22.00%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 16px;"><div style="font-weight: 600; color: var(--text-main);">PESOS 14D</div><div style="font-size: 11px; color: var(--text-muted);">Caución a 14 días</div></td>
+                                        <td style="padding: 16px;">
+                                            <div style="font-weight: 600; color: var(--text-main);">PESOS 14D</div>
+                                            <div style="font-size: 11px; color: var(--text-muted);">Caución a 14 días
+                                            </div>
+                                        </td>
                                         <td style="padding: 16px; font-weight: 600; color: var(--green);">25.00%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
                                         <td style="padding: 16px; color: var(--text-muted);">0%</td>
@@ -905,9 +1025,12 @@
                 </div>
 
                 <!-- STABLECOINS VIEW -->
-                <div id="tasas-cripto" style="display: none; animation: fadeIn 0.4s ease forwards; max-width: 1000px; margin: 0 auto;">
-                    <div class="macro-card" style="padding: 0; overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
-                        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; min-width: 700px;">
+                <div id="tasas-cripto"
+                    style="display: none; animation: fadeIn 0.4s ease forwards; max-width: 1000px; margin: 0 auto;">
+                    <div class="macro-card"
+                        style="padding: 0; overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
+                        <table
+                            style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; min-width: 700px;">
                             <thead id="cripto-thead">
                                 <!-- JS Injected Matrix Header -->
                             </thead>
@@ -946,39 +1069,39 @@
             const root = getComputedStyle(document.documentElement);
             const gridColor = root.getPropertyValue('--chart-grid-color').trim() || 'rgba(63, 63, 70, 0.4)';
             const textColor = root.getPropertyValue('--chart-text-color').trim() || 'rgba(161, 161, 170, 1)';
-            
+
             if (window.spreadChartInstance) {
                 window.spreadChartInstance.options.scales.x.ticks.color = textColor;
                 window.spreadChartInstance.options.scales.y.ticks.color = textColor;
-                
+
                 // Add robust grid color overriding while protecting the zero-line
                 window.spreadChartInstance.options.scales.y.grid = window.spreadChartInstance.options.scales.y.grid || {};
-                window.spreadChartInstance.options.scales.y.grid.color = function(ctx) {
+                window.spreadChartInstance.options.scales.y.grid.color = function (ctx) {
                     return (ctx.tick && ctx.tick.value === 0) ? (document.documentElement.getAttribute('data-theme') === 'light' ? 'rgba(0,0,0,0.06)' : 'rgba(255, 255, 255, 0.4)') : gridColor;
                 };
                 window.spreadChartInstance.options.scales.x.grid = window.spreadChartInstance.options.scales.x.grid || {};
                 window.spreadChartInstance.options.scales.x.grid.color = gridColor;
-                
+
                 window.spreadChartInstance.update('none');
             }
             if (window.bandasChartInstance) {
                 window.bandasChartInstance.options.scales.x.ticks.color = textColor;
                 window.bandasChartInstance.options.scales.y.ticks.color = textColor;
                 window.bandasChartInstance.options.plugins.legend.labels.color = textColor;
-                
+
                 window.bandasChartInstance.options.scales.y.grid = window.bandasChartInstance.options.scales.y.grid || {};
                 window.bandasChartInstance.options.scales.y.grid.color = gridColor;
                 window.bandasChartInstance.options.scales.x.grid = window.bandasChartInstance.options.scales.x.grid || {};
                 window.bandasChartInstance.options.scales.x.grid.color = gridColor;
-                
+
                 window.bandasChartInstance.update('none');
             }
             if (window.tradingviewWidget) {
                 const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
                 // Triggering a TV widget theme update requires recreating it. We'll do it if it exists.
                 if (document.querySelector('.ticker-row.active')) {
-                   const sym = document.querySelector('.ticker-row.active').getAttribute('data-symbol');
-                   initChart(sym);
+                    const sym = document.querySelector('.ticker-row.active').getAttribute('data-symbol');
+                    initChart(sym);
                 }
             }
         }
@@ -1001,23 +1124,23 @@
             applyChartThemeOverrides();
         }
 
-        (function() {
+        (function () {
             // Check system preference & localStorage
             const savedTheme = localStorage.getItem("theme-preference");
             const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
             const initialTheme = savedTheme ? savedTheme : (systemPrefersDark ? "dark" : "light");
             document.documentElement.setAttribute("data-theme", initialTheme);
-            
+
             // Listen for system theme changes if not explicitly overridden by user
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-                if(!localStorage.getItem("theme-preference")) {
+                if (!localStorage.getItem("theme-preference")) {
                     const newTheme = event.matches ? "dark" : "light";
                     document.documentElement.setAttribute("data-theme", newTheme);
                     updateThemeIcon(newTheme);
                     applyChartThemeOverrides();
                 }
             });
-            
+
             // Wait for DOM to load before setting initial icon
             document.addEventListener('DOMContentLoaded', () => {
                 updateThemeIcon(initialTheme);
@@ -1031,7 +1154,7 @@
             btnElement.closest('.nav-container').querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btnElement.classList.add('active');
-            
+
             // Toggle submenu
             const submenu = document.getElementById('submenu-tasas');
             if (submenu) {
@@ -1046,9 +1169,9 @@
             btnElement.parentElement.querySelectorAll('.sub-tab').forEach(el => el.classList.remove('active'));
             document.getElementById(subId).style.display = 'block';
             btnElement.classList.add('active');
-            
+
             // Trigger fetch only if switching back to Pesos (which might need a refresh) or simply rely on initial load
-            if(subId === 'tasas-pesos' && !window.tasasLoaded) {
+            if (subId === 'tasas-pesos' && !window.tasasLoaded) {
                 loadTasasData();
             }
         }
@@ -1077,11 +1200,20 @@
                 let init = name.charAt(0).toUpperCase();
                 let exactIcon = iconMapExt[name.toLowerCase()] || iconMapExt[name.split(' ')[0].toLowerCase()];
                 let limitStr = limit ? `<span class="badge-red" style="font-size: 11px;">${limit}</span>` : `<span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--border-color); color: var(--text-muted); background: var(--bg-card-hover);">Sin Límites</span>`;
-                
+
                 let renderIcon = exactIcon ? exactIcon : `<div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--bg-card-hover), transparent); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--text-muted); font-size: 20px; flex-shrink: 0;">${init}</div>`;
-                if(exactIcon) {
+                if (exactIcon) {
                     // scale icon up for cards
                     renderIcon = exactIcon.replace('width: 28px;', 'width: 44px;').replace('height: 28px;', 'height: 44px;');
+                }
+
+                let badgesHtml = `<span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(59,130,246,0.2); color: #93c5fd; background: rgba(59,130,246,0.05);">${type}</span>`;
+                if (type === 'Cuenta Remunerada' || type === 'Billetera') {
+                    badgesHtml += ` <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(16,185,129,0.3); color: #34d399; background: rgba(16,185,129,0.1);">Liquidez Diaria</span>`;
+                }
+                if (type === 'FCI') {
+                    badgesHtml += ` <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(16,185,129,0.3); color: #34d399; background: rgba(16,185,129,0.1);">Liquidez Diaria</span>
+                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(167,139,250,0.3); color: #a78bfa; background: rgba(167,139,250,0.1);">Tasa Variable</span>`;
                 }
 
                 return `<div style="display: flex; align-items: center; justify-content: space-between; padding: 24px; background-color: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); cursor: default;">
@@ -1090,8 +1222,8 @@
                         <div>
                             <div style="font-weight: 500; font-size: 16px; color: var(--text-main); margin-bottom: 6px; letter-spacing: 0.3px;">${name}</div>
                             ${conditions ? `<div style="font-size: 14px; color: var(--text-muted); line-height: 1.5; max-width: 550px; margin-bottom: 12px; letter-spacing: 0.2px;">${conditions}</div>` : ''}
-                            <div style="display: flex; gap: 8px; align-items: center;">
-                                <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(59,130,246,0.2); color: #93c5fd; background: rgba(59,130,246,0.05);">${type}</span>
+                            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                ${badgesHtml}
                                 ${limitStr}
                             </div>
                         </div>
@@ -1108,11 +1240,12 @@
                 let html = '<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">';
                 items.forEach(i => {
                     let renderLogo = i.logo ? `<img src="${i.logo}" style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover; background: white;" alt="${i.name} logo" onerror="this.outerHTML='<div style=\\\'width: 20px; height: 20px; border-radius: 50%; background: var(--bg-card-hover); line-height:20px; text-align:center; font-size:10px; color:var(--text-muted);\\\'>${i.name.charAt(0)}</div>'"/>` : `<div style="width: 20px; height: 20px; border-radius: 50%; background: var(--bg-card-hover); line-height:20px; text-align:center; font-size:10px; color:var(--text-muted);">${i.name.charAt(0)}</div>`;
-                    
+
                     html += `<li style="display: flex; justify-content: space-between; font-size: 13px; padding: 8px 0; border-bottom: 1px solid var(--border-color); align-items: center;">
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     ${renderLogo}
-                                    <span style="color: var(--text-main);">${i.name}</span>
+                                    <span style="color: var(--text-main); font-weight: 500;">${i.name}</span>
+                                    <span style="font-size: 10px; padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(245,158,11,0.3); color: #fbbf24; background: rgba(245,158,11,0.1);">Bloqueo 30 días</span>
                                 </div>
                                 <span style="font-weight: 600; color: var(--green);">${(i.rate * 100).toFixed(2)}% TNA</span>
                              </li>`;
@@ -1121,150 +1254,214 @@
             };
 
             try {
-                // Plazos Fijos
-                fetch("https://api.argentinadatos.com/v1/finanzas/tasas/plazoFijo")
-                    .then(r => r.json())
-                    .then(data => {
-                        let latest = data;
-                        latest.sort((a,b) => (b.tnaClientes || 0) - (a.tnaClientes || 0));
-                        let top10 = latest.slice(0, 10).map(e => ({
-                            name: e.entidad.replace("BANCO ", "").replace(" DE LA ", " ").substring(0,25), 
-                            rate: e.tnaClientes,
-                            logo: e.logo
-                        }));
-                        document.getElementById('ars-pf-list').innerHTML = formatSimpleList(top10);
-                    }).catch(e => console.log('Err PF:', e));
+                Promise.all([
+                    fetch("https://api.argentinadatos.com/v1/finanzas/tasas/plazoFijo").then(r => r.json()),
+                    fetch("https://api.argentinadatos.com/v1/finanzas/fci/otros/ultimo").then(r => r.json()),
+                    fetch("https://api.argentinadatos.com/v1/finanzas/rendimientos").then(r => r.json()),
+                    fetch("https://api.argentinadatos.com/v1/finanzas/fci/mercadoDinero/ultimo").then(r => r.json()),
+                    fetch("https://api.argentinadatos.com/v1/finanzas/fci/mercadoDinero/penultimo").then(r => r.json())
+                ]).then(([pfData, remuData, rendData, fciUltimo, fciPenultimo]) => {
+                    // 1. Plazos Fijos
+                    let allowedPf = ['NACION', 'PROVINCIA', 'CIUDAD', 'SANTANDER', 'GALICIA', 'BBVA', 'MACRO', 'HSBC', 'BRUBANK', 'ICBC', 'DEL SOL', 'UALA'];
+                    let filteredPf = pfData.filter(e => {
+                        let entUpperCase = e.entidad.toUpperCase();
+                        return allowedPf.some(a => entUpperCase.includes(a));
+                    });
 
-                // Cuentas Remuneradas / Uala Plus, etc.
-                fetch("https://api.argentinadatos.com/v1/finanzas/fci/otros/ultimo")
-                    .then(r => r.json())
-                    .then(data => {
-                        let filterNames = ['CARREFOUR', 'FIWIND', 'NARANJA', 'UALA', 'BELO'];
-                        let filtered = data.filter(e => filterNames.some(f => e.fondo.toUpperCase().includes(f)));
-                        filtered.sort((a,b) => (b.tna || 0) - (a.tna || 0));
+                    let uniquePf = [];
+                    let seenPf = new Set();
+                    for (let p of filteredPf) {
+                        let entUpperCase = p.entidad.toUpperCase();
+                        let cleanName = p.entidad.replace("BANCO ", "").replace(" DE LA ", " ").substring(0, 25);
                         
-                        let html = '';
-                        filtered.forEach(acc => {
-                            let rawName = acc.fondo;
-                            let name = rawName.replace('BANCO', '').trim();
-                            // Fixes for proper casing
-                            if(name === 'UALA') name = 'Ualá';
-                            if(name === 'UALA PLUS 1') name = 'Ualá Plus 1';
-                            if(name === 'UALA PLUS 2') name = 'Ualá Plus 2';
-                            if(name === 'NARANJA X') name = 'Naranja X';
-                            if(name === 'FIWIND') name = 'Fiwind';
-                            if(name === 'BELO') name = 'Belo';
-                            if(name === 'CARREFOUR') name = 'Carrefour Banco';
+                        if (entUpperCase.includes('NACION')) cleanName = 'Banco Nación';
+                        else if (entUpperCase.includes('PROVINCIA')) cleanName = 'Banco Provincia';
+                        else if (entUpperCase.includes('CIUDAD')) cleanName = 'Banco Ciudad';
+                        else if (entUpperCase.includes('SANTANDER')) cleanName = 'Banco Santander';
+                        else if (entUpperCase.includes('GALICIA MAS') || entUpperCase.includes('HSBC')) cleanName = 'Banco Galicia Más (ex HSBC)';
+                        else if (entUpperCase.includes('GALICIA')) cleanName = 'Banco Galicia';
+                        else if (entUpperCase.includes('BBVA')) cleanName = 'BBVA';
+                        else if (entUpperCase.includes('MACRO')) cleanName = 'Banco Macro';
+                        else if (entUpperCase.includes('BRUBANK')) cleanName = 'Brubank';
+                        else if (entUpperCase.includes('ICBC')) cleanName = 'Banco ICBC';
+                        else if (entUpperCase.includes('DEL SOL')) cleanName = 'Banco del Sol';
+                        else if (entUpperCase.includes('UALA')) cleanName = 'Ualá';
 
-                            let tna = (acc.tna * 100).toFixed(2) + '%';
-                            let dateText = acc.fecha ? acc.fecha.split('-').reverse().join('/') : '';
-                            
-                            let limitTxt = null;
-                            if (acc.tope) limitTxt = `Límite: $${(acc.tope/1000000)} M`;
-                            else if (acc.condiciones && acc.condiciones.includes('4.161.600')) limitTxt = 'Límite: $4.1 M';
-                            
-                            let type = (rawName.includes('FIWIND') || rawName.includes('BELO')) ? 'Billetera' : 'Cuenta Remunerada';
-                            let conditions = acc.condicionesCorto || null; // Explanations
-
-                            html += formatCard(name, tna, dateText, limitTxt, conditions, type);
-                        });
-                        document.getElementById('ars-accounts-container').innerHTML = html;
-                    }).catch(e => console.log('Err Remu:', e));
-
-                // Rendimientos Matrix
-                fetch("https://api.argentinadatos.com/v1/finanzas/rendimientos")
-                    .then(r => r.json())
-                    .then(data => {
-                        // FCI Pesos via Rendimientos Endpoint formatted into cards!
-                        let pfItems = [];
-                        data.forEach(item => {
-                            if(item.entidad && item.entidad.length > 2) {
-                                let ars = item.rendimientos.find(r => r.moneda === 'ARS');
-                                if(ars && ars.apy) pfItems.push({name: item.entidad.toUpperCase(), rate: ars.apy / 100});
-                            }
-                        });
-                        pfItems.sort((a,b) => b.rate - a.rate);
-                        let topFci = pfItems.slice(0, 5);
-                        let fciHtml = '';
-                        topFci.forEach(f => {
-                            let type = f.name.includes('FIWIND') ? 'Billetera' : 'FCI / Exchange';
-                            fciHtml += formatCard(
-                                f.name, 
-                                (f.rate * 100).toFixed(2) + '%', 
-                                '', 
-                                null, 
-                                'Fondo común de inversión ofrecido mediante intermediario / partner. Tasa variable según mercado.', 
-                                type
-                            );
-                        });
-                        if (fciHtml === '') fciHtml = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No hay rendimientos disponibles.</div>';
-                        document.getElementById('ars-fci-container').innerHTML = fciHtml;
-
-                        // Crypto Matrix
-                        let entities = ['Binance Earn', 'Fiwind', 'LB', 'Belo', 'LemonCash', 'Vesseo'];
-                        // the internal names mapped to API:
-                        let entityKeyMap = {'Binance Earn': 'binance', 'Fiwind': 'fiwind', 'LB': 'letsbit', 'Belo': 'belo', 'LemonCash': 'lemoncash', 'Vesseo': 'vesseo'};
-
-                        let coins = ['USDT', 'USDC', 'DAI'];
-                        let coinMap = {'USDT': 'USDT', 'USDC': 'USDC', 'DAI': 'DAI'};
-                        
-                        let htmlHead = `<tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 11px; text-transform: uppercase;">
-                            <th style="padding: 16px; font-weight: 500;">Criptomoneda</th>`;
-                        entities.forEach(ent => {
-                            let mappedIcon = iconMapExt[ent.toLowerCase()] || iconMapExt[ent.split(' ')[0].toLowerCase()];
-                            let renderLogo = mappedIcon ? mappedIcon : `<div style="width:28px; height:28px; line-height:28px; text-align:center; border-radius:50%; background:var(--bg-card-hover); color:var(--text-main); font-size:11px;">${ent.charAt(0)}</div>`;
-                            htmlHead += `<th style="padding: 16px; font-weight: 500; text-align: center;">
-                                <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-                                    ${renderLogo}
-                                    ${ent === 'Binance Earn' ? 'Binance' : (ent === 'LemonCash' ? 'Lemon' : ent)}
-                                </div>
-                            </th>`;
-                        });
-                        htmlHead += '</tr>';
-                        document.getElementById('cripto-thead').innerHTML = htmlHead;
-
-                        let htmlBody = '';
-                        coins.forEach(coinDisplay => {
-                            let coinCode = coinMap[coinDisplay] || coinDisplay;
-                            let exactIcon = iconMapExt[coinCode.toLowerCase()];
-                            let cInitial = coinDisplay.charAt(0);
-                            let renderIcon = exactIcon ? exactIcon : `<div style="width: 24px; height: 24px; border-radius: 50%; background: var(--bg-card-hover); line-height:24px; text-align:center; font-size:11px; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">${cInitial}</div>`;
-
-                            htmlBody += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                                <td style="padding: 16px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 12px; white-space: nowrap;">
-                                    ${renderIcon}
-                                    ${coinDisplay}
-                                </td>`;
-                            
-                            entities.forEach(ent => {
-                                let apiKey = entityKeyMap[ent];
-                                let providerData = data.find(d => d.entidad.toLowerCase() === apiKey.toLowerCase());
-                                
-                                // Mock APY for binance earn if the ArgentinaDatos api doesnt actually have it (since criptoya has Binance but argentinadatos often doesnt).
-                                let displayVal = '<span style="color:var(--text-muted);">-</span>';
-                                if (apiKey === 'binance') {
-                                    if(coinCode === 'USDT') displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #818cf8; font-weight: 600;">8.30%</div>`;
-                                    if(coinCode === 'BTC') displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #818cf8; font-weight: 600;">0.28%</div>`;
-                                } else if (providerData) {
-                                    let rate = providerData.rendimientos.find(r => r.moneda.toUpperCase() === coinCode.toUpperCase());
-                                    if(rate && rate.apy > 0) {
-                                        let valStr = rate.apy.toFixed(2) + '%';
-                                        displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #818cf8; font-weight: 600;">${valStr}</div>`;
-                                    }
-                                }
-                                htmlBody += `<td style="padding: 16px; text-align: center;">${displayVal}</td>`;
+                        if (!seenPf.has(cleanName)) {
+                            seenPf.add(cleanName);
+                            uniquePf.push({
+                                name: cleanName,
+                                rate: p.tnaClientes,
+                                logo: p.logo
                             });
-                            htmlBody += '</tr>';
-                        });
-                        document.getElementById('cripto-tbody').innerHTML = htmlBody;
+                        }
+                    }
 
-                    }).catch(e => console.log('Err FCI/Rend:', e));
+                    uniquePf.sort((a, b) => (b.rate || 0) - (a.rate || 0));
+                    document.getElementById('ars-pf-list').innerHTML = formatSimpleList(uniquePf);
+
+                    // 2. Cuentas Remuneradas / Uala Plus, etc.
+                    let filterNames = ['CARREFOUR', 'FIWIND', 'NARANJA', 'UALA', 'BELO'];
+                    let filtered = remuData.filter(e => filterNames.some(f => e.fondo.toUpperCase().includes(f)));
+                    filtered.sort((a, b) => (b.tna || 0) - (a.tna || 0));
+
+                    let remuHtml = '';
+                    filtered.forEach(acc => {
+                        let rawName = acc.fondo;
+                        let name = rawName.replace('BANCO', '').trim();
+                        // Fixes for proper casing
+                        if (name === 'UALA') name = 'Ualá';
+                        if (name === 'UALA PLUS 1') name = 'Ualá Plus 1';
+                        if (name === 'UALA PLUS 2') name = 'Ualá Plus 2';
+                        if (name === 'NARANJA X') name = 'Naranja X';
+                        if (name === 'FIWIND') name = 'Fiwind';
+                        if (name === 'BELO') name = 'Belo';
+                        if (name === 'CARREFOUR') name = 'Carrefour Banco';
+
+                        let tna = (acc.tna * 100).toFixed(2) + '%';
+                        let dateText = acc.fecha ? acc.fecha.split('-').reverse().join('/') : '';
+
+                        let limitTxt = null;
+                        if (acc.tope) limitTxt = `Límite: $${(acc.tope / 1000000)} M`;
+                        else if (acc.condiciones && acc.condiciones.includes('4.161.600')) limitTxt = 'Límite: $4.1 M';
+
+                        let type = (rawName.includes('FIWIND') || rawName.includes('BELO')) ? 'Billetera' : 'Cuenta Remunerada';
+                        let conditions = acc.condicionesCorto || null; // Explanations
+
+                        remuHtml += formatCard(name, tna, dateText, limitTxt, conditions, type);
+                    });
+                    document.getElementById('ars-accounts-container').innerHTML = remuHtml;
+
+                    // 3. Fondos Comunes de Inversión (FCI)
+                    let allowedFci = [
+                        { key: 'PREX', name: 'Prex', desc: 'Allaria Ahorro - Clase E' },
+                        { key: 'PERSONAL', name: 'Personal Pay', desc: 'Delta Pesos - Clase X' },
+                        { key: 'UALA', name: 'Ualá', desc: 'Ualintec Ahorro Pesos - Clase A' },
+                        { key: 'CLARO', name: 'Claro Pay', desc: 'SBS Ahorro Pesos - Clase A' },
+                        { key: 'MERCADO', name: 'Mercado Pago', desc: 'Mercado Fondo - Clase A' },
+                        { key: 'LEMON', name: 'Lemon', desc: 'Fima Premium - Clase P' },
+                        { key: 'FIWIND', name: 'Fiwind', desc: 'Delta Pesos - Clase A' }
+                    ];
+
+                    let fciItems = [];
+                    
+                    allowedFci.forEach(f => {
+                        let ultNode = fciUltimo.find(item => item.fondo && item.fondo.toUpperCase() === f.desc.toUpperCase()); 
+                        let penNode = fciPenultimo.find(item => item.fondo && item.fondo.toUpperCase() === f.desc.toUpperCase()); 
+                        
+                        if (ultNode && penNode && ultNode.vcp && penNode.vcp) {
+                            let yieldPeriod = (ultNode.vcp / penNode.vcp) - 1;
+                            
+                            let tUlt = new Date(ultNode.fecha);
+                            let tPen = new Date(penNode.fecha);
+                            
+                            let days = (tUlt - tPen) / (1000 * 60 * 60 * 24);
+                            if (days > 0) {
+                                let dailyYield = yieldPeriod / days;
+                                let tna = dailyYield * 365;
+
+                                let formatDate = (dStr) => {
+                                    if (!dStr) return '';
+                                    let p = dStr.split('-'); 
+                                    return p[2] + '/' + p[1] + '/' + p[0];
+                                }
+                                let dateStr = `Entre ${formatDate(penNode.fecha)} y ${formatDate(ultNode.fecha)}`;
+
+                                fciItems.push({
+                                    name: f.name,
+                                    descText: f.desc,
+                                    dateStr: dateStr,
+                                    rate: tna
+                                });
+                            }
+                        }
+                    });
+
+                    fciItems.sort((a, b) => b.rate - a.rate);
+                    let fciHtml = '';
+                    fciItems.forEach(f => {
+                        let type = f.name === 'Prex' || f.name === 'Personal Pay' || f.name === 'Ualá' || f.name === 'Claro Pay' || f.name === 'Mercado Pago' || f.name === 'Lemon' || f.name === 'Fiwind' ? 'Billetera' : 'FCI';
+                        
+                        let combinedDesc = f.descText + '<br><span style="font-size: 11px; color: var(--text-main); margin-top: 4px; display: block;">' + f.dateStr + '</span>';
+
+                        fciHtml += formatCard(
+                            f.name,
+                            (f.rate * 100).toFixed(2) + '%',
+                            '',
+                            null,
+                            combinedDesc,
+                            type
+                        );
+                    });
+                    
+                    if (fciHtml === '') fciHtml = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No hay rendimientos disponibles.</div>';
+                    document.getElementById('ars-fci-container').innerHTML = fciHtml;
+
+                    // Crypto Matrix
+                    let entities = ['Binance Earn', 'Fiwind', 'LB', 'Belo', 'LemonCash', 'Vesseo'];
+                    // the internal names mapped to API:
+                    let entityKeyMap = { 'Binance Earn': 'binance', 'Fiwind': 'fiwind', 'LB': 'letsbit', 'Belo': 'belo', 'LemonCash': 'lemoncash', 'Vesseo': 'vesseo' };
+
+                    let coins = ['USDT', 'USDC', 'DAI'];
+                    let coinMap = { 'USDT': 'USDT', 'USDC': 'USDC', 'DAI': 'DAI' };
+
+                    let htmlHead = `<tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 11px; text-transform: uppercase;">
+                        <th style="padding: 16px; font-weight: 500;">Criptomoneda</th>`;
+                    entities.forEach(ent => {
+                        let mappedIcon = iconMapExt[ent.toLowerCase()] || iconMapExt[ent.split(' ')[0].toLowerCase()];
+                        let renderLogo = mappedIcon ? mappedIcon : `<div style="width:28px; height:28px; line-height:28px; text-align:center; border-radius:50%; background:var(--bg-card-hover); color:var(--text-main); font-size:11px;">${ent.charAt(0)}</div>`;
+                        htmlHead += `<th style="padding: 16px; font-weight: 500; text-align: center;">
+                            <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+                                ${renderLogo}
+                                ${ent === 'Binance Earn' ? 'Binance' : (ent === 'LemonCash' ? 'Lemon' : ent)}
+                            </div>
+                        </th>`;
+                    });
+                    htmlHead += '</tr>';
+                    document.getElementById('cripto-thead').innerHTML = htmlHead;
+
+                    let htmlBody = '';
+                    coins.forEach(coinDisplay => {
+                        let coinCode = coinMap[coinDisplay] || coinDisplay;
+                        let exactIcon = iconMapExt[coinCode.toLowerCase()];
+                        let cInitial = coinDisplay.charAt(0);
+                        let renderIcon = exactIcon ? exactIcon : `<div style="width: 24px; height: 24px; border-radius: 50%; background: var(--bg-card-hover); line-height:24px; text-align:center; font-size:11px; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">${cInitial}</div>`;
+
+                        htmlBody += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 16px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 12px; white-space: nowrap;">
+                                ${renderIcon}
+                                ${coinDisplay}
+                            </td>`;
+
+                        entities.forEach(ent => {
+                            let apiKey = entityKeyMap[ent];
+                            let providerData = rendData.find(d => d.entidad.toLowerCase() === apiKey.toLowerCase());
+
+                            // Mock APY for binance earn if the ArgentinaDatos api doesnt actually have it (since criptoya has Binance but argentinadatos often doesnt).
+                            let displayVal = '<span style="color:var(--text-muted);">-</span>';
+                            if (apiKey === 'binance') {
+                                if (coinCode === 'USDT') displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #818cf8; font-weight: 600;">8.30%</div>`;
+                                if (coinCode === 'BTC') displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #818cf8; font-weight: 600;">0.28%</div>`;
+                            } else if (providerData) {
+                                let rate = providerData.rendimientos.find(r => r.moneda.toUpperCase() === coinCode.toUpperCase());
+                                if (rate && rate.apy > 0) {
+                                    let valStr = rate.apy.toFixed(2) + '%';
+                                    displayVal = `<div style="display:inline-block; padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #818cf8; font-weight: 600;">${valStr}</div>`;
+                                }
+                            }
+                            htmlBody += `<td style="padding: 16px; text-align: center;">${displayVal}</td>`;
+                        });
+                        htmlBody += '</tr>';
+                    });
+                    document.getElementById('cripto-tbody').innerHTML = htmlBody;
+
+                }).catch(e => console.error("Error in fetching rates concurrently:", e));
 
             } catch (error) {
                 console.error("Error loading rates:", error);
             }
         }
-        
+
         // Trigger load initially
         setTimeout(() => loadTasasData(), 500);
 
@@ -1294,10 +1491,10 @@
                         html += '<tr class="ticker-row" onclick="updateChart(\'' + r.ticker + '\', this)" data-symbol="' + r.ticker + '">';
                         html += '<td><span class="badge-green" style="background-color: transparent; border: 1px solid var(--border-color); color: var(--text-main);">' + r.ticker + '</span></td>';
                         html += '<td>' + (r.abc || '-') + '</td>';
-                        html += '<td class="'+ (r.daily >= 0 ? 'text-green' : 'text-red') +'" style="color:' + (r.daily >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r.daily != null ? r.daily.toFixed(2) + '%' : '-') + '</td>';
-                        html += '<td class="'+ (r.intra >= 0 ? 'text-green' : 'text-red') +'" style="color:' + (r.intra >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r.intra != null ? r.intra.toFixed(2) + '%' : '-') + '</td>';
-                        html += '<td class="'+ (r['5d'] >= 0 ? 'text-green' : 'text-red') +'" style="color:' + (r['5d'] >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r['5d'] != null ? r['5d'].toFixed(2) + '%' : '-') + '</td>';
-                        html += '<td class="'+ (r['20d'] >= 0 ? 'text-green' : 'text-red') +'" style="color:' + (r['20d'] >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r['20d'] != null ? r['20d'].toFixed(2) + '%' : '-') + '</td>';
+                        html += '<td class="' + (r.daily >= 0 ? 'text-green' : 'text-red') + '" style="color:' + (r.daily >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r.daily != null ? r.daily.toFixed(2) + '%' : '-') + '</td>';
+                        html += '<td class="' + (r.intra >= 0 ? 'text-green' : 'text-red') + '" style="color:' + (r.intra >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r.intra != null ? r.intra.toFixed(2) + '%' : '-') + '</td>';
+                        html += '<td class="' + (r['5d'] >= 0 ? 'text-green' : 'text-red') + '" style="color:' + (r['5d'] >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r['5d'] != null ? r['5d'].toFixed(2) + '%' : '-') + '</td>';
+                        html += '<td class="' + (r['20d'] >= 0 ? 'text-green' : 'text-red') + '" style="color:' + (r['20d'] >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (r['20d'] != null ? r['20d'].toFixed(2) + '%' : '-') + '</td>';
                         html += '<td>' + (r.atr_pct != null ? r.atr_pct.toFixed(1) + '%' : '-') + '</td>';
                         html += '<td>' + (r.dist_sma50_atr != null ? r.dist_sma50_atr.toFixed(2) : '-') + '</td>';
                         html += '<td>' + (r.rs != null ? Math.round(r.rs) + '%' : '-') + '</td>';
@@ -1314,9 +1511,9 @@
                 const isLight = document.documentElement.getAttribute("data-theme") === "light";
                 chartWidget = new TradingView.widget({
                     allow_symbol_change: true, hide_top_toolbar: false, hide_legend: false, hide_volume: true, interval: 'D',
-                    theme: isLight ? 'light' : 'dark', 
-                    toolbar_bg: isLight ? '#f8fafc' : '#09090b', 
-                    backgroundColor: isLight ? '#f8fafc' : '#09090b', 
+                    theme: isLight ? 'light' : 'dark',
+                    toolbar_bg: isLight ? '#f8fafc' : '#09090b',
+                    backgroundColor: isLight ? '#f8fafc' : '#09090b',
                     gridColor: isLight ? 'rgba(226, 232, 240, 1)' : 'rgba(63, 63, 70, 0.4)',
                     symbol: symbol, autosize: true, container_id: 'tradingview-chart'
                 });
@@ -1346,29 +1543,29 @@
                 } else {
                     document.getElementById('feriados-list').innerHTML = '<li style="list-style:none; color:#9ca3af; margin-left:-20px;">Sin feriados restantes este mes</li>';
                 }
-                    if (macro.ipc_history && Object.keys(macro.ipc_history).length > 0) {
-                        let rows = ''; let acum = 1;
-                        const months = { '01': 'Enero', '02': 'Febrero', '03': 'Marzo', '04': 'Abril', '05': 'Mayo', '06': 'Junio', '07': 'Julio', '08': 'Agosto', '09': 'Septiembre', '10': 'Octubre', '11': 'Noviembre', '12': 'Diciembre' };
-                        Object.keys(macro.ipc_history).sort().forEach(key => {
-                            if (key.startsWith('2026-')) {
-                                let m = key.split('-')[1]; let val = macro.ipc_history[key];
-                                rows += `<tr><td>${months[m] || m}</td><td style="text-align:right; font-weight:600; color:var(--text-main);">${(val * 100).toFixed(1)}%</td></tr>`;
-                                acum *= (1 + val);
-                            }
-                        });
+                if (macro.ipc_history && Object.keys(macro.ipc_history).length > 0) {
+                    let rows = ''; let acum = 1;
+                    const months = { '01': 'Enero', '02': 'Febrero', '03': 'Marzo', '04': 'Abril', '05': 'Mayo', '06': 'Junio', '07': 'Julio', '08': 'Agosto', '09': 'Septiembre', '10': 'Octubre', '11': 'Noviembre', '12': 'Diciembre' };
+                    Object.keys(macro.ipc_history).sort().forEach(key => {
+                        if (key.startsWith('2026-')) {
+                            let m = key.split('-')[1]; let val = macro.ipc_history[key];
+                            rows += `<tr><td>${months[m] || m}</td><td style="text-align:right; font-weight:600; color:var(--text-main);">${(val * 100).toFixed(1)}%</td></tr>`;
+                            acum *= (1 + val);
+                        }
+                    });
                     if (rows) {
                         document.getElementById('inflacion-table').innerHTML = rows;
                         document.getElementById('inflacion-acum').innerText = `Acumulado: ${((acum - 1) * 100).toFixed(2)}%`;
                     }
                 }
-                
+
                 // --- NOW GENERATE DATOS BANDAS DYNAMICALLY ---
                 // We do it here because `macro` is now defined and populated
                 datosBandas = [];
-                const dStart = new Date(2026, 0, 1); 
+                const dStart = new Date(2026, 0, 1);
                 let dEnd = new Date();
-                dEnd.setDate(dEnd.getDate() + 30); 
-                
+                dEnd.setDate(dEnd.getDate() + 30);
+
                 let currentInf = 916.275; // mathematically exact true Dec 31 anchor
                 let currentSup = 1526.596; // mathematically exact true Dec 31 anchor
 
@@ -1390,17 +1587,17 @@
                     let y = d.getFullYear();
                     let daysInM = getDaysInMonth(y, m);
                     let ipc = getIPCForMonth(y, m);
-                    
+
                     let factorSup = Math.pow(1 + ipc, 1 / daysInM);
                     let factorInf = Math.pow(1 - ipc, 1 / daysInM);
-                    
+
                     currentInf *= factorInf;
                     currentSup *= factorSup;
-                    
-                    let dStr = String(d.getDate()).padStart(2, '0') + '-' + 
-                               String(d.getMonth() + 1).padStart(2, '0') + '-' + 
-                               d.getFullYear();
-                    
+
+                    let dStr = String(d.getDate()).padStart(2, '0') + '-' +
+                        String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                        d.getFullYear();
+
                     // Solo redondeamos para mostrar al final
                     datosBandas.push({ date: dStr, inf: Number(currentInf.toFixed(2)), sup: Number(currentSup.toFixed(2)) });
                 }
@@ -1435,7 +1632,7 @@
 
                 if (window.spreadChartInstance) window.spreadChartInstance.destroy();
                 var ctx = document.getElementById('spreadChart').getContext('2d');
-                
+
                 const root = getComputedStyle(document.documentElement);
                 const gridColor = root.getPropertyValue('--chart-grid-color').trim() || 'rgba(63, 63, 70, 0.4)';
                 const textColor = root.getPropertyValue('--chart-text-color').trim() || 'rgba(161, 161, 170, 1)';
@@ -1458,12 +1655,12 @@
 
                 // Preparar datos para el GRÁFICO (Cronológico: Antiguo -> Nuevo)
                 datosBandas.forEach(b => {
-                    let parts = b.date.split('-'); 
+                    let parts = b.date.split('-');
                     let bDate = new Date(parts[2], parts[1] - 1, parts[0]);
                     let isWeekend = (bDate.getDay() === 0 || bDate.getDay() === 6);
                     let apiHolidayFormat = `${parts[2]}-${parts[1]}-${parts[0]}`;
                     let isHoliday = snapshot && snapshot.argentina_macro && snapshot.argentina_macro.full_holidays && snapshot.argentina_macro.full_holidays.includes(apiHolidayFormat);
-                    
+
                     if (bDate <= dToday || b.date === todayStr) {
                         if ((isWeekend || isHoliday) && bDate < dToday && b.date !== todayStr) return;
                         let mayVal = mayoristaMap[b.date] || null;
@@ -1478,7 +1675,7 @@
                 let tableSup = [...dataSup].reverse();
                 let tableInf = [...dataInf].reverse();
                 let tableMay = [...dataMay].reverse();
-                
+
                 for (let i = 0; i < tableLabels.length; i++) {
                     let displayMay = tableMay[i] ? `$${tableMay[i].toFixed(2)}` : '-';
                     tableHtml += `<tr>
@@ -1493,7 +1690,7 @@
 
                 if (window.bandasChartInstance) window.bandasChartInstance.destroy();
                 var ctx = document.getElementById('bandasChart').getContext('2d');
-                
+
                 const root = getComputedStyle(document.documentElement);
                 const gridColor = root.getPropertyValue('--chart-grid-color').trim() || 'rgba(63, 63, 70, 0.4)';
                 const textColor = root.getPropertyValue('--chart-text-color').trim() || 'rgba(161, 161, 170, 1)';
@@ -1512,7 +1709,7 @@
                 });
             }
 
-            window.toggleBandasView = function(view) {
+            window.toggleBandasView = function (view) {
                 const chartView = document.getElementById('bandas-chart-view');
                 const tableView = document.getElementById('bandas-table-view');
                 const btnChart = document.getElementById('btn-bandas-chart');
