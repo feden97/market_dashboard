@@ -39,6 +39,7 @@
 
             --shadow-subtle: 0 4px 15px rgba(0, 0, 0, 0.5);
             --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.8);
+            --card-shadow: none;
             --bg-table-header: #2b2b2b;
             /* Distinct gray header background */
             --bg-header-alpha: rgba(30, 30, 30, 0.95);
@@ -61,11 +62,11 @@
             --bg-card: #ffffff;
             --bg-card-solid: #ffffff;
             --bg-card-hover: #f1f5f9;
-            --border-color: #e2e8f0;
+            --border-color: #e5e7eb;
             --border-hover: #cbd5e1;
 
             --text-main: #0f172a;
-            --text-muted: #64748b;
+            --text-muted: #4b5563;
 
             --accent: #2563eb;
             --accent-glow: rgba(37, 99, 235, 0.1);
@@ -77,6 +78,7 @@
 
             --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
             --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             --bg-table-header: #f1f5f9;
             --bg-header-alpha: rgba(255, 255, 255, 0.95);
             --bg-select: rgba(0, 0, 0, 0.03);
@@ -250,7 +252,7 @@
             padding: 20px;
             border-radius: var(--radius-lg);
             border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-subtle);
+            box-shadow: var(--card-shadow);
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -574,14 +576,31 @@
                 padding: 10px;
             }
 
+            #bandas-chart-view,
+            .chart-container > div {
+                min-height: 250px;
+            }
+
             .tables-grid {
                 display: flex;
                 flex-direction: column;
                 gap: 16px;
             }
 
+            .panel-ancho {
+                padding: 15px;
+                gap: 16px;
+            }
+
             .macro-card {
-                padding: 16px;
+                padding: 15px;
+            }
+
+            .data-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
             }
 
             #tasas-pesos h3,
@@ -629,7 +648,7 @@
             </div>
         </div>
         <div id="submenu-tasas"
-            style="display: none; width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 16px; gap: 24px; margin-top: 4px; border-top: 1px solid var(--border-color); justify-content: center;">
+            style="display: none; width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 16px; gap: 24px; margin-top: 4px; border-top: 1px solid var(--border-color); justify-content: center; flex-wrap: wrap;">
             <button class="sub-tab active" onclick="switchTasasTab('tasas-pesos', this)">🇦🇷 Pesos (ARS)</button>
             <button class="sub-tab" onclick="switchTasasTab('tasas-cripto', this)">🪙 Stablecoins</button>
         </div>

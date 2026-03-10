@@ -355,18 +355,18 @@ def get_historical_fiat_data():
         try:
             r_crypto = requests.get("https://criptoya.com/api/usdt/ars/0.1")
             r_p2p = requests.get("https://criptoya.com/api/binancep2p/usdt/ars/0.1")
-            max_ask = 0
+            max_venta = 0
             if r_crypto.status_code == 200:
                 data_c = r_crypto.json()
                 for ex in ['buenbit', 'fiwind', 'lemoncash', 'tiendacrypto']:
-                    if ex in data_c and data_c[ex].get('totalAsk', 0) > max_ask:
-                        max_ask = data_c[ex]['totalAsk']
+                    if ex in data_c and data_c[ex].get('totalBid', 0) > max_venta:
+                        max_venta = data_c[ex]['totalBid']
             if r_p2p.status_code == 200:
                 data_p2p = r_p2p.json()
-                if data_p2p.get('totalAsk', 0) > max_ask:
-                    max_ask = data_p2p['totalAsk']
-            if max_ask > 0:
-                usdt_history[today_str] = max_ask
+                if data_p2p.get('totalBid', 0) > max_venta:
+                    max_venta = data_p2p['totalBid']
+            if max_venta > 0:
+                usdt_history[today_str] = round(max_venta, 2)
                 with open(history_file, "w") as f:
                     json.dump(usdt_history, f, indent=2)
         except Exception as e:

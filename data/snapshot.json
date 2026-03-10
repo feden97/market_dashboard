@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-03-10T00:09:24.113089Z",
+  "built_at": "2026-03-10T03:29:16.163938Z",
   "groups": {
     "Índices y Cripto (USD)": [
       {
@@ -95,7 +95,7 @@
       {
         "ticker": "ETHA",
         "daily": 2.95,
-        "intra": 0.92,
+        "intra": 0.85,
         "5d": 0.0,
         "20d": -0.9,
         "atr_pct": 6.7,
@@ -241,7 +241,7 @@
       {
         "ticker": "CRESY",
         "daily": 2.97,
-        "intra": 2.78,
+        "intra": 1.74,
         "5d": -1.86,
         "20d": -13.48,
         "atr_pct": 4.7,
@@ -328,8 +328,8 @@
         "intra": 6.81,
         "5d": -3.79,
         "20d": -21.62,
-        "atr_pct": 8.1,
-        "dist_sma50_atr": -2.62,
+        "atr_pct": 8.2,
+        "dist_sma50_atr": -2.61,
         "rs": 25.0,
         "rs_chart": "data/charts/SUPV.png",
         "long": [],
@@ -342,8 +342,8 @@
         "intra": 3.15,
         "5d": -2.63,
         "20d": -7.41,
-        "atr_pct": 5.5,
-        "dist_sma50_atr": -0.89,
+        "atr_pct": 5.6,
+        "dist_sma50_atr": -0.88,
         "rs": 95.0,
         "rs_chart": "data/charts/TEO.png",
         "long": [],
@@ -439,7 +439,7 @@
       {
         "ticker": "CEPU.BA",
         "daily": -1.34,
-        "intra": -0.65,
+        "intra": -0.88,
         "5d": -5.25,
         "20d": -8.27,
         "atr_pct": 5.8,
@@ -679,7 +679,7 @@
       {
         "ticker": "PEP",
         "daily": 1.32,
-        "intra": 1.42,
+        "intra": 1.48,
         "5d": -2.57,
         "20d": -4.41,
         "atr_pct": 2.1,
@@ -749,7 +749,7 @@
       {
         "ticker": "MELI",
         "daily": -1.03,
-        "intra": 1.55,
+        "intra": 1.54,
         "5d": -0.42,
         "20d": -10.18,
         "atr_pct": 4.8,
@@ -964,8 +964,8 @@
         "intra": 0.79,
         "5d": 3.55,
         "20d": -3.82,
-        "atr_pct": 9.5,
-        "dist_sma50_atr": -0.13,
+        "atr_pct": 2.4,
+        "dist_sma50_atr": -0.53,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -1135,7 +1135,7 @@
         "5d": -4.24,
         "20d": -5.61,
         "atr_pct": 1.9,
-        "dist_sma50_atr": -2.64,
+        "dist_sma50_atr": -2.63,
         "rs": 10.0,
         "rs_chart": "data/charts/EWG.png",
         "long": [],
@@ -1159,11 +1159,11 @@
       {
         "ticker": "EUFN",
         "daily": 0.92,
-        "intra": 2.98,
+        "intra": 2.8,
         "5d": -4.06,
         "20d": -7.88,
         "atr_pct": 2.5,
-        "dist_sma50_atr": -2.39,
+        "dist_sma50_atr": -2.38,
         "rs": 15.0,
         "rs_chart": "data/charts/EUFN.png",
         "long": [],
@@ -1193,7 +1193,7 @@
         "5d": -3.93,
         "20d": -4.12,
         "atr_pct": 1.7,
-        "dist_sma50_atr": -1.49,
+        "dist_sma50_atr": -1.48,
         "rs": 5.0,
         "rs_chart": "data/charts/IEUR.png",
         "long": [],
@@ -1203,7 +1203,7 @@
       {
         "ticker": "EFA",
         "daily": 0.72,
-        "intra": 2.29,
+        "intra": 2.28,
         "5d": -4.17,
         "20d": -3.53,
         "atr_pct": 1.8,
@@ -1279,7 +1279,7 @@
         "5d": -5.06,
         "20d": -4.21,
         "atr_pct": 2.2,
-        "dist_sma50_atr": -0.63,
+        "dist_sma50_atr": -0.62,
         "rs": 10.0,
         "rs_chart": "data/charts/EWJ.png",
         "long": [
@@ -1475,7 +1475,7 @@
         "5d": -1.44,
         "20d": -6.49,
         "atr_pct": 1.8,
-        "dist_sma50_atr": -3.16,
+        "dist_sma50_atr": -3.17,
         "rs": 50.0,
         "rs_chart": "data/charts/MCHI.png",
         "long": [],
@@ -3251,7 +3251,16 @@
       "mep": 1432.2,
       "blue": 1425.0,
       "oficial": 1435.0,
-      "usdt": 1490.0,
+      "usdt": 1461.72,
+      "mayorista": 1416.0
+    },
+    {
+      "date": "10-03-2026",
+      "ccl": 1473.0,
+      "mep": 1432.2,
+      "blue": 1425.0,
+      "oficial": 1435.0,
+      "usdt": 1462.0,
       "mayorista": 1416.0
     }
   ]
