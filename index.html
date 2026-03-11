@@ -601,6 +601,45 @@
             font-weight: 600;
         }
 
+        /* Base Currency Pills */
+        .base-pills {
+            display: flex;
+            align-items: center;
+            background-color: var(--bg-card-solid);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2px;
+            gap: 2px;
+            margin-left: 12px;
+        }
+
+        .base-pill {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .base-pill:hover {
+            color: var(--text-main);
+            background-color: var(--bg-card-hover);
+        }
+
+        .base-pill.active {
+            background-color: var(--accent);
+            color: white;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        [data-theme="dark"] .base-pill.active {
+            color: #111b21;
+        }
+
         /* ========================================
            RENTA VARIABLE TAB — Full Redesign
            ======================================== */
@@ -1256,25 +1295,28 @@
             }
 
             /* Cauciones Mobile Layout (Cards) */
-            #tab-tasas .cauciones-table, 
-            #tab-tasas .cauciones-table thead, 
-            #tab-tasas .cauciones-table tbody, 
-            #tab-tasas .cauciones-table th, 
-            #tab-tasas .cauciones-table td, 
-            #tab-tasas .cauciones-table tr { 
-                display: block; 
+            #tab-tasas .cauciones-table,
+            #tab-tasas .cauciones-table thead,
+            #tab-tasas .cauciones-table tbody,
+            #tab-tasas .cauciones-table th,
+            #tab-tasas .cauciones-table td,
+            #tab-tasas .cauciones-table tr {
+                display: block;
             }
-            #tab-tasas .cauciones-table thead tr { 
+
+            #tab-tasas .cauciones-table thead tr {
                 display: none;
             }
-            #tab-tasas .cauciones-table tr { 
+
+            #tab-tasas .cauciones-table tr {
                 border: 1px solid var(--border-color);
                 border-radius: var(--radius-md);
                 padding: 12px;
                 margin-bottom: 12px;
                 background: var(--bg-card);
             }
-            #tab-tasas .cauciones-table td { 
+
+            #tab-tasas .cauciones-table td {
                 display: grid;
                 grid-template-columns: 120px 1fr;
                 gap: 8px;
@@ -1283,7 +1325,8 @@
                 padding: 6px 0 !important;
                 text-align: right;
             }
-            #tab-tasas .cauciones-table td::before { 
+
+            #tab-tasas .cauciones-table td::before {
                 font-weight: 600;
                 color: var(--text-muted);
                 font-size: 10px;
@@ -1291,11 +1334,26 @@
                 text-align: left;
                 content: "";
             }
-            #tab-tasas .cauciones-table td:nth-of-type(1)::before { content: "Plazo"; }
-            #tab-tasas .cauciones-table td:nth-of-type(2)::before { content: "Tasa Actual"; }
-            #tab-tasas .cauciones-table td:nth-of-type(3)::before { content: "Variación"; }
-            #tab-tasas .cauciones-table td:nth-of-type(4)::before { content: "T. Tomadora"; }
-            #tab-tasas .cauciones-table td:nth-of-type(5)::before { content: "T. Colocadora"; }
+
+            #tab-tasas .cauciones-table td:nth-of-type(1)::before {
+                content: "Plazo";
+            }
+
+            #tab-tasas .cauciones-table td:nth-of-type(2)::before {
+                content: "Tasa Actual";
+            }
+
+            #tab-tasas .cauciones-table td:nth-of-type(3)::before {
+                content: "Variación";
+            }
+
+            #tab-tasas .cauciones-table td:nth-of-type(4)::before {
+                content: "T. Tomadora";
+            }
+
+            #tab-tasas .cauciones-table td:nth-of-type(5)::before {
+                content: "T. Colocadora";
+            }
 
             .nav-container {
                 overflow-x: auto;
@@ -1303,9 +1361,11 @@
                 padding-right: 60px;
                 -webkit-overflow-scrolling: touch;
             }
+
             .nav-container::-webkit-scrollbar {
                 display: none;
             }
+
             #submenu-tasas {
                 overflow-x: auto;
                 justify-content: flex-start !important;
@@ -1314,6 +1374,7 @@
                 -webkit-overflow-scrolling: touch;
                 padding-bottom: 8px;
             }
+
             #submenu-tasas::-webkit-scrollbar {
                 display: none;
             }
@@ -1473,17 +1534,7 @@
                                         <th>Fiat</th>
                                         <th>Precio</th>
                                         <th>Var. Diaria</th>
-                                        <th
-                                            style="display: flex; align-items: center; justify-content: space-between; border: none;">
-                                            Brecha s/
-                                            <select id="base-currency-select" class="base-select">
-                                                <option value="usdt">USDT</option>
-                                                <option value="oficial">Oficial</option>
-                                                <option value="mep">MEP</option>
-                                                <option value="ccl">CCL</option>
-                                                <option value="blue">Blue</option>
-                                            </select>
-                                        </th>
+                                        <th style="border: none;">Brecha s/</th>
                                     </tr>
                                 </thead>
                                 <tbody id="fiat-table-body">
@@ -1517,9 +1568,20 @@
                     </div>
 
                     <div style="text-align: center; margin-top: 25px;">
-                        <div id="chart-title"
-                            style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px; text-align: left; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
-                            Spread CCL vs USDT (YTD)</div>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <div id="chart-title"
+                                style="font-size: 13px; color: var(--text-muted); text-align: left; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                                Spread CCL vs USDT (YTD)</div>
+
+                            <div class="base-pills" id="base-currency-pills">
+                                <button class="base-pill active" data-val="usdt">USDT</button>
+                                <button class="base-pill" data-val="oficial">Oficial</button>
+                                <button class="base-pill" data-val="mep">MEP</button>
+                                <button class="base-pill" data-val="ccl">CCL</button>
+                                <button class="base-pill" data-val="blue">Blue</button>
+                            </div>
+                        </div>
                         <div style="height: 200px; width: 100%;">
                             <canvas id="spreadChart"></canvas>
                         </div>
@@ -2532,7 +2594,9 @@
                 if (!historicalData || historicalData.length === 0) return;
                 window._lastHistoricalFiat = historicalData;
                 window._renderSpreadChart = renderSpreadChart;
-                var baseCurrency = document.getElementById('base-currency-select').value;
+                // Get value from pills instead of select
+                var activePill = document.querySelector('#base-currency-pills .base-pill.active');
+                var baseCurrency = activePill ? activePill.getAttribute('data-val') : 'usdt';
                 document.getElementById('chart-title').innerText = `Spread CCL vs ${baseCurrency.toUpperCase()} (YTD)`;
 
                 var labels = []; var data = [];
@@ -2548,7 +2612,7 @@
                     if (liveBasePrice > 0 && window._cachedFiatData.ccl.price > 0) {
                         let liveSpread = ((window._cachedFiatData.ccl.price / liveBasePrice) - 1) * 100;
                         let dNow = new Date(); let nowStr = String(dNow.getDate()).padStart(2, '0') + '-' + String(dNow.getMonth() + 1).padStart(2, '0') + '-' + dNow.getFullYear();
-                        
+
                         if (labels.length > 0 && labels[labels.length - 1] === nowStr) {
                             data[data.length - 1] = liveSpread;
                         } else {
@@ -2564,6 +2628,48 @@
                 const isLight = document.documentElement.getAttribute('data-theme') === 'light';
                 const gridColor = isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
                 const textColor = isLight ? '#64748b' : '#aaaaaa';
+
+                // Plugin to draw background zones and labels (Only for USDT)
+                const zonesPlugin = {
+                    id: 'zonesPlugin',
+                    beforeDraw(chart) {
+                        if (baseCurrency !== 'usdt') return;
+                        const { ctx, chartArea, scales: { y: yScale } } = chart;
+                        const isLt = document.documentElement.getAttribute('data-theme') === 'light';
+                        ctx.save();
+
+                        const drawZone = (yMin, yMax, color, text, isExtreme = false) => {
+                            const top = yScale.getPixelForValue(yMax);
+                            const bottom = yScale.getPixelForValue(yMin);
+                            const drawTop = Math.max(top, chartArea.top);
+                            const drawBottom = Math.min(bottom, chartArea.bottom);
+
+                            if (drawTop < drawBottom) {
+                                ctx.fillStyle = color;
+                                ctx.fillRect(chartArea.left, drawTop, chartArea.width, drawBottom - drawTop);
+                                if (text) {
+                                    const opacity = isExtreme ? 0.35 : 0.22;
+                                    ctx.fillStyle = isLt ? `rgba(0,0,0,${opacity})` : `rgba(255,255,255,${opacity})`;
+                                    ctx.font = `bold ${isExtreme ? '24px' : '18px'} sans-serif`;
+                                    ctx.textAlign = 'center';
+                                    ctx.textBaseline = 'middle';
+                                    ctx.fillText(text, chartArea.left + chartArea.width / 2, drawTop + (drawBottom - drawTop) / 2);
+                                }
+                            }
+                        };
+
+                        // 1. VENDER CEDEARs - COMPRAR USDT (> 2%)
+                        drawZone(2.0, yScale.max, 'rgba(239, 68, 68, 0.15)', 'VENDER CEDEARs - COMPRAR USDT', true);
+                        // 2. Oportunidad de venta CEDEARs (1% a 2%)
+                        drawZone(1.0, 2.0, 'rgba(239, 68, 68, 0.05)', 'Oportunidad de venta CEDEARs o compra USDT');
+                        // 3. Oportunidad de venta USDT (-2% a -1%)
+                        drawZone(-2.0, -1.0, 'rgba(16, 185, 129, 0.05)', 'Oportunidad de venta USDT o compra CEDEARs');
+                        // 4. VENDER USDT - COMPRAR CEDEARs (< -2%)
+                        drawZone(yScale.min, -2.0, 'rgba(16, 185, 129, 0.15)', 'VENDER USDT - COMPRAR CEDEARs', true);
+
+                        ctx.restore();
+                    }
+                };
 
                 // Zero-line plugin: draws a solid line at y=0 directly on canvas
                 const zeroLinePlugin = {
@@ -2590,9 +2696,9 @@
                     type: 'line',
                     data: { labels: labels, datasets: [{ data: data, borderWidth: 3, pointRadius: function (ctx) { return ctx.dataIndex === ctx.dataset.data.length - 1 ? 4 : 0; }, pointBackgroundColor: function (ctx) { var val = ctx.dataset.data[ctx.dataIndex]; return val >= 0 ? 'rgba(16, 185, 129, 1)' : 'rgba(239, 68, 68, 1)'; }, pointHoverRadius: 5, fill: false, tension: 0.1, segment: { borderColor: function (ctx) { return (ctx.p0 && ctx.p0.parsed && ctx.p0.parsed.y >= 0) ? 'rgba(16, 185, 129, 1)' : 'rgba(239, 68, 68, 1)'; } } }] },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } }, scales: { x: { display: true, offset: true, ticks: { color: textColor, maxTicksLimit: 6 }, grid: { color: gridColor } }, y: { display: true, ticks: { color: textColor }, grid: { color: gridColor } } }, interaction: { mode: 'index', intersect: false } },
-                    plugins: [zeroLinePlugin]
+                    plugins: [zonesPlugin, zeroLinePlugin]
                 });
-                
+
                 updateSpreadSummary(window.spreadChartInstance, baseCurrency);
             }
 
@@ -2714,8 +2820,44 @@
 
             async function fetchLiveCryptoAndFiat() {
                 try {
-                    const [resCrypto, resP2P, resCriptoYaDolar] = await Promise.all([fetch("https://criptoya.com/api/usdt/ars/0.1"), fetch("https://criptoya.com/api/binancep2p/usdt/ars/0.1"), fetch("https://criptoya.com/api/dolar")]);
-                    const cryptoData = await resCrypto.json(); const p2pData = await resP2P.json(); const criptoYaDolar = await resCriptoYaDolar.json();
+                    const [resCrypto, resP2P, resCriptoYaDolar, resRP, resRPHist] = await Promise.all([
+                        fetch("https://criptoya.com/api/usdt/ars/0.1"),
+                        fetch("https://criptoya.com/api/binancep2p/usdt/ars/0.1"),
+                        fetch("https://criptoya.com/api/dolar"),
+                        fetch("https://api.argentinadatos.com/v1/finanzas/indices/riesgo-pais/ultimo").catch(() => null),
+                        fetch("https://api.argentinadatos.com/v1/finanzas/indices/riesgo-pais").catch(() => null)
+                    ]);
+                    const cryptoData = await resCrypto.json();
+                    const p2pData = await resP2P.json();
+                    const criptoYaDolar = await resCriptoYaDolar.json();
+
+                    if (resRP && resRP.ok) {
+                        const rpData = await resRP.json();
+                        if (rpData && rpData.valor) {
+                            document.getElementById('rp-val').innerText = Math.round(rpData.valor) + ' pts';
+
+                            // Calculate variation if history is available
+                            if (resRPHist && resRPHist.ok) {
+                                const rpHist = await resRPHist.json();
+                                if (rpHist && rpHist.length > 1) {
+                                    const last = rpData.valor;
+                                    const prev = rpHist[rpHist.length - 2].valor;
+                                    const diff = last - prev;
+                                    const pct = (diff / prev) * 100;
+
+                                    const cls = pct > 0 ? 'badge-red' : (pct < 0 ? 'badge-green' : '');
+                                    const sign = pct > 0 ? '+' : '';
+                                    document.getElementById('rp-var').innerHTML = `<span class="${cls}">${sign}${pct.toFixed(2)}%</span>`;
+                                }
+                            }
+
+                            let formatDate = (d) => {
+                                let parts = d.split('T')[0].split('-');
+                                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                            };
+                            document.getElementById('rp-date').innerText = `(Ref: ${formatDate(rpData.fecha)})`;
+                        }
+                    }
 
                     // --- FUNCIÓN NATIVA DE CRIPTOYA PARA VARIACIÓN ---
                     const formatVar = (v) => {
@@ -2793,7 +2935,8 @@
                     window._cachedUsdtVar = usdt_var;
                     window._cachedExList = exList;
 
-                    var baseCurrency = document.getElementById('base-currency-select').value;
+                    var activePill = document.querySelector('#base-currency-pills .base-pill.active');
+                    var baseCurrency = activePill ? activePill.getAttribute('data-val') : 'usdt';
                     var basePrice = baseCurrency === 'usdt' ? maxVenta : fiatData[baseCurrency].price;
 
                     const calcBrecha = (val) => {
@@ -2889,34 +3032,46 @@
                     if (snapshot && snapshot.historical_fiat) { renderSpreadChart(snapshot.historical_fiat); renderBandasChart(snapshot.historical_fiat); }
                     fetchLiveCryptoAndFiat(); setInterval(fetchLiveCryptoAndFiat, 60000);
                 });
-                document.getElementById('base-currency-select').addEventListener('change', () => {
-                    // Recalculate brechas instantly from cached data (no API call needed)
-                    if (window._cachedFiatData && window._cachedMaxVenta) {
-                        var baseCurrency = document.getElementById('base-currency-select').value;
-                        var basePrice = baseCurrency === 'usdt' ? window._cachedMaxVenta : window._cachedFiatData[baseCurrency].price;
-                        var fiatData = window._cachedFiatData;
-                        var maxVenta = window._cachedMaxVenta;
-                        var usdt_var = window._cachedUsdtVar || 0;
+                // Re-bind Pill Buttons events
+                var basePills = document.querySelectorAll('#base-currency-pills .base-pill');
+                if (basePills.length > 0) {
+                    basePills.forEach(pill => {
+                        pill.addEventListener('click', function () {
+                            if (this.classList.contains('active')) return;
 
-                        const formatVar = (v) => {
-                            if (v === undefined || v === null) return "-";
-                            return `<span class="badge-${v >= 0 ? 'green' : 'red'}">${v > 0 ? '+' : ''}${v.toFixed(2)}%</span>`;
-                        };
-                        const calcBrecha = (val) => {
-                            if (!basePrice || !val) return "-";
-                            const pct = ((val / basePrice) - 1) * 100;
-                            return `<span class="badge-${pct >= 0 ? 'green' : 'red'}">${pct > 0 ? '+' : ''}${pct.toFixed(2)}%</span>`;
-                        };
+                            // Switch active class
+                            basePills.forEach(p => p.classList.remove('active'));
+                            this.classList.add('active');
 
-                        let fiatRows = '';
-                        ['ccl', 'mep', 'oficial', 'blue'].forEach(f => {
-                            fiatRows += `<tr><td style="color:var(--text-muted); text-transform: uppercase;">${f}</td><td style="font-weight:bold;">$${fiatData[f].price.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(fiatData[f].var)}</td><td>${f === baseCurrency ? '-' : calcBrecha(fiatData[f].price)}</td></tr>`;
+                            // Recalculate everything synchronously
+                            if (window._cachedFiatData && window._cachedMaxVenta) {
+                                var baseCurrency = this.getAttribute('data-val');
+                                var basePrice = baseCurrency === 'usdt' ? window._cachedMaxVenta : window._cachedFiatData[baseCurrency].price;
+                                var fiatData = window._cachedFiatData;
+                                var maxVenta = window._cachedMaxVenta;
+                                var usdt_var = window._cachedUsdtVar || 0;
+
+                                const formatVar = (v) => {
+                                    if (v === undefined || v === null) return "-";
+                                    return `<span class="badge-${v >= 0 ? 'green' : 'red'}">${v > 0 ? '+' : ''}${v.toFixed(2)}%</span>`;
+                                };
+                                const calcBrecha = (val) => {
+                                    if (!basePrice || !val) return "-";
+                                    const pct = ((val / basePrice) - 1) * 100;
+                                    return `<span class="badge-${pct >= 0 ? 'green' : 'red'}">${pct > 0 ? '+' : ''}${pct.toFixed(2)}%</span>`;
+                                };
+
+                                let fiatRows = '';
+                                ['ccl', 'mep', 'oficial', 'blue'].forEach(f => {
+                                    fiatRows += `<tr><td style="color:var(--text-muted); text-transform: uppercase;">${f}</td><td style="font-weight:bold;">$${fiatData[f].price.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(fiatData[f].var)}</td><td>${f === baseCurrency ? '-' : calcBrecha(fiatData[f].price)}</td></tr>`;
+                                });
+                                fiatRows += `<tr><td style="color:var(--text-muted); display:flex; align-items:center;">USDT <div class="tooltip-container"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Es el dólar cripto que cotiza las 24 horas TODOS los días. Es el precio para comprar USDT en Binance p2p más aproximado posible sin la opción "comerciantes verificados"</div></div></td><td style="font-weight:bold;">$${maxVenta.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(usdt_var)}</td><td>${baseCurrency === 'usdt' ? '-' : calcBrecha(maxVenta)}</td></tr>`;
+                                document.getElementById('fiat-table-body').innerHTML = fiatRows;
+                            }
+                            if (snapshot && snapshot.historical_fiat) renderSpreadChart(snapshot.historical_fiat);
                         });
-                        fiatRows += `<tr><td style="color:var(--text-muted); display:flex; align-items:center;">USDT <div class="tooltip-container"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Es el dólar cripto que cotiza las 24 horas TODOS los días. Es el precio para comprar USDT en Binance p2p más aproximado posible sin la opción "comerciantes verificados"</div></div></td><td style="font-weight:bold;">$${maxVenta.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(usdt_var)}</td><td>${baseCurrency === 'usdt' ? '-' : calcBrecha(maxVenta)}</td></tr>`;
-                        document.getElementById('fiat-table-body').innerHTML = fiatRows;
-                    }
-                    if (snapshot && snapshot.historical_fiat) renderSpreadChart(snapshot.historical_fiat);
-                });
+                    });
+                }
             }
             loadData();
         })();
