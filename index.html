@@ -899,6 +899,9 @@
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
             margin-bottom: 8px;
+            min-width: 0;
+            width: 100%;
+            overflow: hidden;
         }
 
         #tab-tasas .tasas-row:hover {
@@ -1217,6 +1220,27 @@
 
             #tab-tasas .tasas-rate-value {
                 font-size: 16px;
+            }
+
+            .nav-container {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-right: 60px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .nav-container::-webkit-scrollbar {
+                display: none;
+            }
+            #submenu-tasas {
+                overflow-x: auto;
+                justify-content: flex-start !important;
+                white-space: nowrap;
+                flex-wrap: nowrap !important;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 8px;
+            }
+            #submenu-tasas::-webkit-scrollbar {
+                display: none;
             }
         }
     </style>
@@ -2433,16 +2457,31 @@
                 if (!historicalData || historicalData.length === 0) return;
                 window._lastHistoricalFiat = historicalData;
                 window._renderSpreadChart = renderSpreadChart;
-                let dToday = new Date(); let todayStr = String(dToday.getDate()).padStart(2, '0') + '-' + String(dToday.getMonth() + 1).padStart(2, '0') + '-' + dToday.getFullYear();
                 var baseCurrency = document.getElementById('base-currency-select').value;
                 document.getElementById('chart-title').innerText = `Spread CCL vs ${baseCurrency.toUpperCase()} (YTD)`;
 
                 var labels = []; var data = [];
                 historicalData.forEach(d => {
-                    if (d.date === todayStr) return;
                     var targetVal = d.ccl; var baseVal = d[baseCurrency];
                     if (targetVal && baseVal && baseVal > 0) { labels.push(d.date); data.push(((targetVal / baseVal) - 1) * 100); }
                 });
+
+                // Inject today's live data point to the arrays BEFORE creating the chart to avoid animation glitches
+                if (window._cachedFiatData && window._cachedMaxVenta) {
+                    let liveBaseCurrency = baseCurrency;
+                    let liveBasePrice = liveBaseCurrency === 'usdt' ? window._cachedMaxVenta : window._cachedFiatData[liveBaseCurrency].price;
+                    if (liveBasePrice > 0 && window._cachedFiatData.ccl.price > 0) {
+                        let liveSpread = ((window._cachedFiatData.ccl.price / liveBasePrice) - 1) * 100;
+                        let dNow = new Date(); let nowStr = String(dNow.getDate()).padStart(2, '0') + '-' + String(dNow.getMonth() + 1).padStart(2, '0') + '-' + dNow.getFullYear();
+                        
+                        if (labels.length > 0 && labels[labels.length - 1] === nowStr) {
+                            data[data.length - 1] = liveSpread;
+                        } else {
+                            labels.push(nowStr);
+                            data.push(liveSpread);
+                        }
+                    }
+                }
 
                 if (window.spreadChartInstance) window.spreadChartInstance.destroy();
                 var ctx = document.getElementById('spreadChart').getContext('2d');
@@ -2474,10 +2513,11 @@
 
                 window.spreadChartInstance = new Chart(ctx, {
                     type: 'line',
-                    data: { labels: labels, datasets: [{ data: data, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, fill: false, tension: 0.1, segment: { borderColor: function (ctx) { return (ctx.p0 && ctx.p0.parsed && ctx.p0.parsed.y >= 0) ? 'rgba(16, 185, 129, 1)' : 'rgba(239, 68, 68, 1)'; } } }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } }, scales: { x: { display: true, ticks: { color: textColor, maxTicksLimit: 6 }, grid: { color: gridColor } }, y: { display: true, ticks: { color: textColor }, grid: { color: gridColor } } }, interaction: { mode: 'index', intersect: false } },
+                    data: { labels: labels, datasets: [{ data: data, borderWidth: 3, pointRadius: function (ctx) { return ctx.dataIndex === ctx.dataset.data.length - 1 ? 4 : 0; }, pointBackgroundColor: function (ctx) { var val = ctx.dataset.data[ctx.dataIndex]; return val >= 0 ? 'rgba(16, 185, 129, 1)' : 'rgba(239, 68, 68, 1)'; }, pointHoverRadius: 5, fill: false, tension: 0.1, segment: { borderColor: function (ctx) { return (ctx.p0 && ctx.p0.parsed && ctx.p0.parsed.y >= 0) ? 'rgba(16, 185, 129, 1)' : 'rgba(239, 68, 68, 1)'; } } }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return 'Spread: ' + c.parsed.y.toFixed(2) + '%'; } } } }, scales: { x: { display: true, offset: true, ticks: { color: textColor, maxTicksLimit: 6 }, grid: { color: gridColor } }, y: { display: true, ticks: { color: textColor }, grid: { color: gridColor } } }, interaction: { mode: 'index', intersect: false } },
                     plugins: [zeroLinePlugin]
                 });
+                
                 updateSpreadSummary(window.spreadChartInstance, baseCurrency);
             }
 
@@ -2524,6 +2564,31 @@
                 }
 
                 document.getElementById('bandas-table-wrapper-body').innerHTML = tableHtml;
+
+                // Inyectar el dato en vivo de hoy ANTES de crear el gráfico (para que resista el cambio de tema)
+                if (window._cachedMayoristaVal > 0) {
+                    let liveMay = window._cachedMayoristaVal;
+                    // Buscar la banda proyectada de hoy
+                    let dTodayB = new Date(); let todayStrB = String(dTodayB.getDate()).padStart(2, '0') + '-' + String(dTodayB.getMonth() + 1).padStart(2, '0') + '-' + dTodayB.getFullYear();
+                    let bandaHoy = datosBandas.find(b => b.date === todayStrB);
+                    if (!bandaHoy) {
+                        let pastBands = datosBandas.filter(b => {
+                            let parts = b.date.split('-');
+                            return new Date(parts[2], parts[1] - 1, parts[0]) <= dTodayB;
+                        });
+                        bandaHoy = pastBands.length > 0 ? pastBands[pastBands.length - 1] : datosBandas[0];
+                    }
+                    if (bandaHoy) {
+                        if (labels.length > 0 && labels[labels.length - 1] === todayStrB) {
+                            dataMay[dataMay.length - 1] = liveMay;
+                        } else {
+                            labels.push(todayStrB);
+                            dataSup.push(bandaHoy.sup);
+                            dataInf.push(bandaHoy.inf);
+                            dataMay.push(liveMay);
+                        }
+                    }
+                }
 
                 if (window.bandasChartInstance) window.bandasChartInstance.destroy();
                 var ctx = document.getElementById('bandasChart').getContext('2d');
@@ -2703,6 +2768,8 @@
                     document.getElementById('r-cri-min').innerText = fmt(c90); document.getElementById('r-cri-max').innerText = fmt(sup);
 
                     let may = getDolarData(criptoYaDolar.mayorista).price;
+                    window._cachedMayoristaVal = may; // Cache for theme transitions
+
                     if (may > 0) {
                         let posPct = Math.max(0, Math.min(100, ((may - inf) / rango) * 100));
                         document.getElementById('gauge-needle').style.transform = `translateX(-50%) rotate(${(posPct / 100 * 180) - 90}deg)`;
@@ -2720,9 +2787,10 @@
                         document.getElementById('diff-inf').innerHTML = `El dólar debería bajar <span class="badge-red" style="margin-left: 4px;">${fmt(Math.abs(dI))} (-${Math.abs(pI).toFixed(2)}%)</span> para llegar a la banda inferior`;
 
                         if (window.bandasChartInstance) {
-                            let bChart = window.bandasChartInstance; let mData = bChart.data.datasets[2].data; let labels = bChart.data.labels;
-                            if (labels.length > 0 && labels[labels.length - 1] === todayStrB) { mData[mData.length - 1] = may; }
-                            else if (labels.length > 0) { labels.push(todayStrB); bChart.data.datasets[0].data.push(sup); bChart.data.datasets[1].data.push(inf); mData.push(may); }
+                            // Already handled by initial load and theme change, BUT for every 60s tick, we STILL need to push into the live chart if it exists:
+                            let bChart = window.bandasChartInstance; let mData = bChart.data.datasets[2].data; let blabels = bChart.data.labels;
+                            if (blabels.length > 0 && blabels[blabels.length - 1] === todayStrB) { mData[mData.length - 1] = may; }
+                            else if (blabels.length > 0) { blabels.push(todayStrB); bChart.data.datasets[0].data.push(sup); bChart.data.datasets[1].data.push(inf); mData.push(may); }
                             bChart.update('none');
                         }
                     }
