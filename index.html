@@ -853,10 +853,23 @@
             }
 
             .data-table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
+                display: table;
+                width: 100%;
+                white-space: normal;
                 -webkit-overflow-scrolling: touch;
+                table-layout: auto;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 6px 4px;
+                font-size: 11px;
+                line-height: 1.2;
+            }
+
+            .data-table th {
+                font-size: 10px;
+                padding: 8px 4px;
             }
 
             #tasas-pesos h3,
@@ -1214,13 +1227,75 @@
             }
 
             #tab-tasas .tasas-row {
-                padding: 10px 12px;
+                padding: 10px;
                 gap: 10px;
+                align-items: center;
+            }
+
+            #tab-tasas .tasas-row-info {
+                flex: 1;
+                min-width: 0;
+            }
+
+            #tab-tasas .tasas-row-name {
+                font-size: 13px;
+                font-weight: 600;
+                margin-bottom: 2px;
+            }
+
+            #tab-tasas .tasas-row-badges {
+                gap: 4px;
+                flex-wrap: wrap;
             }
 
             #tab-tasas .tasas-rate-value {
                 font-size: 16px;
+                font-weight: 700;
+                color: var(--green);
+                white-space: nowrap;
             }
+
+            /* Cauciones Mobile Layout (Cards) */
+            #tab-tasas .cauciones-table, 
+            #tab-tasas .cauciones-table thead, 
+            #tab-tasas .cauciones-table tbody, 
+            #tab-tasas .cauciones-table th, 
+            #tab-tasas .cauciones-table td, 
+            #tab-tasas .cauciones-table tr { 
+                display: block; 
+            }
+            #tab-tasas .cauciones-table thead tr { 
+                display: none;
+            }
+            #tab-tasas .cauciones-table tr { 
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-md);
+                padding: 12px;
+                margin-bottom: 12px;
+                background: var(--bg-card);
+            }
+            #tab-tasas .cauciones-table td { 
+                display: grid;
+                grid-template-columns: 120px 1fr;
+                gap: 8px;
+                align-items: center;
+                border: none;
+                padding: 6px 0 !important;
+                text-align: right;
+            }
+            #tab-tasas .cauciones-table td::before { 
+                font-weight: 600;
+                color: var(--text-muted);
+                font-size: 10px;
+                text-transform: uppercase;
+                text-align: left;
+                content: "";
+            }
+            #tab-tasas .cauciones-table td:nth-of-type(1)::before { content: "Plazo"; }
+            #tab-tasas .cauciones-table td:nth-of-type(2)::before { content: "Tasa Actual"; }
+            #tab-tasas .cauciones-table td:nth-of-type(3)::before { content: "Variación"; }
+            #tab-tasas .cauciones-table td:nth-of-type(4)::before { content: "T. Tomadora"; }
+            #tab-tasas .cauciones-table td:nth-of-type(5)::before { content: "T. Colocadora"; }
 
             .nav-container {
                 overflow-x: auto;
