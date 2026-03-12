@@ -2647,7 +2647,7 @@
                             if (drawTop < drawBottom) {
                                 ctx.fillStyle = color;
                                 ctx.fillRect(chartArea.left, drawTop, chartArea.width, drawBottom - drawTop);
-                                if (text) {
+                                if (text && window.innerWidth >= 768) {
                                     const opacity = isExtreme ? 0.35 : 0.22;
                                     ctx.fillStyle = isLt ? `rgba(0,0,0,${opacity})` : `rgba(255,255,255,${opacity})`;
                                     ctx.font = `bold ${isExtreme ? '24px' : '18px'} sans-serif`;
