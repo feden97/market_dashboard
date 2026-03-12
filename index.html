@@ -9,46 +9,42 @@
     <style>
         :root {
             /* Spreadsheet-Inspired Dark Mode */
-            --bg-body: #121212;
-            /* Deep background, almost pure black */
-            --bg-card: #1e1e1e;
-            /* Distinct card background */
-            --bg-card-solid: #1e1e1e;
-            --bg-card-hover: #2a2a2a;
-            /* Lighter gray for hover */
-            --border-color: #333333;
-            /* Stronger borders to resemble cells */
-            --border-hover: #555555;
+            --bg-body: #0A0F1C;
+            /* Deep navy background */
+            --bg-card: rgba(15, 25, 38, 0.4);
+            /* Translucent card background */
+            --bg-card-solid: #0F1926;
+            --bg-card-hover: rgba(20, 35, 55, 0.6);
+            /* Lighter navy for hover */
+            --border-color: rgba(205, 214, 227, 0.1);
+            /* Subtle blue-gray borders */
+            --border-hover: rgba(205, 214, 227, 0.25);
+            
+            --text-main: #CDD6E3;
+            /* Soft white/blue text */
+            --text-muted: rgba(205, 214, 227, 0.45);
+            /* Muted technical text */
 
-            --text-main: #ffffff;
-            /* Pure white text for readability */
-            --text-muted: #aaaaaa;
-            /* Lighter gray for muted text */
+            --accent: #00FF6A;
+            /* Brighter neon accent */
+            --accent-glow: rgba(0, 255, 106, 0.1);
+            --nav-active-color: #00FF6A;
 
-            --accent: #a3e635;
-            /* Lime green */
-            --accent-glow: rgba(163, 230, 53, 0.15);
-            --nav-active-color: #a3e635;
+            --green: #00FF6A;
+            --red: #FF4444;
+            --orange: #FFB800;
 
-            --green: #4ade80;
-            /* Bright green */
-            --red: #f87171;
-            /* Bright red */
-            --orange: #facc15;
-            /* Pure yellow */
-
-            --shadow-subtle: 0 4px 15px rgba(0, 0, 0, 0.5);
-            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.8);
+            --shadow-subtle: none;
+            --shadow-hover: none;
             --card-shadow: none;
-            --bg-table-header: #2b2b2b;
-            /* Distinct gray header background */
-            --bg-header-alpha: rgba(18, 18, 18, 0.75);
+            --bg-table-header: rgba(15, 25, 38, 0.6);
+            --bg-header-alpha: rgba(10, 15, 28, 0.8);
             --bg-select: rgba(255, 255, 255, 0.08);
             --select-arrow: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
 
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 6px;
 
             --font-family: 'Inter', system-ui, -apple-system, sans-serif;
 
@@ -57,26 +53,26 @@
             --chart-text-color: #aaaaaa;
 
             /* Tasas section colors */
-            --rate-color: #818cf8;
-            --badge-type-color: #93c5fd;
-            --badge-type-border: rgba(59, 130, 246, 0.2);
-            --badge-type-bg: rgba(59, 130, 246, 0.05);
-            --badge-liquidity-color: #34d399;
-            --badge-liquidity-border: rgba(16, 185, 129, 0.3);
-            --badge-liquidity-bg: rgba(16, 185, 129, 0.1);
-            --badge-variable-color: #a78bfa;
-            --badge-variable-border: rgba(167, 139, 250, 0.3);
-            --badge-variable-bg: rgba(167, 139, 250, 0.1);
-            --badge-lock-color: #fbbf24;
-            --badge-lock-border: rgba(245, 158, 11, 0.3);
-            --badge-lock-bg: rgba(245, 158, 11, 0.1);
-            --matrix-rate-color: #818cf8;
-            --matrix-rate-bg: rgba(59, 130, 246, 0.1);
-            --matrix-rate-border: rgba(59, 130, 246, 0.2);
-            --matrix-row-border: rgba(255, 255, 255, 0.05);
-            --info-box-bg: rgba(59, 130, 246, 0.05);
-            --info-box-border: rgba(59, 130, 246, 0.2);
-            --info-box-title: #93c5fd;
+            --rate-color: #7081FF;
+            --badge-type-color: #70B8FF;
+            --badge-type-border: rgba(112, 184, 255, 0.15);
+            --badge-type-bg: rgba(112, 184, 255, 0.05);
+            --badge-liquidity-color: #00FFAC;
+            --badge-liquidity-border: rgba(0, 255, 172, 0.2);
+            --badge-liquidity-bg: rgba(0, 255, 172, 0.1);
+            --badge-variable-color: #A38BFA;
+            --badge-variable-border: rgba(163, 139, 250, 0.2);
+            --badge-variable-bg: rgba(163, 139, 250, 0.1);
+            --badge-lock-color: #FFB800;
+            --badge-lock-border: rgba(255, 184, 0, 0.2);
+            --badge-lock-bg: rgba(255, 184, 0, 0.1);
+            --matrix-rate-color: #7081FF;
+            --matrix-rate-bg: rgba(112, 129, 255, 0.08);
+            --matrix-rate-border: rgba(112, 129, 255, 0.15);
+            --matrix-row-border: rgba(205, 214, 227, 0.05);
+            --info-box-bg: rgba(112, 184, 255, 0.04);
+            --info-box-border: rgba(112, 184, 255, 0.1);
+            --info-box-title: #70B8FF;
         }
 
         [data-theme="light"] {
@@ -184,8 +180,8 @@
             color: var(--text-muted);
             font-size: 14px;
             font-weight: 500;
-            padding: 10px 20px;
-            border-radius: 12px;
+            padding: 10px 16px;
+            border-radius: 4px;
             cursor: pointer;
         }
 
@@ -226,9 +222,8 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 2px;
+            height: 1px;
             background-color: var(--accent);
-            border-radius: 2px 2px 0 0;
         }
 
         .main-content {
@@ -297,21 +292,20 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            transition: transform 0.2s ease;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
         }
 
         .macro-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
             border-color: var(--border-hover);
         }
 
         .macro-title {
             color: var(--text-muted);
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 11px;
+            font-weight: 500;
             margin-bottom: 12px;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -337,11 +331,11 @@
 
         .data-table th {
             background-color: var(--bg-table-header);
-            color: var(--text-main);
-            font-weight: 600;
+            color: var(--text-muted);
+            font-weight: 500;
             text-transform: uppercase;
-            font-size: 11px;
-            letter-spacing: 0.5px;
+            font-size: 10px;
+            letter-spacing: 0.8px;
         }
 
         .data-table tbody tr:last-child td {
@@ -390,14 +384,15 @@
             background-color: var(--bg-card-solid);
             cursor: pointer;
             user-select: none;
-            font-weight: 600;
+            font-weight: 500;
             border-bottom: 1px solid var(--border-color);
             color: var(--text-muted);
             position: sticky;
             top: 35px;
             z-index: 2;
-            font-size: 11px;
-            letter-spacing: 0.5px;
+            font-size: 10px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
         }
 
         .ticker-table th.sorted-column {
@@ -517,23 +512,23 @@
         }
 
         .badge-green {
-            background-color: rgba(16, 185, 129, 0.15);
+            background-color: rgba(0, 255, 106, 0.1);
             color: var(--green);
-            border-radius: 20px;
-            padding: 2px 8px;
+            border-radius: 4px;
+            padding: 2px 6px;
             font-weight: 600;
-            font-size: 12px;
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            font-size: 11px;
+            border: 1px solid rgba(0, 255, 106, 0.2);
         }
 
         .badge-red {
-            background-color: rgba(239, 68, 68, 0.15);
+            background-color: rgba(255, 68, 68, 0.1);
             color: var(--red);
-            border-radius: 20px;
-            padding: 2px 8px;
+            border-radius: 4px;
+            padding: 2px 6px;
             font-weight: 600;
-            font-size: 12px;
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            font-size: 11px;
+            border: 1px solid rgba(255, 68, 68, 0.2);
         }
 
         .tables-grid {
@@ -552,7 +547,7 @@
             width: 260px;
             height: 260px;
             border-radius: 50%;
-            background: conic-gradient(from 270deg at 50% 50%, var(--green) 0deg 45deg, #facc15 45deg 135deg, var(--orange) 135deg 162deg, var(--red) 162deg 180deg, transparent 180deg 360deg);
+            background: conic-gradient(from 270deg at 50% 50%, var(--green) 0deg 45deg, var(--orange) 45deg 135deg, #FF6B00 135deg 162deg, var(--red) 162deg 180deg, transparent 180deg 360deg);
             -webkit-mask-image: radial-gradient(transparent 65%, black 66%);
             mask-image: radial-gradient(transparent 65%, black 66%);
         }
