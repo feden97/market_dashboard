@@ -19,7 +19,7 @@
             --border-color: rgba(205, 214, 227, 0.1);
             /* Subtle blue-gray borders */
             --border-hover: rgba(205, 214, 227, 0.25);
-            
+
             --text-main: #CDD6E3;
             /* Soft white/blue text */
             --text-muted: rgba(205, 214, 227, 0.45);
@@ -682,7 +682,7 @@
             position: absolute;
             top: 0;
             height: 100%;
-            border-radius: 4px;
+            border-radius: 44px;
             opacity: 0.18;
             z-index: 0;
             max-width: 100%;
@@ -1009,6 +1009,165 @@
             margin-top: 4px;
         }
 
+        /* ========================================
+           ARS REDESIGN — Financial Terminal
+           ======================================== */
+        .terminal-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-subtle);
+            font-family: var(--font-main);
+        }
+
+        .terminal-header {
+            background: rgba(var(--accent-rgb), 0.05);
+            padding: 12px 16px;
+            border-bottom: 2px solid var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .terminal-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+        }
+
+        .terminal-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.15s ease;
+        }
+
+        .terminal-row:last-child {
+            border-bottom: none;
+        }
+
+        .terminal-row:hover {
+            background: rgba(var(--accent-rgb), 0.03);
+        }
+
+        .terminal-entity {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .terminal-logo {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .terminal-logo img, .terminal-logo svg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .terminal-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .terminal-sub-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .terminal-data {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .terminal-rate-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .mono-rate {
+            font-family: 'Geist Mono', 'JetBrains Mono', 'Fira Code', monospace;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--green);
+            letter-spacing: -0.5px;
+        }
+
+        .terminal-rate-label {
+            font-size: 9px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .terminal-highlight {
+            background: rgba(16, 185, 129, 0.05);
+            border-left: 3px solid var(--green);
+        }
+
+        .terminal-meta-pill {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            background: rgba(var(--accent-blue-rgb), 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(var(--accent-blue-rgb), 0.2);
+        }
+
+        .terminal-meta-pill.pill-limit {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+            border-color: rgba(255, 107, 107, 0.2);
+        }
+
+        .terminal-meta-pill.pill-liquidity {
+            background: rgba(32, 201, 151, 0.1);
+            color: #20c997;
+            border-color: rgba(32, 201, 151, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .terminal-row {
+                padding: 12px;
+            }
+            .mono-rate {
+                font-size: 16px;
+            }
+            .terminal-name {
+                font-size: 13px;
+            }
+            .terminal-data {
+                gap: 12px;
+            }
+        }
+
         #tab-tasas .tasas-badge {
             font-size: 10px;
             padding: 2px 7px;
@@ -1124,138 +1283,191 @@
             color: var(--text-main);
         }
 
-        /* Stablecoins Card Grid */
-        #tab-tasas .cripto-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 14px;
-        }
-
-        #tab-tasas .cripto-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+        /* ========================================
+           YIELD MATRIX — Premium Stablecoins
+           ======================================== */
+        .yield-matrix-container {
+            margin-top: 15px;
+            overflow-x: auto;
+            max-width: 100%;
+            width: 100%;
             border-radius: var(--radius-lg);
-            padding: 18px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) transparent;
+            -webkit-overflow-scrolling: touch;
+            display: block;
+            /* Ensure it stays a block container */
         }
 
-        #tab-tasas .cripto-card:hover {
-            border-color: var(--border-hover);
-            box-shadow: var(--shadow-subtle);
+        .yield-matrix-container::-webkit-scrollbar {
+            height: 6px;
         }
 
-        #tab-tasas .cripto-card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 14px;
-            padding-bottom: 12px;
+        .yield-matrix-container::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        .yield-matrix {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 13px;
+        }
+
+        /* Sticky Headers */
+        .yield-matrix thead th {
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            z-index: 20;
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            color: var(--text-main);
+            min-width: 120px;
+        }
+
+        /* First Column Sticky */
+        .yield-matrix th:first-child,
+        .yield-matrix td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 30;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            min-width: 130px;
+            text-align: left;
+        }
+
+        @media (max-width: 768px) {
+
+            .yield-matrix th:first-child,
+            .yield-matrix td:first-child {
+                min-width: 90px;
+                padding: 12px 8px;
+            }
+        }
+
+        .yield-matrix thead th:first-child {
+            z-index: 40;
+        }
+
+        .yield-matrix td {
+            padding: 12px;
+            text-align: center;
             border-bottom: 1px solid var(--border-color);
         }
 
-        #tab-tasas .cripto-card-header-icon {
-            width: 32px;
-            height: 32px;
-            flex-shrink: 0;
-        }
-
-        #tab-tasas .cripto-card-header-icon svg,
-        #tab-tasas .cripto-card-header-icon img {
-            width: 32px !important;
-            height: 32px !important;
-            border-radius: 50%;
-        }
-
-        #tab-tasas .cripto-card-name {
-            font-weight: 600;
-            font-size: 14px;
+        /* Heatmap Cells */
+        .yield-cell {
+            position: relative;
+            font-weight: 700;
             color: var(--text-main);
         }
 
-        #tab-tasas .cripto-card-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-color);
+        .yield-cell .apy-value {
+            position: relative;
+            z-index: 2;
         }
 
-        #tab-tasas .cripto-card-row:last-child {
-            border-bottom: none;
+        .yield-cell.best-yield {
+            color: var(--green);
+            background: rgba(74, 222, 128, 0.08);
         }
 
-        #tab-tasas .cripto-card-coin {
+        .yield-cell.best-yield::after {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            border: 1px solid var(--green);
+            border-radius: 6px;
+            opacity: 0.3;
+        }
+
+
+        .matrix-exchange-header {
             display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 8px;
-            font-size: 13px;
-            color: var(--text-muted);
-            font-weight: 500;
         }
 
-        #tab-tasas .cripto-card-coin svg {
-            width: 20px !important;
-            height: 20px !important;
+        @media (max-width: 768px) {
+            .matrix-exchange-header {
+                gap: 4px;
+                font-size: 11px;
+            }
+
+            .matrix-exchange-header span {
+                max-width: 60px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .yield-matrix thead th {
+                min-width: 90px;
+                padding: 10px 4px;
+            }
+
+            .yield-matrix td {
+                padding: 10px 4px;
+                font-size: 12px;
+            }
         }
 
-        #tab-tasas .cripto-rate-pill {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 8px;
-            font-size: 13px;
+        .matrix-exchange-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+
+        .matrix-exchange-icon img,
+        .matrix-exchange-icon svg {
+            width: 24px !important;
+            height: 24px !important;
+        }
+
+        .matrix-coin-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-weight: 600;
-            background: var(--matrix-rate-bg);
-            border: 1px solid var(--matrix-rate-border);
-            color: var(--matrix-rate-color);
+            color: var(--text-main);
         }
 
-        #tab-tasas .cripto-rate-pill.best-crypto-rate {
-            background: rgba(74, 222, 128, 0.12);
-            border-color: rgba(74, 222, 128, 0.4);
-            color: var(--green);
+        .matrix-coin-icon {
+            width: 20px;
+            height: 20px;
         }
 
-        [data-theme="light"] #tab-tasas .cripto-rate-pill.best-crypto-rate {
-            background: rgba(5, 150, 105, 0.1);
-            border-color: rgba(5, 150, 105, 0.3);
-            color: var(--green);
-        }
-
-        #tab-tasas .cripto-rate-na {
-            font-size: 13px;
+        .yield-na {
             color: var(--text-muted);
+            font-weight: 400;
+            opacity: 0.4;
         }
 
-        /* Cauciones table */
-        #tab-tasas .cauciones-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 13px;
+        /* Mobile specific scroll hint */
+        @media (max-width: 768px) {
+            .yield-matrix-container::after {
+                content: "Desliza para ver más →";
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                font-size: 10px;
+                color: var(--accent);
+                background: var(--bg-card);
+                padding: 2px 6px;
+                border-radius: 4px;
+                opacity: 0.7;
+                pointer-events: none;
+            }
         }
 
-        #tab-tasas .cauciones-table thead tr {
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-muted);
-            font-size: 11px;
-            text-transform: uppercase;
-        }
-
-        #tab-tasas .cauciones-table th,
-        #tab-tasas .cauciones-table td {
-            padding: 14px 16px;
-        }
-
-        #tab-tasas .cauciones-table th {
-            font-weight: 500;
-        }
-
-        #tab-tasas .cauciones-table tbody tr {
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        #tab-tasas .cauciones-table tbody tr:last-child {
-            border-bottom: none;
-        }
 
         @media (max-width: 768px) {
             #tab-tasas .cripto-grid {
@@ -1291,66 +1503,6 @@
                 white-space: nowrap;
             }
 
-            /* Cauciones Mobile Layout (Cards) */
-            #tab-tasas .cauciones-table,
-            #tab-tasas .cauciones-table thead,
-            #tab-tasas .cauciones-table tbody,
-            #tab-tasas .cauciones-table th,
-            #tab-tasas .cauciones-table td,
-            #tab-tasas .cauciones-table tr {
-                display: block;
-            }
-
-            #tab-tasas .cauciones-table thead tr {
-                display: none;
-            }
-
-            #tab-tasas .cauciones-table tr {
-                border: 1px solid var(--border-color);
-                border-radius: var(--radius-md);
-                padding: 12px;
-                margin-bottom: 12px;
-                background: var(--bg-card);
-            }
-
-            #tab-tasas .cauciones-table td {
-                display: grid;
-                grid-template-columns: 120px 1fr;
-                gap: 8px;
-                align-items: center;
-                border: none;
-                padding: 6px 0 !important;
-                text-align: right;
-            }
-
-            #tab-tasas .cauciones-table td::before {
-                font-weight: 600;
-                color: var(--text-muted);
-                font-size: 10px;
-                text-transform: uppercase;
-                text-align: left;
-                content: "";
-            }
-
-            #tab-tasas .cauciones-table td:nth-of-type(1)::before {
-                content: "Plazo";
-            }
-
-            #tab-tasas .cauciones-table td:nth-of-type(2)::before {
-                content: "Tasa Actual";
-            }
-
-            #tab-tasas .cauciones-table td:nth-of-type(3)::before {
-                content: "Variación";
-            }
-
-            #tab-tasas .cauciones-table td:nth-of-type(4)::before {
-                content: "T. Tomadora";
-            }
-
-            #tab-tasas .cauciones-table td:nth-of-type(5)::before {
-                content: "T. Colocadora";
-            }
 
             .nav-container {
                 overflow-x: auto;
@@ -1717,9 +1869,9 @@
 
                 <!-- PESOS (ARS) VIEW -->
                 <div id="tasas-pesos"
-                    style="display: block; animation: fadeIn 0.4s ease forwards; max-width: 900px; margin: 0 auto;">
+                    style="display: block; animation: fadeIn 0.4s ease forwards; max-width: 1100px; margin: 0 auto; padding: 0 20px;">
 
-                    <details class="tasas-guide">
+                    <details class="tasas-guide" style="margin-bottom: 30px;">
                         <summary>ℹ️ ¿Cómo interpretar las tasas?</summary>
                         <div class="tasas-guide-body">
                             <strong>Cuenta Remunerada:</strong> La tasa es establecida por la billetera en cada período.
@@ -1732,101 +1884,46 @@
                         </div>
                     </details>
 
-                    <div class="tasas-section">
-                        <div class="tasas-section-title">💳 Cuentas Remuneradas y Billeteras</div>
-                        <div class="tasas-section-sub">Interés fijo preestablecido por la entidad. Liquidez inmediata
-                            con pago de rendimientos diarios.</div>
+                    <div class="terminal-container">
+                        <div class="terminal-header">
+                            <div class="terminal-title">💳 Cuentas Remuneradas y Billeteras</div>
+                        </div>
                         <div id="ars-accounts-container">
                             <div style="text-align: center; color: var(--text-muted); padding: 30px; font-size: 13px;">
                                 Cargando cuentas...</div>
                         </div>
                     </div>
 
-                    <div class="tasas-section">
-                        <div class="tasas-section-title">🏦 Plazos Fijos — Top 10</div>
-                        <div class="tasas-section-sub">Tasa fija garantizada. Requiere inmovilizar el capital por un
-                            mínimo de 30 días.</div>
+                    <div class="terminal-container">
+                        <div class="terminal-header">
+                            <div class="terminal-title">🏦 Plazos Fijos — Top 10</div>
+                        </div>
                         <div id="ars-pf-list">
                             <div style="text-align: center; color: var(--text-muted); padding: 30px; font-size: 13px;">
                                 Cargando...</div>
                         </div>
                     </div>
 
-                    <div class="tasas-section">
-                        <div class="tasas-section-title">📊 Fondos Comunes de Inversión</div>
-                        <div class="tasas-section-sub">Rendimiento variable. Estimación basada en lo que rindió el fondo
-                            en los últimos días. Liquidez inmediata (rescate en el día).</div>
+                    <div class="terminal-container">
+                        <div class="terminal-header">
+                            <div class="terminal-title">📊 Fondos Comunes de Inversión</div>
+                        </div>
                         <div id="ars-fci-container">
                             <div style="text-align: center; color: var(--text-muted); padding: 30px; font-size: 13px;">
                                 Cargando FCI...</div>
                         </div>
                     </div>
 
-                    <div class="tasas-section">
-                        <div class="tasas-section-title">📈 Cauciones Bursátiles</div>
-                        <div class="tasas-section-sub">Tasas de referencia del mercado bursátil para cauciones en pesos.
-                        </div>
-                        <div
-                            style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow-x: auto;">
-                            <table class="cauciones-table">
-                                <thead>
-                                    <tr>
-                                        <th>Plazo</th>
-                                        <th>Tasa Actual</th>
-                                        <th>Variación</th>
-                                        <th>T. Tomadora</th>
-                                        <th>T. Colocadora</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div style="font-weight: 600; color: var(--text-main);">PESOS 1D</div>
-                                            <div style="font-size: 11px; color: var(--text-muted);">Caución a 1 día
-                                            </div>
-                                        </td>
-                                        <td style="font-weight: 600; color: var(--green);">21.00%</td>
-                                        <td style="color: var(--text-muted);">0%</td>
-                                        <td style="color: var(--text-muted);">0%</td>
-                                        <td style="color: var(--text-muted);">0%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div style="font-weight: 600; color: var(--text-main);">PESOS 7D</div>
-                                            <div style="font-size: 11px; color: var(--text-muted);">Caución a 7 días
-                                            </div>
-                                        </td>
-                                        <td style="font-weight: 600; color: var(--green);">22.00%</td>
-                                        <td style="color: var(--text-muted);">0%</td>
-                                        <td style="color: var(--text-muted);">0%</td>
-                                        <td style="color: var(--text-muted);">0%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div style="font-weight: 600; color: var(--text-main);">PESOS 14D</div>
-                                            <div style="font-size: 11px; color: var(--text-muted);">Caución a 14 días
-                                            </div>
-                                        </td>
-                                        <td style="font-weight: 600; color: var(--green);">25.00%</td>
-                                        <td style="color: var(--text-muted);">0%</td>
-                                        <td style="color: var(--text-muted);">0%</td>
-                                        <td style="color: var(--text-muted);">0%</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- STABLECOINS VIEW -->
                 <div id="tasas-cripto"
-                    style="display: none; animation: fadeIn 0.4s ease forwards; max-width: 1000px; margin: 0 auto;">
+                    style="display: none; animation: fadeIn 0.4s ease forwards; max-width: 100%; margin: 0 auto; overflow: hidden;">
                     <div class="tasas-section-title" style="margin-bottom: 14px;">🪙 Rendimientos en Stablecoins</div>
                     <div class="tasas-section-sub">Tasas APY ofrecidas por plataformas cripto argentinas. La mejor tasa
                         de cada moneda se destaca en verde.</div>
-                    <div id="cripto-cards-container" class="cripto-grid">
-                        <div
-                            style="text-align: center; color: var(--text-muted); padding: 40px; font-size: 13px; grid-column: 1 / -1;">
+                    <div class="yield-matrix-container" id="yield-matrix-wrapper">
+                        <div style="text-align: center; color: var(--text-muted); padding: 40px; font-size: 13px;">
                             Cargando rendimientos...</div>
                     </div>
                 </div>
@@ -1956,7 +2053,7 @@
                 'binance earn': '<svg viewBox="0 0 24 24" style="width: 28px; height: 28px; background:#fcd535; border-radius: 50%; padding:4px;"><path d="M16.624 13.9202l2.7175 2.7154-7.353 7.353-7.353-7.352 2.7175-2.7164 4.6355 4.6595 4.6356-4.6595zm4.6366-4.6366L24 12l-2.7394 2.7154-2.7383-2.7154 2.7383-2.7164zM7.3783 9.2836L12 4.6241l4.6217 4.6595 2.7175-2.7154-7.3392-7.353-7.353 7.352 2.7314 2.7164zm-4.6366 4.6366L0 12l2.7416-2.7164 2.7186 2.7164L2.7416 13.9202zM12 15.1772l-3.179-3.1772L12 8.8228l3.179 3.1772L12 15.1772z" fill="#1e2026"/></svg>',
                 'binance': '<svg viewBox="0 0 24 24" style="width: 28px; height: 28px; background:#fcd535; border-radius: 50%; padding:4px;"><path d="M16.624 13.9202l2.7175 2.7154-7.353 7.353-7.353-7.352 2.7175-2.7164 4.6355 4.6595 4.6356-4.6595zm4.6366-4.6366L24 12l-2.7394 2.7154-2.7383-2.7154 2.7383-2.7164zM7.3783 9.2836L12 4.6241l4.6217 4.6595 2.7175-2.7154-7.3392-7.353-7.353 7.352 2.7314 2.7164zm-4.6366 4.6366L0 12l2.7416-2.7164 2.7186 2.7164L2.7416 13.9202zM12 15.1772l-3.179-3.1772L12 8.8228l3.179 3.1772L12 15.1772z" fill="#1e2026"/></svg>',
                 'fiwind': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 28px; height: 28px; border-radius: 50%;"><rect width="18" height="18" style="fill: rgb(10, 10, 10);"></rect><g><path d="M7.92,9.58h-1.57c-.2,0-.36-.16-.36-.36s.16-.36.36-.36h1.57c.2,0,.36.16.36.36s-.16.36-.36.36ZM6.36,7.96c-.2,0-.36-.16-.36-.36s.16-.36.36-.36h2.05c.2,0,.36.16.36.36s-.16.36-.36.36h-2.05ZM8.7,11.48c-.19-.06-.3-.26-.24-.45l1.1-3.61c.06-.19.26-.3.45-.24.19.06.3.26.24.45l-1.1,3.61c-.06.19-.26.3-.45.24ZM11.89,7.63l-1.1,3.61c-.06.19-.26.3-.45.24-.19-.06-.3-.26-.24-.45l1.1-3.61c.06-.19.26-.3.45-.24.19.06.3.26.24.45Z" style="fill: rgb(239, 180, 29);"></path><path d="M9,14.01c-2.76,0-5-2.25-5-5.01s2.24-5.01,5-5.01,5,2.25,5,5.01-2.24,5.01-5,5.01ZM9,4.62c-2.41,0-4.37,1.96-4.37,4.37s1.96,4.37,4.37,4.37,4.37-1.96,4.37-4.37-1.96-4.37-4.37-4.37Z" style="fill: rgb(239, 180, 29);"></path></g></svg>',
-                'sol': '<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 18 18" style="width: 28px; height: 28px; border-radius: 50%;"><defs><radialGradient id="radial-gradient" cx="-26.39" cy="64.45" fx="-26.39" fy="64.45" r="5.51" gradientTransform="translate(33.49 74.2) rotate(1.68) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset=".38" stop-color="#dc4868"/><stop offset=".48" stop-color="#de5760"/><stop offset=".68" stop-color="#e17152"/><stop offset=".86" stop-color="#e28149"/><stop offset="1" stop-color="#e38646"/></radialGradient></defs><rect width="18" height="18" style="fill: #fafafa;"/><path d="M6.81,8.88c-.94-.89-1.18-2.3-.6-3.46l.07-.15-.9-.44-.07.15c-.78,1.55-.46,3.43.8,4.62l.12.12.7-.72-.12-.12ZM11.19,9.12c.94.89,1.18,2.3.6,3.46l-.07.14.9.44.07-.15c.78-1.55.46-3.43-.8-4.62l-.12-.11-.7.72.11.13ZM7.37,10.47c-1.3.03-2.46-.79-2.87-2.02l-.05-.16-.94.32.05.16c.54,1.65,2.1,2.74,3.83,2.7h.17l-.02-1h-.17ZM10.64,7.53c1.3-.03,2.46.79,2.87,2.02l.05.16.95-.32-.05-.16c-.54-1.65-2.1-2.74-3.83-2.7h-.17v1s.18,0,.18,0ZM8.89,11.19c-.89.94-2.3,1.19-3.46.6l-.15-.07-.44.9.15.07c1.55.78,3.43.46,4.62-.8l.11-.12-.72-.7-.12.12ZM9.13,6.81c.89-.94,2.3-1.18,3.46-.6l.15.07.44-.9-.15-.07c-1.55-.78-3.43-.46-4.62.8l-.12.12.72.7.13-.12ZM10.48,10.63c.03,1.3-.79,2.46-2.02,2.87l-.16.05.32.95.16-.05c1.65-.54,2.74-2.1,2.7-3.83v-.17h-1v.18ZM7.54,7.37c-.03-1.3.79-2.46,2.02-2.87l.16-.05-.32-.95-.16.05c-1.65.54-2.74,2.1-2.7,3.83v.17h1s0-.18,0-.18Z" style="fill: url(#radial-gradient);"/></svg>',
+                'banco del sol': '<svg id="Layer_1_sol" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 28px; height: 28px; border-radius: 50%;"><defs><radialGradient id="radial-gradient-sol" cx="9" cy="9" r="9" gradientUnits="userSpaceOnUse"><stop offset=".38" stop-color="#dc4868"/><stop offset=".48" stop-color="#de5760"/><stop offset=".68" stop-color="#e17152"/><stop offset=".86" stop-color="#e28149"/><stop offset="1" stop-color="#e38646"/></radialGradient></defs><rect width="18" height="18" style="fill: #fafafa;"/><path d="M6.81,8.88c-.94-.89-1.18-2.3-.6-3.46l.07-.15-.9-.44-.07.15c-.78,1.55-.46,3.43.8,4.62l.12.12.7-.72-.12-.12ZM11.19,9.12c.94.89,1.18,2.3.6,3.46l-.07.14.9.44.07-.15c.78-1.55.46-3.43-.8-4.62l-.12-.11-.7.72.11.13ZM7.37,10.47c-1.3.03-2.46-.79-2.87-2.02l-.05-.16-.94.32.05.16c.54,1.65,2.1,2.74,3.83,2.7h.17l-.02-1h-.17ZM10.64,7.53c1.3-.03,2.46.79,2.87,2.02l.05.16.95-.32-.05-.16c-.54-1.65-2.1-2.74-3.83-2.7h-.17v1s.18,0,.18,0ZM8.89,11.19c-.89.94-2.3,1.19-3.46.6l-.15-.07-.44.9.15.07c1.55.78,3.43.46,4.62-.8l.11-.12-.72-.7-.12.12ZM9.13,6.81c.89-.94,2.3-1.18,3.46-.6l.15.07.44-.9-.15-.07c-1.55-.78-3.43-.46-4.62.8l-.12.12.72.7.13-.12ZM10.48,10.63c.03,1.3-.79,2.46-2.02,2.87l-.16.05.32.95.16-.05c1.65-.54,2.74-2.1,2.7-3.83v-.17h-1v.18ZM7.54,7.37c-.03-1.3.79-2.46,2.02-2.87l.16-.05-.32-.95-.16.05c-1.65.54-2.74,2.1-2.7,3.83v.17h1s0-.18,0-.18Z" style="fill: url(#radial-gradient-sol);"/></svg>',
                 'macro': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 28px; height: 28px; border-radius: 50%;"><rect x="0" y="0" width="18" height="18" style="fill: #232b54" /><g><path d="M9,7.4c-1.89,0-3.45,1.46-3.56,3.32,0,.05.01.09.05.13.03.04.08.05.13.05h1.26c.09,0,.16-.07.17-.16.1-1,.94-1.76,1.96-1.76s1.86.76,1.96,1.76c0,.09.08.16.17.16h1.25s.1-.02.13-.05.05-.08.05-.13c-.11-1.87-1.68-3.32-3.56-3.32" style="fill: #fff; fill-rule: evenodd" /><path d="M9,9.33c-.89,0-1.62.72-1.62,1.6s.73,1.6,1.62,1.6,1.62-.72,1.62-1.6-.73-1.6-1.62-1.6" style="fill: #fff; fill-rule: evenodd" /><path d="M9,5.47c-1.43,0-2.79.54-3.82,1.53-1.03.98-1.62,2.3-1.68,3.72,0,.05.02.09.05.13.04.04.08.05.13.05h1.25c.09,0,.17-.07.17-.16.1-2.07,1.81-3.69,3.91-3.69s3.81,1.62,3.91,3.69c0,.09.08.16.17.16h1.25s.09-.02.13-.05.05-.08.05-.13c-.05-1.41-.65-2.73-1.68-3.72-1.03-.98-2.39-1.53-3.82-1.53" style="fill: #fff; fill-rule: evenodd" /></g></svg>',
                 'provincia': '<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 18 18" style="width: 28px; height: 28px; border-radius: 50%;"><defs><linearGradient id="linear-gradient" x1="0" y1="9" x2="18" y2="9" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#279d2e"/><stop offset="1" stop-color="#25b4bd"/></linearGradient></defs><rect width="18" height="18" style="fill: url(#linear-gradient);"/><g><path d="M4.02,11.76v.48c.02,1.3,1.07,2.35,2.36,2.36h1.23c.38.02.7-.28.72-.66,0-.02,0-.04,0-.05v-4.63c0-.2-.18-.36-.38-.35-.08,0-.16.03-.22.08l-3.46,2.23c-.19.11-.29.33-.25.55" style="fill: #fff;"/><path d="M4.5,10l3.32-2.14c.69-.44,1.39-.02,1.39.68v2.58c-.01.25.18.46.43.47,0,0,.01,0,.02,0h.59c2.02,0,3.75-1.46,3.75-3.95,0-2.63-2.02-4.24-4.38-4.24h-4.94c-.37,0-.66.31-.67.68v5.68c0,.17.15.3.33.29.06,0,.11-.02.16-.06" style="fill: #fff;"/></g></svg>',
                 'lemoncash': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 28px; height: 28px; border-radius: 50%;"><rect width="18" height="18" style="fill: rgb(10, 10, 10);"></rect><path d="M9,4c-2.74,0-5,2.26-5,5s2.26,5,5,5,5-2.26,5-5h0c0-2.74-2.26-5-5-5h0ZM11.63,9.24s-.07.05-.11.07c-.04.02-.09.03-.14.04-.11.02-.22.02-.33,0-.24-.05-.48-.15-.69-.28-.22-.14-.43-.29-.62-.47-.1-.09-.19-.18-.28-.28-.09-.1-.18-.21-.26-.31-.02-.03-.05-.04-.08-.04-.02,0-.04,0-.06.02-.05.03-.07.1-.03.15.07.12.16.23.24.35.09.12.17.22.27.33.19.21.4.41.63.58.24.18.5.32.79.42.1.03.2.05.3.06.04,0,.07.04.07.08,0,.01,0,.02-.01.03-.17.28-.37.53-.6.76-.63.66-1.49,1.05-2.4,1.08-.34,0-.68-.06-.99-.21l-.07-.03s-.05-.01-.07,0l-.06.04c-.11.07-.23.11-.35.11-.1,0-.2-.03-.28-.1-.13-.18-.13-.43,0-.61l.04-.07s.01-.05,0-.07l-.04-.07c-.35-.66-.32-1.52.03-2.32.01-.03.04-.05.07-.05.01,0,.02,0,.03,0,.02,0,.03.02.04.04.06.17.15.33.24.48.16.24.34.45.55.65.1.1.21.2.31.28.1.09.22.18.33.26.02,0,.04.01.05.01.06,0,.11-.05.11-.11,0-.03,0-.05-.03-.07-.1-.09-.2-.18-.29-.27-.09-.1-.18-.2-.27-.29-.17-.2-.32-.42-.44-.65-.12-.22-.2-.46-.24-.7-.02-.11-.02-.22,0-.33,0-.04.02-.09.04-.13,0-.01.02-.03.02-.04.07-.09.15-.17.23-.25,1.04-1.04,2.46-1.37,3.46-.83l.07.04s.06.02.08,0l.07-.05c.19-.15.45-.15.64,0,.15.2.14.47-.02.66l-.05.07s-.02.05,0,.07l.03.07c.26.6.28,1.28.05,1.9h0Z" style="fill: rgb(0, 240, 104);"></path></svg>',
@@ -1988,11 +2085,11 @@
                 const lowName = name.toLowerCase().trim();
                 // 1. Coincidencia exacta
                 if (iconMapExt[lowName]) return iconMapExt[lowName];
-                
+
                 // 2. Sin prefijo "banco " o "banco de la "
                 const cleanBank = lowName.replace(/^banco\s+(de\s+la\s+)?/i, '').trim();
                 if (iconMapExt[cleanBank]) return iconMapExt[cleanBank];
-                
+
                 // 3. Primera palabra (para casos como "Ualá Plus" -> "uala")
                 const firstWord = cleanBank.split(' ')[0];
                 if (iconMapExt[firstWord]) return iconMapExt[firstWord];
@@ -2000,64 +2097,45 @@
                 return null;
             };
 
-            const formatCard = (name, tna, date, limit, conditions, type, isBest = false) => {
+            const formatTerminalRow = (name, tna, subLabel, metaPills = [], isBest = false) => {
                 let init = name.charAt(0).toUpperCase();
                 let exactIcon = getIcon(name);
                 let renderIcon = exactIcon
-                    ? exactIcon.replace('width: 28px;', 'width: 36px;').replace('height: 28px;', 'height: 36px;')
+                    ? exactIcon.replace('width: 28px;', 'width: 24px;').replace('height: 28px;', 'height: 24px;')
                     : `<span>${init}</span>`;
 
-                let badges = `<span class="tasas-badge tasas-badge-type">${type}</span>`;
-                if (type === 'Cuenta Remunerada' || type === 'Billetera') {
-                    badges += `<span class="tasas-badge tasas-badge-liquidity">Liquidez Diaria</span>`;
-                }
-                if (type === 'FCI') {
-                    badges += `<span class="tasas-badge tasas-badge-liquidity">Liquidez Diaria</span>`;
-                    badges += `<span class="tasas-badge tasas-badge-variable">Tasa Variable</span>`;
-                }
-                if (limit) {
-                    badges += `<span class="tasas-badge tasas-badge-limit">${limit}</span>`;
-                }
+                let pillsHtml = metaPills.filter(p => p).map(p => {
+                    let cls = 'terminal-meta-pill';
+                    if (p.includes('Límite')) cls += ' pill-limit';
+                    if (p.includes('Liquidez')) cls += ' pill-liquidity';
+                    return `<span class="${cls}">${p}</span>`;
+                }).join('');
 
-                let descHtml = conditions ? `<div class="tasas-row-desc">${conditions}</div>` : '';
-
-                return `<div class="tasas-row${isBest ? ' best-rate' : ''}">
-                    <div class="tasas-row-icon">${renderIcon}</div>
-                    <div class="tasas-row-info">
-                        <div class="tasas-row-name">${name}</div>
-                        ${descHtml}
-                        <div class="tasas-row-meta">${badges}</div>
-                    </div>
-                    <div class="tasas-row-rate">
-                        <div class="tasas-rate-value">${tna}</div>
-                        <div class="tasas-rate-label">TNA</div>
-                    </div>
-                </div>`;
+                return `
+                    <div class="terminal-row${isBest ? ' terminal-highlight' : ''}">
+                        <div class="terminal-entity">
+                            <div class="terminal-logo">${renderIcon}</div>
+                            <div style="min-width: 0;">
+                                <div class="terminal-name" style="display: flex; align-items: center; gap: 6px;">
+                                    ${name}
+                                </div>
+                                <div class="terminal-sub-label">${subLabel}</div>
+                            </div>
+                        </div>
+                        <div class="terminal-data">
+                            ${pillsHtml ? `<div style="display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end;">${pillsHtml}</div>` : ''}
+                            <div class="terminal-rate-container">
+                                <div class="mono-rate">${tna}</div>
+                                <div class="terminal-rate-label">TNA</div>
+                            </div>
+                        </div>
+                    </div>`;
             };
 
             const formatSimpleList = (items) => {
                 let html = '';
                 items.forEach((i, idx) => {
-                    let customIcon = getIcon(i.name);
-                    let renderLogo = customIcon
-                        ? customIcon.replace('width: 28px;', 'width: 36px;').replace('height: 28px;', 'height: 36px;')
-                        : (i.logo
-                            ? `<img src="${i.logo}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: white;" alt="${i.name}" onerror="this.outerHTML='<span>${i.name.charAt(0)}</span>'"/>`
-                            : `<span>${i.name.charAt(0)}</span>`);
-
-                    html += `<div class="tasas-row${idx === 0 ? ' best-rate' : ''}">
-                        <div class="tasas-row-icon">${renderLogo}</div>
-                        <div class="tasas-row-info">
-                            <div class="tasas-row-name">${i.name}</div>
-                            <div class="tasas-row-meta">
-                                <span class="tasas-badge tasas-badge-lock">Bloqueo 30 días</span>
-                            </div>
-                        </div>
-                        <div class="tasas-row-rate">
-                            <div class="tasas-rate-value">${(i.rate * 100).toFixed(2)}%</div>
-                            <div class="tasas-rate-label">TNA</div>
-                        </div>
-                    </div>`;
+                    html += formatTerminalRow(i.name, (i.rate * 100).toFixed(2) + '%', 'Plazo Fijo', [], idx === 0);
                 });
                 return html;
             };
@@ -2127,16 +2205,16 @@
                         if (name === 'CARREFOUR') name = 'Carrefour Banco';
 
                         let tna = (acc.tna * 100).toFixed(2) + '%';
-                        let dateText = acc.fecha ? acc.fecha.split('-').reverse().join('/') : '';
-
+                        
                         let limitTxt = null;
-                        if (acc.tope) limitTxt = `Límite: $${(acc.tope / 1000000)} M`;
-                        else if (acc.condiciones && acc.condiciones.includes('4.161.600')) limitTxt = 'Límite: $4.1 M';
+                        if (acc.tope) limitTxt = `Límite: $${(acc.tope / 1000000)}M`;
+                        else if (acc.condiciones && acc.condiciones.includes('4.161.600')) limitTxt = 'Límite: $4.1M';
 
-                        let type = (rawName.includes('FIWIND') || rawName.includes('BELO')) ? 'Billetera' : 'Cuenta Remunerada';
-                        let conditions = acc.condicionesCorto || null;
+                        let subLabel = (rawName.includes('FIWIND') || rawName.includes('BELO')) ? 'Billetera Virtual' : 'Cuenta Remunerada';
+                        let features = ['Liquidez Inmediata'];
+                        if (limitTxt) features.push(limitTxt);
 
-                        remuHtml += formatCard(name, tna, dateText, limitTxt, conditions, type, idx === 0);
+                        remuHtml += formatTerminalRow(name, tna, subLabel, features, idx === 0);
                     });
                     document.getElementById('ars-accounts-container').innerHTML = remuHtml;
 
@@ -2188,17 +2266,12 @@
                     fciItems.sort((a, b) => b.rate - a.rate);
                     let fciHtml = ''; let fciIdx = 0;
                     fciItems.forEach(f => {
-                        let type = f.name === 'Prex' || f.name === 'Personal Pay' || f.name === 'Ualá' || f.name === 'Claro Pay' || f.name === 'Mercado Pago' || f.name === 'Lemon' || f.name === 'Fiwind' ? 'Billetera' : 'FCI';
-
-                        let combinedDesc = f.descText + '<br><span style="font-size: 11px; color: var(--text-main); margin-top: 4px; display: block;">' + f.dateStr + '</span>';
-
-                        fciHtml += formatCard(
+                        let subLabel = f.descText;
+                        fciHtml += formatTerminalRow(
                             f.name,
                             (f.rate * 100).toFixed(2) + '%',
-                            '',
-                            null,
-                            combinedDesc,
-                            type,
+                            subLabel,
+                            ['FCI Dinero', 'Liquidez Inmediata'],
                             fciIdx === 0
                         );
                         fciIdx++;
@@ -2207,21 +2280,20 @@
                     if (fciHtml === '') fciHtml = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No hay rendimientos disponibles.</div>';
                     document.getElementById('ars-fci-container').innerHTML = fciHtml;
 
-                    // Crypto Card Grid
+                    // 4. Yield Matrix (Stablecoins)
                     let entities = ['Binance Earn', 'Fiwind', 'LB', 'Belo', 'LemonCash', 'Vesseo'];
                     let entityDisplayName = { 'Binance Earn': 'Binance', 'LemonCash': 'Lemon' };
                     let entityKeyMap = { 'Binance Earn': 'binance', 'Fiwind': 'fiwind', 'LB': 'letsbit', 'Belo': 'belo', 'LemonCash': 'lemoncash', 'Vesseo': 'vesseo' };
                     let coins = ['USDT', 'USDC', 'DAI'];
 
-                    // Build a rates map: rateMap[entity][coin] = numericRate
                     let rateMap = {};
                     entities.forEach(ent => {
                         let apiKey = entityKeyMap[ent];
                         rateMap[ent] = {};
                         coins.forEach(coin => {
                             let val = null;
-                            if (apiKey === 'binance') {
-                                if (coin === 'USDT') val = 8.30;
+                            if (apiKey === 'binance' && coin === 'USDT') {
+                                val = 8.30;
                             } else {
                                 let providerData = rendData.find(d => d.entidad.toLowerCase() === apiKey.toLowerCase());
                                 if (providerData) {
@@ -2233,7 +2305,7 @@
                         });
                     });
 
-                    // Find best rate per coin
+                    // Find best rate per coin for heatmap/winner glow
                     let bestPerCoin = {};
                     coins.forEach(coin => {
                         let best = -1;
@@ -2243,38 +2315,51 @@
                         bestPerCoin[coin] = best > 0 ? best : null;
                     });
 
-                    // Build cards HTML
-                    let cardsHtml = '';
-                    entities.forEach(ent => {
+                    // Build Matrix HTML
+                    let matrixHtml = `
+                        <table class="yield-matrix">
+                            <thead>
+                                <tr>
+                                    <th>Criptomoneda</th>
+                                    ${entities.map(ent => {
                         let displayName = entityDisplayName[ent] || ent;
-                        let entIcon = iconMapExt[ent.toLowerCase()] || iconMapExt[ent.split(' ')[0].toLowerCase()];
-                        let iconHtml = entIcon
-                            ? `<div class="cripto-card-header-icon">${entIcon}</div>`
-                            : `<div class="cripto-card-header-icon" style="width:32px;height:32px;border-radius:50%;background:var(--bg-card-hover);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--text-muted);">${displayName.charAt(0)}</div>`;
+                        let entIcon = iconMapExt[ent.toLowerCase()] || iconMapExt[ent.split(' ')[0].toLowerCase()] || '';
+                        return `
+                                            <th>
+                                                <div class="matrix-exchange-header">
+                                                    <div class="matrix-exchange-icon">${entIcon}</div>
+                                                    <span>${displayName}</span>
+                                                </div>
+                                            </th>`;
+                    }).join('')}
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
 
-                        let rowsHtml = '';
-                        coins.forEach(coin => {
-                            let coinIcon = iconMapExt[coin.toLowerCase()] || '';
+                    coins.forEach(coin => {
+                        let coinIcon = iconMapExt[coin.toLowerCase()] || '';
+                        matrixHtml += `<tr>
+                            <td>
+                                <div class="matrix-coin-cell">
+                                    <div class="matrix-coin-icon">${coinIcon}</div>
+                                    <span>${coin}</span>
+                                </div>
+                            </td>`;
+
+                        entities.forEach(ent => {
                             let rate = rateMap[ent][coin];
                             let isBest = rate !== null && bestPerCoin[coin] !== null && rate === bestPerCoin[coin];
-                            let rateHtml = rate !== null
-                                ? `<span class="cripto-rate-pill${isBest ? ' best-crypto-rate' : ''}">${rate.toFixed(2)}%</span>`
-                                : `<span class="cripto-rate-na">—</span>`;
-                            rowsHtml += `<div class="cripto-card-row">
-                                <div class="cripto-card-coin">${coinIcon} ${coin}</div>
-                                ${rateHtml}
-                            </div>`;
-                        });
+                            let cellClass = rate !== null ? (isBest ? 'yield-cell best-yield' : 'yield-cell') : 'yield-na';
+                            let displayRate = rate !== null ? `<span class="apy-value">${rate.toFixed(2)}%</span>` : '—';
 
-                        cardsHtml += `<div class="cripto-card">
-                            <div class="cripto-card-header">
-                                ${iconHtml}
-                                <div class="cripto-card-name">${displayName}</div>
-                            </div>
-                            ${rowsHtml}
-                        </div>`;
+                            matrixHtml += `<td class="${cellClass}">${displayRate}</td>`;
+                        });
+                        matrixHtml += `</tr>`;
                     });
-                    document.getElementById('cripto-cards-container').innerHTML = cardsHtml;
+
+                    matrixHtml += `</tbody></table>`;
+                    document.getElementById('yield-matrix-wrapper').innerHTML = matrixHtml;
 
                 }).catch(e => console.error("Error in fetching rates concurrently:", e));
 
