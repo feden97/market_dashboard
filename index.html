@@ -1656,6 +1656,93 @@
                 display: none;
             }
         }
+        /* ========================================
+           COLUMN GUIDE (Renta Variable)
+           ======================================== */
+        .column-guide {
+            z-index: 10;
+        }
+
+        .column-guide-btn {
+            font-family: var(--font-family);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background-color: var(--bg-card-solid);
+            color: var(--accent);
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+
+        .column-guide-btn:hover {
+            background-color: var(--bg-card-hover);
+            border-color: var(--accent);
+        }
+
+        .column-guide-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-card-solid);
+            z-index: 999;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--text-main);
+            line-height: 1.6;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .column-guide.active .column-guide-content {
+            display: block;
+        }
+
+        .column-guide-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+        }
+
+        .column-guide-close:hover {
+            color: var(--accent);
+        }
+
+        .column-guide dl {
+            margin: 0;
+        }
+
+        .column-guide dt {
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 12px;
+        }
+
+        .column-guide dt:first-child {
+            margin-top: 0;
+        }
+
+        .column-guide dd {
+            margin: 4px 0 0 10px;
+            color: var(--text-muted);
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -2054,6 +2141,44 @@
             <div class="tab-renta-layout">
                 <!-- LEFT: Ticker Table -->
                 <div class="ticker-list">
+                    <div class="column-guide" id="column-guide-container" style="position:relative; margin: 0 12px 12px 12px;">
+                        <button class="column-guide-btn" id="column-guide-toggle" type="button">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="margin-right: 8px;">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            GUÍA DE COLUMNAS
+                        </button>
+                        <div class="column-guide-content">
+                            <button class="column-guide-close" id="column-guide-close" type="button">&times;</button>
+                            <dl>
+                                <dt>Tendencia</dt>
+                                <dd>Tendencia técnica basada en la estructura del precio:<br>
+                                    • <strong>A (Alcista)</strong>: Tendencia positiva clara.<br>
+                                    • <strong>B (Mixta)</strong>: Consolidación o sin tendencia definida.<br>
+                                    • <strong>C (Bajista)</strong>: Tendencia negativa clara.</dd>
+                                
+                                <dt>ATR%</dt>
+                                <dd>Rango Verdadero Promedio (21d) como % del precio. Mide la volatilidad:<br>
+                                    • <strong>&lt; 2%</strong>: Baja volatilidad.<br>
+                                    • <strong>2-4%</strong>: Normal.<br>
+                                    • <strong>&gt; 5%</strong>: Alta volatilidad y mayor riesgo.</dd>
+                                
+                                <dt>ATRx</dt>
+                                <dd>Distancia a la media móvil (SMA50) medida en unidades de ATR:<br>
+                                    • <strong>&gt; +3</strong>: Sobrecompra extrema.<br>
+                                    • <strong>-1 a +1</strong>: Cerca de la media móvil.<br>
+                                    • <strong>&lt; -3</strong>: Sobreventa extrema.</dd>
+                                
+                                <dt>1M-VARS</dt>
+                                <dd>Fuerza Relativa vs SPY ajustada por volatilidad (0–100%):<br>
+                                    • <strong>&gt; 70%</strong>: Líder del mercado.<br>
+                                    • <strong>30-70%</strong>: Rango normal.<br>
+                                    • <strong>&lt; 30%</strong>: Debilidad extrema.</dd>
+                            </dl>
+                        </div>
+                    </div>
                     <div id="groups-container"></div>
                 </div>
                 <!-- CENTER: TradingView Chart -->
@@ -2586,50 +2711,33 @@
                         return '<th class="sortable" data-sort-by="' + key + '"><span class="rv-th-wrap">' + label + '<div class="rv-th-popover">' + popoverHtml + '</div></span></th>';
                     };
                     html += th('symbol', 'Ticker', 'Símbolo del activo');
-                    html += th('abc', 'Grade', 'Calificación: A=Alcista, B=Mixta, C=Bajista');
+                    html += th('abc', 'Tendencia', 'Calificación Técnica');
                     html += th('daily', 'Daily', 'Variación porcentual del día');
-                    html += th('intra', 'Intra', 'Variación intradía');
                     html += th('5d', '5D', 'Variación últimos 5 días hábiles');
                     html += th('20d', '20D', 'Variación últimos 20 días hábiles');
-
-                    const qMark = `
-                        <span class="tooltip-container tooltip-down" style="margin-left: 4px; vertical-align: middle; color: var(--accent);">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                            </svg>
-                            <div class="tooltip-text" style="font-weight: 400;">{TEXT}</div>
-                        </span>
-                    `;
-
-                    html += `<th class="sortable" data-sort-by="atr_pct">ATR% ${qMark.replace('{TEXT}', '<strong>Rango Verdadero Promedio</strong> (21d) como % del precio. Mide la volatilidad.<br><br>• <strong>&lt; 2%</strong> → Baja volatilidad<br>• <strong>2–4%</strong> → Normal<br>• <strong>&gt; 5%</strong> → Alta volatilidad y mayor riesgo')}</th>`;
-                    html += `<th class="sortable" data-sort-by="dist_sma50_atr">ATRx ${qMark.replace('tooltip-container tooltip-down', 'tooltip-container tooltip-down tooltip-left').replace('{TEXT}', '<strong>Distancia a SMA50</strong> medida en unidades de ATR. Mide cuán lejos está el precio de su media.<br><br>• <strong>&gt; +3</strong> → Sobrecompra extrema<br>• <strong>-1 a +1</strong> → Cerca de la media<br>• <strong>&lt; -3</strong> → Sobreventa extrema')}</th>`;
-                    html += `<th class="sortable" data-sort-by="rs">1M-VARS ${qMark.replace('tooltip-container tooltip-down', 'tooltip-container tooltip-down tooltip-left').replace('{TEXT}', '<strong>Fuerza Relativa vs SPY</strong> ajustada por volatilidad (0–100%).<br><br>• <strong>&gt; 70%</strong> → Líder del mercado<br>• <strong>30–70%</strong> → Rango normal<br>• <strong>&lt; 30%</strong> → Debilidad extrema')}</th>`;
+                    html += th('atr_pct', 'ATR%', 'Volatilidad (21d)');
+                    html += th('dist_sma50_atr', 'ATRx', 'Distancia a SMA50');
+                    html += th('rs', '1M-VARS', 'Fuerza Relativa');
                     html += '</tr></thead><tbody id="' + safeId + '-body">';
 
                     for (var i = 0; i < rows.length; i++) {
                         var r = rows[i];
-                        var daily = r.daily, intra = r.intra, five = r['5d'], twenty = r['20d'];
+                        var daily = r.daily, five = r['5d'], twenty = r['20d'];
                         var dailyW = vizWidth(daily, ranges.daily ? ranges.daily[0] : -10, ranges.daily ? ranges.daily[1] : 10);
-                        var intraW = vizWidth(intra, ranges.intra ? ranges.intra[0] : -10, ranges.intra ? ranges.intra[1] : 10);
                         var fiveW = vizWidth(five, ranges['5d'] ? ranges['5d'][0] : -20, ranges['5d'] ? ranges['5d'][1] : 20);
                         var twentyW = vizWidth(twenty, ranges['20d'] ? ranges['20d'][0] : -30, ranges['20d'] ? ranges['20d'][1] : 30);
                         var abc = r.abc || '';
-                        var rs = r.rs != null ? r.rs : 0;
-                        var atrPct = r.atr_pct != null ? r.atr_pct : 0;
-                        var dist = r.dist_sma50_atr != null ? r.dist_sma50_atr : 0;
                         var labelClass = getGroupLabelClass(groupName, r.ticker);
                         var extraCls = labelClass ? labelClass : 'rv-ticker-label';
 
-                        html += '<tr class="ticker-row" onclick="updateChart(\'' + r.ticker + '\', this)" data-symbol="' + r.ticker + '" data-group="' + groupName.replace(/"/g, '&quot;') + '" data-daily="' + (daily || 0) + '" data-intra="' + (intra || 0) + '" data-5d="' + (five || 0) + '" data-20d="' + (twenty || 0) + '" data-atr_pct="' + atrPct + '" data-dist_sma50_atr="' + dist + '" data-rs="' + rs + '" data-abc="' + abc + '" data-index="' + i + '">';
+                        html += '<tr class="ticker-row" onclick="updateChart(\'' + r.ticker + '\', this)" data-symbol="' + r.ticker + '" data-group="' + groupName.replace(/"/g, '&quot;') + '" data-daily="' + (daily || 0) + '" data-5d="' + (five || 0) + '" data-20d="' + (twenty || 0) + '" data-atr_pct="' + (r.atr_pct || 0) + '" data-dist_sma50_atr="' + (r.dist_sma50_atr || 0) + '" data-rs="' + (r.rs || 0) + '" data-abc="' + abc + '" data-index="' + i + '">';
 
                         // Ticker
                         html += '<td><span class="' + extraCls + '">' + r.ticker + '</span></td>';
-                        // Grade
+                        // Tendencia (Grade)
                         html += '<td>' + (abc ? '<span class="abc-rating abc-' + abc.toLowerCase() + '">' + abc + '</span>' : '-') + '</td>';
 
-                        // Value-bar columns: Daily, Intra, 5D, 20D
+                        // Value-bar columns: Daily, 5D, 20D (Intra removed)
                         var makeBar = function (val, w) {
                             if (val == null) return '<td>-</td>';
                             var cls = val >= 0 ? 'positive' : 'negative';
@@ -2637,7 +2745,6 @@
                             return '<td><div class="value-visualization"><div class="value-bar ' + cls + '" style="width:' + w + '%"></div><span class="value-text" style="color:' + (val >= 0 ? 'var(--green)' : 'var(--red)') + '">' + sign + val.toFixed(2) + '%</span></div></td>';
                         };
                         html += makeBar(daily, dailyW);
-                        html += makeBar(intra, intraW);
                         html += makeBar(five, fiveW);
                         html += makeBar(twenty, twentyW);
 
@@ -2673,6 +2780,23 @@
                 });
 
                 // Sort delegation
+                // Column Guide Toggle Logic
+                const guideContainer = document.getElementById('column-guide-container');
+                const guideToggle = document.getElementById('column-guide-toggle');
+                const guideClose = document.getElementById('column-guide-close');
+
+                if (guideToggle && guideContainer) {
+                    guideToggle.addEventListener('click', () => {
+                        guideContainer.classList.add('active');
+                    });
+                }
+                if (guideClose && guideContainer) {
+                    guideClose.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        guideContainer.classList.remove('active');
+                    });
+                }
+
                 var listEl = document.querySelector('#tab-renta .ticker-list');
                 if (listEl && !listEl._sortDelegate) {
                     listEl._sortDelegate = true;
@@ -2730,8 +2854,8 @@
                 state.sortBy = sortBy;
                 if (state.count === 2) state.direction *= -1; else state.direction = 1;
 
-                var colMap = { symbol: 0, abc: 1, daily: 2, intra: 3, '5d': 4, '20d': 5, atr_pct: 6, dist_sma50_atr: 7, rs: 8 };
-                var hi = colMap[sortBy] !== undefined ? colMap[sortBy] : 8;
+                var colMap = { symbol: 0, abc: 1, daily: 2, '5d': 3, '20d': 4, atr_pct: 5, dist_sma50_atr: 6, rs: 7 };
+                var hi = colMap[sortBy] !== undefined ? colMap[sortBy] : 7;
                 var headerIndices = [hi];
                 headerIndices.forEach(function (idx) {
                     var h = table.querySelectorAll('th')[idx];
