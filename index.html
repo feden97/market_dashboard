@@ -752,7 +752,7 @@
             border-radius: 4px;
             min-width: 50px;
             max-width: 100%;
-            text-align: right;
+            text-align: center;
         }
 
         .value-bar {
@@ -935,12 +935,14 @@
 
         #tab-renta .ticker-table th {
             padding: 8px 6px;
+            text-align: center;
             font-size: 10px;
             top: 35px;
         }
 
         #tab-renta .ticker-table td {
             padding: 7px 6px;
+            text-align: center;
             font-size: 12px;
         }
 
@@ -948,30 +950,53 @@
         @media (max-width: 768px) {
             .tab-renta-layout {
                 flex-direction: column !important;
+                height: calc(100vh - 60px) !important;
+                gap: 0;
             }
 
             .ticker-list {
                 width: 100% !important;
                 min-width: unset !important;
                 max-width: 100% !important;
+                height: 50% !important;
+                max-height: 50vh !important;
                 border-right: none;
                 border-bottom: 1px solid var(--border-color);
-                max-height: 50vh;
-                /* Don't let it consume the whole screen on mobile */
+                overflow-x: hidden;
+                overflow-y: auto;
+                padding: 0 4px;
             }
 
             #tab-renta .ticker-table {
                 width: 100%;
+                table-layout: fixed;
+                font-size: 10px;
+            }
+
+            #tab-renta .ticker-table th {
+                padding: 6px 2px;
+                font-size: 8px;
+            }
+
+            #tab-renta .ticker-table td {
+                padding: 6px 2px;
+                font-size: 10px;
             }
 
             .chart-container {
-                min-height: 400px;
-                padding: 10px;
+                width: 100%;
+                flex: 1 !important;
+                padding: 0;
+                margin-bottom: 0px;
+            }
+
+            .column-guide {
+                margin: 0 12px 8px 12px !important;
             }
 
             #bandas-chart-view,
             .chart-container>div {
-                min-height: 250px;
+                min-height: 200px !important;
             }
 
             .tables-grid {
@@ -2881,9 +2906,11 @@
                 if (chartWidget) { chartWidget.remove(); chartWidget = null; }
                 window._lastChartSymbol = symbol;
                 const isLight = document.documentElement.getAttribute("data-theme") === "light";
+                const isMobile = window.innerWidth <= 768;
+
                 chartWidget = new TradingView.widget({
-                    allow_symbol_change: true, calendar: false, details: true,
-                    hide_side_toolbar: false, hide_top_toolbar: false,
+                    allow_symbol_change: !isMobile, calendar: false, details: !isMobile,
+                    hide_side_toolbar: isMobile, hide_top_toolbar: false,
                     hide_legend: false, hide_volume: true, hotlist: false,
                     interval: 'D', locale: 'es', save_image: false, style: '1',
                     theme: isLight ? 'light' : 'dark',
