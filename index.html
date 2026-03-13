@@ -449,6 +449,18 @@
             border: 1px solid var(--border-color);
         }
 
+        /* 
+           TOOLTIP IMPLEMENTATION GUIDELINES:
+           1. PC Aesthetic: Use .tooltip-container with .tooltip-text.
+           2. Non-breaking Words: Always use 'word-break: normal' and 'overflow-wrap: break-word' 
+              to ensure whole words stay together (e.g., "tasa" should never be "t-asa").
+           3. Mobile Responsiveness: Tooltips must be inline (absolute) but with stable widths
+              (min 200px) to prevent vertical fragmenting on narrow screens.
+           4. Edge-Awareness:
+              - Use .tooltip-right for icons near the left edge (expands right).
+              - Use .tooltip-left for icons near the right edge (expands left).
+              - Use .tooltip-down for sticky headers (expands downward).
+        */
         .tooltip-container {
             position: relative;
             display: inline-flex;
@@ -466,31 +478,89 @@
         .tooltip-text {
             visibility: hidden;
             width: max-content;
-            max-width: 320px;
+            max-width: 280px;
             background-color: var(--bg-card-solid);
             color: var(--text-main);
             text-align: left;
             border-radius: var(--radius-md);
             padding: 12px;
             position: absolute;
-            z-index: 9999;
-            bottom: 150%;
-            left: -10px;
-            transform: translateY(10px);
+            z-index: 10000;
+            bottom: 140%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
             opacity: 0;
-            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.2s ease, transform 0.2s ease;
             border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-hover);
-            font-size: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            font-size: 13px;
             line-height: 1.5;
             white-space: normal;
+            word-break: normal;
+            overflow-wrap: break-word;
+            pointer-events: none;
         }
+
 
         .tooltip-container:hover .tooltip-text {
             visibility: visible;
             opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .tooltip-text {
+                width: 200px !important;
+                max-width: 200px !important;
+                font-size: 12px;
+                padding: 10px;
+                white-space: normal;
+                word-break: normal;
+                overflow-wrap: break-word;
+            }
+        }
+
+        /* Tooltip Right-aligned (expanded to right, for left-edge icons) */
+        .tooltip-right .tooltip-text {
+            left: 0;
+            transform: translateX(0) translateY(10px);
+        }
+        .tooltip-right:hover .tooltip-text {
+            transform: translateX(0) translateY(0);
+        }
+
+        /* Tooltip Left-aligned (expanded to left, for right-edge icons) */
+        .tooltip-left .tooltip-text {
+            left: auto;
+            right: 0;
+            transform: translateX(0) translateY(10px);
+        }
+        .tooltip-left:hover .tooltip-text {
+            transform: translateX(0) translateY(0);
+        }
+
+        /* Tooltip Downward (for sticky headers) */
+        .tooltip-down .tooltip-text {
+            bottom: auto;
+            top: 140%;
+            transform: translateX(-50%) translateY(-10px);
+        }
+        .tooltip-down.tooltip-right .tooltip-text {
+            transform: translateY(-10px);
+        }
+        .tooltip-down.tooltip-left .tooltip-text {
+            transform: translateY(-10px);
+        }
+        .tooltip-down:hover .tooltip-text {
+            transform: translateX(-50%) translateY(0);
+        }
+        .tooltip-down.tooltip-right:hover .tooltip-text {
             transform: translateY(0);
         }
+        .tooltip-down.tooltip-left:hover .tooltip-text {
+            transform: translateY(0);
+        }
+
 
         .base-select {
             background-color: var(--bg-select);
@@ -807,21 +877,38 @@
             top: 100%;
             left: 50%;
             transform: translateX(-50%);
-            width: 220px;
-            padding: 10px 12px;
-            margin-top: 6px;
+            width: 240px;
+            padding: 12px;
+            margin-top: 8px;
             background: var(--bg-card-solid);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
             box-shadow: var(--shadow-hover);
             z-index: 999;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 400;
-            line-height: 1.5;
+            line-height: 1.6;
             color: var(--text-main);
             text-align: left;
             white-space: normal;
+            word-break: normal;
+            overflow-wrap: break-word;
             pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .rv-th-popover {
+                width: 200px;
+                font-size: 11px;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                box-shadow: 0 0 0 100vmax rgba(0,0,0,0.4);
+            }
+            .rv-th-wrap:active .rv-th-popover {
+                display: block;
+            }
         }
 
         .rv-th-popover strong {
@@ -856,11 +943,41 @@
             }
 
             .ticker-list {
-                max-width: 100%;
+                width: 100% !important;
+                min-width: unset !important;
+                max-width: 100% !important;
                 border-right: none;
                 border-bottom: 1px solid var(--border-color);
                 max-height: 50vh;
                 /* Don't let it consume the whole screen on mobile */
+            }
+
+            #tab-renta .ticker-table {
+                width: 100%;
+                table-layout: auto;
+            }
+
+            #tab-renta .ticker-table th {
+                padding: 6px 2px;
+                font-size: 9px;
+            }
+
+            #tab-renta .ticker-table td {
+                padding: 6px 2px;
+                font-size: 11px;
+            }
+
+            .value-visualization {
+                min-width: 45px;
+                padding: 1px 2px;
+            }
+
+            /* Hide 5D and 20D columns on mobile to fit screen */
+            #tab-renta .ticker-table th:nth-child(5),
+            #tab-renta .ticker-table td:nth-child(5),
+            #tab-renta .ticker-table th:nth-child(6),
+            #tab-renta .ticker-table td:nth-child(6) {
+                display: none;
             }
 
             .chart-container {
@@ -2490,9 +2607,21 @@
                     html += th('intra', 'Intra', 'Variación intradía');
                     html += th('5d', '5D', 'Variación últimos 5 días hábiles');
                     html += th('20d', '20D', 'Variación últimos 20 días hábiles');
-                    html += thPop('atr_pct', 'ATR%', '<strong>Rango Verdadero Promedio</strong> (21d) como % del precio. Mide la volatilidad.<br><br>• <strong>&lt; 2%</strong> → Baja volatilidad<br>• <strong>2–4%</strong> → Normal<br>• <strong>&gt; 5%</strong> → Alta volatilidad y mayor riesgo');
-                    html += thPop('dist_sma50_atr', 'ATRx', '<strong>Distancia a SMA50</strong> medida en unidades de ATR. Mide cuán lejos está el precio de su media.<br><br>• <strong>&gt; +3</strong> → Sobrecompra extrema<br>• <strong>-1 a +1</strong> → Cerca de la media<br>• <strong>&lt; -3</strong> → Sobreventa extrema');
-                    html += thPop('rs', '1M‑VARS', '<strong>Fuerza Relativa vs SPY</strong> ajustada por volatilidad (0–100%).<br><br>• <strong>&gt; 70%</strong> → Líder del mercado<br>• <strong>30–70%</strong> → Rango normal<br>• <strong>&lt; 30%</strong> → Debilidad extrema');
+                    
+                    const qMark = `
+                        <span class="tooltip-container tooltip-down" style="margin-left: 4px; vertical-align: middle; color: var(--accent);">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            <div class="tooltip-text" style="font-weight: 400;">{TEXT}</div>
+                        </span>
+                    `;
+
+                    html += `<th class="sortable" data-sort-by="atr_pct">ATR% ${qMark.replace('{TEXT}', '<strong>Rango Verdadero Promedio</strong> (21d) como % del precio. Mide la volatilidad.<br><br>• <strong>&lt; 2%</strong> → Baja volatilidad<br>• <strong>2–4%</strong> → Normal<br>• <strong>&gt; 5%</strong> → Alta volatilidad y mayor riesgo')}</th>`;
+                    html += `<th class="sortable" data-sort-by="dist_sma50_atr">ATRx ${qMark.replace('tooltip-container tooltip-down', 'tooltip-container tooltip-down tooltip-left').replace('{TEXT}', '<strong>Distancia a SMA50</strong> medida en unidades de ATR. Mide cuán lejos está el precio de su media.<br><br>• <strong>&gt; +3</strong> → Sobrecompra extrema<br>• <strong>-1 a +1</strong> → Cerca de la media<br>• <strong>&lt; -3</strong> → Sobreventa extrema')}</th>`;
+                    html += `<th class="sortable" data-sort-by="rs">1M-VARS ${qMark.replace('tooltip-container tooltip-down', 'tooltip-container tooltip-down tooltip-left').replace('{TEXT}', '<strong>Fuerza Relativa vs SPY</strong> ajustada por volatilidad (0–100%).<br><br>• <strong>&gt; 70%</strong> → Líder del mercado<br>• <strong>30–70%</strong> → Rango normal<br>• <strong>&lt; 30%</strong> → Debilidad extrema')}</th>`;
                     html += '</tr></thead><tbody id="' + safeId + '-body">';
 
                     for (var i = 0; i < rows.length; i++) {
@@ -2644,18 +2773,31 @@
                 if (chartWidget) { chartWidget.remove(); chartWidget = null; }
                 window._lastChartSymbol = symbol;
                 const isLight = document.documentElement.getAttribute("data-theme") === "light";
+                const isMobile = window.innerWidth < 768;
+
                 chartWidget = new TradingView.widget({
-                    allow_symbol_change: true, calendar: false, details: true,
-                    hide_side_toolbar: false, hide_top_toolbar: false,
-                    hide_legend: false, hide_volume: true, hotlist: false,
-                    interval: 'D', locale: 'es', save_image: false, style: '1',
+                    allow_symbol_change: !isMobile,
+                    calendar: false,
+                    details: !isMobile,
+                    hide_side_toolbar: isMobile,
+                    hide_top_toolbar: false,
+                    hide_legend: false,
+                    hide_volume: true,
+                    hotlist: false,
+                    interval: 'D',
+                    locale: 'es',
+                    save_image: false,
+                    style: '1',
                     theme: isLight ? 'light' : 'dark',
                     toolbar_bg: isLight ? '#f8fafc' : '#09090b',
                     backgroundColor: isLight ? '#f8fafc' : '#09090b',
                     gridColor: isLight ? 'rgba(226, 232, 240, 1)' : 'rgba(63, 63, 70, 0.4)',
-                    symbol: symbol, timezone: 'America/Argentina/Buenos_Aires',
+                    symbol: symbol,
+                    timezone: 'America/Argentina/Buenos_Aires',
                     studies: ['STD;MA%Ribbon', 'Volume@tv-basicstudies'],
-                    autosize: true, enable_publishing: false, container_id: 'tradingview-chart',
+                    autosize: true,
+                    enable_publishing: false,
+                    container_id: 'tradingview-chart',
                     withdateranges: true
                 });
                 window.tradingviewWidget = chartWidget;
@@ -3127,7 +3269,7 @@
                         fiatRows += `<tr><td style="color:var(--text-muted); text-transform: uppercase;">${f}</td><td style="font-weight:bold;">$${fiatData[f].price.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(fiatData[f].var)}</td><td>${f === baseCurrency ? '-' : calcBrecha(fiatData[f].price)}</td></tr>`;
                     });
 
-                    fiatRows += `<tr><td style="color:var(--text-muted); display:flex; align-items:center;">USDT <div class="tooltip-container"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Es el dólar cripto que cotiza las 24 horas TODOS los días. Es el precio para comprar USDT en Binance p2p más aproximado posible sin la opción "comerciantes verificados"</div></div></td><td style="font-weight:bold;">$${maxVenta.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(usdt_var)}</td><td>${baseCurrency === 'usdt' ? '-' : calcBrecha(maxVenta)}</td></tr>`;
+                    fiatRows += `<tr><td style="color:var(--text-muted); display:flex; align-items:center;">USDT <div class="tooltip-container tooltip-right"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Es el dólar cripto que cotiza las 24 horas TODOS los días. Es el precio para comprar USDT en Binance p2p más aproximado posible sin la opción "comerciantes verificados"</div></div></td><td style="font-weight:bold;">$${maxVenta.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(usdt_var)}</td><td>${baseCurrency === 'usdt' ? '-' : calcBrecha(maxVenta)}</td></tr>`;
                     document.getElementById('fiat-table-body').innerHTML = fiatRows;
 
                     if (window.spreadChartInstance && basePrice > 0 && fiatData.ccl.price > 0) {
@@ -3243,7 +3385,7 @@
                                 ['ccl', 'mep', 'oficial', 'blue'].forEach(f => {
                                     fiatRows += `<tr><td style="color:var(--text-muted); text-transform: uppercase;">${f}</td><td style="font-weight:bold;">$${fiatData[f].price.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(fiatData[f].var)}</td><td>${f === baseCurrency ? '-' : calcBrecha(fiatData[f].price)}</td></tr>`;
                                 });
-                                fiatRows += `<tr><td style="color:var(--text-muted); display:flex; align-items:center;">USDT <div class="tooltip-container"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Es el dólar cripto que cotiza las 24 horas TODOS los días. Es el precio para comprar USDT en Binance p2p más aproximado posible sin la opción "comerciantes verificados"</div></div></td><td style="font-weight:bold;">$${maxVenta.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(usdt_var)}</td><td>${baseCurrency === 'usdt' ? '-' : calcBrecha(maxVenta)}</td></tr>`;
+                                fiatRows += `<tr><td style="color:var(--text-muted); display:flex; align-items:center;">USDT <div class="tooltip-container tooltip-right"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><div class="tooltip-text">Es el dólar cripto que cotiza las 24 horas TODOS los días. Es el precio para comprar USDT en Binance p2p más aproximado posible sin la opción "comerciantes verificados"</div></div></td><td style="font-weight:bold;">$${maxVenta.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td><td>${formatVar(usdt_var)}</td><td>${baseCurrency === 'usdt' ? '-' : calcBrecha(maxVenta)}</td></tr>`;
                                 document.getElementById('fiat-table-body').innerHTML = fiatRows;
                             }
                             if (snapshot && snapshot.historical_fiat) renderSpreadChart(snapshot.historical_fiat);
