@@ -1054,7 +1054,8 @@
             padding: 14px 16px;
             border-bottom: 1px solid var(--border-color);
             transition: background 0.15s ease;
-            flex-wrap: wrap; /* Allow wrapping for the date div */
+            flex-wrap: wrap;
+            /* Allow wrapping for the date div */
             min-width: 0;
             width: 100%;
         }
@@ -1072,7 +1073,8 @@
             align-items: center;
             gap: 12px;
             min-width: 0;
-            flex: 1; /* Take available horizontal space */
+            flex: 1;
+            /* Take available horizontal space */
         }
 
         .terminal-logo {
@@ -1095,7 +1097,8 @@
             font-weight: 600;
             font-size: 14px;
             color: var(--text-main);
-            white-space: normal; /* Allow wrapping to prevent overflow */
+            white-space: normal;
+            /* Allow wrapping to prevent overflow */
             word-break: break-all;
             line-height: 1.3;
         }
@@ -1171,16 +1174,21 @@
                 padding: 12px 10px;
                 gap: 8px;
             }
+
             .mono-rate {
                 font-size: 16px;
             }
+
             .terminal-name {
                 font-size: 13px;
             }
+
             .terminal-data {
                 gap: 8px;
             }
-            .terminal-sub-label, .terminal-subtitle {
+
+            .terminal-sub-label,
+            .terminal-subtitle {
                 font-size: 11px;
                 white-space: normal;
                 line-height: 1.4;
@@ -2193,7 +2201,7 @@
                     fetch("https://api.argentinadatos.com/v1/finanzas/fci/mercadoDinero/penultimo").then(r => r.json())
                 ]).then(([pfData, remuData, rendData, fciUltimo, fciPenultimo]) => {
                     // 1. Plazos Fijos
-                    let allowedPf = ['NACION', 'PROVINCIA', 'CIUDAD', 'SANTANDER', 'GALICIA', 'BBVA', 'MACRO', 'HSBC', 'BRUBANK', 'ICBC', 'DEL SOL', 'UALA', 'COMAFI', 'SUPERVIELLE', 'HIPOTECARIO', 'BICA'];
+                    let allowedPf = ['NACION', 'PROVINCIA', 'CIUDAD', 'SANTANDER', 'GALICIA', 'BBVA', 'MACRO', 'BRUBANK', 'DEL SOL', 'UALA', 'SUPERVIELLE'];
                     let filteredPf = pfData.filter(e => {
                         let entUpperCase = (e.entidad || "").toUpperCase();
                         return allowedPf.some(a => entUpperCase.includes(a));
@@ -2214,13 +2222,9 @@
                         else if (entUpperCase.includes('BBVA')) cleanName = 'BBVA';
                         else if (entUpperCase.includes('MACRO')) cleanName = 'Banco Macro';
                         else if (entUpperCase.includes('BRUBANK')) cleanName = 'Brubank';
-                        else if (entUpperCase.includes('ICBC')) cleanName = 'Banco ICBC';
                         else if (entUpperCase.includes('DEL SOL')) cleanName = 'Banco del Sol';
                         else if (entUpperCase.includes('UALA')) cleanName = 'Ualá';
-                        else if (entUpperCase.includes('COMAFI')) cleanName = 'Banco Comafi';
                         else if (entUpperCase.includes('SUPERVIELLE')) cleanName = 'Banco Supervielle';
-                        else if (entUpperCase.includes('HIPOTECARIO')) cleanName = 'Banco Hipotecario';
-                        else if (entUpperCase.includes('BICA')) cleanName = 'Banco Bica';
 
                         if (!seenPf.has(cleanName)) {
                             seenPf.add(cleanName);
