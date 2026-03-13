@@ -1681,6 +1681,7 @@
                 display: none;
             }
         }
+
         /* ========================================
            COLUMN GUIDE (Renta Variable)
            ======================================== */
@@ -2166,9 +2167,11 @@
             <div class="tab-renta-layout">
                 <!-- LEFT: Ticker Table -->
                 <div class="ticker-list">
-                    <div class="column-guide" id="column-guide-container" style="position:relative; margin: 0 12px 12px 12px;">
+                    <div class="column-guide" id="column-guide-container"
+                        style="position:relative; margin: 0 12px 12px 12px;">
                         <button class="column-guide-btn" id="column-guide-toggle" type="button">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="margin-right: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" style="margin-right: 8px;">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
                                 <line x1="12" y1="17" x2="12.01" y2="17"></line>
@@ -2183,19 +2186,19 @@
                                     • <strong>A (Alcista)</strong>: Tendencia positiva clara.<br>
                                     • <strong>B (Mixta)</strong>: Consolidación o sin tendencia definida.<br>
                                     • <strong>C (Bajista)</strong>: Tendencia negativa clara.</dd>
-                                
+
                                 <dt>ATR%</dt>
                                 <dd>Rango Verdadero Promedio (21d) como % del precio. Mide la volatilidad:<br>
                                     • <strong>&lt; 2%</strong>: Baja volatilidad.<br>
                                     • <strong>2-4%</strong>: Normal.<br>
                                     • <strong>&gt; 5%</strong>: Alta volatilidad y mayor riesgo.</dd>
-                                
+
                                 <dt>ATRx</dt>
                                 <dd>Distancia a la media móvil (SMA50) medida en unidades de ATR:<br>
                                     • <strong>&gt; +3</strong>: Sobrecompra extrema.<br>
                                     • <strong>-1 a +1</strong>: Cerca de la media móvil.<br>
                                     • <strong>&lt; -3</strong>: Sobreventa extrema.</dd>
-                                
+
                                 <dt>1M-VARS</dt>
                                 <dd>Fuerza Relativa vs SPY ajustada por volatilidad (0–100%):<br>
                                     • <strong>&gt; 70%</strong>: Líder del mercado.<br>
