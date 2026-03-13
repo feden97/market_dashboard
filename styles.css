@@ -104,138 +104,219 @@
             margin-top: 4px;
         }
 
-        /* --- Resumen Premium Design --- */
-        .resumen-hero {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(99, 102, 241, 0.02) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.15);
-            border-radius: var(--radius-lg);
-            padding: 30px;
-            margin-bottom: 24px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
+        /* --- Radar de Inversión (Resumen Tab) --- */
+        .radar-header {
+            margin-bottom: 4px;
         }
 
-        .resumen-hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 300px;
-            height: 300px;
-            background: var(--accent);
-            filter: blur(80px);
-            opacity: 0.1;
-            border-radius: 50%;
-        }
-
-        .hero-content {
-            flex: 1;
-            z-index: 1;
-        }
-
-        .hero-tag {
+        .radar-tag {
             font-size: 10px;
-            font-weight: 800;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            background: rgba(0, 255, 106, 0.1);
-            padding: 4px 8px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 12px;
-        }
-
-        .hero-title {
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--text-muted);
-            margin: 0 0 16px 0;
-        }
-
-        .hero-body {
-            display: flex;
-            align-items: flex-end;
-            gap: 20px;
-        }
-
-        .hero-entity {
-            font-size: 16px;
             font-weight: 700;
-            color: var(--text-main);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-        }
-
-        .hero-value {
-            font-size: 48px;
-            font-weight: 800;
-            color: var(--text-main);
-            letter-spacing: -1px;
-            line-height: 1;
-        }
-
-        .hero-icon {
-            color: var(--accent);
-            opacity: 0.8;
-            margin-bottom: 4px;
-        }
-
-        .hero-icon svg {
-            width: 42px;
-            height: 42px;
-        }
-
-        /* Best Rates Grid */
-        .best-rates-grid {
-            display: grid;
-            gap: 16px;
-            margin-top: 8px;
-        }
-
-        .best-rate-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: var(--radius-md);
-            padding: 12px;
-            transition: transform 0.2s ease, background 0.2s ease;
-        }
-
-        .best-rate-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            transform: scale(1.02);
-        }
-
-        .rate-label {
-            font-size: 11px;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 2px;
             display: block;
             margin-bottom: 6px;
         }
 
-        .rate-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-        }
-
-        .rate-name {
-            font-size: 14px;
-            font-weight: 600;
+        .radar-subtitle {
+            font-size: 24px;
+            font-weight: 800;
             color: var(--text-main);
+            margin: 0;
+            letter-spacing: -0.8px;
         }
 
-        .rate-val {
-            font-size: 16px;
+        .radar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        @media (max-width: 1000px) {
+            .radar-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 560px) {
+            .radar-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .radar-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 18px 16px 18px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+
+
+        .radar-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        /* Icon container — brand icons fill it fully */
+        .radar-card-icon {
+            width: 52px;
+            height: 52px;
+            min-width: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 255, 106, 0.07);
+            color: var(--accent);
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Generic SVG fallback icons — moderate size */
+        .radar-card-icon>svg {
+            width: 26px;
+            height: 26px;
+        }
+
+        /* Brand icon SVGs from iconMapExt — fill the container */
+        .radar-card-icon>svg[style*="width: 28px"],
+        .radar-card-icon>svg[viewBox="0 0 24 24"][style],
+        .radar-card-icon>svg[viewBox="0 0 18 18"],
+        .radar-card-icon>svg[viewBox="0 0 32 32"],
+        .radar-card-icon>img {
+            width: 52px !important;
+            height: 52px !important;
+            border-radius: 14px;
+        }
+
+        [data-theme="light"] .radar-card-icon {
+            background: rgba(37, 99, 235, 0.06);
+            color: var(--accent);
+        }
+
+        .radar-card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            min-width: 0;
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .radar-card-label {
+            font-size: 9.5px;
             font-weight: 700;
-            color: var(--green);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 2px;
         }
 
+        .radar-card-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        .radar-card-entity {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Coin detail row (for stables card) */
+        .radar-card-detail {
+            margin-top: 4px;
+        }
+
+        .radar-detail-coin {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(0, 255, 106, 0.08);
+            border: 1px solid rgba(0, 255, 106, 0.15);
+            border-radius: 20px;
+            padding: 2px 8px 2px 4px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        [data-theme="light"] .radar-detail-coin {
+            background: rgba(37, 99, 235, 0.06);
+            border-color: rgba(37, 99, 235, 0.15);
+        }
+
+        .radar-detail-coin svg,
+        .radar-detail-coin>svg {
+            width: 18px !important;
+            height: 18px !important;
+        }
+
+        /* Bottom Row: Inflación + Feriados */
+        .radar-bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 700px) {
+            .radar-bottom-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .radar-bottom-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .radar-bottom-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .radar-bottom-header {
+            padding-bottom: 14px;
+            margin-bottom: 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .radar-bottom-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .radar-bottom-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+        }
+
+        /* Kept for compatibility with other sections */
         .macro-title-modern {
             font-size: 13px;
             font-weight: 700;
@@ -737,15 +818,27 @@
             display: flex;
             gap: 12px;
             background-color: transparent;
-            padding: 0 16px;
+            padding: 0 56px;
+            /* 56px = 40px toggle width + 16px padding, mirrors right side */
             border: none;
             width: 100%;
             max-width: 1400px;
+            margin: 0 auto;
             justify-content: center;
-            /* True center for the main tabs */
             align-items: center;
             position: relative;
+            box-sizing: border-box;
         }
+
+        .nav-actions-right {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+        }
+
 
         .nav-tab {
             background: transparent;

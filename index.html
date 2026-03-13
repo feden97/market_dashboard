@@ -51,67 +51,69 @@
         <!-- Pestaña Resumen (NUEVA) -->
         <div id="tab-resumen" class="tab-pane active">
             <div class="panel-ancho">
-                
-                <!-- Hero Section: Dólar más barato -->
-                <div class="resumen-hero">
-                    <div class="hero-content">
-                        <div class="hero-header">
-                            <span class="hero-tag">🎯 OFERTA DESTACADA</span>
-                            <h2 class="hero-title">El Dólar más barato hoy</h2>
+
+                <!-- Section Header -->
+                <div class="radar-header">
+                    <span class="radar-tag">🚀 RADAR DE INVERSIÓN</span>
+                    <h2 class="radar-subtitle">Oportunidades destacadas del mercado</h2>
+                </div>
+
+                <!-- 4 Metric Cards -->
+                <div class="radar-grid">
+                    <!-- Card 1: Dólar Más Barato -->
+                    <div class="radar-card">
+                        <div class="radar-card-icon radar-icon-dollar">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                            </svg>
                         </div>
-                        <div class="hero-body">
-                            <div class="hero-main-stat">
-                                <div id="cheapest-dollar-name" class="hero-entity">Cargando...</div>
-                                <div id="cheapest-dollar-val" class="hero-value">$0,00</div>
-                            </div>
-                            <div class="hero-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                                </svg>
-                            </div>
+                        <div class="radar-card-body">
+                            <span class="radar-card-label">DÓLAR MÁS BARATO</span>
+                            <span id="cheapest-dollar-val" class="radar-card-value">$0,00</span>
+                            <span id="cheapest-dollar-name" class="radar-card-entity">...</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Mejor Cuenta -->
+                    <div class="radar-card">
+                        <div class="radar-card-icon radar-icon-cuenta"></div>
+                        <div class="radar-card-body">
+                            <span class="radar-card-label">MEJOR CUENTA (TNA)</span>
+                            <span id="best-yield-val" class="radar-card-value">0,00%</span>
+                            <span id="best-yield-name" class="radar-card-entity">...</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Mejor Plazo Fijo -->
+                    <div class="radar-card">
+                        <div class="radar-card-icon radar-icon-pf"></div>
+                        <div class="radar-card-body">
+                            <span class="radar-card-label">MEJOR PLAZO FIJO (TNA)</span>
+                            <span id="best-pf-val" class="radar-card-value">0,00%</span>
+                            <span id="best-pf-name" class="radar-card-entity">...</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Mejor APY Stables -->
+                    <div class="radar-card">
+                        <div class="radar-card-icon radar-icon-crypto"></div>
+                        <div class="radar-card-body">
+                            <span class="radar-card-label">MEJOR APY STABLES</span>
+                            <span id="best-crypto-val" class="radar-card-value">0,00%</span>
+                            <span id="best-crypto-name" class="radar-card-entity">...</span>
+                            <div id="best-crypto-detail" class="radar-card-detail"></div>
                         </div>
                     </div>
                 </div>
 
-                <div class="macro-grid">
-                    <!-- Widget 2: Mejores Tasas -->
-                    <div class="macro-card premium-border">
-                        <div class="card-header-simple">
-                            <h3 class="macro-title-modern">💎 Mejores Tasas</h3>
+                <!-- Bottom Row: Inflación + Feriados -->
+                <div class="radar-bottom-grid">
+                    <!-- Inflación 2026 -->
+                    <div class="radar-bottom-card">
+                        <div class="radar-bottom-header">
+                            <h3 class="radar-bottom-title">🛒 INFLACIÓN 2026</h3>
                         </div>
-                        <div class="macro-body-flex">
-                            <div class="best-rates-grid">
-                                <div class="best-rate-item">
-                                    <span class="rate-label">Cuentas</span>
-                                    <div class="rate-info">
-                                        <span id="best-yield-name" class="rate-name">...</span>
-                                        <span id="best-yield-val" class="rate-val">...</span>
-                                    </div>
-                                </div>
-                                <div class="best-rate-item">
-                                    <span class="rate-label">Plazo Fijo</span>
-                                    <div class="rate-info">
-                                        <span id="best-pf-name" class="rate-name">...</span>
-                                        <span id="best-pf-val" class="rate-val">...</span>
-                                    </div>
-                                </div>
-                                <div class="best-rate-item">
-                                    <span class="rate-label">Cripto (USDT)</span>
-                                    <div class="rate-info">
-                                        <span id="best-crypto-name" class="rate-name">...</span>
-                                        <span id="best-crypto-val" class="rate-val">...</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Widget 3: Inflación -->
-                    <div class="macro-card">
-                        <div class="card-header-simple">
-                            <h3 class="macro-title-modern">🛒 Inflación 2026</h3>
-                        </div>
-                        <div class="macro-body-flex">
+                        <div class="radar-bottom-body">
                             <table class="macro-table-clean">
                                 <tbody id="inflacion-table">
                                     <tr>
@@ -123,16 +125,17 @@
                         </div>
                     </div>
 
-                    <!-- Widget 4: Feriados -->
-                    <div class="macro-card">
-                        <div class="card-header-simple">
-                            <h3 class="macro-title-modern">🏖️ Próximos Feriados</h3>
+                    <!-- Próximos Feriados -->
+                    <div class="radar-bottom-card">
+                        <div class="radar-bottom-header">
+                            <h3 class="radar-bottom-title">🏖️ PRÓXIMOS FERIADOS</h3>
                         </div>
                         <ul id="feriados-list" class="macro-list-premium">
                             <li class="text-muted">Cargando datos...</li>
                         </ul>
                     </div>
                 </div>
+
             </div>
         </div>
 

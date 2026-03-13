@@ -135,6 +135,18 @@
                 return null;
             };
 
+            // Injects brand icon and clears the tinted container background to avoid colour bleed
+            const setRadarIcon = (anchorId, iconHtml) => {
+                if (!iconHtml) return;
+                const card = document.getElementById(anchorId)?.closest('.radar-card');
+                if (!card) return;
+                const el = card.querySelector('.radar-card-icon');
+                if (!el) return;
+                el.innerHTML = iconHtml;
+                el.style.background = 'transparent';
+                el.style.padding = '0';
+            };
+
             const formatDate = (dStr) => {
                 if (!dStr) return '';
                 let p = dStr.split('-');
@@ -259,6 +271,8 @@
                     if (uniquePf.length > 0) {
                         document.getElementById('best-pf-name').innerText = uniquePf[0].name;
                         document.getElementById('best-pf-val').innerText = (uniquePf[0].rate * 100).toFixed(2) + '%';
+                        let pfIcon = getIcon(uniquePf[0].name);
+                        setRadarIcon('best-pf-name', pfIcon);
                     }
 
                     // 2. Cuentas Remuneradas / Uala Plus, etc.
@@ -302,8 +316,19 @@
 
                     // Update Resumen Accounts
                     if (filtered.length > 0) {
-                        document.getElementById('best-yield-name').innerText = filtered[0].fondo.replace('BANCO', '').trim();
+                        // Use the already-normalized name from the loop above
+                        let rawFondo = filtered[0].fondo.toUpperCase().trim();
+                        let yieldName = 'Carrefour Banco';
+                        if (rawFondo.includes('UALA PLUS 2')) yieldName = 'Ualá Plus 2';
+                        else if (rawFondo.includes('UALA PLUS 1')) yieldName = 'Ualá Plus 1';
+                        else if (rawFondo.includes('UALA')) yieldName = 'Ualá';
+                        else if (rawFondo.includes('NARANJA')) yieldName = 'Naranja X';
+                        else if (rawFondo.includes('FIWIND')) yieldName = 'Fiwind';
+                        else if (rawFondo.includes('CARREFOUR')) yieldName = 'Carrefour Banco';
+                        document.getElementById('best-yield-name').innerText = yieldName;
                         document.getElementById('best-yield-val').innerText = (filtered[0].tna * 100).toFixed(2) + '%';
+                        let yieldIcon = getIcon(yieldName);
+                        setRadarIcon('best-yield-name', yieldIcon);
                     }
 
                     // 3. Fondos Comunes de Inversión (FCI)
@@ -446,17 +471,31 @@
                     matrixHtml += `</tbody></table>`;
                     document.getElementById('yield-matrix-wrapper').innerHTML = matrixHtml;
 
-                    // Update Resumen Crypto (using USDT as benchmark)
-                    let bestCryptoRate = -1; let bestCryptoExchange = "...";
+                    // Update Resumen Crypto — find BEST across all coins and exchanges
+                    let bestCryptoRate = -1, bestCryptoExchange = '...', bestCryptoCoin = 'USDT', bestCryptoEntKey = '';
                     entities.forEach(ent => {
-                        if (rateMap[ent]['USDT'] > bestCryptoRate) {
-                            bestCryptoRate = rateMap[ent]['USDT'];
-                            bestCryptoExchange = entityDisplayName[ent] || ent;
-                        }
+                        coins.forEach(coin => {
+                            let r = rateMap[ent][coin];
+                            if (r !== null && r > bestCryptoRate) {
+                                bestCryptoRate = r;
+                                bestCryptoExchange = entityDisplayName[ent] || ent;
+                                bestCryptoCoin = coin;
+                                bestCryptoEntKey = ent;
+                            }
+                        });
                     });
                     if (bestCryptoRate > 0) {
                         document.getElementById('best-crypto-name').innerText = bestCryptoExchange;
                         document.getElementById('best-crypto-val').innerText = bestCryptoRate.toFixed(2) + '%';
+                        // Show coin icon + label in detail row
+                        let coinIconSvg = window.iconMapExt[bestCryptoCoin.toLowerCase()] || '';
+                        let detailEl = document.getElementById('best-crypto-detail');
+                        if (detailEl) {
+                            detailEl.innerHTML = `<span class="radar-detail-coin">${coinIconSvg}<span>${bestCryptoCoin}</span></span>`;
+                        }
+                        // Replace icon with exchange logo
+                        let cryptoIcon = getIcon(bestCryptoExchange);
+                        setRadarIcon('best-crypto-name', cryptoIcon);
                     }
 
                 }).catch(e => console.error("Error in fetching rates concurrently:", e));
