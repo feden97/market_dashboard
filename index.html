@@ -2602,7 +2602,7 @@
                         return '<th class="sortable" data-sort-by="' + key + '"><span class="rv-th-wrap">' + label + '<div class="rv-th-popover">' + popoverHtml + '</div></span></th>';
                     };
                     html += th('symbol', 'Ticker', 'Símbolo del activo');
-                    html += th('abc', 'Grade', 'Calificación: A=Alcista, B=Mixta, C=Bajista');
+                    html += `&lt;th class="sortable" data-sort-by="abc"&gt;Grade ${qMark.replace('{TEXT}', '&lt;strong&gt;Tendencia Técnica&lt;/strong&gt;: Calificación basada en la estructura del precio.&lt;br&gt;&lt;br&gt;• &lt;strong&gt;A (Alcista)&lt;/strong&gt;: Tendencia positiva clara.&lt;br&gt;• &lt;strong&gt;B (Mixta)&lt;/strong&gt;: Consolidación o sin tendencia definida.&lt;br&gt;• &lt;strong&gt;C (Bajista)&lt;/strong&gt;: Tendencia negativa clara.')}&lt;/th&gt;`;
                     html += th('daily', 'Daily', 'Variación porcentual del día');
                     html += th('intra', 'Intra', 'Variación intradía');
                     html += th('5d', '5D', 'Variación últimos 5 días hábiles');
