@@ -397,18 +397,41 @@
                     let coins = ['USDT', 'USDC', 'DAI'];
 
                     let rateMap = {};
+                    let hasTiersMap = {}; // Tracks if a coin in an exchange has multiple APY rates
+
                     entities.forEach(ent => {
                         let apiKey = entityKeyMap[ent];
                         rateMap[ent] = {};
+                        hasTiersMap[ent] = {};
+
                         coins.forEach(coin => {
                             let val = null;
+                            hasTiersMap[ent][coin] = false;
+
                             if (apiKey === 'binance' && coin === 'USDT') {
                                 val = 8.30;
                             } else {
                                 let providerData = rendData.find(d => d.entidad.toLowerCase() === apiKey.toLowerCase());
                                 if (providerData) {
-                                    let rate = providerData.rendimientos.find(r => r.moneda.toUpperCase() === coin);
-                                    if (rate && rate.apy > 0) val = rate.apy;
+                                    // Filter all matching coins for this exchange
+                                    let matchingRates = providerData.rendimientos.filter(r => r.moneda.toUpperCase() === coin && r.apy > 0);
+                                    
+                                    if (matchingRates.length > 0) {
+                                        // Find the highest APY among the available options
+                                        let maxRateMatch = matchingRates.reduce((prev, current) => (prev.apy > current.apy) ? prev : current);
+                                        val = maxRateMatch.apy;
+                                        
+                                        // Flag if there are multiple DIFFERENT rates for the same coin
+                                        let uniqueRates = new Set(matchingRates.map(r => r.apy));
+                                        if (uniqueRates.size > 1) {
+                                            // As per user request, Lemon Cash only has conditional tiers for USDT
+                                            if (ent === 'LemonCash') {
+                                                if (coin === 'USDT') hasTiersMap[ent][coin] = true;
+                                            } else {
+                                                hasTiersMap[ent][coin] = true;
+                                            }
+                                        }
+                                    }
                                 }
                             }
                             rateMap[ent][coin] = val;
@@ -461,7 +484,31 @@
                             let rate = rateMap[ent][coin];
                             let isBest = rate !== null && bestPerCoin[coin] !== null && rate === bestPerCoin[coin];
                             let cellClass = rate !== null ? (isBest ? 'yield-cell best-yield' : 'yield-cell') : 'yield-na';
-                            let displayRate = rate !== null ? `<span class="apy-value">${rate.toFixed(2)}%</span>` : '—';
+                            
+                            let displayRate = '—';
+                            if (rate !== null) {
+                                displayRate = `<span class="apy-value">${rate.toFixed(2)}%</span>`;
+                                
+                                // SVG for the "?" icon exactly as used in the Dólares tab (line 1281)
+                                let questionMarkSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
+
+                                // Special CriptoYa Tooltip for Lemon Cash high tier
+                                if (hasTiersMap[ent][coin] && ent === 'LemonCash') {
+                                    let tooltipText = `Interés sujeto a cada nivel.<br><- 1000 ${coin}: ${rate.toFixed(2)}%<br>> 1000 ${coin}: 2.58%`;
+                                    
+                                    displayRate += ` <div class="tooltip-container tooltip-right" style="display:inline-flex; align-items:center; vertical-align:middle; margin-left:4px; margin-bottom:2px; color:var(--text-muted);">
+                                        ${questionMarkSvg}
+                                        <div class="tooltip-text" style="font-weight:600; text-align:left; min-width: 180px;">${tooltipText}</div>
+                                    </div>`;
+                                } else if (hasTiersMap[ent][coin]) {
+                                    // Generic tooltip for other platforms with tiers
+                                    let tooltipText = "Tasa máxima detectada.<br>El rendimiento varía según condiciones de la plataforma.";
+                                    displayRate += ` <div class="tooltip-container tooltip-right" style="display:inline-flex; align-items:center; vertical-align:middle; margin-left:4px; margin-bottom:2px; color:var(--text-muted);">
+                                        ${questionMarkSvg}
+                                        <div class="tooltip-text" style="font-weight:600; text-align:left;">${tooltipText}</div>
+                                    </div>`;
+                                }
+                            }
 
                             matrixHtml += `<td class="${cellClass}">${displayRate}</td>`;
                         });
