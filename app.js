@@ -391,9 +391,9 @@
                     document.getElementById('ars-fci-container').innerHTML = fciHtml;
 
                     // 4. Yield Matrix (Stablecoins)
-                    let entities = ['Binance Earn', 'Fiwind', 'LB', 'Belo', 'LemonCash', 'Vesseo'];
-                    let entityDisplayName = { 'Binance Earn': 'Binance', 'LemonCash': 'Lemon' };
-                    let entityKeyMap = { 'Binance Earn': 'binance', 'Fiwind': 'fiwind', 'LB': 'letsbit', 'Belo': 'belo', 'LemonCash': 'lemoncash', 'Vesseo': 'vesseo' };
+                    let entities = ['Fiwind', 'LB', 'Belo', 'LemonCash', 'Vesseo'];
+                    let entityDisplayName = { 'LemonCash': 'Lemon' };
+                    let entityKeyMap = { 'Fiwind': 'fiwind', 'LB': 'letsbit', 'Belo': 'belo', 'LemonCash': 'lemoncash', 'Vesseo': 'vesseo' };
                     let coins = ['USDT', 'USDC', 'DAI'];
 
                     let rateMap = {};
@@ -408,7 +408,7 @@
                             let val = null;
                             hasTiersMap[ent][coin] = false;
 
-                            if (apiKey === 'binance' && coin === 'USDT') {
+                            if (false) { // Removed Binance logic entirely
                                 val = 8.30;
                             } else {
                                 let providerData = rendData.find(d => d.entidad.toLowerCase() === apiKey.toLowerCase());
@@ -430,6 +430,10 @@
                                             } else {
                                                 hasTiersMap[ent][coin] = true;
                                             }
+                                        }
+                                        // Force LemonCash USDT to show the tooltip regardless of the API response having multiple rates currently
+                                        if (ent === 'LemonCash' && coin === 'USDT') {
+                                            hasTiersMap[ent][coin] = true;
                                         }
                                     }
                                 }
@@ -483,11 +487,11 @@
                         entities.forEach(ent => {
                             let rate = rateMap[ent][coin];
                             let isBest = rate !== null && bestPerCoin[coin] !== null && rate === bestPerCoin[coin];
-                            let cellClass = rate !== null ? (isBest ? 'yield-cell best-yield' : 'yield-cell') : 'yield-na';
+                            let cellClass = rate !== null ? (isBest ? 'yield-cell best-yield' : 'yield-cell') : 'yield-na hide-mobile';
                             
                             let displayRate = '—';
                             if (rate !== null) {
-                                displayRate = `<span class="apy-value">${rate.toFixed(2)}%</span>`;
+                                let tooltipHtml = '';
                                 
                                 // SVG for the "?" icon exactly as used in the Dólares tab (line 1281)
                                 let questionMarkSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
@@ -496,21 +500,32 @@
                                 if (hasTiersMap[ent][coin] && ent === 'LemonCash') {
                                     let tooltipText = `Interés sujeto a cada nivel.<br><- 1000 ${coin}: ${rate.toFixed(2)}%<br>> 1000 ${coin}: 2.58%`;
                                     
-                                    displayRate += ` <div class="tooltip-container tooltip-right" style="display:inline-flex; align-items:center; vertical-align:middle; margin-left:4px; margin-bottom:2px; color:var(--text-muted);">
+                                    tooltipHtml = `<div class="tooltip-container tooltip-left" style="display:inline-flex; align-items:center; vertical-align:middle; margin-right:6px; margin-bottom:2px; color:var(--text-muted);">
                                         ${questionMarkSvg}
                                         <div class="tooltip-text" style="font-weight:600; text-align:left; min-width: 180px;">${tooltipText}</div>
                                     </div>`;
                                 } else if (hasTiersMap[ent][coin]) {
                                     // Generic tooltip for other platforms with tiers
                                     let tooltipText = "Tasa máxima detectada.<br>El rendimiento varía según condiciones de la plataforma.";
-                                    displayRate += ` <div class="tooltip-container tooltip-right" style="display:inline-flex; align-items:center; vertical-align:middle; margin-left:4px; margin-bottom:2px; color:var(--text-muted);">
+                                    tooltipHtml = `<div class="tooltip-container tooltip-left" style="display:inline-flex; align-items:center; vertical-align:middle; margin-right:6px; margin-bottom:2px; color:var(--text-muted);">
                                         ${questionMarkSvg}
                                         <div class="tooltip-text" style="font-weight:600; text-align:left;">${tooltipText}</div>
                                     </div>`;
                                 }
+
+                                displayRate = `<div class="apy-container" style="display:flex; align-items:center;">${tooltipHtml}<span class="apy-value">${rate.toFixed(2)}%</span></div>`;
                             }
 
-                            matrixHtml += `<td class="${cellClass}">${displayRate}</td>`;
+                            let entIcon = window.iconMapExt[ent.toLowerCase()] || window.iconMapExt[ent.split(' ')[0].toLowerCase()] || '';
+                            let displayName = entityDisplayName[ent] || ent;
+                            
+                            matrixHtml += `<td class="${cellClass}" data-exchange="${displayName}">
+                                <div class="exchange-label-mobile">
+                                    <div class="matrix-exchange-icon">${entIcon}</div>
+                                    <span>${displayName}</span>
+                                </div>
+                                ${displayRate}
+                            </td>`;
                         });
                         matrixHtml += `</tr>`;
                     });

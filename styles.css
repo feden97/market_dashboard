@@ -141,7 +141,49 @@
 
         @media (max-width: 560px) {
             .radar-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .radar-card {
+                padding: 12px;
+                gap: 10px;
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+            .radar-card-icon {
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+                border-radius: 10px;
+            }
+            .radar-card-icon > svg, 
+            .radar-card-icon > img {
+                width: 20px !important;
+                height: 20px !important;
+                min-width: 20px !important;
+                min-height: 20px !important;
+            }
+            /* Brand icons in cards on mobile */
+            .radar-card-icon > svg[style*="width: 28px"],
+            .radar-card-icon > svg[viewBox="0 0 24 24"][style],
+            .radar-card-icon > svg[viewBox="0 0 18 18"],
+            .radar-card-icon > svg[viewBox="0 0 32 32"] {
+                width: 40px !important;
+                height: 40px !important;
+                min-width: 40px !important;
+                min-height: 40px !important;
+                border-radius: 10px;
+            }
+            .radar-card-value {
+                font-size: 20px;
+            }
+            .radar-card-label {
+                font-size: 8px;
+                letter-spacing: 0.5px;
+            }
+            .radar-card-entity {
+                font-size: 11px;
             }
         }
 
@@ -2118,6 +2160,7 @@
             border: 1px solid var(--border-color);
             background: var(--bg-card);
             display: block;
+            overflow: visible !important;
         }
 
         .yield-matrix {
@@ -2125,6 +2168,7 @@
             border-collapse: separate;
             border-spacing: 0;
             font-size: 13px;
+            table-layout: fixed; /* Even distribution on desktop */
         }
 
         /* Sticky Headers */
@@ -2139,10 +2183,9 @@
             border-bottom: 1px solid var(--border-color);
             font-weight: 600;
             color: var(--text-main);
-            min-width: 120px;
         }
 
-        /* First Column Sticky */
+        /* First Column Sticky - Desktop Only */
         .yield-matrix th:first-child,
         .yield-matrix td:first-child {
             position: sticky;
@@ -2187,7 +2230,7 @@
 
         .yield-cell.best-yield {
             color: var(--green);
-            background: rgba(74, 222, 128, 0.08);
+            background: rgba(74, 222, 128, 0.08); /* Fallback for desktop */
         }
 
         .yield-cell.best-yield::after {
@@ -2199,6 +2242,9 @@
             opacity: 0.3;
         }
 
+        .exchange-label-mobile {
+            display: none;
+        }
 
         .matrix-exchange-header {
             display: flex;
@@ -2261,20 +2307,109 @@
             opacity: 0.4;
         }
 
-        /* Mobile specific scroll hint */
+        /* ========================================
+           MOBILE STABLECOINS - STACKED CARDS
+           ======================================== */
         @media (max-width: 768px) {
-            .yield-matrix-container::after {
-                content: "Desliza para ver más →";
-                position: absolute;
-                bottom: 10px;
-                right: 10px;
-                font-size: 10px;
-                color: var(--accent);
+            .yield-matrix {
+                display: block;
+                border: none;
+            }
+
+            /* Hide table header but leave it accessible for screen readers if needed */
+            .yield-matrix thead {
+                display: none;
+            }
+
+            .yield-matrix tbody {
+                display: flex;
+                flex-direction: column;
+                gap: 16px; /* Space between cards */
+                padding: 12px;
+                background: var(--bg-body); /* Blend with background */
+            }
+
+            .yield-matrix-container {
+                background: transparent;
+                border: none;
+                margin-top: 0;
+            }
+
+            /* Card Container (The TR) */
+            .yield-matrix tr {
+                display: flex;
+                flex-direction: column;
                 background: var(--bg-card);
-                padding: 2px 6px;
-                border-radius: 4px;
-                opacity: 0.7;
-                pointer-events: none;
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-lg);
+                overflow: visible !important;
+            }
+
+            /* Card Header (The Coin TD) */
+            .yield-matrix td:first-child {
+                position: relative;
+                left: auto; /* Reset sticky */
+                display: flex;
+                align-items: center;
+                background: var(--bg-card-hover);
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 12px 16px;
+                min-width: auto;
+            }
+
+            /* Detail Rows (Exchange TDs) */
+            .yield-matrix td:not(:first-child) {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-color);
+                text-align: right;
+            }
+
+            /* Hide empty rows on mobile */
+            .yield-matrix td.hide-mobile {
+                display: none !important;
+            }
+
+            /* Remove border from last row inside card */
+            .yield-matrix td:last-child {
+                border-bottom: none;
+            }
+            
+            /* Show Mobile Label + Logo */
+            .exchange-label-mobile {
+                display: flex !important;
+                align-items: center;
+                gap: 8px;
+                font-weight: 500;
+                color: var(--text-muted);
+            }
+
+            /* Adjust best-yield highlights for mobile card rows */
+            .yield-cell.best-yield {
+                background: transparent; /* Remove background fill on mobile */
+            }
+
+            .yield-cell.best-yield::after {
+                display: none; /* Hide border box */
+            }
+
+            /* Highlight the value instead */
+            .yield-cell.best-yield .apy-value {
+                background: rgba(74, 222, 128, 0.15);
+                padding: 4px 8px;
+                border-radius: var(--radius-sm);
+                border: 1px solid rgba(74, 222, 128, 0.3);
+                display: inline-block;
+            }
+
+            /* Tooltip adjustments for mobile row layout */
+            .yield-cell .tooltip-container {
+                display: inline-flex !important;
+                margin-left: 6px;
+                margin-bottom: 0 !important;
             }
         }
 
