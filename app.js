@@ -522,7 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     </div>`;
                                 }
 
-                                displayRate = `<div class="apy-container">${tooltipHtml}<span class="apy-value">${rate.toFixed(2)}%</span></div>`;
+                                displayRate = `<div class="apy-container"><span class="apy-value">${rate.toFixed(2)}%</span>${tooltipHtml}</div>`;
                             }
 
                             let entIcon = window.iconMapExt[ent.toLowerCase()] || window.iconMapExt[ent.split(' ')[0].toLowerCase()] || '';

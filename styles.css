@@ -1300,7 +1300,8 @@
             display: inline-flex;
             cursor: help;
             align-items: center;
-            margin-left: 6px;
+            margin-left: 10px; /* Increased spacing as requested */
+            margin-right: 2px;
             color: var(--text-muted);
             z-index: 100; /* Higher than sticky headers (20-40) */
         }
@@ -1318,7 +1319,7 @@
             color: var(--text-main);
             text-align: left;
             border-radius: var(--radius-md);
-            padding: 12px;
+            padding: 10px 14px;
             position: absolute;
             z-index: 10000;
             bottom: 140%;
@@ -1327,7 +1328,7 @@
             opacity: 0;
             transition: opacity 0.2s ease, transform 0.2s ease;
             border: 1px solid var(--border-color);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            box-shadow: none !important;
             font-size: 13px;
             line-height: 1.5;
             white-space: normal;
@@ -2570,7 +2571,8 @@
             /* Tooltip adjustments for mobile row layout */
             .yield-cell .tooltip-container {
                 display: inline-flex !important;
-                margin-left: 6px;
+                margin-left: 8px; /* Breathing room from the right edge */
+                margin-right: 0;
                 margin-bottom: 0 !important;
             }
         }
@@ -2680,7 +2682,7 @@
             font-size: 12px;
             color: var(--text-main);
             line-height: 1.6;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: none !important;
         }
 
         .column-guide.active .column-guide-content {
