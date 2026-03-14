@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-03-13T21:02:00.667042Z",
+  "built_at": "2026-03-14T20:54:36.613165Z",
   "groups": {
     "Índices y Cripto (USD)": [
       {
@@ -10,7 +10,7 @@
         "20d": -2.79,
         "atr_pct": 1.4,
         "dist_sma50_atr": -2.44,
-        "rs": 45.0,
+        "rs": 55.0,
         "rs_chart": "data/charts/SPY.png",
         "long": [
           "SPXL",
@@ -95,7 +95,7 @@
       {
         "ticker": "ETHA",
         "daily": 1.66,
-        "intra": -3.64,
+        "intra": -3.67,
         "5d": 6.43,
         "20d": 9.89,
         "atr_pct": 5.8,
@@ -204,7 +204,7 @@
         "20d": -18.72,
         "atr_pct": 7.7,
         "dist_sma50_atr": -2.93,
-        "rs": 45.0,
+        "rs": 40.0,
         "rs_chart": "data/charts/BBAR.png",
         "long": [],
         "short": [],
@@ -246,7 +246,7 @@
         "20d": -1.93,
         "atr_pct": 4.5,
         "dist_sma50_atr": -0.95,
-        "rs": 80.0,
+        "rs": 75.0,
         "rs_chart": "data/charts/CRESY.png",
         "long": [],
         "short": [],
@@ -288,7 +288,7 @@
         "20d": -3.52,
         "atr_pct": 5.5,
         "dist_sma50_atr": -1.8,
-        "rs": 30.0,
+        "rs": 35.0,
         "rs_chart": "data/charts/IRS.png",
         "long": [],
         "short": [],
@@ -330,7 +330,7 @@
         "20d": -23.72,
         "atr_pct": 8.3,
         "dist_sma50_atr": -2.81,
-        "rs": 45.0,
+        "rs": 50.0,
         "rs_chart": "data/charts/SUPV.png",
         "long": [],
         "short": [],
@@ -637,7 +637,7 @@
       {
         "ticker": "WMT",
         "daily": 0.95,
-        "intra": 0.9,
+        "intra": 0.84,
         "5d": 2.2,
         "20d": -5.33,
         "atr_pct": 2.4,
@@ -670,7 +670,7 @@
         "20d": -18.49,
         "atr_pct": 4.8,
         "dist_sma50_atr": -3.54,
-        "rs": 35.0,
+        "rs": 40.0,
         "rs_chart": "data/charts/NU.png",
         "long": [],
         "short": [],
@@ -726,7 +726,7 @@
         "20d": -1.34,
         "atr_pct": 2.4,
         "dist_sma50_atr": -3.25,
-        "rs": 90.0,
+        "rs": 85.0,
         "rs_chart": "data/charts/MSFT.png",
         "long": [],
         "short": [],
@@ -1052,7 +1052,7 @@
         "20d": -3.85,
         "atr_pct": 1.9,
         "dist_sma50_atr": -0.27,
-        "rs": 15.0,
+        "rs": 10.0,
         "rs_chart": "data/charts/EWA.png",
         "long": [],
         "short": [],
@@ -1208,7 +1208,7 @@
         "20d": -7.54,
         "atr_pct": 1.8,
         "dist_sma50_atr": -2.55,
-        "rs": 0.0,
+        "rs": 5.0,
         "rs_chart": "data/charts/EFA.png",
         "long": [],
         "short": [],
@@ -1280,7 +1280,7 @@
         "20d": -10.72,
         "atr_pct": 2.3,
         "dist_sma50_atr": -1.92,
-        "rs": 20.0,
+        "rs": 25.0,
         "rs_chart": "data/charts/EWJ.png",
         "long": [
           "EZJ"
@@ -1312,7 +1312,7 @@
         "20d": -12.2,
         "atr_pct": 3.5,
         "dist_sma50_atr": -3.09,
-        "rs": 5.0,
+        "rs": 15.0,
         "rs_chart": "data/charts/ECH.png",
         "long": [],
         "short": [],
@@ -1462,7 +1462,7 @@
         "20d": -3.54,
         "atr_pct": 2.7,
         "dist_sma50_atr": 0.01,
-        "rs": 20.0,
+        "rs": 15.0,
         "rs_chart": "data/charts/EWT.png",
         "long": [],
         "short": [],
@@ -1491,7 +1491,7 @@
         1.66
       ],
       "intra": [
-        -3.64,
+        -3.67,
         -0.75
       ],
       "5d": [
@@ -3283,12 +3283,21 @@
     },
     {
       "date": "13-03-2026",
-      "ccl": 1458.8,
-      "mep": 1424.2,
-      "blue": 1420.0,
-      "oficial": 1415.0,
+      "ccl": 1472.6,
+      "mep": 1427.2,
+      "blue": 1415.0,
+      "oficial": 1420.0,
       "usdt": 1459.11,
-      "mayorista": 1394.5
+      "mayorista": 1400.0
+    },
+    {
+      "date": "14-03-2026",
+      "ccl": 1472.6,
+      "mep": 1427.2,
+      "blue": 1415.0,
+      "oficial": 1420.0,
+      "usdt": 1462.57,
+      "mayorista": 1400.0
     }
   ]
 }
