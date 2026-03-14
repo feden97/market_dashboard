@@ -64,6 +64,10 @@
             --info-box-bg: rgba(112, 184, 255, 0.04);
             --info-box-border: rgba(112, 184, 255, 0.1);
             --info-box-title: #70B8FF;
+
+            /* Tooltip variables (matching dark mode theme natively) */
+            --bg-tooltip-solid: var(--bg-card-solid);
+            --text-tooltip: var(--text-main);
         }
 
         /* --- Widget Styles --- */
@@ -932,6 +936,10 @@
             --info-box-bg: rgba(37, 99, 235, 0.06);
             --info-box-border: rgba(37, 99, 235, 0.15);
             --info-box-title: #2563eb;
+            
+            /* Enhanced Tooltip for Light Mode: Accommodate theme */
+            --bg-tooltip-solid: var(--bg-card-solid); 
+            --text-tooltip: var(--text-main);
         }
 
         /* 
@@ -1300,8 +1308,6 @@
             display: inline-flex;
             cursor: help;
             align-items: center;
-            margin-left: 10px; /* Increased spacing as requested */
-            margin-right: 2px;
             color: var(--text-muted);
             z-index: 100; /* Higher than sticky headers (20-40) */
         }
@@ -1319,7 +1325,7 @@
             color: var(--text-main);
             text-align: left;
             border-radius: var(--radius-md);
-            padding: 10px 14px;
+            padding: 12px 14px;
             position: absolute;
             z-index: 10000;
             bottom: 140%;
@@ -1356,6 +1362,22 @@
             width: 100%;
             position: relative;
             overflow: visible;
+            gap: 8px; /* Consistent spacing between icon and value */
+        }
+
+        /* Balance the tooltip presence on PC to keep the text perfectly centered */
+        @media (min-width: 769px) {
+            .apy-container.has-tooltip::before {
+                content: "";
+                width: 17px; /* Match tooltip SVG(13) + margin-left(4) */
+                flex-shrink: 0;
+                display: block;
+            }
+        }
+
+        /* Ensure Table Cells are relative anchors too */
+        .yield-matrix td {
+            position: relative !important;
         }
 
         .apy-value {
@@ -1363,14 +1385,25 @@
         }
 
         @media (max-width: 768px) {
+            .tooltip-container {
+                position: static; /* Let the text position itself relative to the parent ROW, not the icon */
+            }
+
             .tooltip-text {
-                width: 200px !important;
-                max-width: 200px !important;
-                font-size: 12px;
-                padding: 10px;
-                white-space: normal;
-                word-break: normal;
-                overflow-wrap: break-word;
+                width: 90% !important;
+                max-width: 320px !important;
+                left: 50% !important;
+                right: auto !important;
+                transform: translateX(-50%) translateY(10px) !important;
+                bottom: 120% !important;
+                font-size: 13px;
+                line-height: 1.6;
+                padding: 14px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important; /* Re-add shadow on mobile for depth over cards */
+            }
+
+            .tooltip-container:hover .tooltip-text {
+                transform: translateX(-50%) translateY(0) !important;
             }
         }
 
@@ -1868,19 +1901,26 @@
                 padding: 15px;
             }
 
-            .data-table {
+            .data-table, 
+            .ticker-table {
                 display: table;
                 width: 100%;
                 white-space: normal;
                 -webkit-overflow-scrolling: touch;
                 table-layout: auto;
+                position: relative;
+                overflow: visible !important; /* Critical to show tooltips */
             }
 
-            .data-table th,
-            .data-table td {
-                padding: 6px 4px;
-                font-size: 11px;
-                line-height: 1.2;
+            .data-table tr,
+            .ticker-table tr {
+                position: relative; /* Anchor for tooltips in ALL mobile tables */
+            }
+
+            .tables-grid-item,
+            .radar-bottom-card {
+                overflow: visible !important; /* Prevent clipping of tooltips in cards */
+                position: relative;
             }
 
             .data-table th {
@@ -1996,7 +2036,7 @@
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            overflow: visible;
+            overflow: visible !important;
             margin-bottom: 24px;
             box-shadow: var(--shadow-subtle);
             font-family: var(--font-main);
@@ -2038,6 +2078,7 @@
             /* Allow wrapping for the date div */
             min-width: 0;
             width: 100%;
+            position: relative; /* Anchor for mobile tooltips */
         }
 
         .terminal-row:last-child {
@@ -2495,6 +2536,7 @@
                 border: 1px solid var(--border-color);
                 border-radius: var(--radius-lg);
                 overflow: visible !important;
+                position: relative; /* Anchor for tooltips on mobile */
             }
 
             /* Card Header (The Coin TD) */
@@ -2519,11 +2561,12 @@
                 border-bottom: 1px solid var(--border-color);
             }
 
-            /* Right-align APY on mobile */
+            /* Right-align APY on mobile and swap icon order */
             .yield-matrix td:not(:first-child) .apy-container {
-                justify-content: flex-end;
+                justify-content: flex-start; /* flex-start with row-reverse = right-aligned */
                 width: auto;
                 flex: 1;
+                flex-direction: row-reverse; /* Icon to the left on mobile */
             }
 
             .yield-matrix td:not(:first-child) .exchange-label-mobile {
@@ -2571,8 +2614,7 @@
             /* Tooltip adjustments for mobile row layout */
             .yield-cell .tooltip-container {
                 display: inline-flex !important;
-                margin-left: 8px; /* Breathing room from the right edge */
-                margin-right: 0;
+                margin: 0 !important; /* Rely on gap in apy-container */
                 margin-bottom: 0 !important;
             }
         }

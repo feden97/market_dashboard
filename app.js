@@ -522,7 +522,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                     </div>`;
                                 }
 
-                                displayRate = `<div class="apy-container"><span class="apy-value">${rate.toFixed(2)}%</span>${tooltipHtml}</div>`;
+                                let containerClass = tooltipHtml ? "apy-container has-tooltip" : "apy-container";
+                                displayRate = `<div class="${containerClass}"><span class="apy-value">${rate.toFixed(2)}%</span>${tooltipHtml}</div>`;
                             }
 
                             let entIcon = window.iconMapExt[ent.toLowerCase()] || window.iconMapExt[ent.split(' ')[0].toLowerCase()] || '';
@@ -864,11 +865,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             function renderMacro(macro) {
                 if (!macro) return;
+                const questionMarkSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
                 // Riesgo País removed as per user request
                 if (macro.holidays && macro.holidays.length > 0) {
                     let html = '';
                     macro.holidays.forEach(h => html += `<li>${h}</li>`);
-                    document.getElementById('feriados-list').innerHTML = html;
+                    if (html) {
+                        document.getElementById('feriados-list').innerHTML = html;
+                    } else {
+                        document.getElementById('feriados-list').innerHTML = '<li style="list-style:none; color:#9ca3af; margin-left:-20px;">Sin feriados restantes este mes</li>';
+                    }
                 } else {
                     document.getElementById('feriados-list').innerHTML = '<li style="list-style:none; color:#9ca3af; margin-left:-20px;">Sin feriados restantes este mes</li>';
                 }
@@ -1442,23 +1448,51 @@ document.addEventListener('DOMContentLoaded', () => {
                         return `<span class="badge-${v >= 0 ? 'green' : 'red'}">${v > 0 ? '+' : ''}${v.toFixed(2)}%</span>`;
                     };
 
-                    let minCompra = Infinity; let maxVenta = 0; let exList = [];
+                    let minCompra = Infinity; 
+                    let maxVenta = 0; 
+                    let maxOthersVenta = 0;
+                    let exList = [];
                     let displayNameMap = { 'bybitp2p': 'BybitP2P', 'letsbit': 'LB Finanzas' };
 
+                    // 1. First pass: Collect all data and find maxOthersVenta (excluding bybitp2p)
                     ['fiwind', 'lemoncash', 'bybitp2p', 'letsbit'].forEach(ex => {
                         if (cryptoData[ex]) {
-                            if (cryptoData[ex].totalAsk < minCompra) minCompra = cryptoData[ex].totalAsk;
-                            if (cryptoData[ex].totalBid > maxVenta) maxVenta = cryptoData[ex].totalBid;
-                            
-                            let name = displayNameMap[ex] || (ex.charAt(0).toUpperCase() + ex.slice(1));
-                            exList.push({ id: ex, name: name, compra_a: cryptoData[ex].totalAsk, venta_a: cryptoData[ex].totalBid });
+                            let bid = cryptoData[ex].totalBid;
+                            if (ex !== 'bybitp2p' && bid > maxOthersVenta) maxOthersVenta = bid;
                         }
                     });
+                    if (p2pData && p2pData.totalBid > maxOthersVenta) maxOthersVenta = p2pData.totalBid;
+
+                    // 2. Second pass: Populate list and determine if Bybit is an outlier
+                    ['fiwind', 'lemoncash', 'bybitp2p', 'letsbit'].forEach(ex => {
+                        if (cryptoData[ex]) {
+                            let ask = cryptoData[ex].totalAsk;
+                            let bid = cryptoData[ex].totalBid;
+                            let isOutlier = false;
+
+                            if (ex === 'bybitp2p' && bid > maxOthersVenta * 1.015) {
+                                isOutlier = true;
+                            }
+
+                            if (ask < minCompra) minCompra = ask;
+                            
+                            // maxVenta (reference) only counts Bybit if it's NOT an outlier
+                            if (!isOutlier && bid > maxVenta) maxVenta = bid;
+                            else if (bid > maxVenta && ex !== 'bybitp2p') maxVenta = bid;
+
+                            let name = displayNameMap[ex] || (ex.charAt(0).toUpperCase() + ex.slice(1));
+                            exList.push({ id: ex, name: name, compra_a: ask, venta_a: bid, isOutlier: isOutlier });
+                        }
+                    });
+
                     if (p2pData) {
                         if (p2pData.totalAsk < minCompra) minCompra = p2pData.totalAsk;
                         if (p2pData.totalBid > maxVenta) maxVenta = p2pData.totalBid;
                         exList.push({ id: 'p2p', name: 'BinanceP2P', compra_a: p2pData.totalAsk, venta_a: p2pData.totalBid });
                     }
+
+                    // Fallback to maxOthersVenta if maxVenta didn't catch it
+                    if (maxVenta === 0) maxVenta = maxOthersVenta;
 
                     let exIcons = {
                         fiwind: `<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 20px; height: 20px; border-radius: 4px;"><rect width="18" height="18" style="fill: rgb(10, 10, 10);"></rect><g><path d="M7.92,9.58h-1.57c-.2,0-.36-.16-.36-.36s.16-.36.36-.36h1.57c.2,0,.36.16.36.36s-.16.36-.36.36ZM6.36,7.96c-.2,0-.36-.16-.36-.36s.16-.36.36-.36h2.05c.2,0,.36.16.36.36s-.16.36-.36.36h-2.05ZM8.7,11.48c-.19-.06-.3-.26-.24-.45l1.1-3.61c.06-.19.26-.3.45-.24.19.06.3.26.24.45l-1.1,3.61c-.06.19-.26.3-.45.24ZM11.89,7.63l-1.1,3.61c-.06.19-.26.3-.45.24-.19-.06-.3-.26-.24-.45l1.1-3.61c.06-.19.26-.3.45-.24.19.06.3.26.24.45Z" style="fill: rgb(239, 180, 29);"></path><path d="M9,14.01c-2.76,0-5-2.25-5-5.01s2.24-5.01,5-5.01,5,2.25,5,5.01-2.24,5.01-5,5.01ZM9,4.62c-2.41,0-4.37,1.96-4.37,4.37s.196,4.37,4.37,4.37,4.37-1.96,4.37-4.37-1.96-4.37-4.37-4.37Z" style="fill: rgb(239, 180, 29);"></path></g></svg>`,
@@ -1470,9 +1504,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     let exchangeRows = '';
                     exList.forEach(e => {
-                        let isMin = e.compra_a === minCompra; let isMax = e.venta_a === maxVenta;
+                        let isMin = e.compra_a === minCompra; 
+                        let isMax = e.venta_a === maxVenta && !e.isOutlier;
                         let iconSvg = exIcons[e.id] || '';
-                        exchangeRows += `<tr><td><div style="display:flex; align-items:center; gap:8px;">${iconSvg}<span style="font-weight: 500;">${e.name}</span></div></td><td style="text-align: center;"><span class="${isMin ? 'text-highlight-green' : ''}">$${e.compra_a.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></td><td style="text-align: center;"><span class="${isMax ? 'text-highlight-green' : ''}">$${e.venta_a.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></td></tr>`;
+                        let priceStyle = e.isOutlier ? 'opacity: 0.5;' : '';
+                        let anomalyLabel = e.isOutlier ? '<br><span style="font-size:10px; color:var(--red); font-weight:bold;">(Anómalo)</span>' : '';
+
+                        exchangeRows += `<tr>
+                            <td><div style="display:flex; align-items:center; gap:8px;">${iconSvg}<span style="font-weight: 500;">${e.name}</span></div></td>
+                            <td style="text-align: center;"><span class="${isMin ? 'text-highlight-green' : ''}">$${e.compra_a.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></td>
+                            <td style="text-align: center; position: relative;">
+                                <span class="${isMax ? 'text-highlight-green' : ''}" style="${e.isOutlier ? 'opacity: 0.5;' : ''}">$${e.venta_a.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                ${e.isOutlier ? '<span style="position: absolute; bottom: 1px; left: 50%; transform: translateX(-50%); font-size: 8px; color: var(--red); font-weight: 600; white-space: nowrap; line-height: 1;">(No Representativo)</span>' : ''}
+                            </td>
+                        </tr>`;
                     });
                     const usdtTable = document.getElementById('usdt-table-body');
                     if (usdtTable) usdtTable.innerHTML = exchangeRows;
