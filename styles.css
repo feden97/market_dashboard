@@ -334,6 +334,9 @@
             .radar-bottom-grid {
                 grid-template-columns: 1fr;
             }
+            .inflation-panel .radar-bottom-body {
+                padding: 12px !important; /* Reduce padding on mobile */
+            }
         }
 
         .radar-bottom-card {
@@ -343,6 +346,7 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
+            overflow: visible !important; /* Ensure tooltips are not clipped */
         }
 
         .radar-bottom-card:hover {
@@ -465,21 +469,25 @@
 
         @media (max-width: 500px) {
             .inf-kpi-grid {
-                gap: 6px;
+                gap: 8px; /* Slightly more gap for better balance */
                 margin-bottom: 12px;
             }
             .inf-kpi-card {
-                padding: 8px 6px;
+                padding: 10px 4px; /* More vertical breath */
             }
             .inf-kpi-label {
-                font-size: 8px;
+                font-size: 10px; /* Up from 8px for readability */
                 letter-spacing: 0px;
             }
             .inf-kpi-value {
-                font-size: 16px;
+                font-size: 19px; /* Up from 16px */
             }
             .inf-chart-container {
-                height: 180px;
+                height: 210px; /* Up from 180px for better chart detail */
+            }
+            .inf-footer-card {
+                padding: 10px;
+                font-size: 12px;
             }
         }
 
@@ -983,6 +991,7 @@
             align-items: center;
             position: relative;
             box-sizing: border-box;
+            flex-wrap: wrap; /* Allow wrapping on mobile */
         }
 
         .nav-actions-right {
@@ -1103,6 +1112,7 @@
                 grid-template-columns: 1fr;
             }
         }
+
 
         .macro-card {
             background-color: var(--bg-card);
@@ -1292,13 +1302,14 @@
             align-items: center;
             margin-left: 6px;
             color: var(--text-muted);
+            z-index: 100; /* Higher than sticky headers (20-40) */
         }
 
         .tooltip-container:hover {
             color: var(--text-main);
+            z-index: 5000; /* Boost significantly on hover to stay above nav-tabs */
         }
 
-        /* Tooltip content */
         .tooltip-text {
             visibility: hidden;
             width: max-content;
@@ -1329,7 +1340,11 @@
         .tooltip-container:hover .tooltip-text {
             visibility: visible;
             opacity: 1;
-            transform: translateX(-50%) translateY(0);
+            transform: translateY(0); /* Remove the generic translateX(-50%) to respect directional classes */
+        }
+        
+        .tooltip-container:not(.tooltip-left):not(.tooltip-right):hover .tooltip-text {
+            transform: translateX(-50%) translateY(0); /* Apply only to default tooltips */
         }
 
         @media (max-width: 768px) {
@@ -2295,7 +2310,6 @@
             color: var(--text-main);
         }
 
-        /* First Column Sticky - Desktop Only */
         .yield-matrix th:first-child,
         .yield-matrix td:first-child {
             position: sticky;
@@ -2303,8 +2317,20 @@
             z-index: 30;
             background: var(--bg-card);
             border-right: 1px solid var(--border-color);
-            min-width: 130px;
+            min-width: 140px;
             text-align: left;
+            padding-left: 20px;
+        }
+
+
+
+        @media (min-width: 769px) {
+            .yield-matrix td {
+                height: 65px;
+            }
+            .yield-matrix td.yield-cell {
+                cursor: default;
+            }
         }
 
         @media (max-width: 768px) {
@@ -2324,6 +2350,7 @@
             padding: 12px;
             text-align: center;
             border-bottom: 1px solid var(--border-color);
+            overflow: visible !important; /* Ensure tooltips are not clipped */
         }
 
         /* Heatmap Cells */
@@ -2560,10 +2587,9 @@
 
 
             .nav-container {
-                overflow-x: auto;
-                justify-content: flex-start;
-                padding-right: 60px;
-                -webkit-overflow-scrolling: touch;
+                justify-content: center;
+                padding: 10px 16px;
+                gap: 8px;
             }
 
             .nav-container::-webkit-scrollbar {

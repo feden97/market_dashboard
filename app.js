@@ -61,7 +61,8 @@
             });
 
             // Wait for DOM to load before setting initial icon
-            document.addEventListener('DOMContentLoaded', () => {
+            console.log("Market Dashboard App v1.2.1 - Enhanced Stablecoins UI");
+document.addEventListener('DOMContentLoaded', () => {
                 updateThemeIcon(initialTheme);
 
                 // --- EVENT LISTENERS ---
@@ -499,24 +500,29 @@
                                 // SVG for the "?" icon exactly as used in the Dólares tab (line 1281)
                                 let questionMarkSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
 
+                                // Decide tooltip direction based on screen edge
+                                // Exchanges at the end of the lists (Lemon, Vesseo) should expand left
+                                let entIdx = entities.indexOf(ent);
+                                let tooltipDir = entIdx >= 3 ? 'tooltip-left' : 'tooltip-right';
+
                                 // Special CriptoYa Tooltip for Lemon Cash high tier
-                                if (hasTiersMap[ent][coin] && ent === 'LemonCash') {
-                                    let tooltipText = `Interés sujeto a cada nivel.<br><- 1000 ${coin}: ${rate.toFixed(2)}%<br>> 1000 ${coin}: 2.58%`;
+                                if (ent === 'LemonCash' && coin === 'USDT') {
+                                    let tooltipText = `Interés sujeto a cada nivel.<br>Hasta 1000 ${coin}: ${rate.toFixed(2)}%<br>Más de 1000 ${coin}: 2.75%`;
                                     
-                                    tooltipHtml = `<div class="tooltip-container tooltip-left" style="display:inline-flex; align-items:center; vertical-align:middle; margin-right:6px; margin-bottom:2px; color:var(--text-muted);">
+                                    tooltipHtml = `<div class="tooltip-container ${tooltipDir}" style="margin-left: 4px; color:var(--text-muted); cursor:help;">
                                         ${questionMarkSvg}
-                                        <div class="tooltip-text" style="font-weight:600; text-align:left; min-width: 180px;">${tooltipText}</div>
+                                        <div class="tooltip-text" style="font-weight:600; text-align:left; min-width: 200px;">${tooltipText}</div>
                                     </div>`;
                                 } else if (hasTiersMap[ent][coin]) {
                                     // Generic tooltip for other platforms with tiers
                                     let tooltipText = "Tasa máxima detectada.<br>El rendimiento varía según condiciones de la plataforma.";
-                                    tooltipHtml = `<div class="tooltip-container tooltip-left" style="display:inline-flex; align-items:center; vertical-align:middle; margin-right:6px; margin-bottom:2px; color:var(--text-muted);">
+                                    tooltipHtml = `<div class="tooltip-container ${tooltipDir}" style="display:inline-flex; align-items:center; vertical-align:middle; margin-left:4px; color:var(--text-muted);">
                                         ${questionMarkSvg}
                                         <div class="tooltip-text" style="font-weight:600; text-align:left;">${tooltipText}</div>
                                     </div>`;
                                 }
 
-                                displayRate = `<div class="apy-container" style="display:flex; align-items:center;">${tooltipHtml}<span class="apy-value">${rate.toFixed(2)}%</span></div>`;
+                                displayRate = `<div class="apy-container" style="display:flex; align-items:center; justify-content:center; width:100%; position:relative; overflow:visible;">${tooltipHtml}<span class="apy-value">${rate.toFixed(2)}%</span></div>`;
                             }
 
                             let entIcon = window.iconMapExt[ent.toLowerCase()] || window.iconMapExt[ent.split(' ')[0].toLowerCase()] || '';
@@ -957,8 +963,9 @@
                                                     const dataStr = dataset.data[index].toFixed(1).replace('.', ',') + '%';
                                                     
                                                     ctx.fillStyle = textColor; 
-                                                    // Reduce font size to prevent overlapping percentages
-                                                    ctx.font = 'bold 10px Inter, sans-serif'; 
+                                                    // Reduce font size further on mobile to prevent overlapping percentages
+                                                    const isMobile = window.innerWidth < 500;
+                                                    ctx.font = `bold ${isMobile ? '9px' : '10px'} Inter, sans-serif`; 
                                                     ctx.textAlign = 'center';
                                                     ctx.textBaseline = 'bottom';
                                                     ctx.fillText(dataStr, element.x, element.y - 4);
@@ -1324,7 +1331,7 @@
                             let parts = b.date.split('-');
                             return new Date(parts[2], parts[1] - 1, parts[0]) <= dTodayB;
                         });
-                        bandaHoy = pastBands.length > 0 ? pastBands[pastBands.length - 1] : datosBandas[0];
+                        bandaHoy = pastBands.length > 0 ? pastBands[pastBands.length - 1] : (datosBandas.length > 0 ? datosBandas[0] : null);
                     }
                     if (bandaHoy) {
                         if (labels.length > 0 && labels[labels.length - 1] === todayStrB) {
@@ -1436,11 +1443,15 @@
                     };
 
                     let minCompra = Infinity; let maxVenta = 0; let exList = [];
-                    ['buenbit', 'fiwind', 'lemoncash', 'tiendacrypto'].forEach(ex => {
+                    let displayNameMap = { 'bybitp2p': 'BybitP2P', 'letsbit': 'LB Finanzas' };
+
+                    ['fiwind', 'lemoncash', 'bybitp2p', 'letsbit'].forEach(ex => {
                         if (cryptoData[ex]) {
                             if (cryptoData[ex].totalAsk < minCompra) minCompra = cryptoData[ex].totalAsk;
                             if (cryptoData[ex].totalBid > maxVenta) maxVenta = cryptoData[ex].totalBid;
-                            exList.push({ id: ex, name: ex.charAt(0).toUpperCase() + ex.slice(1), compra_a: cryptoData[ex].totalAsk, venta_a: cryptoData[ex].totalBid });
+                            
+                            let name = displayNameMap[ex] || (ex.charAt(0).toUpperCase() + ex.slice(1));
+                            exList.push({ id: ex, name: name, compra_a: cryptoData[ex].totalAsk, venta_a: cryptoData[ex].totalBid });
                         }
                     });
                     if (p2pData) {
@@ -1450,11 +1461,11 @@
                     }
 
                     let exIcons = {
-                        buenbit: `<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 20px; height: 20px; border-radius: 4px;"><rect width="18" height="18" style="fill: rgb(255, 171, 234);"></rect><path d="M13.69,6.07c.73,1.28.12,2.31-1.35,2.31h0c-1.48,0-3.28-1.04-4.01-2.31-.73-1.28-.13-2.31,1.35-2.31s3.28,1.04,4.01,2.31ZM7.23,6.7c.74,1.27.74,3.35,0,4.63-.74,1.28-1.94,1.29-2.68.02-.74-1.27-.74-3.35,0-4.63.74-1.28,1.94-1.29,2.68-.02ZM12.34,9.62c-1.48,0-3.27,1.04-4.01,2.31-.73,1.28-.12,2.31,1.35,2.31s3.27-1.04,4.01-2.31c.73-1.28.12-2.31-1.35-2.31h0Z" style="fill-rule: evenodd;"></path></svg>`,
-                        fiwind: `<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 20px; height: 20px; border-radius: 4px;"><rect width="18" height="18" style="fill: rgb(10, 10, 10);"></rect><g><path d="M7.92,9.58h-1.57c-.2,0-.36-.16-.36-.36s.16-.36.36-.36h1.57c.2,0,.36.16.36.36s-.16.36-.36.36ZM6.36,7.96c-.2,0-.36-.16-.36-.36s.16-.36.36-.36h2.05c.2,0,.36.16.36.36s-.16.36-.36.36h-2.05ZM8.7,11.48c-.19-.06-.3-.26-.24-.45l1.1-3.61c.06-.19.26-.3.45-.24.19.06.3.26.24.45l-1.1,3.61c-.06.19-.26.3-.45.24ZM11.89,7.63l-1.1,3.61c-.06.19-.26.3-.45.24-.19-.06-.3-.26-.24-.45l1.1-3.61c.06-.19.26-.3.45-.24.19.06.3.26.24.45Z" style="fill: rgb(239, 180, 29);"></path><path d="M9,14.01c-2.76,0-5-2.25-5-5.01s2.24-5.01,5-5.01,5,2.25,5,5.01-2.24,5.01-5,5.01ZM9,4.62c-2.41,0-4.37,1.96-4.37,4.37s1.96,4.37,4.37,4.37,4.37-1.96,4.37-4.37-1.96-4.37-4.37-4.37Z" style="fill: rgb(239, 180, 29);"></path></g></svg>`,
+                        fiwind: `<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 20px; height: 20px; border-radius: 4px;"><rect width="18" height="18" style="fill: rgb(10, 10, 10);"></rect><g><path d="M7.92,9.58h-1.57c-.2,0-.36-.16-.36-.36s.16-.36.36-.36h1.57c.2,0,.36.16.36.36s-.16.36-.36.36ZM6.36,7.96c-.2,0-.36-.16-.36-.36s.16-.36.36-.36h2.05c.2,0,.36.16.36.36s-.16.36-.36.36h-2.05ZM8.7,11.48c-.19-.06-.3-.26-.24-.45l1.1-3.61c.06-.19.26-.3.45-.24.19.06.3.26.24.45l-1.1,3.61c-.06.19-.26.3-.45.24ZM11.89,7.63l-1.1,3.61c-.06.19-.26.3-.45.24-.19-.06-.3-.26-.24-.45l1.1-3.61c.06-.19.26-.3.45-.24.19.06.3.26.24.45Z" style="fill: rgb(239, 180, 29);"></path><path d="M9,14.01c-2.76,0-5-2.25-5-5.01s2.24-5.01,5-5.01,5,2.25,5,5.01-2.24,5.01-5,5.01ZM9,4.62c-2.41,0-4.37,1.96-4.37,4.37s.196,4.37,4.37,4.37,4.37-1.96,4.37-4.37-1.96-4.37-4.37-4.37Z" style="fill: rgb(239, 180, 29);"></path></g></svg>`,
                         lemoncash: `<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 20px; height: 20px; border-radius: 4px;"><rect width="18" height="18" style="fill: rgb(10, 10, 10);"></rect><path d="M9,4c-2.74,0-5,2.26-5,5s2.26,5,5,5,5-2.26,5-5h0c0-2.74-2.26-5-5-5h0ZM11.63,9.24s-.07.05-.11.07c-.04.02-.09.03-.14.04-.11.02-.22.02-.33,0-.24-.05-.48-.15-.69-.28-.22-.14-.43-.29-.62-.47-.1-.09-.19-.18-.28-.28-.09-.1-.18-.21-.26-.31-.02-.03-.05-.04-.08-.04-.02,0-.04,0-.06.02-.05.03-.07.1-.03.15.07.12.16.23.24.35.09.12.17.22.27.33.19.21.4.41.63.58.24.18.5.32.79.42.1.03.2.05.3.06.04,0,.07.04.07.08,0,.01,0,.02-.01.03-.17.28-.37.53-.6.76-.63.66-1.49,1.05-2.4,1.08-.34,0-.68-.06-.99-.21l-.07-.03s-.05-.01-.07,0l-.06.04c-.11.07-.23.11-.35.11-.1,0-.2-.03-.28-.1-.13-.18-.13-.43,0-.61l.04-.07s.01-.05,0-.07l-.04-.07c-.35-.66-.32-1.52.03-2.32.01-.03.04-.05.07-.05.01,0,.02,0,.03,0,.02,0,.03.02.04.04.06.17.15.33.24.48.16.24.34.45.55.65.1.1.21.2.31.28.1.09.22.18.33.26.02,0,.04.01.05.01.06,0,.11-.05.11-.11,0-.03,0-.05-.03-.07-.1-.09-.2-.18-.29-.27-.09-.1-.18-.2-.27-.29-.17-.2-.32-.42-.44-.65-.12-.22-.2-.46-.24-.7-.02-.11-.02-.22,0-.33,0-.04.02-.09.04-.13,0-.01.02-.03.02-.04.07-.09.15-.17.23-.25,1.04-1.04,2.46-1.37,3.46-.83l.07.04s.06.02.08,0l.07-.05c.19-.15.45-.15.64,0,.15.2.14.47-.02.66l-.05.07s-.02.05,0,.07l.03.07c.26.6.28,1.28.05,1.9h0Z" style="fill: rgb(0, 240, 104);"></path></svg>`,
                         p2p: `<svg viewBox="0 0 24 24" style="width: 20px; height: 20px; background:#fcd535; border-radius: 4px; padding:2px;"><path d="M16.624 13.9202l2.7175 2.7154-7.353 7.353-7.353-7.352 2.7175-2.7164 4.6355 4.6595 4.6356-4.6595zm4.6366-4.6366L24 12l-2.7394 2.7154-2.7383-2.7154 2.7383-2.7164zM7.3783 9.2836L12 4.6241l4.6217 4.6595 2.7175-2.7154-7.3392-7.353-7.353 7.352 2.7314 2.7164zm-4.6366 4.6366L0 12l2.7416-2.7164 2.7186 2.7164L2.7416 13.9202zM12 15.1772l-3.179-3.1772L12 8.8228l3.179 3.1772L12 15.1772z" fill="#1e2026"/></svg>`,
-                        tiendacrypto: `<svg viewBox="0 0 24 24" style="width: 20px; height: 20px; background:#18181b; border: 1px solid rgba(63, 63, 70, 0.4); border-radius: 4px; padding:2px; color:#c7d2fe;"><path fill="currentColor" d="M12 2L2 7l10 5 10-5-10-5zm0 11.5L2 8.5v6.2c0 1.2.7 2.3 1.8 2.8l8.2 4V13.5zm10-5l-10 5v9l8.2-4c1.1-.5 1.8-1.6 1.8-2.8V8.5z"/></svg>`
+                        bybitp2p: `<img src="assets/bybit.png" style="width: 20px; height: 20px; border-radius: 4px; object-fit: contain; background: #000;">`,
+                        letsbit: `<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="width: 20px; height: 20px; border-radius: 4px;"><rect width="18" height="18" style="fill: #522398;"/><g><path d="M6.71,7.77l.39.49c.52.64,1.11.96,1.75.96,1.19,0,2.27-1.12,2.39-1.31,0,.02,0,0,.03-.05-1.45-.92-2.89-1.84-4.33-2.77-.24-.15-.48-.23-.72-.05-.24.19-.22.43-.14.7.22.68.43,1.35.63,2.03Z" style="fill: #fff;"/><path d="M12,9.11c0,.36-.2.7-.51.88-1.47.95-2.96,1.89-4.43,2.84-.07.05-.14.09-.22.14-.18.14-.44.14-.62,0-.19-.14-.26-.39-.18-.61.11-.4.23-.79.36-1.19.18-.57.38-1.12.5-1.7.07-.3.07-.61,0-.91,2.11,2.59,4.69-.36,4.59-.43.34.22.51.53.51.98Z" style="fill: #fff;"/></g></svg>`
                     };
 
                     let exchangeRows = '';
@@ -1546,7 +1557,11 @@
                         });
                         bandaHoy = pastBands.length > 0 ? pastBands[pastBands.length - 1] : datosBandas[0];
                     }
-                    let inf = bandaHoy.inf; let sup = bandaHoy.sup; let rango = sup - inf;
+                    if (!bandaHoy) {
+                        console.warn("No hay banda para hoy.");
+                        return;
+                    }
+                    let inf = bandaHoy.inf || 0; let sup = bandaHoy.sup || 0; let rango = Math.max(1, sup - inf);
                     let c25 = inf + (rango * 0.25); let c75 = inf + (rango * 0.75); let c90 = inf + (rango * 0.90);
 
                     const fmt = (num) => `$${num.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
