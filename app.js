@@ -12,6 +12,9 @@
             if (window.bandasChartInstance && window._lastHistoricalFiat) {
                 window._renderBandasChart(window._lastHistoricalFiat);
             }
+            if (window.inflationChartInstance) {
+                window.inflationChartInstance.update();
+            }
             if (window.tradingviewWidget) {
                 if (document.querySelector('.ticker-row.active')) {
                     const sym = document.querySelector('.ticker-row.active').getAttribute('data-symbol');
@@ -875,18 +878,224 @@
                 }
 
                 if (ipcSource && Object.keys(ipcSource).length > 0) {
-                    let rows = ''; let acum = 1;
-                    const months = { '01': 'Enero', '02': 'Febrero', '03': 'Marzo', '04': 'Abril', '05': 'Mayo', '06': 'Junio', '07': 'Julio', '08': 'Agosto', '09': 'Septiembre', '10': 'Octubre', '11': 'Noviembre', '12': 'Diciembre' };
-                    Object.keys(ipcSource).sort().forEach(key => {
-                        if (key.startsWith('2026-')) {
-                            let m = key.split('-')[1]; let val = ipcSource[key];
-                            rows += `<tr><td>${months[m] || m}</td><td style="text-align:right; font-weight:600; color:var(--text-main);">${(val * 100).toFixed(1)}%</td></tr>`;
-                            acum *= (1 + val);
-                        }
+                    const monthsNames = { '01': 'Ene', '02': 'Feb', '03': 'Mar', '04': 'Abr', '05': 'May', '06': 'Jun', '07': 'Jul', '08': 'Ago', '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dic' };
+                    
+                    // 1. Sort chronologically and exact last 12
+                    let allKeys = Object.keys(ipcSource).sort();
+                    let last12Keys = allKeys.slice(-12);
+                    
+                    let labels = [];
+                    let dataPoints = [];
+                    let years = []; // Keep track of the year for each data point
+                    let acum = 1;
+                    let sum = 0;
+                    
+                    last12Keys.forEach(key => {
+                        let y = key.split('-')[0];
+                        let m = key.split('-')[1];
+                        let val = ipcSource[key]; // This is already in decimal
+                        
+                        labels.push(monthsNames[m] || m);
+                        years.push(y);
+                        dataPoints.push(parseFloat((val * 100).toFixed(1)));
+                        
+                        acum *= (1 + val);
+                        sum += val;
                     });
-                    if (rows) {
-                        document.getElementById('inflacion-table').innerHTML = rows;
-                        document.getElementById('inflacion-acum').innerText = `Acumulado: ${((acum - 1) * 100).toFixed(2)}%`;
+                    
+                    // KPIs
+                    let lastMonthVal = dataPoints[dataPoints.length - 1];
+                    let avg12m = (sum / last12Keys.length) * 100;
+                    let acum12m = (acum - 1) * 100;
+                    
+                    document.querySelectorAll('.inf-kpi-label')[0].innerText = 'ÚLTIMO MES (' + labels[labels.length - 1].toUpperCase() + ')';
+                    document.getElementById('inf-last-month').innerText = lastMonthVal.toFixed(1).replace('.', ',') + '%';
+                    document.getElementById('inf-avg-12m').innerText = avg12m.toFixed(1).replace('.', ',') + '%';
+                    document.getElementById('inf-acum-12m').innerText = acum12m.toFixed(1).replace('.', ',') + '%';
+                    
+                    // Purchasing Power Footer
+                    let baseValue = 10000;
+                    let currentValue = baseValue * acum;
+                    let formattedCurrent = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(currentValue);
+                    document.getElementById('inf-purchasing-power').innerHTML = `Algo que costaba $10.000 hace un año, hoy cuesta <strong>${formattedCurrent}</strong>.`;
+                    
+                    // Chart.js Setup
+                    const ctxInflacion = document.getElementById('inflationChart');
+                    if (ctxInflacion) {
+                        if (window.inflationChartInstance) {
+                            window.inflationChartInstance.destroy();
+                        }
+                        
+                        let bgColors = dataPoints.map((_, index) => {
+                            if (index === dataPoints.length - 1) return '#475569'; // Dark Slate for last month
+                            return '#64748b'; // Slate for others to match screenshot
+                        });
+                        
+                        window.inflationChartInstance = new Chart(ctxInflacion, {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    data: dataPoints,
+                                    backgroundColor: bgColors,
+                                    borderRadius: 4,
+                                    barPercentage: 0.8
+                                }]
+                            },
+                            plugins: [
+                                {
+                                    id: 'inflationDatalabels',
+                                    afterDatasetsDraw: function(chart) {
+                                        const ctx = chart.ctx;
+                                        // Fetch theme color instead of hardcoding white
+                                        const textColor = getComputedStyle(document.body).getPropertyValue('--text-main').trim() || '#ffffff';
+                                        
+                                        chart.data.datasets.forEach((dataset, i) => {
+                                            const meta = chart.getDatasetMeta(i);
+                                            if (!meta.hidden) {
+                                                meta.data.forEach((element, index) => {
+                                                    const dataStr = dataset.data[index].toFixed(1).replace('.', ',') + '%';
+                                                    
+                                                    ctx.fillStyle = textColor; 
+                                                    // Reduce font size to prevent overlapping percentages
+                                                    ctx.font = 'bold 10px Inter, sans-serif'; 
+                                                    ctx.textAlign = 'center';
+                                                    ctx.textBaseline = 'bottom';
+                                                    ctx.fillText(dataStr, element.x, element.y - 4);
+                                                });
+                                            }
+                                        });
+                                    }
+                                },
+                                {
+                                    id: 'yearGroupingPlugin',
+                                    afterDraw: function(chart) {
+                                        const ctx = chart.ctx;
+                                        const xAxis = chart.scales.x;
+                                        const yAxis = chart.scales.y;
+                                        
+                                        // Find where the year changes
+                                        let yearGroups = [];
+                                        let currentYear = years[0];
+                                        let currentGroupStart = 0;
+                                        
+                                        for (let i = 1; i <= years.length; i++) {
+                                            if (i === years.length || years[i] !== currentYear) {
+                                                yearGroups.push({
+                                                    year: currentYear,
+                                                    startIdx: currentGroupStart,
+                                                    endIdx: i - 1
+                                                });
+                                                if (i < years.length) {
+                                                    currentYear = years[i];
+                                                    currentGroupStart = i;
+                                                }
+                                            }
+                                        }
+                                        
+                                        // Draw the groups
+                                        const yPosition = xAxis.bottom + 10;
+                                        ctx.save();
+                                        ctx.fillStyle = '#9ca3af';
+                                        ctx.strokeStyle = '#6b7280';
+                                        ctx.lineWidth = 1;
+                                        ctx.font = 'bold 11px Inter, sans-serif';
+                                        ctx.textAlign = 'center';
+                                        ctx.textBaseline = 'middle';
+                                        
+                                        yearGroups.forEach(group => {
+                                            const startX = xAxis.getPixelForTick(group.startIdx) - (xAxis.getPixelForTick(1) - xAxis.getPixelForTick(0)) / 2;
+                                            const endX = xAxis.getPixelForTick(group.endIdx) + (xAxis.getPixelForTick(1) - xAxis.getPixelForTick(0)) / 2;
+                                            const centerX = (startX + endX) / 2;
+                                            
+                                            // Draw line with gap for text
+                                            const textWidth = ctx.measureText(group.year).width + 10;
+                                            
+                                            ctx.beginPath();
+                                            ctx.moveTo(startX + 5, yPosition);
+                                            ctx.lineTo(centerX - textWidth/2, yPosition);
+                                            ctx.stroke();
+                                            
+                                            ctx.beginPath();
+                                            ctx.moveTo(centerX + textWidth/2, yPosition);
+                                            ctx.lineTo(endX - 5, yPosition);
+                                            ctx.stroke();
+
+                                            // Draw short vertical brackets
+                                            ctx.beginPath();
+                                            ctx.moveTo(startX + 5, yPosition - 3);
+                                            ctx.lineTo(startX + 5, yPosition);
+                                            ctx.stroke();
+
+                                            ctx.beginPath();
+                                            ctx.moveTo(endX - 5, yPosition - 3);
+                                            ctx.lineTo(endX - 5, yPosition);
+                                            ctx.stroke();
+                                            
+                                            // Draw year pill
+                                            ctx.fillStyle = '#6b7280';
+                                            ctx.beginPath();
+                                            ctx.roundRect(centerX - textWidth/2 + 2, yPosition - 8, textWidth - 4, 16, 8);
+                                            ctx.fill();
+                                            
+                                            ctx.fillStyle = '#ffffff';
+                                            ctx.fillText(group.year, centerX, yPosition + 1);
+                                        });
+                                        ctx.restore();
+                                    }
+                                }
+                            ],
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                layout: {
+                                    padding: { top: 20, bottom: 25 } // Room for top labels and bottom year grouping
+                                },
+                                plugins: {
+                                    legend: { display: false },
+                                    tooltip: {
+                                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                        titleColor: '#94a3b8',
+                                        bodyColor: '#fff',
+                                        borderColor: '#334155',
+                                        borderWidth: 1,
+                                        displayColors: false,
+                                        callbacks: {
+                                            label: function(context) { return context.parsed.y.toFixed(1) + '%'; }
+                                        }
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        grid: { display: false, drawBorder: false },
+                                        ticks: { 
+                                            color: '#64748b', 
+                                            font: { size: 10, weight: 'bold' },
+                                            padding: 5
+                                        }
+                                    },
+                                    y: {
+                                        display: true, 
+                                        beginAtZero: true,
+                                        grid: { color: 'rgba(148, 163, 184, 0.1)', drawBorder: false },
+                                        ticks: {
+                                            color: '#64748b',
+                                            padding: 5,
+                                            font: { size: 11 },
+                                            stepSize: 1,
+                                            callback: function(value) {
+                                                // Prevent excessive decimals on Y axis like "4.625%"
+                                                if (Number.isInteger(value)) {
+                                                    return value + '%';
+                                                }
+                                                return value.toFixed(1) + '%';
+                                            }
+                                        },
+                                        max: Math.ceil(Math.max(...dataPoints)) + 1 // Give breathing room for labels, keeping pure integer boundaries
+                                    }
+                                }
+                            }
+                        });
                     }
                 }
 
