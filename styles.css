@@ -2766,3 +2766,87 @@
             margin: 4px 0 0 10px;
             color: var(--text-muted);
         }
+
+        /* ========================================
+           DÓLARES Y BANDAS — High-Density Mobile Fixes
+           Applying the successful "Renta Variable" style to avoid overflow
+           ======================================== */
+        @media (max-width: 768px) {
+            /* 1. Global Navigation - Better balance */
+            .nav-container {
+                padding: 0 12px !important;
+                justify-content: flex-start !important;
+                gap: 4px !important;
+            }
+            .nav-tabs-group {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 2px !important;
+                width: 100% !important;
+            }
+            .nav-tab {
+                padding: 6px 10px !important;
+                font-size: 12px !important;
+                white-space: nowrap !important;
+            }
+            .nav-actions-right {
+                position: relative !important;
+                right: auto !important;
+                top: auto !important;
+                transform: none !important;
+                margin-left: auto !important;
+            }
+
+            /* 2. Dólares & Bandas Tables - Improved Density (Filling Space) */
+            #tab-argentina .data-table {
+                table-layout: auto !important;
+                font-size: 11px !important;
+            }
+            #tab-argentina .data-table th {
+                font-size: 10px !important;
+                padding: 6px 4px !important; /* Increased padding */
+                text-transform: uppercase !important;
+                letter-spacing: 0.2px !important;
+                white-space: nowrap !important;
+            }
+            #tab-argentina .data-table td {
+                font-size: 11px !important;
+                padding: 8px 4px !important; /* Increased vertical and horizontal padding */
+            }
+
+            /* 3. Speedometer & Cards - Balanced Spacing */
+            .macro-card {
+                padding: 16px !important; /* Increased from 12px to fill space */
+            }
+            #velocimetro-mid, #velocimetro-inf, #velocimetro-sup {
+                font-size: 10px !important;
+            }
+            #gauge-mayorista-box {
+                font-size: 1.5em !important;
+                padding: 4px 12px !important;
+            }
+
+            /* 4. Info boxes */
+            #diff-sup, #diff-inf {
+                font-size: 12px !important;
+            }
+        }
+
+        /* Extreme narrow screens adjustment - Safety first */
+        @media (max-width: 360px) {
+            .nav-tab {
+                padding: 6px 6px !important;
+                font-size: 11px !important;
+            }
+            #tab-argentina .data-table th {
+                font-size: 8.5px !important;
+                padding: 4px 2px !important;
+            }
+            #tab-argentina .data-table td {
+                font-size: 10px !important;
+                padding: 6px 2px !important;
+            }
+            .macro-card {
+                padding: 12px !important;
+            }
+        }
