@@ -11,10 +11,10 @@
             /* Subtle blue-gray borders */
             --border-hover: rgba(205, 214, 227, 0.25);
 
-            --text-main: #CDD6E3;
-            /* Soft white/blue text */
-            --text-muted: rgba(205, 214, 227, 0.45);
-            /* Muted technical text */
+            --text-main: #E2E8F0;
+            /* Brighter slate-white for better Dark Mode contrast */
+            --text-muted: #94A3B8;
+            /* Solid slate-gray for consistent visibility */
 
             --accent: #00FF6A;
             /* Brighter neon accent */
@@ -78,10 +78,10 @@
 
         .macro-title-muted {
             color: var(--text-muted);
-            font-size: 11px;
-            font-weight: 500;
+            font-size: 12px;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.1em;
             margin-bottom: 8px;
             display: flex;
             align-items: center;
@@ -110,11 +110,11 @@
         }
 
         .radar-tag {
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 0.1em;
             display: block;
             margin-bottom: 6px;
         }
@@ -448,9 +448,9 @@
         }
 
         .inf-kpi-label {
-            font-size: 10px;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.05em;
             color: var(--text-muted);
             font-weight: 600;
             white-space: nowrap;
@@ -879,8 +879,10 @@
             --border-color: #e5e7eb;
             --border-hover: #cbd5e1;
 
-            --text-main: #0f172a;
-            --text-muted: #4b5563;
+            --text-main: #0F172A;
+            /* Deep slate for crisp text */
+            --text-muted: #475569;
+            /* Higher contrast gray for Light Mode */
 
             --accent: #2563eb;
             --accent-glow: rgba(37, 99, 235, 0.1);
@@ -946,6 +948,10 @@
             color: var(--text-main);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-size: 15px;
+            line-height: 1.6;
+            letter-spacing: 0.01em;
         }
 
         .top-nav {
@@ -1113,9 +1119,19 @@
             border-color: var(--border-hover);
         }
 
+        .radar-card-label {
+            display: block;
+            color: var(--text-muted);
+            font-size: 12px; /* Increased from 11px */
+            font-weight: 600;
+            margin-bottom: 2px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
         .macro-title {
             color: var(--text-muted);
-            font-size: 11px;
+            font-size: 12px; /* Increased from 11px */
             font-weight: 500;
             margin-bottom: 12px;
             letter-spacing: 0.8px;
@@ -1146,10 +1162,10 @@
         .data-table th {
             background-color: var(--bg-table-header);
             color: var(--text-muted);
-            font-weight: 500;
+            font-weight: 600;
             text-transform: uppercase;
-            font-size: 10px;
-            letter-spacing: 0.8px;
+            font-size: 12px;
+            letter-spacing: 0.05em;
         }
 
         .data-table tbody tr:last-child td {
@@ -2130,10 +2146,10 @@
         }
 
         #tab-tasas .tasas-badge {
-            font-size: 10px;
-            padding: 2px 7px;
+            font-size: 11px;
+            padding: 3px 8px;
             border-radius: 6px;
-            font-weight: 500;
+            font-weight: 600;
             white-space: nowrap;
         }
 
@@ -2261,7 +2277,7 @@
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            font-size: 13px;
+            font-size: 14px;
             table-layout: fixed; /* Even distribution on desktop */
         }
 
