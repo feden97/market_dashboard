@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-03-14T20:54:36.613165Z",
+  "built_at": "2026-03-15T20:55:26.024583Z",
   "groups": {
     "Índices y Cripto (USD)": [
       {
@@ -19,24 +19,6 @@
         "short": [
           "SPXS",
           "SH"
-        ],
-        "abc": "C"
-      },
-      {
-        "ticker": "QQQ",
-        "daily": -0.59,
-        "intra": -1.0,
-        "5d": -1.01,
-        "20d": -1.15,
-        "atr_pct": 1.8,
-        "dist_sma50_atr": -1.79,
-        "rs": 100.0,
-        "rs_chart": "data/charts/QQQ.png",
-        "long": [
-          "TQQQ"
-        ],
-        "short": [
-          "SQQQ"
         ],
         "abc": "C"
       },
@@ -126,12 +108,12 @@
       },
       {
         "ticker": "QQQ.BA",
-        "daily": -0.05,
-        "intra": -0.05,
-        "5d": -2.37,
-        "20d": -4.01,
+        "daily": 0.05,
+        "intra": 0.05,
+        "5d": -2.28,
+        "20d": -3.92,
         "atr_pct": 2.1,
-        "dist_sma50_atr": -2.41,
+        "dist_sma50_atr": -2.37,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -140,12 +122,12 @@
       },
       {
         "ticker": "DIA.BA",
-        "daily": 0.29,
-        "intra": -0.18,
-        "5d": -2.84,
-        "20d": -7.56,
+        "daily": 0.59,
+        "intra": 0.12,
+        "5d": -2.56,
+        "20d": -7.29,
         "atr_pct": 1.9,
-        "dist_sma50_atr": -3.39,
+        "dist_sma50_atr": -3.26,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -168,12 +150,12 @@
       },
       {
         "ticker": "IBIT.BA",
-        "daily": 1.37,
-        "intra": -1.5,
-        "5d": 3.41,
-        "20d": 4.23,
+        "daily": 1.11,
+        "intra": -1.75,
+        "5d": 3.15,
+        "20d": 3.97,
         "atr_pct": 4.5,
-        "dist_sma50_atr": -2.56,
+        "dist_sma50_atr": -2.61,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -182,12 +164,12 @@
       },
       {
         "ticker": "ETHA.BA",
-        "daily": 2.03,
-        "intra": -1.95,
-        "5d": 4.55,
-        "20d": 7.27,
+        "daily": 2.25,
+        "intra": -1.74,
+        "5d": 4.78,
+        "20d": 7.5,
         "atr_pct": 6.1,
-        "dist_sma50_atr": -2.89,
+        "dist_sma50_atr": -2.87,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -424,12 +406,12 @@
       },
       {
         "ticker": "BMA.BA",
-        "daily": -4.7,
-        "intra": -4.61,
-        "5d": -5.35,
-        "20d": -29.07,
+        "daily": -4.61,
+        "intra": -4.51,
+        "5d": -5.25,
+        "20d": -29.0,
         "atr_pct": 8.0,
-        "dist_sma50_atr": -3.15,
+        "dist_sma50_atr": -3.14,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -438,12 +420,12 @@
       },
       {
         "ticker": "CEPU.BA",
-        "daily": -1.72,
-        "intra": -0.36,
-        "5d": 3.38,
-        "20d": -6.88,
+        "daily": -1.54,
+        "intra": -0.18,
+        "5d": 3.57,
+        "20d": -6.72,
         "atr_pct": 5.4,
-        "dist_sma50_atr": -1.25,
+        "dist_sma50_atr": -1.22,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -452,12 +434,12 @@
       },
       {
         "ticker": "CRES.BA",
-        "daily": -0.63,
-        "intra": -0.92,
-        "5d": 7.96,
-        "20d": -8.55,
+        "daily": -0.23,
+        "intra": -0.52,
+        "5d": 8.4,
+        "20d": -8.18,
         "atr_pct": 5.1,
-        "dist_sma50_atr": -1.15,
+        "dist_sma50_atr": -1.08,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -466,12 +448,12 @@
       },
       {
         "ticker": "EDN.BA",
-        "daily": -3.6,
-        "intra": -5.02,
-        "5d": 2.12,
-        "20d": -12.64,
-        "atr_pct": 6.8,
-        "dist_sma50_atr": -1.27,
+        "daily": -4.2,
+        "intra": -5.61,
+        "5d": 1.48,
+        "20d": -13.18,
+        "atr_pct": 6.9,
+        "dist_sma50_atr": -1.34,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -480,12 +462,12 @@
       },
       {
         "ticker": "GGAL.BA",
-        "daily": -3.57,
-        "intra": -4.56,
-        "5d": -1.46,
-        "20d": -19.82,
+        "daily": -3.73,
+        "intra": -4.72,
+        "5d": -1.62,
+        "20d": -19.95,
         "atr_pct": 5.7,
-        "dist_sma50_atr": -3.27,
+        "dist_sma50_atr": -3.29,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -494,12 +476,12 @@
       },
       {
         "ticker": "IRSA.BA",
-        "daily": -2.29,
-        "intra": -3.18,
-        "5d": 0.47,
-        "20d": -8.78,
+        "daily": -1.83,
+        "intra": -2.73,
+        "5d": 0.94,
+        "20d": -8.35,
         "atr_pct": 5.7,
-        "dist_sma50_atr": -1.96,
+        "dist_sma50_atr": -1.9,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -508,12 +490,12 @@
       },
       {
         "ticker": "LOMA.BA",
-        "daily": -2.33,
-        "intra": -2.82,
-        "5d": 0.77,
-        "20d": -16.58,
-        "atr_pct": 6.2,
-        "dist_sma50_atr": -2.2,
+        "daily": -2.25,
+        "intra": -2.74,
+        "5d": 0.86,
+        "20d": -16.51,
+        "atr_pct": 6.1,
+        "dist_sma50_atr": -2.19,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -522,12 +504,12 @@
       },
       {
         "ticker": "PAMP.BA",
-        "daily": -1.04,
-        "intra": -1.09,
-        "5d": 1.22,
-        "20d": -6.26,
+        "daily": -1.2,
+        "intra": -1.25,
+        "5d": 1.06,
+        "20d": -6.41,
         "atr_pct": 4.9,
-        "dist_sma50_atr": -0.74,
+        "dist_sma50_atr": -0.77,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -536,11 +518,11 @@
       },
       {
         "ticker": "SUPV.BA",
-        "daily": -6.43,
-        "intra": -5.8,
-        "5d": -1.94,
-        "20d": -30.03,
-        "atr_pct": 8.4,
+        "daily": -6.36,
+        "intra": -5.72,
+        "5d": -1.86,
+        "20d": -29.97,
+        "atr_pct": 8.3,
         "dist_sma50_atr": -2.94,
         "rs": null,
         "rs_chart": null,
@@ -550,12 +532,12 @@
       },
       {
         "ticker": "TECO2.BA",
-        "daily": -1.47,
-        "intra": -0.67,
-        "5d": 3.16,
-        "20d": -1.62,
+        "daily": -1.62,
+        "intra": -0.82,
+        "5d": 3.0,
+        "20d": -1.76,
         "atr_pct": 6.0,
-        "dist_sma50_atr": -0.68,
+        "dist_sma50_atr": -0.7,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -564,12 +546,12 @@
       },
       {
         "ticker": "TGSU2.BA",
-        "daily": 1.17,
-        "intra": -1.14,
-        "5d": 5.16,
-        "20d": -1.41,
+        "daily": 0.89,
+        "intra": -1.42,
+        "5d": 4.87,
+        "20d": -1.68,
         "atr_pct": 5.4,
-        "dist_sma50_atr": 0.18,
+        "dist_sma50_atr": 0.13,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -578,12 +560,12 @@
       },
       {
         "ticker": "YPFD.BA",
-        "daily": 0.49,
-        "intra": 0.31,
-        "5d": 2.04,
-        "20d": -2.6,
+        "daily": 0.45,
+        "intra": 0.27,
+        "5d": 2.0,
+        "20d": -2.64,
         "atr_pct": 4.3,
-        "dist_sma50_atr": 0.65,
+        "dist_sma50_atr": 0.64,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -820,12 +802,12 @@
     "CEDEARs (ARS)": [
       {
         "ticker": "GOOGL.BA",
-        "daily": 0.13,
-        "intra": -0.52,
-        "5d": 0.59,
-        "20d": -3.47,
+        "daily": 0.59,
+        "intra": -0.06,
+        "5d": 1.05,
+        "20d": -3.02,
         "atr_pct": 2.9,
-        "dist_sma50_atr": -2.39,
+        "dist_sma50_atr": -2.25,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -848,12 +830,12 @@
       },
       {
         "ticker": "WMT.BA",
-        "daily": 1.88,
-        "intra": 0.0,
-        "5d": 1.88,
-        "20d": -2.55,
+        "daily": 1.78,
+        "intra": -0.1,
+        "5d": 1.78,
+        "20d": -2.65,
         "atr_pct": 2.9,
-        "dist_sma50_atr": 0.58,
+        "dist_sma50_atr": 0.55,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -862,10 +844,10 @@
       },
       {
         "ticker": "ARCO.BA",
-        "daily": -0.4,
-        "intra": -0.75,
-        "5d": -4.41,
-        "20d": -9.8,
+        "daily": -0.35,
+        "intra": -0.7,
+        "5d": -4.37,
+        "20d": -9.76,
         "atr_pct": 4.4,
         "dist_sma50_atr": -1.56,
         "rs": null,
@@ -876,12 +858,12 @@
       },
       {
         "ticker": "NU.BA",
-        "daily": -0.49,
-        "intra": -1.84,
-        "5d": -5.84,
-        "20d": -21.38,
+        "daily": 0.0,
+        "intra": -1.35,
+        "5d": -5.38,
+        "20d": -20.99,
         "atr_pct": 4.8,
-        "dist_sma50_atr": -3.92,
+        "dist_sma50_atr": -3.85,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -890,12 +872,12 @@
       },
       {
         "ticker": "PEP.BA",
-        "daily": 1.17,
-        "intra": 0.15,
-        "5d": 0.08,
-        "20d": -5.99,
+        "daily": 1.4,
+        "intra": 0.38,
+        "5d": 0.31,
+        "20d": -5.78,
         "atr_pct": 2.5,
-        "dist_sma50_atr": 0.4,
+        "dist_sma50_atr": 0.49,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -904,12 +886,12 @@
       },
       {
         "ticker": "V.BA",
-        "daily": 0.88,
-        "intra": -0.24,
-        "5d": -3.61,
-        "20d": -7.18,
+        "daily": 0.8,
+        "intra": -0.32,
+        "5d": -3.69,
+        "20d": -7.25,
         "atr_pct": 2.6,
-        "dist_sma50_atr": -2.97,
+        "dist_sma50_atr": -2.99,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -918,12 +900,12 @@
       },
       {
         "ticker": "MSFT.BA",
-        "daily": -0.82,
-        "intra": -1.52,
-        "5d": -4.15,
-        "20d": -2.81,
+        "daily": -0.87,
+        "intra": -1.57,
+        "5d": -4.2,
+        "20d": -2.86,
         "atr_pct": 2.9,
-        "dist_sma50_atr": -3.33,
+        "dist_sma50_atr": -3.35,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -946,12 +928,12 @@
       },
       {
         "ticker": "MELI.BA",
-        "daily": 0.64,
-        "intra": -0.44,
-        "5d": -7.06,
-        "20d": -18.17,
+        "daily": 0.84,
+        "intra": -0.24,
+        "5d": -6.88,
+        "20d": -18.01,
         "atr_pct": 4.5,
-        "dist_sma50_atr": -3.97,
+        "dist_sma50_atr": -3.94,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -960,12 +942,12 @@
       },
       {
         "ticker": "BRKB.BA",
-        "daily": 0.68,
-        "intra": 0.24,
-        "5d": -2.27,
-        "20d": -2.85,
+        "daily": 0.8,
+        "intra": 0.37,
+        "5d": -2.15,
+        "20d": -2.73,
         "atr_pct": 2.1,
-        "dist_sma50_atr": -1.06,
+        "dist_sma50_atr": -1.01,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -974,12 +956,12 @@
       },
       {
         "ticker": "PFE.BA",
-        "daily": -0.36,
-        "intra": -0.81,
-        "5d": -1.56,
-        "20d": -4.55,
+        "daily": -0.26,
+        "intra": -0.71,
+        "5d": -1.46,
+        "20d": -4.45,
         "atr_pct": 2.6,
-        "dist_sma50_atr": -0.28,
+        "dist_sma50_atr": -0.25,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -988,12 +970,12 @@
       },
       {
         "ticker": "MCD.BA",
-        "daily": 1.37,
-        "intra": -0.35,
-        "5d": -0.6,
-        "20d": -0.05,
+        "daily": 1.93,
+        "intra": 0.2,
+        "5d": -0.05,
+        "20d": 0.5,
         "atr_pct": 2.3,
-        "dist_sma50_atr": 0.19,
+        "dist_sma50_atr": 0.43,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -1002,12 +984,12 @@
       },
       {
         "ticker": "PG.BA",
-        "daily": 0.89,
-        "intra": -0.34,
-        "5d": -2.9,
-        "20d": -6.48,
+        "daily": 1.17,
+        "intra": -0.07,
+        "5d": -2.64,
+        "20d": -6.23,
         "atr_pct": 2.8,
-        "dist_sma50_atr": -1.08,
+        "dist_sma50_atr": -0.99,
         "rs": null,
         "rs_chart": null,
         "long": [],
@@ -1487,7 +1469,7 @@
   "column_ranges": {
     "Índices y Cripto (USD)": {
       "daily": [
-        -0.59,
+        -0.57,
         1.66
       ],
       "intra": [
@@ -1505,20 +1487,20 @@
     },
     "CEDEARs Índices (ARS)": {
       "daily": [
-        -0.05,
-        2.03
+        0.05,
+        2.25
       ],
       "intra": [
-        -1.95,
-        -0.05
+        -1.75,
+        0.12
       ],
       "5d": [
-        -2.84,
-        4.55
+        -2.69,
+        4.78
       ],
       "20d": [
         -7.7,
-        7.27
+        7.5
       ]
     },
     "ADRs (USD)": {
@@ -1541,20 +1523,20 @@
     },
     "Acciones Locales (ARS)": {
       "daily": [
-        -6.43,
-        1.17
+        -6.36,
+        0.89
       ],
       "intra": [
         -6.03,
-        0.31
+        0.27
       ],
       "5d": [
-        -5.35,
-        7.96
+        -5.25,
+        8.4
       ],
       "20d": [
-        -30.03,
-        -1.41
+        -29.97,
+        -1.68
       ]
     },
     "Acciones USA (USD)": {
@@ -1577,19 +1559,19 @@
     },
     "CEDEARs (ARS)": {
       "daily": [
-        -0.82,
-        1.88
+        -0.87,
+        1.93
       ],
       "intra": [
-        -1.84,
+        -1.57,
         1.92
       ],
       "5d": [
-        -7.06,
-        1.88
+        -6.88,
+        1.78
       ],
       "20d": [
-        -21.38,
+        -20.99,
         2.5
       ]
     },
@@ -2611,9 +2593,9 @@
       "2026-01": 0.028999999999999998
     },
     "riesgo_pais": {
-      "valor": 568,
-      "fecha": "12-03-2026",
-      "variacion": 2.9
+      "valor": 584,
+      "fecha": "13-03-2026",
+      "variacion": 2.82
     },
     "holidays": [
       "23-03-2026 - Puente turístico no laborable",
@@ -3297,6 +3279,15 @@
       "blue": 1415.0,
       "oficial": 1420.0,
       "usdt": 1462.57,
+      "mayorista": 1400.0
+    },
+    {
+      "date": "15-03-2026",
+      "ccl": 1472.6,
+      "mep": 1427.2,
+      "blue": 1415.0,
+      "oficial": 1420.0,
+      "usdt": 1463.1,
       "mayorista": 1400.0
     }
   ]
