@@ -681,22 +681,24 @@ function _processYieldMatrix(rendData) {
                         <span>${groupName}</span>
                         ${legendHtml}
                     </div>
-                    <table class="ticker-table" data-group="${groupName.replace(/"/g, '&quot;')}">
-                        <thead>
-                            <tr>
-                                <th class="sortable" data-sort-by="symbol">Ticker</th>
-                                <th class="sortable" data-sort-by="abc">Tendencia</th>
-                                <th class="sortable" data-sort-by="price">Precio</th>
-                                <th class="sortable" data-sort-by="daily">Daily</th>
-                                <th class="sortable" data-sort-by="5d">5D</th>
-                                <th class="sortable" data-sort-by="20d">20D</th>
-                                <th class="sortable" data-sort-by="atr_pct">ATR%</th>
-                                <th class="sortable" data-sort-by="dist_sma50_atr">ATRx</th>
-                                <th class="sortable" data-sort-by="rs">1M-VARS</th>
-                            </tr>
-                        </thead>
-                        <tbody id="${safeId}-body">${tableRows}</tbody>
-                    </table>
+                    <div class="table-responsive-wrapper" style="width: 100%; overflow-x: auto;">
+                        <table class="ticker-table" data-group="${groupName.replace(/"/g, '&quot;')}">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-sort-by="symbol">Ticker</th>
+                                    <th class="sortable" data-sort-by="abc">Tendencia</th>
+                                    <th class="sortable" data-sort-by="price">Precio</th>
+                                    <th class="sortable" data-sort-by="daily">Daily</th>
+                                    <th class="sortable" data-sort-by="5d">5D</th>
+                                    <th class="sortable" data-sort-by="20d">20D</th>
+                                    <th class="sortable" data-sort-by="atr_pct">ATR%</th>
+                                    <th class="sortable" data-sort-by="dist_sma50_atr">ATRx</th>
+                                    <th class="sortable" data-sort-by="rs">1M-VARS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="${safeId}-body">${tableRows}</tbody>
+                        </table>
+                    </div>
                 </div>`;
         }
 

@@ -2117,19 +2117,22 @@ body {
     }
 
     #tab-renta .ticker-table {
-        width: 100%;
-        table-layout: fixed;
-        font-size: 10px;
+        width: max-content;
+        min-width: 100%;
+        table-layout: auto;
+        font-size: 11px;
     }
 
     #tab-renta .ticker-table th {
-        padding: 6px 2px;
-        font-size: 8px;
+        padding: 8px 6px;
+        font-size: 10px;
+        white-space: nowrap;
     }
 
     #tab-renta .ticker-table td {
-        padding: 6px 2px;
-        font-size: 10px;
+        padding: 8px 6px;
+        font-size: 11px;
+        white-space: nowrap;
     }
 
     .chart-container {
