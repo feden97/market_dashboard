@@ -703,7 +703,7 @@ function _processYieldMatrix(rendData) {
         // Inject Industry colour styles
         if (meta?.Industries_COLORS) {
             const css = Object.entries(meta.Industries_COLORS)
-                .map(([t, c]) => `.rv-ticker-label-${t}{display:inline-block;padding:2px 8px;border-radius:10px;background-color:${c};color:white;font-weight:600;font-size:12px;letter-spacing:0.3px}`)
+                .map(([t, c]) => `.rv-ticker-label-${t}{display:inline-block;padding:2px 8px;border-radius:10px;background-color:${c};color:white;font-weight:600;font-size:var(--table-font-size);letter-spacing:0.3px}`)
                 .join(' ');
             const style = document.createElement('style');
             style.textContent = css;
@@ -1556,7 +1556,9 @@ function _processYieldMatrix(rendData) {
                 bChart.update('none');
             }
         }
+    }
 
+    function _updateLastUpdatedTime() {
         const now = new Date();
         const timeEl = document.getElementById('last-updated-time');
         if (timeEl) timeEl.innerText = `Act: ${now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}`;
@@ -1594,8 +1596,6 @@ function _processYieldMatrix(rendData) {
         });
     }
 
-    // ── Main data load ────────────────────────────────────────────────────────
-
     function loadData() {
         Promise.all([
             fetch('data/snapshot.json').then(r => r.ok ? r.json() : null).catch(() => null),
@@ -1626,8 +1626,19 @@ function _processYieldMatrix(rendData) {
     }
 
     // ── Data912 Live Polling ──────────────────────────────────────────────────
+    let lastData912FetchDate = null;
 
     async function fetchData912Cedears() {
+        const now = new Date();
+        const todayStr = now.toDateString();
+        const currentTime = now.getHours() * 100 + now.getMinutes();
+        const isMarketHours = currentTime >= 1030 && currentTime <= 1705;
+        
+        // Skip if outside market hours AND we already fetched today
+        if (!isMarketHours && lastData912FetchDate === todayStr) {
+            return;
+        }
+
         // Only run if Renta Variable tab is active
         if (!document.getElementById('tab-renta')?.classList.contains('active')) return;
 
@@ -1636,6 +1647,8 @@ function _processYieldMatrix(rendData) {
             if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
             const data = await res.json();
             
+            lastData912FetchDate = todayStr;
+            
             // Build a map of symbol -> data for quick lookup
             const liveMap = new Map();
             for (const item of data) {
@@ -1643,61 +1656,51 @@ function _processYieldMatrix(rendData) {
             }
 
             // Iterate over ALL CEDEAR rows in the DOM
-            // The groups are "CEDEARs Índices (ARS)" and "CEDEARs (ARS)", etc.
-            // We can target rows by checking if their group contains "CEDEAR"
             const rows = document.querySelectorAll('#tab-renta .ticker-row');
             
             rows.forEach(row => {
                 const group = row.getAttribute('data-group');
                 if (!group || !group.toUpperCase().includes('CEDEAR')) return;
 
-                const tickerBA = row.getAttribute('data-symbol'); // e.g. AAPL.BA
+                const tickerBA = row.getAttribute('data-symbol');
                 if (!tickerBA) return;
 
-                // Strip .BA for Data912 symbol matching
                 const baseSymbol = tickerBA.replace('.BA', '');
-
                 const liveData = liveMap.get(baseSymbol);
+                
                 if (liveData) {
-                    // Update Price Cell
+                    // Update Price
                     const priceCell = row.querySelector('.price-cell');
                     if (priceCell) {
-                        const newPrice = liveData.c; // or px_ask/px_bid depending on API
+                        const newPrice = liveData.c;
                         const currentPriceStr = priceCell.innerText.replace(/[^0-9,-]+/g, '').replace(',', '.');
                         const currentPrice = currentPriceStr ? parseFloat(currentPriceStr) : null;
 
                         if (newPrice && newPrice !== currentPrice) {
                             priceCell.innerText = newPrice.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            // Trigger flash animation
-                            const flashClass = currentPrice && newPrice > currentPrice ? 'flash-up' : 'flash-down';
+                            const flashClass = (currentPrice && newPrice > currentPrice) ? 'flash-up' : 'flash-down';
                             priceCell.classList.remove('flash-up', 'flash-down');
-                            // Force reflow
                             void priceCell.offsetWidth;
                             priceCell.classList.add(flashClass);
                         }
                     }
 
-                    // Update Daily % Cell
-                    const dailyCell = row.querySelector('td:nth-child(4) .value-visualization'); // 4th column is Daily
-                    if (dailyCell && liveData.pct_change != null) {
+                    // Update Daily % and sorting attribute
+                    if (liveData.pct_change != null) {
                         const val = liveData.pct_change;
-                        const bar = dailyCell.querySelector('.value-bar');
-                        const txt = dailyCell.querySelector('.value-text');
-                        
-                        const cls = val >= 0 ? 'positive' : 'negative';
-                        const sign = val >= 0 ? '+' : '';
-                        const color = val >= 0 ? 'var(--green)' : 'var(--red)';
-                        
-                        // We need the range to calculate the width. For simplicity, assume -10 to 10 for daily.
-                        const w = Math.min(100, Math.max(0, (Math.abs(val) / 10) * 100)); // Simplified vizWidth
+                        row.setAttribute('data-daily', val);
 
-                        if (bar) {
-                            bar.className = `value-bar ${cls}`;
-                            bar.style.width = `${w}%`;
-                        }
-                        if (txt) {
-                            txt.style.color = color;
-                            txt.innerText = `${sign}${val.toFixed(2)}%`;
+                        const dailyCell = row.querySelector('td:nth-child(4) .value-visualization');
+                        if (dailyCell) {
+                            const bar = dailyCell.querySelector('.value-bar');
+                            const txt = dailyCell.querySelector('.value-text');
+                            const cls = val >= 0 ? 'positive' : 'negative';
+                            const sign = val >= 0 ? '+' : '';
+                            const color = val >= 0 ? 'var(--green)' : 'var(--red)';
+                            const w = Math.min(100, Math.max(0, (Math.abs(val) / 10) * 100));
+
+                            if (bar) { bar.className = `value-bar ${cls}`; bar.style.width = `${w}%`; }
+                            if (txt) { txt.style.color = color; txt.innerText = `${sign}${val.toFixed(2)}%`; }
                         }
                     }
                 }

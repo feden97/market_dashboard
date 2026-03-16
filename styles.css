@@ -82,6 +82,9 @@
     /* Tooltip */
     --bg-tooltip-solid: var(--bg-card-solid);
     --text-tooltip: var(--text-main);
+
+    /* Unified Table Typography */
+    --table-font-size: clamp(10px, 0.85cqi, 13px);
 }
 
 /* ── Light theme overrides ─────────────────────────────────── */
@@ -859,15 +862,16 @@ body {
     background-color: var(--bg-card-solid);
     cursor: pointer;
     user-select: none;
-    font-weight: 500;
+    font-weight: 600;
     border-bottom: 1px solid var(--border-color);
     color: var(--text-muted);
     position: sticky;
     top: 35px;
     z-index: 2;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.8px;
     text-transform: uppercase;
+    text-align: center;
 }
 
 .ticker-table th.sorted-column {
@@ -963,7 +967,7 @@ body {
     position: relative;
     z-index: 1;
     font-weight: 600;
-    font-size: 12px;
+    font-size: var(--table-font-size);
 }
 
 /* ABC rating badges */
@@ -971,11 +975,11 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     font-weight: 700;
-    font-size: 11px;
+    font-size: var(--table-font-size);
     color: white;
 }
 
@@ -1009,7 +1013,7 @@ body {
     border: 1px solid var(--border-color);
     color: var(--text-main);
     font-weight: 600;
-    font-size: 12px;
+    font-size: var(--table-font-size);
     letter-spacing: 0.3px;
 }
 
@@ -1050,14 +1054,14 @@ body {
 }
 
 #tab-renta .ticker-table td:first-child {
-    text-align: left;
-    padding-left: 10px;
+    text-align: center;
+    padding-left: 6px;
 }
 
 #tab-renta .ticker-table td {
-    padding: 6px 4px;
+    padding: 10px 6px;
     text-align: center;
-    font-size: clamp(10px, 0.85cqi, 12px);
+    font-size: var(--table-font-size);
 }
 
 /* ── Column guide ──────────────────────────────────────────── */
