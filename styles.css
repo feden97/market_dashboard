@@ -159,10 +159,10 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100vh;
     background-color: var(--bg-body);
     color: var(--text-main);
-    overflow-x: hidden;
+    overflow: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: 15px;
@@ -331,17 +331,28 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .tab-pane {
     display: none;
     width: 100%;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
     padding-bottom: 40px;
     animation: fadeIn 0.3s ease forwards;
 }
 
 .tab-pane.active {
     display: block;
+}
+
+#tab-renta.tab-pane.active {
+    display: flex;
+    overflow: hidden;
+    padding-bottom: 0;
 }
 
 @keyframes fadeIn {
@@ -787,7 +798,9 @@ body {
 /* ── Renta Variable layout ─────────────────────────────────── */
 .tab-renta-layout {
     display: flex !important;
-    height: calc(100vh - 60px);
+    flex: 1;
+    height: 100%;
+    min-height: 0;
     gap: 0;
 }
 
