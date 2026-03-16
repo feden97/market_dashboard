@@ -44,3 +44,11 @@ market-dashboard/
 ```
 
 Data: Yahoo Finance (yfinance), economic calendar (investpy). Charts: TradingView embed.
+
+## UI/UX & AI Guidelines
+
+**Mobile-First & Responsiveness:**
+- The dashboard is designed utilizing a "fixed-viewport" App-like layout (`body { overflow: hidden; height: 100vh; }`) where individual panes handle their own scroll (`overflow-y: auto`).
+- **CRITICAL:** All UI updates and new components MUST be rigorously tested and optimized for modern mobile devices with tall aspect ratios (e.g., Samsung Galaxy S23 Ultra, iPhone Pro Max).
+- Ensure that elements like buttons, charts (TradingView), and tables dynamically scale to occupy the full width and available height without clipping content or forcing horizontal/vertical page-level scrollbars.
+- Use Flexbox (`display: flex`) and relative units (`%`, `vh`, `fr`) instead of rigid pixel calculations (`calc(100vh - 60px)`) to ensure perfect fitting across unforeseen device dimensions.

@@ -1,0 +1,9 @@
+# Market Dashboard AI Guidelines
+
+When making modifications to the UI/UX of this project, you must strictly adhere to the following responsive design principles:
+
+1. **Modern Mobile Optimization:** The application MUST always look perfect on modern mobile devices (especially ultra-wide/tall aspect ratios like the Samsung S23 Ultra). 
+2. **Fixed Viewport Architecture:** The app uses an "App-style" layout. The `body` is fixed (`overflow: hidden`, `height: 100vh`). Do NOT introduce page-level scrollbars. All scrolling must be contained within specific internal elements (`.tab-pane`, `.ticker-list`, etc.).
+3. **Flexible Containers:** Do not use rigid `calc(100vh - Xpx)` for main containers if it can lead to clipping on different aspect ratios. Instead, use Flexbox (`flex: 1`, `height: 100%`) so elements dynamically fill available space.
+4. **Component Widths:** Ensure interactive elements (like buttons) and charts stretch fully across the screen on mobile views (e.g., `width: 100%`).
+5. **Testing:** Always consider CSS `@media (max-width: 768px)` breakpoints. When prompted to make a visual change, proactively ensure it won't break the layout on a 400x900px viewport or similar.
