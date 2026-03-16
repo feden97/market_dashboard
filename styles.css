@@ -1852,10 +1852,19 @@ body {
     color: var(--text-muted);
 }
 
+/* ── Update Bar Redesign ────────────────────────────────────── */
+.update-bar-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 200px;
+    max-width: 400px;
+}
+
 .progress-bar-bg {
     flex: 1;
-    background-color: rgba(255, 255, 255, 0.05);
-    height: 3px;
+    background-color: var(--border-color);
+    height: 4px;
     border-radius: 4px;
     overflow: hidden;
 }
@@ -1863,8 +1872,48 @@ body {
 .progress-bar-fill {
     height: 100%;
     width: 100%;
-    background-color: var(--accent);
+    background: linear-gradient(90deg, var(--accent), #00e65b);
     transition: width 1s linear;
+}
+
+.update-time-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+#last-updated-time {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.live-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent);
+    animation: livePulse 2s infinite;
+}
+
+@keyframes livePulse {
+    0% {
+        opacity: 0.4;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 0.4;
+        transform: scale(0.8);
+    }
 }
 
 .gauge-arc {

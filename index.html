@@ -186,14 +186,14 @@
             <h2 style="margin:0; font-size:18px; font-weight:600; color:var(--text-main); letter-spacing:-0.5px;">
               Panel de Cotizaciones
             </h2>
-            <div style="display:flex; align-items:center; gap:15px; max-width:400px;">
+            <div class="update-bar-wrapper">
               <div class="progress-bar-bg">
                 <div id="update-progress-bar" class="progress-bar-fill"></div>
               </div>
-              <span id="last-updated-time"
-                style="font-size:13px; color:var(--text-muted); font-weight:700; white-space:nowrap; font-family:monospace;">
-                Act: --:--:--
-              </span>
+              <div class="update-time-container">
+                <span class="live-dot"></span>
+                <span id="last-updated-time">Act: --:--:--</span>
+              </div>
             </div>
           </div>
 

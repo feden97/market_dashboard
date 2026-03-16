@@ -8,6 +8,10 @@
 
 function applyChartThemeOverrides() {
     if (window._renderSpreadChart && window._lastHistoricalFiat) {
+        if (window.spreadChartInstance) {
+            window.spreadChartInstance.destroy();
+            window.spreadChartInstance = null;
+        }
         window._renderSpreadChart(window._lastHistoricalFiat);
     }
     if (window._renderBandasChart && window._lastHistoricalFiat) {
@@ -273,9 +277,8 @@ function updateFiatTable() {
     const fiatTable = document.getElementById('fiat-table-body');
     if (fiatTable) fiatTable.innerHTML = rows;
 
-    if (window._lastHistoricalFiat) {
-        window._renderSpreadChart?.(window._lastHistoricalFiat);
-    }
+    /* Removing automatic chart re-render from here to avoid flicker.
+       It's now handled smoothly in _updateFiatDataAndBandas or fully on pill switch. */
 }
 
 // ─── Tasas data ───────────────────────────────────────────────────────────────
@@ -1125,7 +1128,18 @@ function _processYieldMatrix(rendData) {
             }
         }
 
-        window.spreadChartInstance?.destroy();
+        /* 
+           Crucial: We don't destroy the chart unless theme changes or base currency changes.
+           If we just want to re-fill data (e.g. pill switch), we update the existing instance.
+        */
+        if (window.spreadChartInstance) {
+            window.spreadChartInstance.data.labels = labels;
+            window.spreadChartInstance.data.datasets[0].data = data;
+            window.spreadChartInstance.options.plugins.legend.display = false;
+            window.spreadChartInstance.update('none');
+            updateSpreadSummary(window.spreadChartInstance, baseCurrency);
+            return;
+        }
 
         const isLight = document.documentElement.getAttribute('data-theme') === 'light';
         const gridColor = isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)';
@@ -1467,9 +1481,13 @@ function _processYieldMatrix(rendData) {
                 const chart = window.spreadChartInstance;
                 const now = new Date();
                 const nowStr = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()}`;
-                if (chart.data.labels.at(-1) === nowStr) chart.data.datasets[0].data[chart.data.datasets[0].data.length - 1] = spread;
-                else { chart.data.labels.push(nowStr); chart.data.datasets[0].data.push(spread); }
-                chart.update('none');
+                if (chart.data.labels.at(-1) === nowStr) {
+                    chart.data.datasets[0].data[chart.data.datasets[0].data.length - 1] = spread;
+                } else {
+                    chart.data.labels.push(nowStr);
+                    chart.data.datasets[0].data.push(spread);
+                }
+                chart.update('none'); // Smooth transition
                 updateSpreadSummary(chart, baseCurrency);
             }
         }
@@ -1558,6 +1576,15 @@ function _processYieldMatrix(rendData) {
                 document.querySelectorAll('#base-currency-pills .base-pill').forEach(p => p.classList.remove('active'));
                 this.classList.add('active');
                 updateFiatTable();
+                
+                // Trigger a clean re-render of the chart with the new base currency
+                if (window.spreadChartInstance) {
+                    window.spreadChartInstance.destroy();
+                    window.spreadChartInstance = null;
+                }
+                if (window._lastHistoricalFiat) {
+                    renderSpreadChart(window._lastHistoricalFiat);
+                }
             });
         });
     }
