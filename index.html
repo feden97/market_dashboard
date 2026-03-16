@@ -2,477 +2,543 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Financiero</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Financiero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-    <nav class="top-nav">
-        <div class="nav-container">
-            <div class="nav-tabs-group">
-                <button id="tab-resumen-btn" class="nav-tab active">🏠 Resumen</button>
-                <button id="tab-argentina-btn" class="nav-tab">🇦🇷 Dólares y Bandas</button>
-                <button id="tab-tasas-btn" class="nav-tab">💰 Tasas</button>
-                <button id="tab-renta-btn" class="nav-tab">📈 Renta Variable</button>
-            </div>
-            <div class="nav-actions-right">
-                <button id="theme-toggle" class="theme-toggle-btn" title="Cambiar Tema">
-                    <!-- Sun icon -->
-                    <svg id="sun-icon" class="theme-icon" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                    <!-- Moon icon -->
-                    <svg id="moon-icon" class="theme-icon" viewBox="0 0 24 24">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <div id="sub-tabs-tasas" class="sub-tabs-container">
-            <button id="tasas-pesos-btn" class="sub-tab active">🇦🇷 Pesos (ARS)</button>
-            <button id="tasas-cripto-btn" class="sub-tab">🪙 Stablecoins</button>
-        </div>
-    </nav>
-
-    <div class="main-content">
-        <!-- Pestaña Resumen (NUEVA) -->
-        <div id="tab-resumen" class="tab-pane active">
-            <div class="panel-ancho">
-
-                <!-- Section Header -->
-                <div class="radar-header">
-                    <span class="radar-tag">🚀 RADAR DE INVERSIÓN</span>
-                    <h2 class="radar-subtitle">Oportunidades destacadas del mercado</h2>
-                </div>
-
-                <!-- 4 Metric Cards -->
-                <div class="radar-grid">
-                    <!-- Card 1: Dólar Más Barato -->
-                    <div class="radar-card">
-                        <div class="radar-card-icon radar-icon-dollar">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                            </svg>
-                        </div>
-                        <div class="radar-card-body">
-                            <span class="radar-card-label">DÓLAR MÁS BARATO</span>
-                            <span id="cheapest-dollar-val" class="radar-card-value">$0,00</span>
-                            <span id="cheapest-dollar-name" class="radar-card-entity">...</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 2: Mejor Cuenta -->
-                    <div class="radar-card">
-                        <div class="radar-card-icon radar-icon-cuenta"></div>
-                        <div class="radar-card-body">
-                            <span class="radar-card-label">MEJOR CUENTA (TNA)</span>
-                            <span id="best-yield-val" class="radar-card-value">0,00%</span>
-                            <span id="best-yield-name" class="radar-card-entity">...</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 3: Mejor Plazo Fijo -->
-                    <div class="radar-card">
-                        <div class="radar-card-icon radar-icon-pf"></div>
-                        <div class="radar-card-body">
-                            <span class="radar-card-label">MEJOR PLAZO FIJO (TNA)</span>
-                            <span id="best-pf-val" class="radar-card-value">0,00%</span>
-                            <span id="best-pf-name" class="radar-card-entity">...</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 4: Mejor APY Stables -->
-                    <div class="radar-card">
-                        <div class="radar-card-icon radar-icon-crypto"></div>
-                        <div class="radar-card-body">
-                            <span class="radar-card-label">MEJOR APY STABLES</span>
-                            <span id="best-crypto-val" class="radar-card-value">0,00%</span>
-                            <span id="best-crypto-name" class="radar-card-entity">...</span>
-                            <div id="best-crypto-detail" class="radar-card-detail"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bottom Row: Inflación + Feriados -->
-                <div class="radar-bottom-grid">
-                    <!-- Inflación Gráfico Interactivo -->
-                    <div class="radar-bottom-card inflation-panel">
-                        <div class="radar-bottom-header" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                            <h3 class="radar-bottom-title">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-main);"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                                Inflación mensual (IPC)
-                            </h3>
-                            <span class="text-sm text-muted">Cuánto subieron los precios cada mes según el INDEC.</span>
-                        </div>
-                        <div class="radar-bottom-body" style="padding: 16px;">
-                            <div class="inf-kpi-grid">
-                                <div class="inf-kpi-card">
-                                    <div class="inf-kpi-label">ÚLTIMO MES</div>
-                                    <div id="inf-last-month" class="inf-kpi-value text-red">--</div>
-                                </div>
-                                <div class="inf-kpi-card">
-                                    <div class="inf-kpi-label">PROMEDIO 12M</div>
-                                    <div id="inf-avg-12m" class="inf-kpi-value text-yellow">--</div>
-                                </div>
-                                <div class="inf-kpi-card">
-                                    <div class="inf-kpi-label">ACUM. 12M</div>
-                                    <div id="inf-acum-12m" class="inf-kpi-value text-orange">--</div>
-                                </div>
-                            </div>
-                            
-                            <div class="inf-chart-container">
-                                <canvas id="inflationChart"></canvas>
-                            </div>
-                            
-                            <div class="inf-footer-card">
-                                📌 <span id="inf-purchasing-power">Algo que costaba $10.000 hace un año, hoy cuesta <strong>$--</strong>.</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Próximos Feriados -->
-                    <div class="radar-bottom-card">
-                        <div class="radar-bottom-header">
-                            <h3 class="radar-bottom-title">🏖️ PRÓXIMOS FERIADOS</h3>
-                        </div>
-                        <ul id="feriados-list" class="macro-list-premium">
-                            <li class="text-muted">Cargando datos...</li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div id="tab-argentina" class="tab-pane">
-            <div class="panel-ancho">
-
-                <div class="macro-card p-24">
-                    <div class="flex-between mb-20">
-                        <h2 class="m-0 text-lg font-bold text-main ls-sm">Panel de Cotizaciones</h2>
-                        <div class="flex-center gap-15 w-full" style="max-width: 400px; justify-content: flex-end;">
-                            <div class="progress-bar-bg">
-                                <div id="update-progress-bar" class="progress-bar-fill"></div>
-                            </div>
-                            <span id="last-updated-time" class="text-sm text-muted font-bold nowrap font-mono">Act: --:--:--</span>
-                        </div>
-                    </div>
-
-                    <div class="tables-grid">
-                        <div class="tables-grid-item">
-                            <table class="data-table border-none">
-                                <thead>
-                                    <tr>
-                                        <th class="border-none">Dólar</th>
-                                        <th class="border-none">Precio</th>
-                                        <th class="border-none">Var.</th>
-                                        <th class="border-none">Brecha s/</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="fiat-table-body">
-                                    <tr>
-                                        <td colspan="4" class="text-center p-20 text-muted">Cargando datos...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="tables-grid-item">
-                            <table class="data-table border-none">
-                                <thead>
-                                    <tr>
-                                        <th class="p-8-10">Exchange (USDT)</th>
-                                        <th class="p-8-10 text-center">Compra a</th>
-                                        <th class="p-8-10 text-center">Venta a</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="usdt-table-body">
-                                    <tr>
-                                        <td colspan="3" class="text-center p-20 text-muted">Cargando datos...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div style="text-align: center; margin-top: 25px;">
-                        <div
-                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <div id="chart-title"
-                                style="font-size: 13px; color: var(--text-muted); text-align: left; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
-                                Spread CCL vs USDT (YTD)</div>
-
-                            <div class="base-pills" id="base-currency-pills">
-                                <button class="base-pill active" data-val="usdt">USDT</button>
-                                <button class="base-pill" data-val="oficial">Oficial</button>
-                                <button class="base-pill" data-val="mep">MEP</button>
-                                <button class="base-pill" data-val="ccl">CCL</button>
-                                <button class="base-pill" data-val="blue">Blue</button>
-                            </div>
-                        </div>
-                        <div style="height: 200px; width: 100%;">
-                            <canvas id="spreadChart"></canvas>
-                        </div>
-                        <div
-                            style="margin-top: 20px; padding: 12px; background-color: var(--bg-card-solid); border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: flex; justify-content: space-around; font-size: 13px; color: var(--text-muted);">
-                            <div>Periodos ganadores CCL: <br><span id="ccl-wins"
-                                    style="color: var(--green); font-weight: 700; font-size: 20px;">0 Días</span></div>
-                            <div>Periodos ganadores <span id="base-name-summary">...</span>: <br><span id="base-wins"
-                                    style="color: var(--red); font-weight: 700; font-size: 20px;">0 Días</span></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="macro-card" style="padding: 24px; margin-top: 24px;">
-                    <h2
-                        style="color: var(--text-main); margin: 0 0 24px 0; font-size: 18px; font-weight: 600; letter-spacing: -0.5px;">
-                        Bandas Cambiarias y Dólar
-                        Mayorista</h2>
-
-                    <div
-                        style="display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start; margin-bottom: 25px;">
-                        <div
-                            style="flex: 1; min-width: 280px; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 10px;">
-                            <div
-                                style="position: relative; width: 100%; max-width: 340px; aspect-ratio: 2/1; height: auto; margin: 0 auto; margin-top: 20px;">
-                                <span id="velocimetro-mid"
-                                    style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); color: #9ca3af; font-size: 0.9em; font-weight: bold;">$0.00</span>
-                                <span id="velocimetro-inf"
-                                    style="position: absolute; bottom: -25px; left: 0; color: #9ca3af; font-size: 0.9em; font-weight: bold;">$0.00</span>
-                                <span id="velocimetro-sup"
-                                    style="position: absolute; bottom: -25px; right: 0; color: #9ca3af; font-size: 0.9em; font-weight: bold;">$0.00</span>
-                                <div
-                                    style="width: 100%; height: 200%; border-radius: 50%; background: conic-gradient(from 270deg at 50% 50%, #10b981 0deg 45deg, #facc15 45deg 135deg, #f97316 135deg 162deg, #ef4444 162deg 180deg, transparent 180deg 360deg); -webkit-mask-image: radial-gradient(transparent 55%, black 56%); mask-image: radial-gradient(transparent 55%, black 56%);">
-                                </div>
-                                <div id="gauge-needle"
-                                    style="position: absolute; bottom: 0; left: 50%; width: 6px; height: 120px; background-color: #ffffff; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1); border-radius: 6px; box-shadow: 0 0 6px rgba(0,0,0,0.5); z-index: 10;">
-                                </div>
-                                <div
-                                    style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 24px; height: 24px; background-color: #ffffff; border-radius: 50%; z-index: 11; box-shadow: 0 0 5px rgba(0,0,0,0.5);">
-                                </div>
-                            </div>
-                            <div style="text-align: center; margin-top: 35px;">
-                                <div
-                                    style="color: #9ca3af; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 5px;">
-                                    Dólar Mayorista</div>
-                                <div id="gauge-mayorista-box"
-                                    style="display: inline-block; font-size: 1.8em; font-weight: bold; background-color: #10b981; color: #ffffff; padding: 4px 16px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-                                    $0.00</div>
-                            </div>
-                        </div>
-
-                        <div style="flex: 1.5; min-width: 280px; width: 100%;">
-                            <table class="data-table" style="margin-bottom: 20px;">
-                                <thead>
-                                    <tr>
-                                        <th>Estado</th>
-                                        <th>Rango (%)</th>
-                                        <th>Valor mínimo</th>
-                                        <th>Valor máximo</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><span style="color:var(--green); font-weight:600;">● Favorable</span></td>
-                                        <td>0 - 25%</td>
-                                        <td id="r-fav-min"></td>
-                                        <td id="r-fav-max"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span style="color:#facc15; font-weight:600;">● Intermedio</span></td>
-                                        <td>25 - 75%</td>
-                                        <td id="r-int-min"></td>
-                                        <td id="r-int-max"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span style="color:var(--orange); font-weight:600;">● Precaución</span></td>
-                                        <td>75 - 90%</td>
-                                        <td id="r-pre-min"></td>
-                                        <td id="r-pre-max"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span style="color:var(--red); font-weight:600;">● Crítico</span></td>
-                                        <td>90 - 100%</td>
-                                        <td id="r-cri-min"></td>
-                                        <td id="r-cri-max"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div
-                                style="background-color: var(--bg-card-solid); padding: 16px; border-radius: var(--radius-sm); font-size: 14px; color: var(--text-main); border-left: 4px solid var(--accent); display: flex; flex-direction: column; gap: 8px;">
-                                <div id="diff-sup">El dólar debería subir...</div>
-                                <div id="diff-inf">El dólar debería bajar...</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
-                        <div
-                            style="background-color: var(--bg-card-solid); border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; overflow: hidden; padding: 4px; gap: 4px;">
-                            <button id="btn-bandas-chart" onclick="toggleBandasView('chart')"
-                                style="background-color: var(--bg-card-hover); color: var(--text-main); border: none; padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 600; margin: 0; border-radius: 8px;">Gráfico</button>
-                            <button id="btn-bandas-table" onclick="toggleBandasView('table')"
-                                style="background-color: transparent; color: var(--text-muted); border: none; padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 500; margin: 0; border-radius: 8px;">Tabla</button>
-                        </div>
-                    </div>
-
-                    <div id="bandas-chart-view" style="height: 250px; width: 100%;">
-                        <canvas id="bandasChart"></canvas>
-                    </div>
-
-                    <div id="bandas-table-view"
-                        style="display: none; max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
-                        <table class="data-table"
-                            style="font-size: 13px; margin: 0; width: 100%; text-align: left; border: none;">
-                            <thead
-                                style="position: sticky; top: 0; background-color: var(--bg-card-solid); z-index: 10; border-bottom: 1px solid var(--border-color);">
-                                <tr>
-                                    <th style="padding: 8px;">Fecha</th>
-                                    <th style="padding: 8px;">Mayorista</th>
-                                    <th style="padding: 8px;">Techo</th>
-                                    <th style="padding: 8px;">Piso</th>
-                                </tr>
-                            </thead>
-                            <tbody id="bandas-table-wrapper-body">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="tab-tasas" class="tab-pane">
-            <div class="panel-ancho">
-                <h2 style="color: var(--text-main); margin: 0 0 20px 0; font-size: 18px; font-weight: 600;">Tasas de
-                    Interés y Rendimientos</h2>
-
-                <!-- PESOS (ARS) VIEW -->
-                <div id="tasas-pesos"
-                    style="display: block; animation: fadeIn 0.4s ease forwards; max-width: 1100px; margin: 0 auto; padding: 0 20px;">
-
-                    <div class="terminal-container">
-                        <div class="terminal-header">
-                            <div class="terminal-title">💳 Cuentas Remuneradas y Billeteras</div>
-                            <div class="terminal-subtitle">TNA Fija, garantizada. Ingreso y retiro de saldo inmediato.
-                                Plazo mínimo 1 día</div>
-                        </div>
-                        <div id="ars-accounts-container">
-                            <div style="text-align: center; color: var(--text-muted); padding: 30px; font-size: 13px;">
-                                Cargando cuentas...</div>
-                        </div>
-                    </div>
-
-                    <div class="terminal-container">
-                        <div class="terminal-header">
-                            <div class="terminal-title">🏦 Plazo Fijo</div>
-                            <div class="terminal-subtitle">TNA Fija, garantizada. Plazo mínimo 30 días</div>
-                        </div>
-                        <div id="ars-pf-list">
-                            <div style="text-align: center; color: var(--text-muted); padding: 30px; font-size: 13px;">
-                                Cargando...</div>
-                        </div>
-                    </div>
-
-                    <div class="terminal-container">
-                        <div class="terminal-header">
-                            <div class="terminal-title">📊 Fondos Comunes de Inversión</div>
-                            <div class="terminal-subtitle">TNA Variable. Retiro de saldo variable (inmediato o T+1)
-                            </div>
-                        </div>
-                        <div id="ars-fci-container">
-                            <div style="text-align: center; color: var(--text-muted); padding: 30px; font-size: 13px;">
-                                Cargando FCI...</div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- STABLECOINS VIEW -->
-                <div id="tasas-cripto"
-                    style="display: none; animation: fadeIn 0.4s ease forwards; max-width: 100%; margin: 0 auto; overflow: hidden;">
-                    <div class="tasas-section-title" style="margin-bottom: 14px;">🪙 Rendimientos en Stablecoins</div>
-                    <div class="tasas-section-sub">Tasas APY ofrecidas por plataformas cripto argentinas. La mejor tasa
-                        de cada moneda se destaca en verde.</div>
-                    <div class="yield-matrix-container" id="yield-matrix-wrapper">
-                        <div style="text-align: center; color: var(--text-muted); padding: 40px; font-size: 13px;">
-                            Cargando rendimientos...</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="tab-renta" class="tab-pane" style="padding-bottom: 0;">
-            <div class="tab-renta-layout">
-                <!-- LEFT: Ticker Table -->
-                <div class="ticker-list">
-                    <div class="column-guide" id="column-guide-container"
-                        style="position:relative; margin: 0 12px 12px 12px;">
-                        <button class="column-guide-btn" id="column-guide-toggle" type="button">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2.5" stroke-linecap="round" style="margin-right: 8px;">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                            </svg>
-                            GUÍA DE COLUMNAS
-                        </button>
-                        <div class="column-guide-content">
-                            <button class="column-guide-close" id="column-guide-close" type="button">&times;</button>
-                            <dl>
-                                <dt>Tendencia</dt>
-                                <dd>Tendencia técnica basada en la estructura del precio:<br>
-                                    • <strong>A (Alcista)</strong>: Tendencia positiva clara.<br>
-                                    • <strong>B (Mixta)</strong>: Consolidación o sin tendencia definida.<br>
-                                    • <strong>C (Bajista)</strong>: Tendencia negativa clara.</dd>
-
-                                <dt>ATR%</dt>
-                                <dd>Rango Verdadero Promedio (21d) como % del precio. Mide la volatilidad:<br>
-                                    • <strong>&lt; 2%</strong>: Baja volatilidad.<br>
-                                    • <strong>2-4%</strong>: Normal.<br>
-                                    • <strong>&gt; 5%</strong>: Alta volatilidad y mayor riesgo.</dd>
-
-                                <dt>ATRx</dt>
-                                <dd>Distancia a la media móvil (SMA50) medida en unidades de ATR:<br>
-                                    • <strong>&gt; +3</strong>: Sobrecompra extrema.<br>
-                                    • <strong>-1 a +1</strong>: Cerca de la media móvil.<br>
-                                    • <strong>&lt; -3</strong>: Sobreventa extrema.</dd>
-
-                                <dt>1M-VARS</dt>
-                                <dd>Fuerza Relativa vs SPY ajustada por volatilidad (0–100%):<br>
-                                    • <strong>&gt; 70%</strong>: Líder del mercado.<br>
-                                    • <strong>30-70%</strong>: Rango normal.<br>
-                                    • <strong>&lt; 30%</strong>: Debilidad extrema.</dd>
-                            </dl>
-                        </div>
-                    </div>
-                    <div id="groups-container"></div>
-                </div>
-                <!-- CENTER: TradingView Chart -->
-                <div class="chart-container">
-                    <div class="tradingview-widget-container">
-                        <div id="tradingview-chart" style="height:100%;width:100%;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- ── Top navigation ───────────────────────────────────── -->
+  <nav class="top-nav">
+    <div class="nav-container">
+      <div class="nav-tabs-group">
+        <button id="tab-resumen-btn" class="nav-tab active">🏠 Resumen</button>
+        <button id="tab-argentina-btn" class="nav-tab">🇦🇷 Dólares y Bandas</button>
+        <button id="tab-tasas-btn" class="nav-tab">💰 Tasas</button>
+        <button id="tab-renta-btn" class="nav-tab">📈 Renta Variable</button>
+      </div>
+      <div class="nav-actions-right">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Cambiar Tema">
+          <svg id="sun-icon" class="theme-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="moon-icon" class="theme-icon" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
     </div>
 
-    <script src="https://s3.tradingview.com/tv.js"></script>
-    <script src="icons.js"></script>
-    <script src="app.js"></script>
+    <div id="sub-tabs-tasas" class="sub-tabs-container">
+      <button id="tasas-pesos-btn" class="sub-tab active">🇦🇷 Pesos (ARS)</button>
+      <button id="tasas-cripto-btn" class="sub-tab">🪙 Stablecoins</button>
+    </div>
+  </nav>
+
+  <div class="main-content">
+
+    <!-- ══════════════════════════════════════════════════
+             TAB: RESUMEN
+        ══════════════════════════════════════════════════════ -->
+    <div id="tab-resumen" class="tab-pane active">
+      <div class="panel-ancho">
+
+        <!-- Section header -->
+        <div class="radar-header">
+          <span class="radar-tag">🚀 RADAR DE INVERSIÓN</span>
+          <h2 class="radar-subtitle">Oportunidades destacadas del mercado</h2>
+        </div>
+
+        <!-- 4 metric cards -->
+        <div class="radar-grid">
+
+          <!-- Dólar más barato -->
+          <div class="radar-card">
+            <div class="radar-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+            </div>
+            <div class="radar-card-body">
+              <span class="radar-card-label">DÓLAR MÁS BARATO</span>
+              <span id="cheapest-dollar-val" class="radar-card-value">$0,00</span>
+              <span id="cheapest-dollar-name" class="radar-card-entity">...</span>
+            </div>
+          </div>
+
+          <!-- Mejor cuenta remunerada -->
+          <div class="radar-card">
+            <div class="radar-card-icon"></div>
+            <div class="radar-card-body">
+              <span class="radar-card-label">MEJOR CUENTA (TNA)</span>
+              <span id="best-yield-val" class="radar-card-value">0,00%</span>
+              <span id="best-yield-name" class="radar-card-entity">...</span>
+            </div>
+          </div>
+
+          <!-- Mejor plazo fijo -->
+          <div class="radar-card">
+            <div class="radar-card-icon"></div>
+            <div class="radar-card-body">
+              <span class="radar-card-label">MEJOR PLAZO FIJO (TNA)</span>
+              <span id="best-pf-val" class="radar-card-value">0,00%</span>
+              <span id="best-pf-name" class="radar-card-entity">...</span>
+            </div>
+          </div>
+
+          <!-- Mejor APY stablecoins -->
+          <div class="radar-card">
+            <div class="radar-card-icon"></div>
+            <div class="radar-card-body">
+              <span class="radar-card-label">MEJOR APY STABLES</span>
+              <span id="best-crypto-val" class="radar-card-value">0,00%</span>
+              <span id="best-crypto-name" class="radar-card-entity">...</span>
+              <div id="best-crypto-detail" class="radar-card-detail"></div>
+            </div>
+          </div>
+
+        </div><!-- /.radar-grid -->
+
+        <!-- Bottom row: Inflación + Feriados -->
+        <div class="radar-bottom-grid">
+
+          <!-- Inflation panel -->
+          <div class="radar-bottom-card inflation-panel">
+            <div class="radar-bottom-header" style="flex-direction:column; align-items:flex-start; gap:4px;">
+              <h3 class="radar-bottom-title" style="display:flex; align-items:center; gap:8px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+                Inflación mensual (IPC)
+              </h3>
+              <span style="font-size:13px; color:var(--text-muted);">
+                Cuánto subieron los precios cada mes según el INDEC.
+              </span>
+            </div>
+
+            <div class="radar-bottom-body" style="padding:16px;">
+              <div class="inf-kpi-grid">
+                <div class="inf-kpi-card">
+                  <div class="inf-kpi-label">ÚLTIMO MES</div>
+                  <div id="inf-last-month" class="inf-kpi-value text-red">--</div>
+                </div>
+                <div class="inf-kpi-card">
+                  <div class="inf-kpi-label">PROMEDIO 12M</div>
+                  <div id="inf-avg-12m" class="inf-kpi-value text-yellow">--</div>
+                </div>
+                <div class="inf-kpi-card">
+                  <div class="inf-kpi-label">ACUM. 12M</div>
+                  <div id="inf-acum-12m" class="inf-kpi-value text-orange">--</div>
+                </div>
+              </div>
+
+              <div class="inf-chart-container">
+                <canvas id="inflationChart"></canvas>
+              </div>
+
+              <div class="inf-footer-card">
+                📌 <span id="inf-purchasing-power">
+                  Algo que costaba $10.000 hace un año, hoy cuesta <strong>$--</strong>.
+                </span>
+              </div>
+            </div>
+          </div><!-- /.inflation-panel -->
+
+          <!-- Upcoming holidays -->
+          <div class="radar-bottom-card">
+            <div class="radar-bottom-header">
+              <h3 class="radar-bottom-title">🏖️ PRÓXIMOS FERIADOS</h3>
+            </div>
+            <ul id="feriados-list" class="macro-list-premium">
+              <li class="text-muted">Cargando datos...</li>
+            </ul>
+          </div>
+
+        </div><!-- /.radar-bottom-grid -->
+
+      </div><!-- /.panel-ancho -->
+    </div><!-- /#tab-resumen -->
+
+
+    <!-- ══════════════════════════════════════════════════
+             TAB: DÓLARES Y BANDAS
+        ══════════════════════════════════════════════════════ -->
+    <div id="tab-argentina" class="tab-pane">
+      <div class="panel-ancho">
+
+        <!-- Cotizaciones card -->
+        <div class="macro-card" style="padding:24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="margin:0; font-size:18px; font-weight:600; color:var(--text-main); letter-spacing:-0.5px;">
+              Panel de Cotizaciones
+            </h2>
+            <div style="display:flex; align-items:center; gap:15px; max-width:400px;">
+              <div class="progress-bar-bg">
+                <div id="update-progress-bar" class="progress-bar-fill"></div>
+              </div>
+              <span id="last-updated-time"
+                style="font-size:13px; color:var(--text-muted); font-weight:700; white-space:nowrap; font-family:monospace;">
+                Act: --:--:--
+              </span>
+            </div>
+          </div>
+
+          <div class="tables-grid">
+            <div class="tables-grid-item">
+              <table class="data-table" style="border:none;">
+                <thead>
+                  <tr>
+                    <th style="border:none;">Dólar</th>
+                    <th style="border:none;">Precio</th>
+                    <th style="border:none;">Var.</th>
+                    <th style="border:none;">Brecha s/</th>
+                  </tr>
+                </thead>
+                <tbody id="fiat-table-body">
+                  <tr>
+                    <td colspan="4" style="text-align:center; padding:20px; color:var(--text-muted);">
+                      Cargando datos...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="tables-grid-item">
+              <table class="data-table" style="border:none;">
+                <thead>
+                  <tr>
+                    <th style="padding:8px 10px;">Exchange (USDT)</th>
+                    <th style="padding:8px 10px; text-align:center;">Compra a</th>
+                    <th style="padding:8px 10px; text-align:center;">Venta a</th>
+                  </tr>
+                </thead>
+                <tbody id="usdt-table-body">
+                  <tr>
+                    <td colspan="3" style="text-align:center; padding:20px; color:var(--text-muted);">
+                      Cargando datos...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div><!-- /.tables-grid -->
+
+          <!-- Spread chart -->
+          <div style="text-align:center; margin-top:25px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <div id="chart-title"
+                style="font-size:13px; color:var(--text-muted); text-align:left; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">
+                Spread CCL vs USDT (YTD)
+              </div>
+              <div class="base-pills" id="base-currency-pills">
+                <button class="base-pill active" data-val="usdt">USDT</button>
+                <button class="base-pill" data-val="oficial">Oficial</button>
+                <button class="base-pill" data-val="mep">MEP</button>
+                <button class="base-pill" data-val="ccl">CCL</button>
+                <button class="base-pill" data-val="blue">Blue</button>
+              </div>
+            </div>
+
+            <div style="height:200px; width:100%;">
+              <canvas id="spreadChart"></canvas>
+            </div>
+
+            <div class="data-summary-row">
+              <div>
+                Periodos ganadores CCL:<br>
+                <span id="ccl-wins" style="color:var(--green); font-weight:700; font-size:20px;">0 Días</span>
+              </div>
+              <div>
+                Periodos ganadores <span id="base-name-summary">...</span>:<br>
+                <span id="base-wins" style="color:var(--red); font-weight:700; font-size:20px;">0 Días</span>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.macro-card cotizaciones -->
+
+
+        <!-- Bandas card -->
+        <div class="macro-card" style="padding:24px; margin-top:24px;">
+          <h2 style="color:var(--text-main); margin:0 0 24px; font-size:18px; font-weight:600; letter-spacing:-0.5px;">
+            Bandas Cambiarias y Dólar Mayorista
+          </h2>
+
+          <div style="display:flex; flex-wrap:wrap; gap:30px; align-items:flex-start; margin-bottom:25px;">
+
+            <!-- Gauge / speedometer -->
+            <div
+              style="flex:1; min-width:280px; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding-top:10px;">
+              <div
+                style="position:relative; width:100%; max-width:340px; aspect-ratio:2/1; height:auto; margin:20px auto 0;">
+                <span id="velocimetro-mid"
+                  style="position:absolute; top:-25px; left:50%; transform:translateX(-50%); color:#9ca3af; font-size:0.9em; font-weight:bold;">$0.00</span>
+                <span id="velocimetro-inf"
+                  style="position:absolute; bottom:-25px; left:0; color:#9ca3af; font-size:0.9em; font-weight:bold;">$0.00</span>
+                <span id="velocimetro-sup"
+                  style="position:absolute; bottom:-25px; right:0; color:#9ca3af; font-size:0.9em; font-weight:bold;">$0.00</span>
+                <div
+                  style="width:100%; height:200%; border-radius:50%; background:conic-gradient(from 270deg at 50% 50%, #10b981 0deg 45deg, #facc15 45deg 135deg, #f97316 135deg 162deg, #ef4444 162deg 180deg, transparent 180deg 360deg); -webkit-mask-image:radial-gradient(transparent 55%, black 56%); mask-image:radial-gradient(transparent 55%, black 56%);">
+                </div>
+                <div id="gauge-needle"
+                  style="position:absolute; bottom:0; left:50%; width:6px; height:120px; background-color:#ffffff; transform-origin:bottom center; transform:translateX(-50%) rotate(-90deg); transition:transform 1.5s cubic-bezier(0.22, 1, 0.36, 1); border-radius:6px; box-shadow:0 0 6px rgba(0,0,0,0.5); z-index:10;">
+                </div>
+                <div
+                  style="position:absolute; bottom:-8px; left:50%; transform:translateX(-50%); width:24px; height:24px; background-color:#ffffff; border-radius:50%; z-index:11; box-shadow:0 0 5px rgba(0,0,0,0.5);">
+                </div>
+              </div>
+              <div style="text-align:center; margin-top:35px;">
+                <div
+                  style="color:#9ca3af; font-size:0.85em; text-transform:uppercase; letter-spacing:1px; font-weight:bold; margin-bottom:5px;">
+                  Dólar Mayorista
+                </div>
+                <div id="gauge-mayorista-box"
+                  style="display:inline-block; font-size:1.8em; font-weight:bold; background-color:#10b981; color:#ffffff; padding:4px 16px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.3);">
+                  $0.00
+                </div>
+              </div>
+            </div><!-- /.gauge col -->
+
+            <!-- Ranges table + info box -->
+            <div style="flex:1.5; min-width:280px; width:100%;">
+              <table class="data-table" style="margin-bottom:20px;">
+                <thead>
+                  <tr>
+                    <th>Estado</th>
+                    <th>Rango (%)</th>
+                    <th>Valor mínimo</th>
+                    <th>Valor máximo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span style="color:var(--green); font-weight:600;">● Favorable</span></td>
+                    <td>0 - 25%</td>
+                    <td id="r-fav-min"></td>
+                    <td id="r-fav-max"></td>
+                  </tr>
+                  <tr>
+                    <td><span style="color:#facc15; font-weight:600;">● Intermedio</span></td>
+                    <td>25 - 75%</td>
+                    <td id="r-int-min"></td>
+                    <td id="r-int-max"></td>
+                  </tr>
+                  <tr>
+                    <td><span style="color:var(--orange); font-weight:600;">● Precaución</span></td>
+                    <td>75 - 90%</td>
+                    <td id="r-pre-min"></td>
+                    <td id="r-pre-max"></td>
+                  </tr>
+                  <tr>
+                    <td><span style="color:var(--red); font-weight:600;">● Crítico</span></td>
+                    <td>90 - 100%</td>
+                    <td id="r-cri-min"></td>
+                    <td id="r-cri-max"></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div
+                style="background-color:var(--bg-card-solid); padding:16px; border-radius:var(--radius-sm); font-size:14px; color:var(--text-main); border-left:4px solid var(--accent); display:flex; flex-direction:column; gap:8px;">
+                <div id="diff-sup">El dólar debería subir...</div>
+                <div id="diff-inf">El dólar debería bajar...</div>
+              </div>
+            </div><!-- /.ranges col -->
+
+          </div><!-- /.flex row -->
+
+          <!-- Chart/table toggle -->
+          <div style="display:flex; justify-content:flex-end; margin-bottom:20px;">
+            <div
+              style="background-color:var(--bg-card-solid); border-radius:var(--radius-md); border:1px solid var(--border-color); display:flex; overflow:hidden; padding:4px; gap:4px;">
+              <button id="btn-bandas-chart"
+                style="background-color:var(--bg-card-hover); color:var(--text-main); border:none; padding:8px 16px; cursor:pointer; font-size:13px; font-weight:600; border-radius:8px;">
+                Gráfico
+              </button>
+              <button id="btn-bandas-table"
+                style="background-color:transparent; color:var(--text-muted); border:none; padding:8px 16px; cursor:pointer; font-size:13px; font-weight:500; border-radius:8px;">
+                Tabla
+              </button>
+            </div>
+          </div>
+
+          <div id="bandas-chart-view" style="height:250px; width:100%;">
+            <canvas id="bandasChart"></canvas>
+          </div>
+
+          <div id="bandas-table-view"
+            style="display:none; max-height:250px; overflow-y:auto; border:1px solid var(--border-color); border-radius:var(--radius-md);">
+            <table class="data-table" style="font-size:13px; margin:0; width:100%; text-align:left; border:none;">
+              <thead
+                style="position:sticky; top:0; background-color:var(--bg-card-solid); z-index:10; border-bottom:1px solid var(--border-color);">
+                <tr>
+                  <th style="padding:8px;">Fecha</th>
+                  <th style="padding:8px;">Mayorista</th>
+                  <th style="padding:8px;">Techo</th>
+                  <th style="padding:8px;">Piso</th>
+                </tr>
+              </thead>
+              <tbody id="bandas-table-wrapper-body"></tbody>
+            </table>
+          </div>
+
+        </div><!-- /.macro-card bandas -->
+
+      </div><!-- /.panel-ancho -->
+    </div><!-- /#tab-argentina -->
+
+
+    <!-- ══════════════════════════════════════════════════
+             TAB: TASAS
+        ══════════════════════════════════════════════════════ -->
+    <div id="tab-tasas" class="tab-pane">
+      <div class="panel-ancho">
+        <h2 style="color:var(--text-main); margin:0 0 20px; font-size:18px; font-weight:600;">
+          Tasas de Interés y Rendimientos
+        </h2>
+
+        <!-- Pesos view -->
+        <div id="tasas-pesos"
+          style="display:block; animation:fadeIn 0.4s ease forwards; max-width:1100px; margin:0 auto; padding:0 20px;">
+
+          <div class="terminal-container">
+            <div class="terminal-header">
+              <div class="terminal-title">💳 Cuentas Remuneradas y Billeteras</div>
+              <div class="terminal-subtitle">TNA Fija, garantizada. Ingreso y retiro de saldo inmediato. Plazo mínimo 1
+                día</div>
+            </div>
+            <div id="ars-accounts-container">
+              <div style="text-align:center; color:var(--text-muted); padding:30px; font-size:13px;">
+                Cargando cuentas...
+              </div>
+            </div>
+          </div>
+
+          <div class="terminal-container">
+            <div class="terminal-header">
+              <div class="terminal-title">🏦 Plazo Fijo</div>
+              <div class="terminal-subtitle">TNA Fija, garantizada. Plazo mínimo 30 días</div>
+            </div>
+            <div id="ars-pf-list">
+              <div style="text-align:center; color:var(--text-muted); padding:30px; font-size:13px;">
+                Cargando...
+              </div>
+            </div>
+          </div>
+
+          <div class="terminal-container">
+            <div class="terminal-header">
+              <div class="terminal-title">📊 Fondos Comunes de Inversión</div>
+              <div class="terminal-subtitle">TNA Variable. Retiro de saldo variable (inmediato o T+1)</div>
+            </div>
+            <div id="ars-fci-container">
+              <div style="text-align:center; color:var(--text-muted); padding:30px; font-size:13px;">
+                Cargando FCI...
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /#tasas-pesos -->
+
+        <!-- Stablecoins view -->
+        <div id="tasas-cripto"
+          style="display:none; animation:fadeIn 0.4s ease forwards; max-width:100%; margin:0 auto; overflow:hidden;">
+          <div class="tasas-section-title" style="margin-bottom:14px;">🪙 Rendimientos en Stablecoins</div>
+          <div class="tasas-section-sub">
+            Tasas APY ofrecidas por plataformas cripto argentinas. La mejor tasa de cada moneda se destaca en verde.
+          </div>
+          <div class="yield-matrix-container" id="yield-matrix-wrapper">
+            <div style="text-align:center; color:var(--text-muted); padding:40px; font-size:13px;">
+              Cargando rendimientos...
+            </div>
+          </div>
+        </div><!-- /#tasas-cripto -->
+
+      </div><!-- /.panel-ancho -->
+    </div><!-- /#tab-tasas -->
+
+
+    <!-- ══════════════════════════════════════════════════
+             TAB: RENTA VARIABLE
+        ══════════════════════════════════════════════════════ -->
+    <div id="tab-renta" class="tab-pane" style="padding-bottom:0;">
+      <div class="tab-renta-layout">
+
+        <!-- Left: ticker list -->
+        <div class="ticker-list">
+          <div class="column-guide" id="column-guide-container" style="position:relative; margin:0 12px 12px;">
+            <button class="column-guide-btn" id="column-guide-toggle" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" style="margin-right:8px;">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              GUÍA DE COLUMNAS
+            </button>
+
+            <div class="column-guide-content">
+              <button class="column-guide-close" id="column-guide-close" type="button">&times;</button>
+              <dl>
+                <dt>Tendencia</dt>
+                <dd>Tendencia técnica basada en la estructura del precio:<br>
+                  • <strong>A (Alcista)</strong>: Tendencia positiva clara.<br>
+                  • <strong>B (Mixta)</strong>: Consolidación o sin tendencia definida.<br>
+                  • <strong>C (Bajista)</strong>: Tendencia negativa clara.</dd>
+
+                <dt>ATR%</dt>
+                <dd>Rango Verdadero Promedio (21d) como % del precio. Mide la volatilidad:<br>
+                  • <strong>&lt; 2%</strong>: Baja volatilidad.<br>
+                  • <strong>2–4%</strong>: Normal.<br>
+                  • <strong>&gt; 5%</strong>: Alta volatilidad y mayor riesgo.</dd>
+
+                <dt>ATRx</dt>
+                <dd>Distancia a la media móvil (SMA50) medida en unidades de ATR:<br>
+                  • <strong>&gt; +3</strong>: Sobrecompra extrema.<br>
+                  • <strong>−1 a +1</strong>: Cerca de la media móvil.<br>
+                  • <strong>&lt; −3</strong>: Sobreventa extrema.</dd>
+
+                <dt>1M-VARS</dt>
+                <dd>Fuerza Relativa vs SPY ajustada por volatilidad (0–100%):<br>
+                  • <strong>&gt; 70%</strong>: Líder del mercado.<br>
+                  • <strong>30–70%</strong>: Rango normal.<br>
+                  • <strong>&lt; 30%</strong>: Debilidad extrema.</dd>
+              </dl>
+            </div>
+          </div><!-- /.column-guide -->
+
+          <div id="groups-container"></div>
+        </div><!-- /.ticker-list -->
+
+        <!-- Center: TradingView chart -->
+        <div class="chart-container">
+          <div class="tradingview-widget-container">
+            <div id="tradingview-chart" style="height:100%; width:100%;"></div>
+          </div>
+        </div>
+
+      </div><!-- /.tab-renta-layout -->
+    </div><!-- /#tab-renta -->
+
+  </div><!-- /.main-content -->
+
+  <script src="https://s3.tradingview.com/tv.js"></script>
+  <script src="icons.js"></script>
+  <script src="app.js"></script>
 </body>
 
 </html>
