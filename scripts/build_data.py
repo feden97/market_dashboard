@@ -550,6 +550,7 @@ def get_stock_data(ticker_symbol: str, charts_dir: str) -> dict | None:
 
         return {
             "ticker":       ticker_symbol,
+            "price":        _r(current_close),
             "daily":        _r(daily_chg),
             "intra":        _r(intra_chg),
             "5d":           _r(five_chg),

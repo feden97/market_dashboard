@@ -663,10 +663,13 @@ function _processYieldMatrix(rendData) {
                         data-index="${i}">
                         <td><span class="${labelClass}">${ticker}</span></td>
                         <td>${abc ? `<span class="abc-rating abc-${abc.toLowerCase()}">${abc}</span>` : '-'}</td>
+                        <td class="price-cell">${r.price != null ? r.price.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-'}</td>
                         ${makeBar(daily, vizWidth(daily, ranges.daily?.[0] ?? -10, ranges.daily?.[1] ?? 10))}
                         ${makeBar(five, vizWidth(five, ranges['5d']?.[0] ?? -20, ranges['5d']?.[1] ?? 20))}
                         ${makeBar(twenty, vizWidth(twenty, ranges['20d']?.[0] ?? -30, ranges['20d']?.[1] ?? 30))}
                         <td>${r.atr_pct != null ? r.atr_pct.toFixed(1) + '%' : '-'}</td>
+                        <td>${r.dist_sma50_atr != null ? r.dist_sma50_atr.toFixed(2) : '-'}</td>
+                        <td>${r.rs != null ? Math.round(r.rs) + '%' : '-'}</td>
                         <td>${r.dist_sma50_atr != null ? r.dist_sma50_atr.toFixed(2) : '-'}</td>
                         <td>${r.rs != null ? Math.round(r.rs) + '%' : '-'}</td>
                     </tr>`;
@@ -683,6 +686,7 @@ function _processYieldMatrix(rendData) {
                             <tr>
                                 <th class="sortable" data-sort-by="symbol">Ticker</th>
                                 <th class="sortable" data-sort-by="abc">Tendencia</th>
+                                <th class="sortable" data-sort-by="price">Precio</th>
                                 <th class="sortable" data-sort-by="daily">Daily</th>
                                 <th class="sortable" data-sort-by="5d">5D</th>
                                 <th class="sortable" data-sort-by="20d">20D</th>
@@ -1611,10 +1615,96 @@ function _processYieldMatrix(rendData) {
 
             fetchLiveCryptoAndFiat();
             setInterval(fetchLiveCryptoAndFiat, 60_000);
+            
+            // Start Data912 Live Polling for CEDEARs
+            setInterval(fetchData912Cedears, 3_000);
         }).catch(err => {
             console.error('Critical error in loadData:', err);
             fetchLiveCryptoAndFiat();
         });
+    }
+
+    // ── Data912 Live Polling ──────────────────────────────────────────────────
+
+    async function fetchData912Cedears() {
+        // Only run if Renta Variable tab is active
+        if (!document.getElementById('tab-renta')?.classList.contains('active')) return;
+
+        try {
+            const res = await fetch('https://data912.com/live/arg_cedears');
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            const data = await res.json();
+            
+            // Build a map of symbol -> data for quick lookup
+            const liveMap = new Map();
+            for (const item of data) {
+                liveMap.set(item.symbol, item);
+            }
+
+            // Iterate over ALL CEDEAR rows in the DOM
+            // The groups are "CEDEARs Índices (ARS)" and "CEDEARs (ARS)", etc.
+            // We can target rows by checking if their group contains "CEDEAR"
+            const rows = document.querySelectorAll('#tab-renta .ticker-row');
+            
+            rows.forEach(row => {
+                const group = row.getAttribute('data-group');
+                if (!group || !group.toUpperCase().includes('CEDEAR')) return;
+
+                const tickerBA = row.getAttribute('data-symbol'); // e.g. AAPL.BA
+                if (!tickerBA) return;
+
+                // Strip .BA for Data912 symbol matching
+                const baseSymbol = tickerBA.replace('.BA', '');
+
+                const liveData = liveMap.get(baseSymbol);
+                if (liveData) {
+                    // Update Price Cell
+                    const priceCell = row.querySelector('.price-cell');
+                    if (priceCell) {
+                        const newPrice = liveData.c; // or px_ask/px_bid depending on API
+                        const currentPriceStr = priceCell.innerText.replace(/[^0-9,-]+/g, '').replace(',', '.');
+                        const currentPrice = currentPriceStr ? parseFloat(currentPriceStr) : null;
+
+                        if (newPrice && newPrice !== currentPrice) {
+                            priceCell.innerText = newPrice.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            // Trigger flash animation
+                            const flashClass = currentPrice && newPrice > currentPrice ? 'flash-up' : 'flash-down';
+                            priceCell.classList.remove('flash-up', 'flash-down');
+                            // Force reflow
+                            void priceCell.offsetWidth;
+                            priceCell.classList.add(flashClass);
+                        }
+                    }
+
+                    // Update Daily % Cell
+                    const dailyCell = row.querySelector('td:nth-child(4) .value-visualization'); // 4th column is Daily
+                    if (dailyCell && liveData.pct_change != null) {
+                        const val = liveData.pct_change;
+                        const bar = dailyCell.querySelector('.value-bar');
+                        const txt = dailyCell.querySelector('.value-text');
+                        
+                        const cls = val >= 0 ? 'positive' : 'negative';
+                        const sign = val >= 0 ? '+' : '';
+                        const color = val >= 0 ? 'var(--green)' : 'var(--red)';
+                        
+                        // We need the range to calculate the width. For simplicity, assume -10 to 10 for daily.
+                        const w = Math.min(100, Math.max(0, (Math.abs(val) / 10) * 100)); // Simplified vizWidth
+
+                        if (bar) {
+                            bar.className = `value-bar ${cls}`;
+                            bar.style.width = `${w}%`;
+                        }
+                        if (txt) {
+                            txt.style.color = color;
+                            txt.innerText = `${sign}${val.toFixed(2)}%`;
+                        }
+                    }
+                }
+            });
+
+        } catch (err) {
+            console.error('Error fetching Data912 live data:', err);
+        }
     }
 
     // ── DOM ready ─────────────────────────────────────────────────────────────

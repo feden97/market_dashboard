@@ -2567,3 +2567,33 @@ body {
         padding: 12px !important;
     }
 }
+
+/* ─── Real-time Price Flash Animations ───────────────────────────────────── */
+
+@keyframes flashGreen {
+    0% { background-color: transparent; color: inherit; }
+    10% { background-color: rgba(16, 185, 129, 0.5); color: #fff; }
+    50% { background-color: rgba(16, 185, 129, 0.2); }
+    100% { background-color: transparent; color: inherit; }
+}
+
+@keyframes flashRed {
+    0% { background-color: transparent; color: inherit; }
+    10% { background-color: rgba(239, 68, 68, 0.5); color: #fff; }
+    50% { background-color: rgba(239, 68, 68, 0.2); }
+    100% { background-color: transparent; color: inherit; }
+}
+
+.price-cell {
+    transition: color 0.3s ease;
+    border-radius: 4px; /* for the background flash to look softer */
+    padding: 2px 4px !important; /* slight padding for the background flash */
+}
+
+.flash-up {
+    animation: flashGreen 1.5s ease-out;
+}
+
+.flash-down {
+    animation: flashRed 1.5s ease-out;
+}
