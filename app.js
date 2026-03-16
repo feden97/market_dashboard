@@ -838,7 +838,7 @@ function _processYieldMatrix(rendData) {
             gridColor: isLight ? 'rgba(226, 232, 240, 1)' : 'rgba(63, 63, 70, 0.4)',
             symbol,
             timezone: 'America/Argentina/Buenos_Aires',
-            studies: ['STD;MA%Ribbon', 'Volume@tv-basicstudies'],
+            studies: ['STD;MA%Ribbon'],
             autosize: true,
             enable_publishing: false,
             container_id: 'tradingview-chart',
