@@ -162,7 +162,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100dvh;
     background-color: var(--bg-body);
     color: var(--text-main);
     overflow: hidden;
@@ -808,7 +808,7 @@ body {
 }
 
 .ticker-list {
-    width: 38%;
+    width: 42%;
     min-width: 320px;
     background-color: var(--bg-body);
     padding: 0;
@@ -1037,15 +1037,16 @@ body {
 /* Renta Variable — scoped table overrides */
 #tab-renta .ticker-table {
     table-layout: auto;
-    font-size: clamp(10px, 0.85cqi, 12px);
+    font-size: clamp(10px, 0.8cqi, 12px);
     width: 100%;
 }
 
 #tab-renta .ticker-table th {
-    padding: 6px 4px;
+    padding: 6px 2px;
     text-align: center;
     font-size: clamp(8px, 0.7cqi, 10px);
     top: 35px;
+    letter-spacing: 0.2px;
 }
 
 #tab-renta .ticker-table th:first-child {
@@ -1059,7 +1060,7 @@ body {
 }
 
 #tab-renta .ticker-table td {
-    padding: 10px 6px;
+    padding: 10px 4px;
     text-align: center;
     font-size: var(--table-font-size);
 }
@@ -2113,7 +2114,7 @@ body {
         min-width: unset !important;
         max-width: 100% !important;
         height: 50% !important;
-        max-height: 50vh !important;
+        max-height: 50dvh !important;
         border-right: none;
         border-bottom: 2px solid var(--border-color);
         overflow-x: hidden !important;

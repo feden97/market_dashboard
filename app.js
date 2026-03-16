@@ -1345,7 +1345,8 @@ function _processYieldMatrix(rendData) {
             _updateRiesgoPais(rpRes, rpHistRes);
             _updateUsdtTable(cryptoData, p2pData);
             _updateFiatDataAndBandas(criptoYaDolar, cryptoData, p2pData);
-            _updateProgressBar();
+            _updateLastUpdatedTime();
+            _startUpdateTimer();
         } catch (err) {
             console.error('fetchLiveCryptoAndFiat error:', err);
             const el = document.getElementById('last-updated-time');
@@ -1565,10 +1566,17 @@ function _processYieldMatrix(rendData) {
         nextUpdateSecs = 60;
     }
 
-    function _updateProgressBar() {
+    function _startUpdateTimer() {
         if (progressInterval) return;
+        nextUpdateSecs = 60;
         progressInterval = setInterval(() => {
-            nextUpdateSecs = Math.max(0, nextUpdateSecs - 1);
+            nextUpdateSecs--;
+            if (nextUpdateSecs <= 0) {
+                clearInterval(progressInterval);
+                progressInterval = null;
+                fetchLiveCryptoAndFiat();
+                return;
+            }
             const el = document.getElementById('update-progress-bar');
             if (el) el.style.width = ((nextUpdateSecs / 60) * 100) + '%';
         }, 1_000);
@@ -1615,7 +1623,6 @@ function _processYieldMatrix(rendData) {
             }
 
             fetchLiveCryptoAndFiat();
-            setInterval(fetchLiveCryptoAndFiat, 60_000);
             
             // Start Data912 Live Polling for CEDEARs
             setInterval(fetchData912Cedears, 3_000);
