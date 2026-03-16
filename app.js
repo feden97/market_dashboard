@@ -670,8 +670,6 @@ function _processYieldMatrix(rendData) {
                         <td>${r.atr_pct != null ? r.atr_pct.toFixed(1) + '%' : '-'}</td>
                         <td>${r.dist_sma50_atr != null ? r.dist_sma50_atr.toFixed(2) : '-'}</td>
                         <td>${r.rs != null ? Math.round(r.rs) + '%' : '-'}</td>
-                        <td>${r.dist_sma50_atr != null ? r.dist_sma50_atr.toFixed(2) : '-'}</td>
-                        <td>${r.rs != null ? Math.round(r.rs) + '%' : '-'}</td>
                     </tr>`;
             }).join('');
 
@@ -681,24 +679,22 @@ function _processYieldMatrix(rendData) {
                         <span>${groupName}</span>
                         ${legendHtml}
                     </div>
-                    <div class="table-responsive-wrapper" style="width: 100%; overflow-x: auto;">
-                        <table class="ticker-table" data-group="${groupName.replace(/"/g, '&quot;')}">
-                            <thead>
-                                <tr>
-                                    <th class="sortable" data-sort-by="symbol">Ticker</th>
-                                    <th class="sortable" data-sort-by="abc">Tendencia</th>
-                                    <th class="sortable" data-sort-by="price">Precio</th>
-                                    <th class="sortable" data-sort-by="daily">Daily</th>
-                                    <th class="sortable" data-sort-by="5d">5D</th>
-                                    <th class="sortable" data-sort-by="20d">20D</th>
-                                    <th class="sortable" data-sort-by="atr_pct">ATR%</th>
-                                    <th class="sortable" data-sort-by="dist_sma50_atr">ATRx</th>
-                                    <th class="sortable" data-sort-by="rs">1M-VARS</th>
-                                </tr>
-                            </thead>
-                            <tbody id="${safeId}-body">${tableRows}</tbody>
-                        </table>
-                    </div>
+                    <table class="ticker-table" data-group="${groupName.replace(/"/g, '&quot;')}">
+                        <thead>
+                            <tr>
+                                <th class="sortable" data-sort-by="symbol">Ticker</th>
+                                <th class="sortable" data-sort-by="abc">Tendencia</th>
+                                <th class="sortable" data-sort-by="price">Precio</th>
+                                <th class="sortable" data-sort-by="daily">Daily</th>
+                                <th class="sortable" data-sort-by="5d">5D</th>
+                                <th class="sortable" data-sort-by="20d">20D</th>
+                                <th class="sortable" data-sort-by="atr_pct">ATR%</th>
+                                <th class="sortable" data-sort-by="dist_sma50_atr">ATRx</th>
+                                <th class="sortable" data-sort-by="rs">1M-VARS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="${safeId}-body">${tableRows}</tbody>
+                    </table>
                 </div>`;
         }
 
@@ -1408,10 +1404,13 @@ function _processYieldMatrix(rendData) {
         for (const ex of EX_ORDER) {
             const d = cryptoData[ex];
             if (!d) continue;
-            const isOutlier = ex === 'bybitp2p' && d.totalBid > maxOthersVenta * 1.015;
-            if (d.totalAsk < minCompra) minCompra = d.totalAsk;
-            if (!isOutlier && d.totalBid > maxVenta) maxVenta = d.totalBid;
-            exList.push({ id: ex, name: NAME_MAP[ex] ?? (ex.charAt(0).toUpperCase() + ex.slice(1)), compra_a: d.totalAsk, venta_a: d.totalBid, isOutlier });
+            
+            if (ex !== 'bybitp2p') {
+                if (d.totalAsk < minCompra) minCompra = d.totalAsk;
+                if (d.totalBid > maxVenta) maxVenta = d.totalBid;
+            }
+            
+            exList.push({ id: ex, name: NAME_MAP[ex] ?? (ex.charAt(0).toUpperCase() + ex.slice(1)), compra_a: d.totalAsk, venta_a: d.totalBid });
         }
         if (p2pData) {
             if (p2pData.totalAsk < minCompra) minCompra = p2pData.totalAsk;
@@ -1421,16 +1420,16 @@ function _processYieldMatrix(rendData) {
         if (!maxVenta) maxVenta = maxOthersVenta;
 
         const rows = exList.map(e => {
-            const isMin = e.compra_a === minCompra;
-            const isMax = e.venta_a === maxVenta && !e.isOutlier;
+            const isMin = e.compra_a === minCompra && e.id !== 'bybitp2p';
+            const isMax = e.venta_a === maxVenta && e.id !== 'bybitp2p';
             return `<tr>
                 <td><div style="display:flex; align-items:center; gap:8px;">${ICONS[e.id] ?? ''}<span style="font-weight:500;">${e.name}</span></div></td>
                 <td style="text-align:center;"><span class="${isMin ? 'text-highlight-green' : ''}">$${e.compra_a.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></td>
                 <td style="text-align:center; position:relative;">
-                    <span class="${isMax ? 'text-highlight-green' : ''}" style="${e.isOutlier ? 'opacity:0.5;' : ''}">
+                    <span class="${isMax ? 'text-highlight-green' : ''}">
                         $${e.venta_a.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
-                    ${e.isOutlier ? '<span style="position:absolute; bottom:1px; left:50%; transform:translateX(-50%); font-size:8px; color:var(--red); font-weight:600; white-space:nowrap; line-height:1;">(No Representativo)</span>' : ''}
+                    ${e.id === 'bybitp2p' ? '<span style="position:absolute; bottom:1px; left:50%; transform:translateX(-50%); font-size:8px; color:var(--text-muted); font-weight:600; white-space:nowrap; line-height:1;">(Solo visual)</span>' : ''}
                 </td>
             </tr>`;
         }).join('');
