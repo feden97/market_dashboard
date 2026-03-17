@@ -607,6 +607,27 @@ function _processYieldMatrix(rendData) {
         return Math.min(100, Math.max(0, (Math.abs(value) / Math.abs(minVal)) * 100));
     }
 
+    /**
+     * Checks if Argentinian Market is open (Mon-Fri, 10:20 - 17:05 ART)
+     */
+    function isMarketOpen() {
+        try {
+            const now = new Date();
+            // Force Argentina Time (ART)
+            const artStr = now.toLocaleString('en-US', { timeZone: 'America/Argentina/Buenos_Aires', hour12: false });
+            const artDate = new Date(artStr);
+            
+            const day = artDate.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+            const hour = artDate.getHours();
+            const min = artDate.getMinutes();
+            const timeVal = hour * 100 + min;
+
+            return (day >= 1 && day <= 5) && (timeVal >= 1020 && timeVal <= 1705);
+        } catch (e) {
+            return true; // Fallback to avoid breaking engine if timezone error
+        }
+    }
+
     // ── Renta Variable rendering ──────────────────────────────────────────────
 
     function renderGroups() {
@@ -1405,12 +1426,12 @@ function _processYieldMatrix(rendData) {
         for (const ex of EX_ORDER) {
             const d = cryptoData[ex];
             if (!d) continue;
-            
+
             if (ex !== 'bybitp2p') {
                 if (d.totalAsk < minCompra) minCompra = d.totalAsk;
                 if (d.totalBid > maxVenta) maxVenta = d.totalBid;
             }
-            
+
             exList.push({ id: ex, name: NAME_MAP[ex] ?? (ex.charAt(0).toUpperCase() + ex.slice(1)), compra_a: d.totalAsk, venta_a: d.totalBid });
         }
         if (p2pData) {
@@ -1591,7 +1612,7 @@ function _processYieldMatrix(rendData) {
                 document.querySelectorAll('#base-currency-pills .base-pill').forEach(p => p.classList.remove('active'));
                 this.classList.add('active');
                 updateFiatTable();
-                
+
                 // Trigger a clean re-render of the chart with the new base currency
                 if (window.spreadChartInstance) {
                     window.spreadChartInstance.destroy();
@@ -1623,73 +1644,70 @@ function _processYieldMatrix(rendData) {
             }
 
             fetchLiveCryptoAndFiat();
-            
-            // Start Data912 Live Polling for CEDEARs
-            setInterval(fetchData912Cedears, 3_000);
+
+            // Start Unified Live Market Engine Polling (Every 20 seconds)
+            setInterval(fetchLiveMarketData, 20_000);
         }).catch(err => {
             console.error('Critical error in loadData:', err);
             fetchLiveCryptoAndFiat();
         });
     }
 
-    // ── Data912 Live Polling ──────────────────────────────────────────────────
+    // ── Unified Live Market Engine (Data912) ──────────────────────────────────
     let lastData912FetchDate = null;
 
-    async function fetchData912Cedears() {
-        const now = new Date();
-        const todayStr = now.toDateString();
-        const currentTime = now.getHours() * 100 + now.getMinutes();
-        const isMarketHours = currentTime >= 1030 && currentTime <= 1705;
-        
-        // Skip if outside market hours AND we already fetched today
-        if (!isMarketHours && lastData912FetchDate === todayStr) {
-            return;
-        }
-
-        // Only run if Renta Variable tab is active
+    async function fetchLiveMarketData() {
+        // Only run if Renta Variable tab is active AND market is open
         if (!document.getElementById('tab-renta')?.classList.contains('active')) return;
+        if (!isMarketOpen()) return;
 
         try {
-            const res = await fetch('https://data912.com/live/arg_cedears');
-            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-            const data = await res.json();
-            
+            const urls = [
+                'https://data912.com/live/usa_stocks',
+                'https://data912.com/live/usa_adrs',
+                'https://data912.com/live/arg_stocks',
+                'https://data912.com/live/arg_cedears'
+            ];
+
+            const [usaStocks, usaAdrs, argStocks, argCedears] = await Promise.all(
+                urls.map(url => fetch(url).then(r => r.ok ? r.json() : []))
+            );
+
             lastData912FetchDate = todayStr;
-            
-            // Build a map of symbol -> data for quick lookup
-            const liveMap = new Map();
-            for (const item of data) {
-                liveMap.set(item.symbol, item);
-            }
 
-            // Iterate over ALL CEDEAR rows in the DOM
+            // Build separate maps for different markets
+            const usaMap = new Map();
+            [...usaStocks, ...usaAdrs].forEach(item => usaMap.set(item.symbol, item));
+
+            const argMap = new Map();
+            [...argStocks, ...argCedears].forEach(item => argMap.set(item.symbol, item));
+
+            // Iterate over ALL ticker rows in the DOM
             const rows = document.querySelectorAll('#tab-renta .ticker-row');
-            
+
             rows.forEach(row => {
-                const group = row.getAttribute('data-group');
-                if (!group || !group.toUpperCase().includes('CEDEAR')) return;
+                const group = row.getAttribute('data-group') || '';
+                const tickerRaw = row.getAttribute('data-symbol');
+                if (!tickerRaw) return;
 
-                const tickerBA = row.getAttribute('data-symbol');
-                if (!tickerBA) return;
+                const baseSymbol = tickerRaw.replace('.BA', '');
 
-                const baseSymbol = tickerBA.replace('.BA', '');
-                const liveData = liveMap.get(baseSymbol);
-                
+                // Decide which map to use based on the group
+                let liveData = null;
+                const gUpper = group.toUpperCase();
+
+                if (gUpper.includes('USA') || gUpper.includes('ADR') || gUpper.includes('USD') || gUpper.includes('COUNTRIES')) {
+                    liveData = usaMap.get(baseSymbol);
+                } else {
+                    // Local ARS Stocks or CEDEARs (ARS)
+                    liveData = argMap.get(baseSymbol);
+                }
+
                 if (liveData) {
                     // Update Price
                     const priceCell = row.querySelector('.price-cell');
-                    if (priceCell) {
-                        const newPrice = liveData.c;
-                        const currentPriceStr = priceCell.innerText.replace(/[^0-9,-]+/g, '').replace(',', '.');
-                        const currentPrice = currentPriceStr ? parseFloat(currentPriceStr) : null;
-
-                        if (newPrice && newPrice !== currentPrice) {
-                            priceCell.innerText = newPrice.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            const flashClass = (currentPrice && newPrice > currentPrice) ? 'flash-up' : 'flash-down';
-                            priceCell.classList.remove('flash-up', 'flash-down');
-                            void priceCell.offsetWidth;
-                            priceCell.classList.add(flashClass);
-                        }
+                    if (priceCell && liveData.c) {
+                        priceCell.innerText = liveData.c.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                     }
 
                     // Update Daily % and sorting attribute
