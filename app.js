@@ -20,11 +20,6 @@ function applyChartThemeOverrides() {
     if (window.inflationChartInstance) {
         window.inflationChartInstance.update();
     }
-    if (window.tradingviewWidget) {
-        const sym = document.querySelector('#tab-renta .ticker-row.active')?.getAttribute('data-symbol')
-            || window._lastChartSymbol;
-        if (sym) window.initChart(sym);
-    }
 }
 
 function updateThemeIcon(theme) {
@@ -63,7 +58,7 @@ function toggleTheme() {
 // ─── Navigation ──────────────────────────────────────────────────────────────
 
 function switchTab(tabId, btnElement) {
-    document.querySelectorAll('#tab-resumen, #tab-argentina, #tab-tasas, #tab-renta')
+    document.querySelectorAll('#tab-resumen, #tab-argentina, #tab-tasas')
         .forEach(el => el.classList.remove('active'));
     btnElement.closest('.nav-container').querySelectorAll('.nav-tab')
         .forEach(el => el.classList.remove('active'));
@@ -476,10 +471,8 @@ function _processYieldMatrix(rendData) {
 
             const uniqueRates = new Set(matches.map(r => r.apy));
             if (uniqueRates.size > 1) {
-                tiersMap[ent][coin] = ent !== 'LemonCash' || coin === 'USDT';
+                tiersMap[ent][coin] = true;
             }
-            // Always show tooltip for Lemon USDT
-            if (ent === 'LemonCash' && coin === 'USDT') tiersMap[ent][coin] = true;
         }
     }
 
@@ -516,12 +509,7 @@ function _processYieldMatrix(rendData) {
             let displayRate = '—';
             if (rate !== null) {
                 let tooltipHtml = '';
-                if (ent === 'LemonCash' && coin === 'USDT') {
-                    tooltipHtml = buildTooltipHtml(
-                        `Interés sujeto a cada nivel.<br>Hasta 1000 ${coin}: ${rate.toFixed(2)}%<br>Más de 1000 ${coin}: 2.75%`,
-                        dir
-                    );
-                } else if (tiersMap[ent][coin]) {
+                if (tiersMap[ent][coin]) {
                     tooltipHtml = buildTooltipHtml(
                         'Tasa máxima detectada.<br>El rendimiento varía según condiciones de la plataforma.',
                         dir
@@ -584,305 +572,13 @@ function _processYieldMatrix(rendData) {
 
 (function () {
     // ── State ────────────────────────────────────────────────────────────────
-    let chartWidget = null;
     let snapshot = null;
     let datosBandas = [];
-    let allTickerRows = [];
-    let currentIndex = 0;
-    let currentSortStates = {};
     let meta = null;
     let nextUpdateSecs = 60;
     let progressInterval = null;
 
-    // ── Utilities ────────────────────────────────────────────────────────────
 
-    function safeGroupId(name) {
-        return name.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-    }
-
-    function vizWidth(value, minVal, maxVal) {
-        if (value == null || minVal >= maxVal) return 0;
-        if (value >= 0) return minVal < maxVal ? Math.min(100, Math.max(0, (value / (maxVal || 1)) * 100)) : 0;
-        if (minVal >= 0) return 0;
-        return Math.min(100, Math.max(0, (Math.abs(value) / Math.abs(minVal)) * 100));
-    }
-
-    /**
-     * Checks if Argentinian Market is open (Mon-Fri, 10:20 - 17:05 ART)
-     */
-    function isMarketOpen() {
-        try {
-            const now = new Date();
-            // Force Argentina Time (ART)
-            const artStr = now.toLocaleString('en-US', { timeZone: 'America/Argentina/Buenos_Aires', hour12: false });
-            const artDate = new Date(artStr);
-            
-            const day = artDate.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
-            const hour = artDate.getHours();
-            const min = artDate.getMinutes();
-            const timeVal = hour * 100 + min;
-
-            return (day >= 1 && day <= 5) && (timeVal >= 1020 && timeVal <= 1705);
-        } catch (e) {
-            return true; // Fallback to avoid breaking engine if timezone error
-        }
-    }
-
-    // ── Renta Variable rendering ──────────────────────────────────────────────
-
-    function renderGroups() {
-        if (!snapshot?.groups) return;
-
-        let html = '';
-        for (const [groupName, rows] of Object.entries(snapshot.groups)) {
-            if (!rows?.length) continue;
-            const safeId = safeGroupId(groupName);
-            const ranges = snapshot.column_ranges?.[groupName] ?? {
-                daily: [-10, 10], intra: [-10, 10], '5d': [-20, 20], '20d': [-30, 30],
-            };
-
-            let legendHtml = '';
-            if (meta?.SECTOR_COLORS && groupName.toLowerCase().includes('industr')) {
-                const spans = Object.entries(meta.SECTOR_COLORS)
-                    .map(([s, c]) => `<span class="rv-legend-item" style="background-color:${c}">${s}</span>`)
-                    .join('');
-                legendHtml = `<div class="rv-legend" onclick="event.stopPropagation()">${spans}</div>`;
-            }
-
-            const makeBar = (val, w) => {
-                if (val == null) return '<td>-</td>';
-                const cls = val >= 0 ? 'positive' : 'negative';
-                const sign = val >= 0 ? '+' : '';
-                const color = val >= 0 ? 'var(--green)' : 'var(--red)';
-                return `
-                    <td>
-                        <div class="value-visualization">
-                            <div class="value-bar ${cls}" style="width:${w}%"></div>
-                            <span class="value-text" style="color:${color}">${sign}${val.toFixed(2)}%</span>
-                        </div>
-                    </td>`;
-            };
-
-            const tableRows = rows.map((r, i) => {
-                const { daily, '5d': five, '20d': twenty, abc = '', ticker } = r;
-                const labelClass = (groupName === 'Industries' && meta?.Industries_COLORS?.[ticker])
-                    ? `rv-ticker-label-${ticker}`
-                    : 'rv-ticker-label';
-
-                return `
-                    <tr class="ticker-row"
-                        onclick="updateChart('${ticker}', this)"
-                        data-symbol="${ticker}"
-                        data-group="${groupName.replace(/"/g, '&quot;')}"
-                        data-daily="${daily || 0}"
-                        data-5d="${five || 0}"
-                        data-20d="${twenty || 0}"
-                        data-atr_pct="${r.atr_pct || 0}"
-                        data-dist_sma50_atr="${r.dist_sma50_atr || 0}"
-                        data-rs="${r.rs || 0}"
-                        data-abc="${abc}"
-                        data-index="${i}">
-                        <td><span class="${labelClass}">${ticker}</span></td>
-                        <td>${abc ? `<span class="abc-rating abc-${abc.toLowerCase()}">${abc}</span>` : '-'}</td>
-                        <td class="price-cell">${r.price != null ? r.price.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-'}</td>
-                        ${makeBar(daily, vizWidth(daily, ranges.daily?.[0] ?? -10, ranges.daily?.[1] ?? 10))}
-                        ${makeBar(five, vizWidth(five, ranges['5d']?.[0] ?? -20, ranges['5d']?.[1] ?? 20))}
-                        ${makeBar(twenty, vizWidth(twenty, ranges['20d']?.[0] ?? -30, ranges['20d']?.[1] ?? 30))}
-                        <td>${r.atr_pct != null ? r.atr_pct.toFixed(1) + '%' : '-'}</td>
-                        <td>${r.dist_sma50_atr != null ? r.dist_sma50_atr.toFixed(2) : '-'}</td>
-                        <td>${r.rs != null ? Math.round(r.rs) + '%' : '-'}</td>
-                    </tr>`;
-            }).join('');
-
-            html += `
-                <div class="group-container" id="group-${safeId}">
-                    <div class="group-header" onclick="scrollToGroup('${groupName.replace(/'/g, "\\'")}')">
-                        <span>${groupName}</span>
-                        ${legendHtml}
-                    </div>
-                    <table class="ticker-table" data-group="${groupName.replace(/"/g, '&quot;')}">
-                        <thead>
-                            <tr>
-                                <th class="sortable" data-sort-by="symbol">Ticker</th>
-                                <th class="sortable" data-sort-by="abc">Tendencia</th>
-                                <th class="sortable" data-sort-by="price">Precio</th>
-                                <th class="sortable" data-sort-by="daily">Daily</th>
-                                <th class="sortable" data-sort-by="5d">5D</th>
-                                <th class="sortable" data-sort-by="20d">20D</th>
-                                <th class="sortable" data-sort-by="atr_pct">ATR%</th>
-                                <th class="sortable" data-sort-by="dist_sma50_atr">ATRx</th>
-                                <th class="sortable" data-sort-by="rs">1M-VARS</th>
-                            </tr>
-                        </thead>
-                        <tbody id="${safeId}-body">${tableRows}</tbody>
-                    </table>
-                </div>`;
-        }
-
-        document.getElementById('groups-container').innerHTML = html;
-
-        // Inject Industry colour styles
-        if (meta?.Industries_COLORS) {
-            const css = Object.entries(meta.Industries_COLORS)
-                .map(([t, c]) => `.rv-ticker-label-${t}{display:inline-block;padding:2px 8px;border-radius:10px;background-color:${c};color:white;font-weight:600;font-size:var(--table-font-size);letter-spacing:0.3px}`)
-                .join(' ');
-            const style = document.createElement('style');
-            style.textContent = css;
-            document.head.appendChild(style);
-        }
-
-        initRentaApp();
-    }
-
-    function initRentaApp() {
-        allTickerRows = [...document.querySelectorAll('#tab-renta .ticker-row')];
-
-        document.querySelectorAll('#tab-renta .ticker-table').forEach(table => {
-            const g = table.getAttribute('data-group');
-            currentSortStates[g] = { sortBy: null, direction: 1, count: 0 };
-        });
-
-        // Column guide toggle
-        const guideContainer = document.getElementById('column-guide-container');
-        document.getElementById('column-guide-toggle')?.addEventListener('click', () => {
-            guideContainer?.classList.add('active');
-        });
-        document.getElementById('column-guide-close')?.addEventListener('click', e => {
-            e.stopPropagation();
-            guideContainer?.classList.remove('active');
-        });
-
-        // Sort delegation on the ticker list
-        const listEl = document.querySelector('#tab-renta .ticker-list');
-        if (listEl && !listEl._sortDelegate) {
-            listEl._sortDelegate = true;
-            listEl.addEventListener('click', e => {
-                const th = e.target.closest('th.sortable');
-                const table = th?.closest('table.ticker-table');
-                if (!th || !table) return;
-                window.sortGroup(table.getAttribute('data-group'), th.getAttribute('data-sort-by'));
-            });
-        }
-
-        const defaultSymbol = meta?.default_symbol ?? 'SPY';
-        initChart(defaultSymbol);
-        if (allTickerRows.length > 0) allTickerRows[0].classList.add('active');
-
-        document.addEventListener('keydown', e => {
-            if (!document.getElementById('tab-renta').classList.contains('active')) return;
-            if (e.key === 'ArrowDown' && currentIndex < allTickerRows.length - 1) {
-                e.preventDefault();
-                currentIndex++;
-                updateChart(allTickerRows[currentIndex].getAttribute('data-symbol'), allTickerRows[currentIndex]);
-            }
-            if (e.key === 'ArrowUp' && currentIndex > 0) {
-                e.preventDefault();
-                currentIndex--;
-                updateChart(allTickerRows[currentIndex].getAttribute('data-symbol'), allTickerRows[currentIndex]);
-            }
-        });
-    }
-
-    window.scrollToGroup = function (groupName) {
-        document.getElementById('group-' + safeGroupId(groupName))?.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    window.sortGroup = function (group, sortBy) {
-        const table = [...document.querySelectorAll('#tab-renta .ticker-table')]
-            .find(t => t.getAttribute('data-group') === group);
-        if (!table) return;
-
-        const tbody = table.querySelector('tbody');
-        const rows = [...tbody.querySelectorAll('.ticker-row')];
-        const state = currentSortStates[group] ??= { sortBy: null, direction: 1, count: 0 };
-
-        table.querySelectorAll('th, td').forEach(el => el.classList.remove('sort-asc', 'sort-desc', 'sorted-column'));
-
-        if (state.sortBy === sortBy) {
-            state.count++;
-            if (state.count >= 3) {
-                Object.assign(state, { sortBy: null, direction: 1, count: 0 });
-                rows.sort((a, b) => +a.dataset.index - +b.dataset.index);
-                tbody.replaceChildren(...rows);
-                allTickerRows = [...document.querySelectorAll('#tab-renta .ticker-row')];
-                return;
-            }
-        } else {
-            state.count = 1;
-        }
-
-        state.sortBy = sortBy;
-        if (state.count === 2) state.direction *= -1; else state.direction = 1;
-
-        const COL_MAP = { symbol: 0, abc: 1, daily: 2, '5d': 3, '20d': 4, atr_pct: 5, dist_sma50_atr: 6, rs: 7 };
-        const hi = COL_MAP[sortBy] ?? 7;
-        const header = table.querySelectorAll('th')[hi];
-        if (header) header.classList.add(state.direction === 1 ? 'sort-asc' : 'sort-desc', 'sorted-column');
-        rows.forEach(row => row.querySelectorAll('td')[hi]?.classList.add('sorted-column'));
-
-        rows.sort((a, b) => {
-            if (sortBy === 'symbol') return a.dataset.symbol.toLowerCase().localeCompare(b.dataset.symbol.toLowerCase()) * state.direction;
-            if (sortBy === 'abc') return (a.dataset.abc ?? '').localeCompare(b.dataset.abc ?? '') * state.direction;
-            return (parseFloat(a.dataset[sortBy]) - parseFloat(b.dataset[sortBy])) * state.direction;
-        });
-
-        tbody.replaceChildren(...rows);
-        allTickerRows = [...document.querySelectorAll('#tab-renta .ticker-row')];
-        const activeRow = document.querySelector('#tab-renta .ticker-row.active');
-        if (activeRow) currentIndex = allTickerRows.indexOf(activeRow);
-    };
-
-    // ── TradingView chart ─────────────────────────────────────────────────────
-
-    function initChart(symbol) {
-        chartWidget?.remove();
-        chartWidget = null;
-        window._lastChartSymbol = symbol;
-
-        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-        const isMobile = window.innerWidth <= 768;
-
-        chartWidget = new TradingView.widget({
-            allow_symbol_change: !isMobile,
-            calendar: false,
-            details: !isMobile,
-            hide_side_toolbar: isMobile,
-            hide_top_toolbar: false,
-            hide_legend: false,
-            hide_volume: true,
-            hotlist: false,
-            interval: 'D',
-            locale: 'es',
-            save_image: false,
-            style: '1',
-            theme: isLight ? 'light' : 'dark',
-            toolbar_bg: isLight ? '#f8fafc' : '#09090b',
-            backgroundColor: isLight ? '#f8fafc' : '#09090b',
-            gridColor: isLight ? 'rgba(226, 232, 240, 1)' : 'rgba(63, 63, 70, 0.4)',
-            symbol,
-            timezone: 'America/Argentina/Buenos_Aires',
-            studies: ['STD;MA%Ribbon'],
-            autosize: true,
-            enable_publishing: false,
-            container_id: 'tradingview-chart',
-            withdateranges: true,
-        });
-        window.tradingviewWidget = chartWidget;
-    }
-
-    window.initChart = initChart;
-
-    window.updateChart = function (symbol, element) {
-        document.querySelectorAll('#tab-renta .ticker-row').forEach(r => r.classList.remove('active'));
-        const row = element ?? [...document.querySelectorAll('#tab-renta .ticker-row')]
-            .find(r => r.getAttribute('data-symbol') === symbol);
-        if (row) {
-            row.classList.add('active');
-            currentIndex = allTickerRows.indexOf(row);
-            row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-        initChart(symbol);
-    };
 
     // ── Macro / inflation rendering ───────────────────────────────────────────
 
@@ -1635,8 +1331,6 @@ function _processYieldMatrix(rendData) {
             meta = m;
             window._liveInflation = liveInflation;
 
-            renderGroups();
-
             if (snapshot?.argentina_macro) renderMacro(snapshot.argentina_macro);
             if (snapshot?.historical_fiat) {
                 renderSpreadChart(snapshot.historical_fiat);
@@ -1644,97 +1338,13 @@ function _processYieldMatrix(rendData) {
             }
 
             fetchLiveCryptoAndFiat();
-
-            // Start Unified Live Market Engine Polling (Every 20 seconds)
-            setInterval(fetchLiveMarketData, 20_000);
         }).catch(err => {
             console.error('Critical error in loadData:', err);
             fetchLiveCryptoAndFiat();
         });
     }
 
-    // ── Unified Live Market Engine (Data912) ──────────────────────────────────
-    let lastData912FetchDate = null;
-
-    async function fetchLiveMarketData() {
-        // Only run if Renta Variable tab is active AND market is open
-        if (!document.getElementById('tab-renta')?.classList.contains('active')) return;
-        if (!isMarketOpen()) return;
-
-        try {
-            const urls = [
-                'https://data912.com/live/usa_stocks',
-                'https://data912.com/live/usa_adrs',
-                'https://data912.com/live/arg_stocks',
-                'https://data912.com/live/arg_cedears'
-            ];
-
-            const [usaStocks, usaAdrs, argStocks, argCedears] = await Promise.all(
-                urls.map(url => fetch(url).then(r => r.ok ? r.json() : []))
-            );
-
-            lastData912FetchDate = todayStr;
-
-            // Build separate maps for different markets
-            const usaMap = new Map();
-            [...usaStocks, ...usaAdrs].forEach(item => usaMap.set(item.symbol, item));
-
-            const argMap = new Map();
-            [...argStocks, ...argCedears].forEach(item => argMap.set(item.symbol, item));
-
-            // Iterate over ALL ticker rows in the DOM
-            const rows = document.querySelectorAll('#tab-renta .ticker-row');
-
-            rows.forEach(row => {
-                const group = row.getAttribute('data-group') || '';
-                const tickerRaw = row.getAttribute('data-symbol');
-                if (!tickerRaw) return;
-
-                const baseSymbol = tickerRaw.replace('.BA', '');
-
-                // Decide which map to use based on the group
-                let liveData = null;
-                const gUpper = group.toUpperCase();
-
-                if (gUpper.includes('USA') || gUpper.includes('ADR') || gUpper.includes('USD') || gUpper.includes('COUNTRIES')) {
-                    liveData = usaMap.get(baseSymbol);
-                } else {
-                    // Local ARS Stocks or CEDEARs (ARS)
-                    liveData = argMap.get(baseSymbol);
-                }
-
-                if (liveData) {
-                    // Update Price
-                    const priceCell = row.querySelector('.price-cell');
-                    if (priceCell && liveData.c) {
-                        priceCell.innerText = liveData.c.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                    }
-
-                    // Update Daily % and sorting attribute
-                    if (liveData.pct_change != null) {
-                        const val = liveData.pct_change;
-                        row.setAttribute('data-daily', val);
-
-                        const dailyCell = row.querySelector('td:nth-child(4) .value-visualization');
-                        if (dailyCell) {
-                            const bar = dailyCell.querySelector('.value-bar');
-                            const txt = dailyCell.querySelector('.value-text');
-                            const cls = val >= 0 ? 'positive' : 'negative';
-                            const sign = val >= 0 ? '+' : '';
-                            const color = val >= 0 ? 'var(--green)' : 'var(--red)';
-                            const w = Math.min(100, Math.max(0, (Math.abs(val) / 10) * 100));
-
-                            if (bar) { bar.className = `value-bar ${cls}`; bar.style.width = `${w}%`; }
-                            if (txt) { txt.style.color = color; txt.innerText = `${sign}${val.toFixed(2)}%`; }
-                        }
-                    }
-                }
-            });
-
-        } catch (err) {
-            console.error('Error fetching Data912 live data:', err);
-        }
-    }
+    // Live Market Engine removed.
 
     // ── DOM ready ─────────────────────────────────────────────────────────────
 
@@ -1747,7 +1357,6 @@ function _processYieldMatrix(rendData) {
         document.getElementById('tab-resumen-btn')?.addEventListener('click', e => switchTab('tab-resumen', e.currentTarget));
         document.getElementById('tab-argentina-btn')?.addEventListener('click', e => switchTab('tab-argentina', e.currentTarget));
         document.getElementById('tab-tasas-btn')?.addEventListener('click', e => switchTab('tab-tasas', e.currentTarget));
-        document.getElementById('tab-renta-btn')?.addEventListener('click', e => switchTab('tab-renta', e.currentTarget));
 
         // Tasas sub-tabs
         document.getElementById('tasas-pesos-btn')?.addEventListener('click', e => switchTasasTab('tasas-pesos', e.currentTarget));
