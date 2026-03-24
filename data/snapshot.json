@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-03-23T20:02:36.408227Z",
+  "built_at": "2026-03-24T21:06:21.786585Z",
   "argentina_macro": {
     "ipc_history": {
       "1943-03": 0.016,
@@ -1005,7 +1005,6 @@
       "variacion": 5.15
     },
     "holidays": [
-      "23-03-2026 - Puente turístico no laborable",
       "24-03-2026 - Día Nacional de la Memoria por la Verdad y la Justicia"
     ],
     "full_holidays": [
@@ -1763,10 +1762,19 @@
     {
       "date": "23-03-2026",
       "ccl": 1470.5,
-      "mep": 1428.3,
+      "mep": 1420.9,
       "blue": 1425.0,
       "oficial": 1410.0,
       "usdt": 1468.21,
+      "mayorista": 1390.5
+    },
+    {
+      "date": "24-03-2026",
+      "ccl": 1470.5,
+      "mep": 1420.9,
+      "blue": 1425.0,
+      "oficial": 1410.0,
+      "usdt": 1468.19,
       "mayorista": 1390.5
     }
   ]
