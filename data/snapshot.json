@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-04-02T21:03:42.487103Z",
+  "built_at": "2026-04-03T21:03:42.341512Z",
   "argentina_macro": {
     "ipc_history": {
       "1943-03": 0.016,
@@ -1000,12 +1000,11 @@
       "2026-02": 0.028999999999999998
     },
     "riesgo_pais": {
-      "valor": 617,
-      "fecha": "31-03-2026",
-      "variacion": -3.14
+      "valor": 612,
+      "fecha": "01-04-2026",
+      "variacion": -0.81
     },
     "holidays": [
-      "02-04-2026 - Día del Veterano y de los Caídos en la Guerra de Malvinas",
       "03-04-2026 - Viernes Santo"
     ],
     "full_holidays": [
@@ -1857,6 +1856,15 @@
       "blue": 1405.0,
       "oficial": 1415.0,
       "usdt": 1458.0,
+      "mayorista": 1394.0
+    },
+    {
+      "date": "03-04-2026",
+      "ccl": 1484.2,
+      "mep": 1436.3,
+      "blue": 1405.0,
+      "oficial": 1415.0,
+      "usdt": 1456.0,
       "mayorista": 1394.0
     }
   ]
