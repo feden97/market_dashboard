@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "date": "10/06/2026",
+    "time": "12:30",
+    "event": "Core CPI (MoM)  (May)"
+  },
+  {
+    "date": "10/06/2026",
+    "time": "12:30",
+    "event": "CPI (MoM)  (May)"
+  },
+  {
+    "date": "10/06/2026",
+    "time": "12:30",
+    "event": "CPI (YoY)  (May)"
+  },
+  {
+    "date": "11/06/2026",
+    "time": "12:30",
+    "event": "Initial Jobless Claims"
+  },
+  {
+    "date": "11/06/2026",
+    "time": "12:30",
+    "event": "PPI (MoM)  (May)"
+  }
+]
