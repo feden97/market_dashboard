@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-06-12T22:07:56.407078Z",
+  "built_at": "2026-06-13T21:47:06.964082Z",
   "argentina_macro": {
     "ipc_history": {
       "1943-03": 0.016,
@@ -1003,9 +1003,9 @@
       "2026-05": 0.021
     },
     "riesgo_pais": {
-      "valor": 503,
-      "fecha": "10-06-2026",
-      "variacion": 1.0
+      "valor": 443,
+      "fecha": "11-06-2026",
+      "variacion": -11.93
     },
     "holidays": [
       "15-06-2026 - Paso a la Inmortalidad del General Martín Güemes (17/6)",
@@ -2494,12 +2494,21 @@
     },
     {
       "date": "12-06-2026",
-      "ccl": 1494.9,
-      "mep": 1454.2,
-      "blue": 1450.0,
+      "ccl": 1495.6,
+      "mep": 1452.2,
+      "blue": 1460.0,
       "oficial": 1450.0,
       "usdt": 1494.01,
-      "mayorista": 1432.5
+      "mayorista": 1428.0
+    },
+    {
+      "date": "13-06-2026",
+      "ccl": 1495.6,
+      "mep": 1452.2,
+      "blue": 1460.0,
+      "oficial": 1450.0,
+      "usdt": 1503.1,
+      "mayorista": 1428.0
     }
   ]
 }
