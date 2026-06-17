@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-06-16T22:30:20.652094Z",
+  "built_at": "2026-06-17T22:21:13.854655Z",
   "argentina_macro": {
     "ipc_history": {
       "1943-03": 0.016,
@@ -1003,9 +1003,9 @@
       "2026-05": 0.021
     },
     "riesgo_pais": {
-      "valor": 437,
-      "fecha": "12-06-2026",
-      "variacion": -1.35
+      "valor": 425,
+      "fecha": "15-06-2026",
+      "variacion": -2.75
     },
     "holidays": [
       "20-06-2026 - Paso a la Inmortalidad del General Manuel Belgrano"
@@ -2529,12 +2529,21 @@
     },
     {
       "date": "16-06-2026",
-      "ccl": 1495.6,
-      "mep": 1452.2,
-      "blue": 1460.0,
+      "ccl": 1498.1,
+      "mep": 1456.0,
+      "blue": 1470.0,
       "oficial": 1450.0,
       "usdt": 1501.2,
-      "mayorista": 1428.0
+      "mayorista": 1436.5
+    },
+    {
+      "date": "17-06-2026",
+      "ccl": 1498.1,
+      "mep": 1456.0,
+      "blue": 1470.0,
+      "oficial": 1450.0,
+      "usdt": 1501.0,
+      "mayorista": 1436.5
     }
   ]
 }
