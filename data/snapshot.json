@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-06-30T21:57:36.474436Z",
+  "built_at": "2026-07-01T22:04:05.668484Z",
   "argentina_macro": {
     "ipc_history": {
       "1943-03": 0.016,
@@ -1003,11 +1003,14 @@
       "2026-05": 0.021
     },
     "riesgo_pais": {
-      "valor": 437,
-      "fecha": "26-06-2026",
-      "variacion": 0.0
+      "valor": 431,
+      "fecha": "29-06-2026",
+      "variacion": -1.37
     },
-    "holidays": [],
+    "holidays": [
+      "09-07-2026 - Día de la Independencia",
+      "10-07-2026 - Puente turístico no laborable"
+    ],
     "full_holidays": [
       "2026-01-01",
       "2026-02-16",
@@ -2653,12 +2656,21 @@
     },
     {
       "date": "30-06-2026",
-      "ccl": 1555.5,
-      "mep": 1508.7,
-      "blue": 1510.0,
-      "oficial": 1495.0,
+      "ccl": 1563.5,
+      "mep": 1519.0,
+      "blue": 1515.0,
+      "oficial": 1500.0,
       "usdt": 1555.6,
-      "mayorista": 1481.5
+      "mayorista": 1482.0
+    },
+    {
+      "date": "01-07-2026",
+      "ccl": 1563.5,
+      "mep": 1519.0,
+      "blue": 1515.0,
+      "oficial": 1500.0,
+      "usdt": 1559.0,
+      "mayorista": 1482.0
     }
   ]
 }
