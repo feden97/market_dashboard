@@ -28,6 +28,11 @@ except ImportError:
 CRYPTO_API_BASE    = "https://criptoya.com/api"
 ARG_DATOS_BASE     = "https://api.argentinadatos.com/v1"
 
+SESSION = requests.Session()
+SESSION.headers.update({
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+})
+
 KEY_EVENTS = [
     "Fed", "Federal Reserve", "Interest Rate", "FOMC",
     "ISM Manufacturing", "ISM Non-Manufacturing", "ISM Services", "ISM",
